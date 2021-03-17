@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Host: https://angdev.ru/
+Sitemap: https://angdev.ru/sitemap.xml

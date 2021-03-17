@@ -1,0 +1,6 @@
+title: Pipes
+nav:
+    - pipes.md
+    - create-pipes.md
+    - pure-pipes.md
+    - asyncpipe.md

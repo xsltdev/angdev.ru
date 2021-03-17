@@ -1,0 +1,67 @@
+site_name: Справочник
+site_url: https://xsltdev.ru/
+site_description: Справочник web-разработчика с примерами кода - HTML, CSS, Javascript, Typescript, Angular, React, Node.js, XSLT, XPath
+site_author: xsltdev.ru
+copyright: (C) 2012-2020, Справочник web-разработчика с примерами кода
+
+repo_name: 'Справочник на Github'
+repo_url: 'https://github.com/xsltdev/xsltdev.ru'
+
+theme:
+    name: material
+    custom_dir: overrides
+    # name: null
+    # custom_dir: 'theme/material'
+    palette:
+        primary: black
+        accent: teal
+    language: ru
+    #    favicon: 'assets/images/favicon.ico'
+    features:
+        - navigation.tabs
+        - navigation.tracking
+    font:
+        text: Roboto
+        code: Roboto Mono
+    # icon:
+    # logo: material/code
+    # repo: material/code
+
+extra:
+    social:
+        - icon: fontawesome/brands/github-alt
+          link: 'https://github.com/xsltdev'
+#        - type: 'linkedin'
+#          link: 'https://www.linkedin.com/in/bndby/'
+#search:
+#    language: 'en, ru'
+
+google_analytics:
+    - UA-34215161-1
+    - auto
+
+markdown_extensions:
+    - admonition
+    - codehilite:
+          guess_lang: false
+          linenums: false
+    - toc:
+          permalink: true
+    - pymdownx.extra
+    - pymdownx.details
+    - pymdownx.emoji:
+          emoji_index: !!python/name:materialx.emoji.twemoji
+          emoji_generator: !!python/name:materialx.emoji.to_svg
+    - pymdownx.tabbed
+    - pymdownx.superfences
+
+plugins:
+    #- search
+    - awesome-pages
+    - section-index
+
+extra_javascript:
+    - 'https://cdn.jsdelivr.net/gh/ireade/caniuse-embed/caniuse-embed.min.js'
+
+extra_css:
+    - '/assets/stylesheets/styles.css'
