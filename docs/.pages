@@ -1,8 +1,8 @@
 title: Angular
 nav:
     - index.md
-    - tutorial
+    - doc
     - guide
-    - cheatsheet.md
     - ngrx
     - rxjs
+    - cheatsheet.md

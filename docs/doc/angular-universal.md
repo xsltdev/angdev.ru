@@ -27,7 +27,7 @@ Platform-server обрабатывает запрос, содержащий ша
 
 - `@angular/platform-server` - содержит необходимые для Angular Universal компоненты;
 - `@nguniversal/module-map-ngfactory-loader` - нужен для асинхронной загрузки;
-- `@nguniversal/express-engine` - ядро [`express`](../../nodejs/expressjs4/installing.md) фреймворка;
+- `@nguniversal/express-engine` - ядро Express фреймворка;
 - `ts-loader` - модуль для компиляции кода ts в js.
 
 Теперь сразу рассмотрим пример, который можно скачать по [ссылке](angular-ssr.zip).

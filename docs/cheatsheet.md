@@ -1,6 +1,8 @@
 ---
 title: Шпаргалка
 description: Шпаркалка Angular
+hide:
+  - navigation
 ---
 
 # Шпаргалка

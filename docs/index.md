@@ -1,15 +1,20 @@
 ---
-title: Справочник
+title: Главная
 description: Angular представляет собой JavaScript-фреймворк, который позволяет создавать высокопроизводительные и функциональные клиентские web-приложения
 hide:
   - toc
+  - navigation
 ---
 
-# ![Angular 2+](../angular.svg){: style="height:32px;width:32px;vertical-align:middle;"} Справочник Angular
+# ![Angular 2+](./angular.svg){: style="height:32px;width:32px;vertical-align:middle;"} Справочник Angular
 
 **Angular** представляет собой JavaScript-фреймворк, который позволяет создавать высокопроизводительные и функциональные клиентские web-приложения. Angular состоит из совокупности библиотек, каждая из которых отвечает за определенный функционал: создание форм, работа с анимацией, осуществление HTTP-запросов и т. д.
 
-**[Руководство Angular](tutorial/setup-and-configuration.md)**
+<div class="layout layout2" markdown="1">
+
+<div class="cell" markdown="1">
+
+**[Документация Angular](doc/setup-and-configuration.md)**
 
 : Angular представляет собой JavaScript-фреймворк, который позволяет создавать высокопроизводительные и функциональные клиентские web-приложения. Angular состоит из совокупности библиотек, каждая из которых отвечает за определенный функционал: создание форм, работа с анимацией, осуществление HTTP-запросов и т. д.<br /><small>Источник: [webdraftt.com](https://webdraftt.com/tutorial)</small>
 
@@ -17,7 +22,9 @@ hide:
 
 : Angular представляет фреймворк от компании Google для создания клиентских приложений. Прежде всего он нацелен на разработку SPA-решений (Single Page Application), то есть одностраничных приложений.<br /><small>Источник: [metanit.com](https://metanit.com/web/angular2/)</small>
 
-[Шпаргалка Angular](cheatsheet.md)
+</div>
+
+<div class="cell" markdown="1">
 
 [NgRx](ngrx/about.md)
 
@@ -26,3 +33,7 @@ hide:
 [RxJS](rxjs/about.md)
 
 : RxJS — это библиотека, реализующая принципы реактивного программировани для контроля и управления асинхронными операциями в JavaScript приложениях с помощью объектов Observable. RxJS имеет набор встроенных операторов для более гибкой обработки потока асинхронных событий.<br /><small>Источник: [webdraftt.com](https://webdraftt.com/tutorial/rxjs)</small>
+
+</div>
+
+[Шпаргалка Angular](cheatsheet.md)

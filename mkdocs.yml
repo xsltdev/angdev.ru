@@ -13,19 +13,16 @@ theme:
     # name: null
     # custom_dir: 'theme/material'
     palette:
-        primary: black
-        accent: teal
+        primary: blue
+        accent: pink
     language: ru
     #    favicon: 'assets/images/favicon.ico'
     features:
         - navigation.tabs
         - navigation.tracking
-    font:
-        text: Roboto
-        code: Roboto Mono
-    # icon:
-    # logo: material/code
-    # repo: material/code
+        - navigation.instant
+    favicon: angular.svg
+    logo: angular.svg
 
 extra:
     social:
@@ -54,8 +51,10 @@ markdown_extensions:
     - pymdownx.superfences
 
 plugins:
-    - search
-        lang: ru
+    - search:
+        lang:
+          - ru
+          - en
     - awesome-pages
     - section-index
 
