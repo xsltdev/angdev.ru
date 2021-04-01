@@ -22,6 +22,8 @@ hide:
 
 : Angular представляет фреймворк от компании Google для создания клиентских приложений. Прежде всего он нацелен на разработку SPA-решений (Single Page Application), то есть одностраничных приложений.
 
+[Шпаргалка Angular](cheatsheet.md)
+
 </div>
 
 <div class="cell" markdown="1">
@@ -38,14 +40,9 @@ hide:
 
 </div>
 
-[Шпаргалка Angular](cheatsheet.md)
+!!!note "Справочники"
 
----
-
-!!!note ""
-
-	[XSLT](https://xsltdev.ru) &nbsp;&nbsp;&nbsp;
+    [XSLT](https://xsltdev.ru) &nbsp;&nbsp;&nbsp;
     [![Angular](angular.svg){: style="height:16px;width:16px;vertical-align:middle;"} Angular](https://angdev.ru/) &nbsp;&nbsp;&nbsp;
     [![React](react.svg){: style="height:16px;width:16px;vertical-align:middle;"} React](https://reactdev.ru/) &nbsp;&nbsp;&nbsp;
     [![Node.js](nodejs.svg){: style="height:16px;width:16px;vertical-align:middle;"} Node.js](https://nodejsdev.ru/)
-
