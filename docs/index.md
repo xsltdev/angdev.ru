@@ -36,4 +36,17 @@ hide:
 
 </div>
 
+</div>
+
 [Шпаргалка Angular](cheatsheet.md)
+
+---
+
+!!!note ""
+
+	[XSLT](https://xsltdev.ru) &nbsp;&nbsp;&nbsp;
+    [![Angular](angular.svg){: style="height:16px;width:16px;vertical-align:middle;"} Angular](https://angdev.ru/) &nbsp;&nbsp;&nbsp;
+    [![React](react.svg){: style="height:16px;width:16px;vertical-align:middle;"} React](https://reactdev.ru/) &nbsp;&nbsp;&nbsp;
+    [![Node.js](nodejs.svg){: style="height:16px;width:16px;vertical-align:middle;"} Node.js](https://nodejsdev.ru/)
+
+Полезные ссылки: [MkDocs](https://www.mkdocs.org) • [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) • [PyMdown Extensions](https://facelessuser.github.io/pymdown-extensions/) • [Emoji](https://www.joypixels.com/emoji#all)
