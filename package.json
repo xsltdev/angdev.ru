@@ -1,6 +1,6 @@
 {
-  "name": "xsltdev.ru",
-  "version": "3.1.1",
+  "name": "angdev.ru",
+  "version": "1.0.0",
   "description": "Site with web documentations",
   "devDependencies": {
     "@prettier/plugin-xml": "^0.12.0",
@@ -13,10 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xsltdev/xsltdev.ru.git"
+    "url": "git+https://github.com/xsltdev/angdev.ru.git"
   },
   "bugs": {
-    "url": "https://github.com/xsltdev/xsltdev.ru/issues"
+    "url": "https://github.com/xsltdev/angdev.ru/issues"
   },
-  "homepage": "https://xsltdev.ru/"
+  "homepage": "https://angdev.ru/"
 }

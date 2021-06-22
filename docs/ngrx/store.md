@@ -1,3 +1,7 @@
+---
+description: NgRx Store (или просто хранилище) хранит в себе глобальное состояние Angular приложения в виде одного большого объекта
+---
+
 # Store
 
 NgRx **Store** (или просто хранилище) хранит в себе глобальное состояние Angular приложения в виде одного большого объекта.
@@ -12,7 +16,7 @@ NgRx **Store** (или просто хранилище) хранит в себе
 - обновляет состояние в ответ на действие, принимаемое через метод `dispatch()`;
 - предоставление доступа к состоянию.
 
-Формирование глобального состояния в NgRx Store происходит путем объединения более мелких состояний, которые возвращают зарегистрированные в приложении [редюсеры](reducers.md). Делается это с использованием `ActionReducerMap<State>`.
+Формирование глобального состояния в NgRx `Store` происходит путем объединения более мелких состояний, которые возвращают зарегистрированные в приложении [редюсеры](reducers.md). Делается это с использованием `ActionReducerMap<State>`.
 
 _users.reducer.ts_
 
@@ -45,24 +49,24 @@ export function articlesReducer(
 _index.ts_
 
 ```ts
-import * as Users from './reducers/users.reducer'
-import * as Articles from './reducers/articles.reducer'
+import * as Users from './reducers/users.reducer';
+import * as Articles from './reducers/articles.reducer';
 
 export interface State {
-  users: Users.State
-  articles: Articles.State
+  users: Users.State;
+  articles: Articles.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
   users: Users.usersReducer,
   articles: Articles.articlesReducer,
-}
+};
 ```
 
 _app.module.ts_
 
 ```ts
-import { reducers } from './store/reducers/index'
+import { reducers } from './store/reducers/index';
 
 @NgModule({
   imports: [StoreModule.forRoot(reducers)],
@@ -72,12 +76,12 @@ export class AppModule {}
 
 Ключи верхнего уровня иерархии глобального объекта состояния задаются разработчиком самостоятельно.
 
-В последнем примере состояние определяется в корневом модуле. Но также NgRx Store может формироваться из состояний, определенных для второстепенных модулей.
+В последнем примере состояние определяется в корневом модуле. Но также NgRx `Store` может формироваться из состояний, определенных для второстепенных модулей.
 
 _users.module.ts_
 
 ```ts
-import { usersReducer } from './reducers/users.reducer'
+import { usersReducer } from './reducers/users.reducer';
 
 @NgModule({
   imports: [
@@ -107,7 +111,7 @@ export class AppModule {}
 _articles.actions.ts_
 
 ```ts
-import { Action } from '@ngrx/store'
+import { Action } from '@ngrx/store';
 
 export enum ArticlesActions {
   LoadArticle = '[Articles Page] LoadArticle',
@@ -115,24 +119,24 @@ export enum ArticlesActions {
 }
 
 export interface Article {
-  id: number
-  title: string
-  published: boolean
+  id: number;
+  title: string;
+  published: boolean;
 }
 
 export class LoadArticle implements Action {
-  readonly type = ArticlesActions.LoadArticle
+  readonly type = ArticlesActions.LoadArticle;
 
   constructor(public payload: { article: Article }) {}
 }
 
 export class PublishArticle implements Action {
-  readonly type = ArticlesActions.PublishArticle
+  readonly type = ArticlesActions.PublishArticle;
 
   constructor(public payload: { id: number }) {}
 }
 
-export type ArticlesUnion = LoadArticle | PublishArticle
+export type ArticlesUnion = LoadArticle | PublishArticle;
 ```
 
 _articles.reducer.ts_
@@ -176,7 +180,7 @@ _app.component.ts_
 })
 export class AppComponent {
   constructor(private store: Store) {
-    this.store.subscribe((state) => console.log(state))
+    this.store.subscribe((state) => console.log(state));
 
     this.store.dispatch(
       new LoadArticle({
@@ -186,13 +190,13 @@ export class AppComponent {
           publish: false,
         },
       })
-    )
+    );
 
-    this.store.dispatch(new PublishArticle({ id: 1 }))
+    this.store.dispatch(new PublishArticle({ id: 1 }));
   }
 }
 ```
 
-Значение NgRx Store передается обработчику непосредственно в момент вызова метода `subscribe()` и далее при любом изменении состояния.
+Значение NgRx `Store` передается обработчику непосредственно в момент вызова метода `subscribe()` и далее при любом изменении состояния.
 
 Для доступа к определенным частям состояния или вычисления новых данных на основе уже имеющихся в хранилище, используйте селекторы.

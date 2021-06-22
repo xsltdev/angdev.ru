@@ -1,3 +1,7 @@
+---
+description: NgRx Meta Reducers это функции, вызываемые сразу после возникновения действия, но перед тем, как они будут переданы глобальному редюсеру
+---
+
 # Meta reducers
 
 Все определенные в Angular приложении редюсеры объединяются NgRX Store в один глобальный редюсер, который и обрабатывает все действия.
@@ -15,19 +19,19 @@ export function log(
   reducer: ActionReducer<any>
 ): ActionReducer<any> {
   return (state, action) => {
-    console.log('state', state)
-    console.log('action', action)
+    console.log('state', state);
+    console.log('action', action);
 
-    return reducer(state, action)
-  }
+    return reducer(state, action);
+  };
 }
 ```
 
 _app.module.ts_
 
 ```ts
-import { reducers } from './store/reducers/index'
-import { log } from './store/meta-reducers/log.meta-reducer'
+import { reducers } from './store/reducers/index';
+import { log } from './store/meta-reducers/log.meta-reducer';
 
 @NgModule({
   imports: [

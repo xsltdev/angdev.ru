@@ -1,3 +1,7 @@
+---
+description: В NgRx действия описывают все события Angular приложения, которые влияют на его состояние, поскольку изменить состояние можно только через отправку хранилищу одного из действий
+---
+
 # Actions
 
 В NgRx действия описывают все события Angular приложения, которые влияют на его состояние, поскольку изменить состояние можно только через отправку хранилищу одного из действий.
@@ -7,13 +11,13 @@ NgRx Actions создаются с помощью классов, которые
 ```ts
 // Код интерфейса Action
 interface Action {
-  type: string
+  type: string;
 }
 
-import { Action } from '@ngrx/store'
+import { Action } from '@ngrx/store';
 
 export class GetUsers implements Action {
-  readonly type = '[Users Page] GetUsers'
+  readonly type = '[Users Page] GetUsers';
 }
 ```
 
@@ -23,19 +27,19 @@ export class GetUsers implements Action {
 
 ```ts
 // Здесь переменная store является экземпляром класса Store
-store.dispatch(new GetUsers())
+store.dispatch(new GetUsers());
 ```
 
 Практически всегда для изменения состояния вам необходимо будет вместе с действием передавать какие-либо данные. Реализуется это в момент создания класса действия. Общепринято помещать внутри класса переданные извне данные в свойство `payload`.
 
 ```ts
 export class DeleteUser implements Action {
-  readonly type = '[Users Page] DeleteUser'
+  readonly type = '[Users Page] DeleteUser';
 
   constructor(public payload: { id: number }) {}
 }
 
-store.dispatch(new DeleteUser({ id: 7 }))
+store.dispatch(new DeleteUser({ id: 7 }));
 ```
 
 В последнем примере передается `id` пользователя, которого необходимо удалить.
@@ -50,24 +54,24 @@ export enum UsersActions {
 }
 
 export class GetUsers implements Action {
-  readonly type = UsersActions.GetUsers
+  readonly type = UsersActions.GetUsers;
 }
 
 export class DeleteUser implements Action {
-  readonly type = UsersActions.DeleteUser
+  readonly type = UsersActions.DeleteUser;
 
   constructor(public payload: { id: number }) {}
 }
 
 export class DeleteAllUsers implements Action {
-  readonly type = UsersActions.DeleteAllUsers
+  readonly type = UsersActions.DeleteAllUsers;
 }
 
 //Смешанный тип
 export type UsersUnion =
   | GetUsers
   | DeleteUser
-  | DeleteAllUsers
+  | DeleteAllUsers;
 ```
 
 Смешанный тип необходим для краткости записи типа в редюсере, который обрабатывает взаимосвязанную группу действий.

@@ -1,8 +1,12 @@
+---
+description: Для связки модуля маршрутизации с хранилищем используйте NgRx Router State, который позволяет отслеживать процесс смены URL в Angular приложении с помощью действий
+---
+
 # Router store
 
 Для связки модуля маршрутизации с хранилищем используйте NgRx Router State, который позволяет отслеживать процесс смены URL в Angular приложении с помощью действий.
 
-NgRx Router Store устанавливается отдельно.
+NgRx **Router Store** устанавливается отдельно.
 
 ```
 npm i @ngrx/router-store --save
@@ -68,32 +72,32 @@ import {
   Params,
   RouterStateSnapshot,
   Data,
-} from '@angular/router'
-import { RouterStateSerializer } from '@ngrx/router-store'
+} from '@angular/router';
+import { RouterStateSerializer } from '@ngrx/router-store';
 
 export interface AppRouterStateUrl {
-  url: string
-  params: Params
-  queryParams: Params
-  data: Data
+  url: string;
+  params: Params;
+  queryParams: Params;
+  data: Data;
 }
 
 export class AppSerializer
   implements RouterStateSerializer<AppRouterStateUrl> {
   serialize(state: RouterStateSnapshot): AppRouterStateUrl {
-    let currentRoute = state.root
+    let currentRoute = state.root;
 
     while (currentRoute.firstChild) {
-      currentRoute = currentRoute.firstChild
+      currentRoute = currentRoute.firstChild;
     }
 
     const {
       url,
       root: { queryParams },
-    } = state
-    const { params, data } = currentRoute
+    } = state;
+    const { params, data } = currentRoute;
 
-    return { url, params, queryParams, data }
+    return { url, params, queryParams, data };
   }
 }
 ```
@@ -103,5 +107,5 @@ export class AppSerializer
 ```ts
 StoreRouterConnectingModule.forRoot({
   serializer: CustomSerializer,
-})
+});
 ```

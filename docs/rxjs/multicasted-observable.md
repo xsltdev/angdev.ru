@@ -1,19 +1,25 @@
+---
+description: При необходимости можно создать Multicasted Observable, который позволяет в рамках одного и того выполнения регистрировать сразу несколько обработчиков
+---
+
 # Multicasted Observable
 
-Ранее говорилось, что объекты RxJS Observable выполняются для каждого вызова метода `subscribe()` уникально, в отличие от RxJS Subject. Но это не совсем так. При необходимости можно создать **Multicasted Observable**, который позволяет в рамках одного и того выполнения регистрировать сразу несколько обработчиков.
+Ранее говорилось, что объекты RxJS `Observable` выполняются для каждого вызова метода `subscribe()` уникально, в отличие от RxJS `Subject`. Но это не совсем так. При необходимости можно создать **Multicasted Observable**, который позволяет в рамках одного и того выполнения регистрировать сразу несколько обработчиков.
 
 ## multicast()
 
 Такие объекты создаются с помощью метода RxJS [`multicast()`](https://rxjs.dev/api/operators/multicast), а в их основе находятся объекты `Subject`.
 
 ```ts
-const subject = new Subject()
-const multicasted = from([2, 4, 6]).pipe(multicast(subject))
+const subject = new Subject();
+const multicasted = from([2, 4, 6]).pipe(
+  multicast(subject)
+);
 
-multicasted.subscribe((vl) => console.log(`1st: ${vl}`))
-multicasted.subscribe((vl) => console.log(`2nd: ${vl}`))
+multicasted.subscribe((vl) => console.log(`1st: ${vl}`));
+multicasted.subscribe((vl) => console.log(`2nd: ${vl}`));
 
-multicasted.connect()
+multicasted.connect();
 ```
 
 RxJS `multicast(`) принимает `Subject`, который регистрирует на себя всех "потребителей" и который сам регистрируется в качестве обработчика для исходного объекта `Observable`.
@@ -33,18 +39,18 @@ RxJS `multicast(`) принимает `Subject`, который регистри
 Так отпадает необходимость в ручном контроле таких объектов.
 
 ```ts
-const subject = new Subject()
+const subject = new Subject();
 const refCounted = interval(3).pipe(
   multicast(subject),
   refCount()
-)
+);
 
-let sub1, sub2
+let sub1, sub2;
 
 //выполнение Observable начинается
 sub1 = refCounted.subscribe((vl) =>
   console.log(`1st: ${vl}`)
-)
+);
 
 setTimeout(
   () =>
@@ -52,12 +58,12 @@ setTimeout(
       console.log(`2nd: ${vl}`)
     )),
   500
-)
+);
 
-setTimeout(() => sub1.unsubscribe(), 1500)
+setTimeout(() => sub1.unsubscribe(), 1500);
 
 //выполнение Observable завершается
-setTimeout(() => sub2.unsubscribe(), 2000)
+setTimeout(() => sub2.unsubscribe(), 2000);
 ```
 
 Использовать `refCount()` можно только с объектами `ConnectableObservable`.

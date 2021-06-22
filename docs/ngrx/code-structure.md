@@ -1,3 +1,7 @@
+---
+description: Для того чтобы использование библиотеки Angular NgRx стало оправданным и максимально эффективным, необходимо правильно организовать и структурировать код, формирующий хранилище (Store) приложения
+---
+
 # Организация кода
 
 Для того чтобы использование библиотеки Angular NgRx стало оправданным и максимально эффективным, необходимо правильно организовать и структурировать код, формирующий хранилище (`Store`) приложения.
@@ -25,10 +29,10 @@
 _store/actions/cars.actions.ts_
 
 ```ts
-import { Action } from '@ngrx/store'
-import { Update } from '@ngrx/entity'
+import { Action } from '@ngrx/store';
+import { Update } from '@ngrx/entity';
 
-import { Car } from '../models/car.model'
+import { Car } from '../models/car.model';
 
 export enum CarActionTypes {
   AddCarRequest = '[Create/Edit Car] Add Car Request',
@@ -49,65 +53,65 @@ export enum CarActionTypes {
 }
 
 export class AddCarRequest implements Action {
-  readonly type = CarActionTypes.AddCarRequest
+  readonly type = CarActionTypes.AddCarRequest;
 
   constructor(public payload: { car: Car }) {}
 }
 
 export class CarAddedSuccess implements Action {
-  readonly type = CarActionTypes.CarAddedSuccess
+  readonly type = CarActionTypes.CarAddedSuccess;
 
   constructor(public payload: { car: Car }) {}
 }
 
 export class CarAddedError implements Action {
-  readonly type = CarActionTypes.CarAddedError
+  readonly type = CarActionTypes.CarAddedError;
 }
 
 export class UpdateCarRequest implements Action {
-  readonly type = CarActionTypes.UpdateCarRequest
+  readonly type = CarActionTypes.UpdateCarRequest;
 
   constructor(public payload: { car: Car }) {}
 }
 
 export class CarUpdatedSuccess implements Action {
-  readonly type = CarActionTypes.CarUpdatedSuccess
+  readonly type = CarActionTypes.CarUpdatedSuccess;
 
   constructor(public payload: { car: Update<Car> }) {}
 }
 
 export class CarUpdatedError implements Action {
-  readonly type = CarActionTypes.CarUpdatedError
+  readonly type = CarActionTypes.CarUpdatedError;
 }
 
 export class LoadCars implements Action {
-  readonly type = CarActionTypes.LoadCars
+  readonly type = CarActionTypes.LoadCars;
 }
 
 export class CarsLoadedSuccess implements Action {
-  readonly type = CarActionTypes.CarsLoadedSuccess
+  readonly type = CarActionTypes.CarsLoadedSuccess;
 
   constructor(public payload: { cars: Car[] }) {}
 }
 
 export class CarsLoadedError implements Action {
-  readonly type = CarActionTypes.CarsLoadedError
+  readonly type = CarActionTypes.CarsLoadedError;
 }
 
 export class DeleteCarRequest implements Action {
-  readonly type = CarActionTypes.DeleteCarRequest
+  readonly type = CarActionTypes.DeleteCarRequest;
 
   constructor(public payload: { id: number }) {}
 }
 
 export class CarDeletedSuccess implements Action {
-  readonly type = CarActionTypes.CarDeletedSuccess
+  readonly type = CarActionTypes.CarDeletedSuccess;
 
   constructor(public payload: { id: number }) {}
 }
 
 export class CarDeletedError implements Action {
-  readonly type = CarActionTypes.CarDeletedError
+  readonly type = CarActionTypes.CarDeletedError;
 }
 
 export type CarUnion =
@@ -122,7 +126,7 @@ export type CarUnion =
   | CarsLoadedError
   | DeleteCarRequest
   | CarDeletedSuccess
-  | CarDeletedError
+  | CarDeletedError;
 ```
 
 _store/effects/cars.effects.ts_
@@ -138,11 +142,11 @@ import {
   DeleteCarRequest,
   CarDeletedSuccess,
   CarDeletedError,
-} from '../actions/car.actions'
+} from '../actions/car.actions';
 
-import { Car } from '../models/car.model'
+import { Car } from '../models/car.model';
 
-import { CarsService } from '../../services/cars/cars.service'
+import { CarsService } from '../../services/cars/cars.service';
 
 @Injectable({ providedIn: 'root' })
 export class CarEffects {
@@ -158,7 +162,7 @@ export class CarEffects {
         catchError(() => of(new CarsLoadedError()))
       )
     )
-  )
+  );
 
   @Effect()
   addCar$ = this.actions$.pipe(
@@ -171,7 +175,7 @@ export class CarEffects {
         catchError(() => of(new CarAddedError()))
       )
     )
-  )
+  );
 
   @Effect()
   deleteCar$ = this.actions$.pipe(
@@ -184,7 +188,7 @@ export class CarEffects {
         catchError(() => of(new CarDeletedError()))
       )
     )
-  )
+  );
 
   constructor(
     private actions$: Actions,
@@ -197,11 +201,11 @@ _store/models/cars.model.ts_
 
 ```ts
 export interface Car {
-  ID?: number
-  MODEL: string
-  YEAR: number
-  ENGINE_TYPE: string
-  ENGINE_VOLUME: string
+  ID?: number;
+  MODEL: string;
+  YEAR: number;
+  ENGINE_TYPE: string;
+  ENGINE_VOLUME: string;
 }
 ```
 
@@ -212,27 +216,27 @@ import {
   createEntityAdapter,
   EntityAdapter,
   EntityState,
-} from '@ngrx/entity'
+} from '@ngrx/entity';
 
-import { Car } from '../models/car.model'
+import { Car } from '../models/car.model';
 import {
   CarActionTypes,
   CarUnion,
-} from '../actions/car.actions'
+} from '../actions/car.actions';
 
 export const adapter: EntityAdapter<Car> = createEntityAdapter<
   Car
 >({
   selectId: (car: Car) => car.ID,
-})
+});
 
 export interface State extends EntityState<Car> {
-  pending: boolean
+  pending: boolean;
 }
 
 export const initialState: State = adapter.getInitialState({
   pending: false,
-})
+});
 
 export const reducer = (
   state: State = initialState,
@@ -243,58 +247,58 @@ export const reducer = (
       return adapter.addOne(action.payload.car, {
         ...state,
         pending: false,
-      })
+      });
     case CarActionTypes.CarAddedSuccess:
-      return { ...state, pending: true }
+      return { ...state, pending: true };
     case CarActionTypes.CarAddedError:
-      return { ...state, pending: false }
+      return { ...state, pending: false };
 
     case CarActionTypes.UpdateCarRequest:
-      return { ...state, pending: true }
+      return { ...state, pending: true };
     case CarActionTypes.CarUpdatedSuccess:
       return adapter.updateOne(action.payload.car, {
         ...state,
         pending: false,
-      })
+      });
     case CarActionTypes.CarUpdatedError:
-      return { ...state, pending: false }
+      return { ...state, pending: false };
 
     case CarActionTypes.LoadCars:
-      return { ...state, pending: true }
+      return { ...state, pending: true };
     case CarActionTypes.CarsLoadedSuccess:
       return adapter.addAll(action.payload.cars, {
         ...state,
         pending: false,
-      })
+      });
     case CarActionTypes.CarsLoadedError:
-      return { ...state, pending: false }
+      return { ...state, pending: false };
 
     case CarActionTypes.DeleteCarRequest:
-      return { ...state, pending: true }
+      return { ...state, pending: true };
     case CarActionTypes.CarDeletedSuccess:
       return adapter.removeOne(action.payload.id, {
         ...state,
         pending: false,
-      })
+      });
     case CarActionTypes.CarDeletedError:
-      return { ...state, pending: false }
+      return { ...state, pending: false };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 const {
   selectIds,
   selectEntities,
   selectAll,
   selectTotal,
-} = adapter.getSelectors()
+} = adapter.getSelectors();
 
-export const selectCarsIds = selectIds
-export const selectCarEntities = selectEntities
-export const selectAllCars = selectAll
-export const selectCarTotal = selectTotal
+export const selectCarsIds = selectIds;
+export const selectCarEntities = selectEntities;
+export const selectAllCars = selectAll;
+export const selectCarTotal = selectTotal;
 ```
 
 _store/index.ts_
@@ -304,42 +308,42 @@ import {
   ActionReducerMap,
   createFeatureSelector,
   createSelector,
-} from '@ngrx/store'
+} from '@ngrx/store';
 
-import * as cars from './reducers/car.reducer'
+import * as cars from './reducers/car.reducer';
 
 export interface State {
-  cars: cars.State
+  cars: cars.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
   cars: cars.reducer,
-}
+};
 
 export const selectAdminState = createFeatureSelector<
   State
->('admin')
+>('admin');
 export const selectCarsState = createSelector(
   selectAdminState,
   (state: State) => state.cars
-)
+);
 
 export const selectAllCars = createSelector(
   selectCarsState,
   cars.selectAllCars
-)
+);
 
 export const selectCarsPending = createSelector(
   selectCarsState,
   (state: cars.State) => state.pending
-)
+);
 ```
 
 _catalog.module.ts_
 
 ```ts
-import { reducers } from './store'
-import { CarEffects } from './store/effects/car.effects'
+import { reducers } from './store';
+import { CarEffects } from './store/effects/car.effects';
 
 @NgModule({
   imports: [

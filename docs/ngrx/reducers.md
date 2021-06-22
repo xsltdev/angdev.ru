@@ -1,6 +1,10 @@
+---
+description: NgRx Reducers являются чистыми функциями и отвечают за смену состояния хранилища в Angular приложении в ответ на возникновение действия, при этом каждый редюсер может изменять только определенную часть состояния
+---
+
 # Reducers
 
-NgRx Reducers являются чистыми функциями и отвечают за смену состояния хранилища в Angular приложении в ответ на возникновение действия, при этом каждый редюсер может изменять только определенную часть состояния.
+NgRx **Reducers** являются чистыми функциями и отвечают за смену состояния хранилища в Angular приложении в ответ на возникновение действия, при этом каждый редюсер может изменять только определенную часть состояния.
 
 !!! note ""
 
@@ -9,7 +13,7 @@ NgRx Reducers являются чистыми функциями и отвеча
 _users.actions.ts_
 
 ```ts
-import { Action } from '@ngrx/store'
+import { Action } from '@ngrx/store';
 
 export enum UsersActions {
   LoadUsers = '[Users Page] LoadUsers',
@@ -17,22 +21,22 @@ export enum UsersActions {
 }
 
 export interface User {
-  id: number
-  name: string
-  email: string
+  id: number;
+  name: string;
+  email: string;
 }
 
 export class LoadUsers implements Action {
-  readonly type = UsersActions.LoadUsers
+  readonly type = UsersActions.LoadUsers;
 
   constructor(public payload: { users: User[] }) {}
 }
 
 export class DeleteUsers implements Action {
-  readonly type = UsersActions.DeleteUsers
+  readonly type = UsersActions.DeleteUsers;
 }
 
-export type UsersUnion = LoadUsers | DeleteUsers
+export type UsersUnion = LoadUsers | DeleteUsers;
 ```
 
 _users.reducer.ts_
@@ -41,17 +45,17 @@ _users.reducer.ts_
 import {
   UsersUnion,
   UserActions,
-} from '../actions/users.actions'
+} from '../actions/users.actions';
 
 export interface State {
-  users: User[]
-  count: number
+  users: User[];
+  count: number;
 }
 
 const initialState: State = {
   users: [],
   count: 0,
-}
+};
 
 export function usersReducer(
   state: State = initialState,
@@ -62,14 +66,14 @@ export function usersReducer(
       return {
         ...state,
         users: action.payload.users,
-      }
+      };
     case UsersActions.DeleteUsers:
       return {
         ...state,
         users: [],
-      }
+      };
     default:
-      return state
+      return state;
   }
 }
 ```
@@ -91,14 +95,14 @@ export function usersReducer(
 
 ```ts
 export interface State {
-  users: User[]
-  count: number
+  users: User[];
+  count: number;
 }
 
 const initialState: State = {
   users: [],
   count: 0,
-}
+};
 
 export function usersReducer(
   state: State = initialState,

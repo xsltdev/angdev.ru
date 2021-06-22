@@ -1,3 +1,7 @@
+---
+description: NgRx Effects реализуют побочные эффекты, работающие на основе библиотеки RxJS, применительно к хранилищу
+---
+
 # Effects
 
 NgRx Effects реализуют побочные эффекты, работающие на основе библиотеки RxJS, применительно к хранилищу. Отслеживая поток действий, отправляемых в `Store`, они могут генерировать новые действия, например, на основе результатов выполнения HTTP-запросов или сообщений, полученных через Web Sockets.
@@ -24,7 +28,7 @@ export class ArticlesService {
   constructor(private http: HttpClient) {}
 
   getArticles() {
-    return this.http.get('/api/articles')
+    return this.http.get('/api/articles');
   }
 }
 ```
@@ -44,19 +48,19 @@ _articles.component.ts_
   `,
 })
 export class ArticlesComponent {
-  articles: Article[] = []
+  articles: Article[] = [];
 
   constructor(private articlesService: ArticlesService) {
-    this.getArticles()
+    this.getArticles();
   }
 
   getArticles() {
-    this.articles = []
+    this.articles = [];
 
     this.articlesService.getArticles().subscribe(
       (items) => (this.articles = items),
       (err) => console.log(err)
-    )
+    );
   }
 }
 ```
@@ -80,10 +84,10 @@ _articles.component.ts_
 export class ArticlesComponent {
   articles$: Observable = this.store.pipe(
     select(selectArticlesList)
-  )
+  );
 
   constructor(private store: Store) {
-    this.store.dispatch(new LoadArticles())
+    this.store.dispatch(new LoadArticles());
   }
 }
 ```
@@ -98,41 +102,41 @@ export enum ArticlesActions {
 }
 
 export interface Article {
-  id: number
-  author: string
-  title: string
+  id: number;
+  author: string;
+  title: string;
 }
 
 export class LoadArticles implements Action {
-  readonly type = ArticlesActions.LoadArticles
+  readonly type = ArticlesActions.LoadArticles;
 }
 
 export class ArticlesLoadedSuccess implements Action {
-  readonly type = ArticlesActions.ArticlesLoadedSuccess
+  readonly type = ArticlesActions.ArticlesLoadedSuccess;
 
   constructor(public payload: { articles: Article[] }) {}
 }
 
 export class ArticlesLoadedError implements Action {
-  readonly type = ArticlesActions.ArticlesLoadedError
+  readonly type = ArticlesActions.ArticlesLoadedError;
 }
 
 export type ArticlesUnion =
   | LoadArticles
   | ArticlesLoadedSuccess
-  | ArticlesLoadedError
+  | ArticlesLoadedError;
 ```
 
 _articles.reducer.ts_
 
 ```ts
 export interface ArticlesState {
-  list: Article[]
+  list: Article[];
 }
 
 const initialState: ArticlesState = {
   list: [],
-}
+};
 
 export function articlesReducer(
   state: State = initialState,
@@ -143,23 +147,23 @@ export function articlesReducer(
       return {
         ...state,
         list: action.payload.articles,
-      }
+      };
     case ArticlesActions.ArticlesLoadedError:
       return {
         ...state,
         list: [],
-      }
+      };
     default:
-      return state
+      return state;
   }
 }
 
-const selectArticles = (state: State) => state.articles
+const selectArticles = (state: State) => state.articles;
 
 export const selectArticlesList = createSelector(
   selectArticles,
   (state: ArticlesState) => state.list
-)
+);
 ```
 
 _articles.effects.ts_
@@ -181,7 +185,7 @@ export class ArticlesEffects {
         catchError(() => of(new ArticlesLoadedError()))
       )
     )
-  )
+  );
 
   constructor(
     private actions$: Actions,
@@ -264,7 +268,7 @@ export class ArticlesEffects
         catchError(() => of(new ArticlesLoadedError()))
       )
     )
-  )
+  );
 
   constructor(
     private actions$: Actions,
@@ -272,7 +276,7 @@ export class ArticlesEffects
   ) {}
 
   ngrxOnInitEffects(): Action {
-    return new ArticlesEffectsInit()
+    return new ArticlesEffectsInit();
   }
 
   ngrxOnRunEffects(
@@ -289,7 +293,7 @@ export class ArticlesEffects
           )
         )
       )
-    )
+    );
   }
 }
 ```

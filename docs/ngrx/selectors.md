@@ -1,6 +1,10 @@
+---
+description: В NgRx селекторы представляют собой чистые функции и используются для получения определенных частей глобального состояния
+---
+
 # Selectors
 
-В NgRx селекторы представляют собой чистые функции и используются для получения определенных частей глобального состояния. Отличительные особенности селекторов:
+В NgRx **селекторы** представляют собой чистые функции и используются для получения определенных частей глобального состояния. Отличительные особенности селекторов:
 
 - Мобильность;
 - Мемоизация;
@@ -15,66 +19,66 @@
 
 ```ts
 export interface User {
-  id: number
-  name: string
-  email: string
+  id: number;
+  name: string;
+  email: string;
 }
 
 interface Article {
-  id: number
-  user_id: number
-  title: string
+  id: number;
+  user_id: number;
+  title: string;
 }
 
 interface UsersState {
-  list: { [id: number]: User }
-  count: number
+  list: { [id: number]: User };
+  count: number;
 }
 
 interface ArticlesState {
-  list: { [id: number]: Article }
-  count: number
+  list: { [id: number]: Article };
+  count: number;
 }
 
 export interface State {
-  users: UsersState
-  articles: ArticlesState
+  users: UsersState;
+  articles: ArticlesState;
 }
 ```
 
 Пример получения данных состояния.
 
 ```ts
-const selectUsers = (state: State) => state.users
+const selectUsers = (state: State) => state.users;
 
 export const selectUsersList = createSelector(
   selectUsers,
   (state: UsersState) => state.list
-)
+);
 ```
 
 Созданные NgRx селекторы могут быть использованы для создания других селекторов (композиция).
 
 ```ts
-const selectUsers = (state: State) => state.users
+const selectUsers = (state: State) => state.users;
 
 export const selectUsersCount = createSelector(
   selectUsers,
   (state: UsersState) => state.count
-)
+);
 
-const selectArticles = (state: State) => state.articles
+const selectArticles = (state: State) => state.articles;
 
 export const selectArticlesCount = createSelector(
   selectArticles,
   (state: ArticlesState) => state.count
-)
+);
 
 export const selectCountSum = createSelector(
   selectUsersCount,
   selectArticlesCount,
   (usersCount, articlesCount) => usersCount + articlesCount
-)
+);
 ```
 
 ## select()
@@ -86,7 +90,7 @@ export class AppComponent {
   constructor(private store: Store) {
     this.store
       .pipe(select(selectCountSum))
-      .subscribe((vl) => console.log(vl))
+      .subscribe((vl) => console.log(vl));
   }
 }
 ```
@@ -99,27 +103,27 @@ this.store
     select(selectCountSum),
     map((sum) => sum * 2)
   )
-  .subscribe((vl) => console.log(vl))
+  .subscribe((vl) => console.log(vl));
 ```
 
 Для получения состояния на основе данных, отсутствующих в хранилище, вторым параметром функции NgRx `select()` передайте эти данные и они будут доступны в последней функции в качестве последнего параметра.
 
 ```ts
-const selectArticles = (state: State) => state.articles
+const selectArticles = (state: State) => state.articles;
 
 export const selectArticlesList = createSelector(
   selectArticles,
   (state: ArticlesState) => state.list
-)
+);
 
 export const selectArticlesByUser = createSelector(
   selectArticlesList,
   (articles, props) => {
     return articles.filter(
       (item) => item.user_id === props.user_id
-    )
+    );
   }
-)
+);
 ```
 
 И далее в компоненте.
@@ -127,7 +131,7 @@ export const selectArticlesByUser = createSelector(
 ```ts
 this.store
   .pipe(select(selectArticlesByUser, { user_id: 3 }))
-  .subscribe((vl) => console.log(vl))
+  .subscribe((vl) => console.log(vl));
 ```
 
 ## createFeatureSelector()
@@ -137,7 +141,7 @@ this.store
 ```ts
 const selectArticles = createFeatureSelector<State>(
   'articles'
-)
+);
 ```
 
 ## Мемоизация
@@ -150,8 +154,8 @@ const selectArticles = createFeatureSelector<State>(
 //получаем и запоминаем все статьи по запрашиваемому user_id
 this.store
   .pipe(select(selectArticlesByUser, { user_id: 3 }))
-  .subscribe((vl) => console.log(vl))
+  .subscribe((vl) => console.log(vl));
 
 //сбрасываем сохраненное значение
-selectArticlesByUser.release()
+selectArticlesByUser.release();
 ```

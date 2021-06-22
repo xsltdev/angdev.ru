@@ -1,3 +1,7 @@
+---
+description: RxJS Subject является разновидностью объектов Observable
+---
+
 # Объекты Subject
 
 RxJS **Subject** является разновидностью объектов `Observable`. Особенность `Subject` в том, что он может отправлять данные одновременно множеству "потребителей", которые могут регистрироваться уже в процессе исполнения `Subject`, в то время как исполнение стандартного `Observable` осуществляется уникально для каждого его вызова.
@@ -7,12 +11,12 @@ RxJS **Subject** является разновидностью объектов 
 Рассмотрим пример.
 
 ```ts
-const sbj = new Subject<number>()
+const sbj = new Subject<number>();
 
-sbj.subscribe((vl) => console.log(`1st: ${vl}`))
-sbj.next(3)
-sbj.subscribe((vl) => console.log(`2nd: ${vl}`))
-sbj.next(9)
+sbj.subscribe((vl) => console.log(`1st: ${vl}`));
+sbj.next(3);
+sbj.subscribe((vl) => console.log(`2nd: ${vl}`));
+sbj.next(9);
 
 /*
 Результат  в консоли:
@@ -46,11 +50,11 @@ sbj.next(9)
 Начальное значение задается в момент создания RxJS BehaviorSubject.
 
 ```ts
-const sbj = new BehaviorSubject<number>(5)
+const sbj = new BehaviorSubject<number>(5);
 
-sbj.subscribe((vl) => console.log(`1st: ${vl}`))
-sbj.subscribe((vl) => console.log(`2nd: ${vl}`))
-sbj.next(7)
+sbj.subscribe((vl) => console.log(`1st: ${vl}`));
+sbj.subscribe((vl) => console.log(`2nd: ${vl}`));
+sbj.next(7);
 
 /*
 Результат  в консоли:
@@ -67,16 +71,16 @@ sbj.next(7)
 В отличие от `BehaviorSubject` объекты `ReplaySubject` способны хранить заданное количество последних значений, которое задается при создании объекта.
 
 ```ts
-const sbj = new ReplaySubject(2)
+const sbj = new ReplaySubject(2);
 
-sbj.next(5)
+sbj.next(5);
 
-sbj.subscribe((vl) => console.log(`1st: ${vl}`))
+sbj.subscribe((vl) => console.log(`1st: ${vl}`));
 
-sbj.next(6)
-sbj.next(7)
+sbj.next(6);
+sbj.next(7);
 
-sbj.subscribe((vl) => console.log(`2nd: ${vl}`))
+sbj.subscribe((vl) => console.log(`2nd: ${vl}`));
 
 /*
 Результат  в консоли:
@@ -96,15 +100,15 @@ sbj.subscribe((vl) => console.log(`2nd: ${vl}`))
 В случае с `AsyncSubject` "потребителям" передается только последнее значение объекта и только, когда он завершит свое выполнение (вызов `complete()`).
 
 ```ts
-const sbj = new AsyncSubject()
+const sbj = new AsyncSubject();
 
-sbj.subscribe((vl) => console.log(`Async: ${vl}`))
+sbj.subscribe((vl) => console.log(`Async: ${vl}`));
 
-sbj.next(7)
-sbj.next(8)
-sbj.next(9)
+sbj.next(7);
+sbj.next(8);
+sbj.next(9);
 
-setTimeout(() => sbj.complete(), 3000)
+setTimeout(() => sbj.complete(), 3000);
 
 /*
 Результат  в консоли (по истечении 3 сек):

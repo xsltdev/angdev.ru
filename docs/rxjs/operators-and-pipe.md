@@ -1,3 +1,7 @@
+---
+description: Для предварительного преобразования отправляемых объектом Observable данных или преобразования и управления самими Observable используются специальные функции - операторы
+---
+
 # Операторы и метод pipe()
 
 Для предварительного преобразования отправляемых объектом `Observable` данных или преобразования и управления самими `Observable` используются специальные функции - **операторы**.
@@ -5,7 +9,7 @@
 ```ts
 from([7, 21, 10])
   .pipe(map((num) => (num <= 10 ? 1 : 0)))
-  .subscribe((vl) => console.log(vl))
+  .subscribe((vl) => console.log(vl));
 ```
 
 Здесь в [`map()`](https://rxjs.dev/api/operators/map) каждое число равное или меньше 10 заменяется на `1`, если больше - на `0`.
@@ -31,7 +35,7 @@ from([30, 41, 60])
     filter((num) => num % 10 === 0),
     map((num) => num * 2)
   )
-  .subscribe((vl) => console.log(vl))
+  .subscribe((vl) => console.log(vl));
 ```
 
 !!! note ""
@@ -43,7 +47,7 @@ from([30, 41, 60])
 ```ts
 const doubleFilter = <T, R>(
   fn: (value: T, index: number) => R
-) => pipe(filter(fn), filter(fn))
+) => pipe(filter(fn), filter(fn));
 ```
 
 Пример приведен только для наглядности. Практическое использование такого оператора не эффективно.

@@ -1,3 +1,7 @@
+---
+description: Для эффективного управления массивами сущностей хранилища в NgRx имеется Entity State, который предоставляет собственное API для изменения этих сущностей и обеспечивает
+---
+
 # Entity state
 
 Для эффективного управления массивами сущностей хранилища в NgRx имеется Entity State, который предоставляет собственное API для изменения этих сущностей и обеспечивает:
@@ -31,13 +35,13 @@ interface EntityState<V> {
 
 ```ts
 interface Article {
-  id: number
-  user_id: number
-  title: string
+  id: number;
+  user_id: number;
+  title: string;
 }
 
 export interface State extends EntityState<Article> {
-  currentArticle: number | null
+  currentArticle: number | null;
 }
 ```
 
@@ -48,7 +52,7 @@ export interface State extends EntityState<Article> {
 ```ts
 export const adapter: EntityAdapter<Article> = createEntityAdapter<
   Article
->()
+>();
 ```
 
 Метод `createEntityAdapter()` принимает необязательный параметр - объект с свойствами:
@@ -62,7 +66,7 @@ export const adapter: EntityAdapter<Article> = createEntityAdapter<
 >({
   selectId: (item) => item.id,
   sortComparer: false, //явное указание, что сортировать массив не нужно
-})
+});
 ```
 
 NgRx Entity Adapter имеет обширное API для работы с сущностями:
@@ -85,7 +89,7 @@ NgRx Entity Adapter имеет обширное API для работы с су�
 ```ts
 export const initialState: State = adapter.getInitialState({
   currentArticle: null,
-})
+});
 ```
 
 Пример использования методов управления массивом.
@@ -108,37 +112,37 @@ export enum ArticleActionTypes {
 }
 
 export class LoadArticles implements Action {
-  readonly type = ArticleActionTypes.LoadArticles
+  readonly type = ArticleActionTypes.LoadArticles;
 
   constructor(public payload: { articles: Article[] }) {}
 }
 
 export class AddArticle implements Action {
-  readonly type = ArticleActionTypes.AddArticle
+  readonly type = ArticleActionTypes.AddArticle;
 
   constructor(public payload: { article: Article }) {}
 }
 
 export class UpsertArticle implements Action {
-  readonly type = ArticleActionTypes.UpsertArticle
+  readonly type = ArticleActionTypes.UpsertArticle;
 
   constructor(public payload: { article: Article }) {}
 }
 
 export class AddArticles implements Action {
-  readonly type = ArticleActionTypes.AddArticles
+  readonly type = ArticleActionTypes.AddArticles;
 
   constructor(public payload: { articles: Article[] }) {}
 }
 
 export class UpsertArticles implements Action {
-  readonly type = ArticleActionTypes.UpsertArticles
+  readonly type = ArticleActionTypes.UpsertArticles;
 
   constructor(public payload: { articles: Article[] }) {}
 }
 
 export class UpdateArticle implements Action {
-  readonly type = ArticleActionTypes.UpdateArticle
+  readonly type = ArticleActionTypes.UpdateArticle;
 
   constructor(
     public payload: { article: Update<Article> }
@@ -146,7 +150,7 @@ export class UpdateArticle implements Action {
 }
 
 export class UpdateArticles implements Action {
-  readonly type = ArticleActionTypes.UpdateArticles
+  readonly type = ArticleActionTypes.UpdateArticles;
 
   constructor(
     public payload: { articles: Update<Article>[] }
@@ -154,7 +158,7 @@ export class UpdateArticles implements Action {
 }
 
 export class MapArticles implements Action {
-  readonly type = ArticleActionTypes.MapArticles
+  readonly type = ArticleActionTypes.MapArticles;
 
   constructor(
     public payload: { entityMap: EntityMap<Article> }
@@ -162,19 +166,19 @@ export class MapArticles implements Action {
 }
 
 export class DeleteArticle implements Action {
-  readonly type = ArticleActionTypes.DeleteArticle
+  readonly type = ArticleActionTypes.DeleteArticle;
 
   constructor(public payload: { id: string }) {}
 }
 
 export class DeleteArticles implements Action {
-  readonly type = ArticleActionTypes.DeleteArticles
+  readonly type = ArticleActionTypes.DeleteArticles;
 
   constructor(public payload: { ids: string[] }) {}
 }
 
 export class DeleteAllArticles implements Action {
-  readonly type = ArticleActionTypes.DeleteAllArticles
+  readonly type = ArticleActionTypes.DeleteAllArticles;
 }
 
 export type ArticleActionsUnion =
@@ -188,29 +192,29 @@ export type ArticleActionsUnion =
   | MapArticles
   | DeleteArticle
   | DeleteArticles
-  | DeleteAllArticles
+  | DeleteAllArticles;
 ```
 
 _article.reducer.ts_
 
 ```ts
 interface Article {
-  id: number
-  user_id: number
-  title: string
+  id: number;
+  user_id: number;
+  title: string;
 }
 
 export interface State extends EntityState<Article> {
-  currentArticle: number | null
+  currentArticle: number | null;
 }
 
 export const adapter: EntityAdapter<Article> = createEntityAdapter<
   Article
->()
+>();
 
 export const initialState: State = adapter.getInitialState({
   currentArticle: null,
-})
+});
 
 export function articlesReducer(
   state = initialState,
@@ -218,66 +222,69 @@ export function articlesReducer(
 ): State {
   switch (action.type) {
     case ArticleActionTypes.LoadArticles: {
-      return adapter.addAll(action.payload.articles, state)
+      return adapter.addAll(action.payload.articles, state);
     }
 
     case ArticleActionTypes.AddArticle: {
-      return adapter.addOne(action.payload.article, state)
+      return adapter.addOne(action.payload.article, state);
     }
 
     case ArticleActionTypes.UpsertArticle: {
       return adapter.upsertOne(
         action.payload.article,
         state
-      )
+      );
     }
 
     case ArticleActionTypes.AddArticles: {
-      return adapter.addMany(action.payload.articles, state)
+      return adapter.addMany(
+        action.payload.articles,
+        state
+      );
     }
 
     case ArticleActionTypes.UpsertArticles: {
       return adapter.upsertMany(
         action.payload.articles,
         state
-      )
+      );
     }
 
     case ArticleActionTypes.UpdateArticle: {
       return adapter.updateOne(
         action.payload.article,
         state
-      )
+      );
     }
 
     case ArticleActionTypes.UpdateArticles: {
       return adapter.updateMany(
         action.payload.articles,
         state
-      )
+      );
     }
 
     case ArticleActionTypes.MapArticles: {
-      return adapter.map(action.payload.entityMap, state)
+      return adapter.map(action.payload.entityMap, state);
     }
 
     case ArticleActionTypes.DeleteArticle: {
-      return adapter.removeOne(action.payload.id, state)
+      return adapter.removeOne(action.payload.id, state);
     }
 
     case ArticleActionTypes.DeleteArticles: {
-      return adapter.removeMany(action.payload.ids, state)
+      return adapter.removeMany(action.payload.ids, state);
     }
 
     case ArticleActionTypes.DeleteAllArticles: {
       return adapter.removeAll({
         ...state,
         currentArticle: null,
-      })
+      });
     }
 
     default: {
-      return state
+      return state;
     }
   }
 }
@@ -296,10 +303,10 @@ const {
   selectEntities,
   selectAll,
   selectTotal,
-} = adapter.getSelectors()
+} = adapter.getSelectors();
 
-export const selectArticleIds = selectIds
-export const selectArticleEntities = selectEntities
-export const selectAllArticles = selectAll
-export const selectArticleTotal = selectTotal
+export const selectArticleIds = selectIds;
+export const selectArticleEntities = selectEntities;
+export const selectAllArticles = selectAll;
+export const selectArticleTotal = selectTotal;
 ```
