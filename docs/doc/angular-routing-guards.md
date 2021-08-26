@@ -154,7 +154,7 @@ export class CanDeactivateGuard
 
 ```ts
 @Injectable()
-export class ContactsResovler implements Resolve<any> {
+export class ContactsResolver implements Resolve<any> {
   constructor(
     private http: HttpClient,
     private router: Router
