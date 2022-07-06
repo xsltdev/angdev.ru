@@ -158,6 +158,37 @@ providers: [
 
 В конфигурации можно указать только свойства `providedIn` и `factory`. Свойство `factory` должно определять функцию, которая возвращает значение для создаваемого injection token.
 
+Как именно внедрять в компонент сущность, не являющуюся сервисом:
+
+_someComponent.ts_
+
+```ts
+import { DEFAULT_SETTINGS } from './default-settings-injection-token.ts'
+
+@Component({
+  selector: 'app-some',
+  template: `
+    <p>{{defaultSettings.logging}}</p>
+    <p>{{defaultSettings.requireAuth}}</p>
+  `
+})
+export class SomeComponent implements OnInit {
+
+  constructor(
+    @Inject(DEFAULT_SETTINGS) private defaultSettings,
+  ) { }
+
+  ngOnInit() {
+    this.defaultSettings.requireAuth = true;
+  }
+
+}
+```
+
+В компоненте мы можем получить доступ к сущности `DEFAULT_SETTINGS` с помощью декоратора `@Inject`.
+
+Данная сущность будет также являться синглтоном, т. е. например если изменить свойство `requireAuth` на `true`, то это изменение будет видно во всех компонентах, в которых мы заинжектили данную сущность.
+
 ## Ссылки
 
 - [Dependency Injection in Angular](https://angular.io/guide/dependency-injection)
