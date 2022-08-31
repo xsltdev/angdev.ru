@@ -86,7 +86,7 @@ export class AppComponent {
 }
 ```
 
-Чтобы задействовать директиву `NgForm`, это импортировать ее из пакета `@angular/forms`:
+Чтобы задействовать директиву `NgForm`, нужно импортировать ее из пакета `@angular/forms`:
 
 ```typescript
 import { NgForm } from '@angular/forms'
