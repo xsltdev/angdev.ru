@@ -118,7 +118,7 @@ elementStyles: any = {
 Объект стилей можно определить прямо в шаблоне, причем можно использовать выражения и условия.
 
 ```html
-<div [ngStyle]="{color: 5 < 10 ? 'green' ? 'red' }">
+<div [ngStyle]="{color: 5 < 10 ? 'green' : 'red' }">
   Some text
 </div>
 ```
