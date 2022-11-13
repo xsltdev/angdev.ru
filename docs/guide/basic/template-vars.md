@@ -211,8 +211,7 @@ import {
   `,
 })
 export class ChildComponent {
-  @ContentChild('headerContent')
-  header: ElementRef
+  @ContentChild('headerContent') header: ElementRef
 
   change() {
     console.log(this.header)
