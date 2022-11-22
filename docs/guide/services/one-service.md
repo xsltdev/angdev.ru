@@ -48,7 +48,6 @@ import { Phone } from './phone'
       </table>
     </div>
   `,
-  providers: [DataService, LogService],
 })
 export class DataComponent implements OnInit {
   items: Phone[] = []
