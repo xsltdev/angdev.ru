@@ -59,4 +59,4 @@ plugins:
     - social
 
 extra_css:
-    - '/assets/stylesheets/styles.css'
+    - '/assets/stylesheets/styles.css?2'
