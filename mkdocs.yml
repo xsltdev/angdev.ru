@@ -13,13 +13,27 @@ theme:
     # name: null
     # custom_dir: 'theme/material'
     palette:
-        primary: blue
-        accent: pink
+        - media: '(prefers-color-scheme: light)'
+          scheme: default
+          primary: blue
+          accent: pink
+          toggle:
+              icon: material/toggle-switch-off-outline
+              name: Тёмная тема
+        - media: '(prefers-color-scheme: dark)'
+          scheme: slate
+          primary: blue
+          accent: pink
+          toggle:
+              icon: material/toggle-switch
+              name: Светлая тема
     language: ru
     features:
         - navigation.tabs
         - navigation.tracking
         - navigation.instant
+        - navigation.top
+        - content.action.edit
     favicon: angular.svg
     logo: angular.svg
 
@@ -77,4 +91,4 @@ plugins:
     - social
 
 extra_css:
-    - '/assets/stylesheets/styles.css?2'
+    - '/assets/stylesheets/styles.css?3'
