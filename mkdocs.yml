@@ -34,6 +34,7 @@ theme:
         - navigation.instant
         - navigation.top
         - content.action.edit
+        - content.code.copy
     favicon: angular.svg
     logo: angular.svg
 
@@ -91,4 +92,4 @@ plugins:
     - social
 
 extra_css:
-    - '/assets/stylesheets/styles.css?3'
+    - '/assets/stylesheets/styles.css?4'
