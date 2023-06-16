@@ -2,45 +2,43 @@
 title: Главная
 description: Angular представляет собой JavaScript-фреймворк, который позволяет создавать высокопроизводительные и функциональные клиентские web-приложения
 hide:
-  - toc
-  - navigation
+    - toc
+    - navigation
 ---
 
-# ![Angular 2+](./angular.svg){: style="height:64px;width:64px;vertical-align:middle;"} Справочник Angular
+# ![Angular 2+](./angular.svg){: style="height:42px;width:42px;vertical-align:middle;"} Справочник Angular
 
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-column-gap: 30px; place-items: stretch;" markdown>
+[**Angular** :octicons-link-external-16:](https://angular.io/) представляет собой JavaScript-фреймворк, который позволяет создавать высокопроизводительные и функциональные клиентские web-приложения.
 
-[![Angular 2+](./angular.svg){: style="height:20px;width:20px;vertical-align:middle;"} **Angular**](https://angular.io/) представляет собой JavaScript-фреймворк, который позволяет создавать высокопроизводительные и функциональные клиентские web-приложения.
+<div class="grid cards" style="margin-top: 1.6em" markdown>
 
-!!! note "Документация Angular"
+-   :simple-angular:{ .lg .middle } **Документация**
 
-    Angular состоит из совокупности библиотек, каждая из которых отвечает за определенный функционал: создание форм, работа с анимацией, осуществление HTTP-запросов и т. д.
+    ***
 
-    [Документация](doc/setup-and-configuration.md){ .md-button }
+    Перевод официальной документации
 
-!!! note "Гайд Angular"
+    **[:octicons-arrow-right-24: Angular](doc/setup-and-configuration.md)** <small>v9</small>
 
-    Angular представляет собой фреймворк от компании Google для создания клиентских приложений. Прежде всего он нацелен на разработку SPA-решений (Single Page Application), то есть одностраничных приложений.
+-   :material-file-document:{ .lg .middle } **Гайды**
 
-    [Гайд](guide/intro/start.md){ .md-button }
+    ***
 
-!!! note "NgRx"
+    Гайды по Angular
 
-    **NgRx** предоставляет хранилище, которое выступает в качестве единственного источника данных для состояния Angular приложения. Управление состоянием хранилища и извлечение из него данных осуществляется в NgRx реактивно.
+    [:octicons-arrow-right-24: Гайд](guide/intro/start.md)
 
-    [NgRx](ngrx/about.md){ .md-button }
+    [:octicons-arrow-right-24: Шпаргалка](cheatsheet.md)
 
-!!! note "RxJS"
+-   :material-library:{ .lg .middle } **Библиотеки**
 
-    **RxJS** — это библиотека, реализующая принципы реактивного программирования для контроля и управления асинхронными операциями в JavaScript приложениях с помощью объектов Observable.
+    ***
 
-    [RxJS](rxjs/about.md){ .md-button }
+    Библиотеки Angular
 
-!!! note "Шпаргалка Angular"
+    [:octicons-arrow-right-24: NgRx](ngrx/about.md) &mdash; <small>управление состоянием</small>
 
-    Модули, шаблоны, директивы, формы, декораторы, директивы, компоненты, зависимости.
-
-    [Шпаргалка](cheatsheet.md){ .md-button }
+    [:octicons-arrow-right-24: RxJS](rxjs/about.md) &mdash; <small>библиотека для реактивного программирования</small>
 
 </div>
 
