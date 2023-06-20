@@ -8,7 +8,7 @@ description: RxJS - это библиотека, реализующая прин
 
 !!! link "Подробно об RxJS"
 
-    [Документация RxJS](../rxjs/about.md)
+    [Документация RxJS](../../rxjs/about.md)
 
 ## Observable
 
@@ -24,9 +24,9 @@ description: RxJS - это библиотека, реализующая прин
 
 Объект, принимаемый функцией, реализует интерфейс с тремя методами:
 
-- `next()` — принимает значение, которое будет возвращено функции-обработчику;
-- `error()` — принимает значение, возвращаемое функции-обработчику ошибок;
-- `complete()` — вызывается для уведомления "подписчиков" об окончании рассылки.
+-   `next()` — принимает значение, которое будет возвращено функции-обработчику;
+-   `error()` — принимает значение, возвращаемое функции-обработчику ошибок;
+-   `complete()` — вызывается для уведомления "подписчиков" об окончании рассылки.
 
 Для обработки поставляемых данных используется метод `subscribe()`, который принимает три функции: `next`, `error` и `complete` — для каждого из методов объекта конструктора.
 
@@ -34,38 +34,38 @@ description: RxJS - это библиотека, реализующая прин
 
 ```ts
 const values = new Observable((observer) => {
-  observer.next(8)
-  observer.next(9)
+    observer.next(8);
+    observer.next(9);
 
-  const handler = () => {
-    console.log('Click detected')
-  }
+    const handler = () => {
+        console.log('Click detected');
+    };
 
-  document.addEventListener('click', handler)
+    document.addEventListener('click', handler);
 
-  observer.complete()
+    observer.complete();
 
-  return {
-    unsubscribe() {
-      console.log('Unsubscribed')
-      document.removeEventListener('click', handler)
-    },
-  }
-})
+    return {
+        unsubscribe() {
+            console.log('Unsubscribed');
+            document.removeEventListener('click', handler);
+        },
+    };
+});
 
 const subscription = values.subscribe(
-  (v) => {
-    console.log(v)
-  },
-  (error) => {
-    console.log(error)
-  },
-  () => {
-    console.log('Completed')
-  }
-)
+    (v) => {
+        console.log(v);
+    },
+    (error) => {
+        console.log(error);
+    },
+    () => {
+        console.log('Completed');
+    }
+);
 
-subscription.unsubscribe()
+subscription.unsubscribe();
 ```
 
 Здесь принимаемый функцией объект `observer` сначала используется для передачи значений (метод `next()`), а затем для оповещения всех подписчиков об окончании рассылки (метод `complete()`).
@@ -77,22 +77,22 @@ subscription.unsubscribe()
 Для создания, обработки и преобразования возвращаемых данных в RxJS предусмотрены специальные функции, называемые операторами. Например, оператор `of` используется для преобразования примитивных типов в объект `Observable`:
 
 ```ts
-import { Observable } from 'rxjs'
-import { of } from 'rxjs'
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';
 
-const values = of([1, 2, 3])
+const values = of([1, 2, 3]);
 
 values.subscribe((value) => {
-  console.log(value)
-})
+    console.log(value);
+});
 ```
 
 Оператор `of()` — более краткая запись следующего кода:
 
 ```ts
 const values = new Observable((observer) => {
-  observer.next([1, 2, 3])
-})
+    observer.next([1, 2, 3]);
+});
 ```
 
 Если необходимо, чтобы обработчик вместо всего массива сразу получал каждый его элемент в отдельности, используйте оператор `from`.
@@ -102,11 +102,11 @@ const values = new Observable((observer) => {
 Теперь рассмотрим пример преобразования данных с использованием оператора `map`.
 
 ```ts
-const values = Observable.of(1, 2, 3)
+const values = Observable.of(1, 2, 3);
 
 values.pipe(map((number) => number * 2)).subscribe((v) => {
-  console.log(v)
-})
+    console.log(v);
+});
 ```
 
 Здесь `map()` умножает каждое значение элемента массива на 2.
@@ -120,16 +120,16 @@ values.pipe(map((number) => number * 2)).subscribe((v) => {
 В некоторых случаях целесообразнее использовать объекты типа `Subject`. Тип `Subject` — разновидность RxJS Observable, который может доставлять данные сразу нескольким подписчикам.
 
 ```ts
-let subject = new Subject()
+let subject = new Subject();
 
 subject.subscribe((v) => {
-  console.log('Observer 1: ' + v)
-})
+    console.log('Observer 1: ' + v);
+});
 subject.subscribe((v) => {
-  console.log('Observer 2: ' + v)
-})
+    console.log('Observer 2: ' + v);
+});
 
-subject.next(9)
+subject.next(9);
 ```
 
 В примере выше для объекта типа `Subject` регистрируются два подписчика. Далее для передачи значения и вызова функций-обработчиков подписчиков используется метод `next()`.
@@ -146,51 +146,51 @@ RxJS Subject в свою очередь также имеет разновидн
 `BehaviorSubject` — передает новому подписчику последнее значение, в качестве аргумента принимает начальное значение.
 
 ```ts
-let behaviorSubject = new BehaviorSubject<Number>(3)
+let behaviorSubject = new BehaviorSubject<Number>(3);
 
 behaviorSubject.subscribe((v) => {
-  console.log('Observer with value of 3: ' + v)
-})
+    console.log('Observer with value of 3: ' + v);
+});
 
-behaviorSubject.next(9)
+behaviorSubject.next(9);
 
 behaviorSubject.subscribe((v) => {
-  console.log('Observer with value of 9: ' + v)
-})
+    console.log('Observer with value of 9: ' + v);
+});
 ```
 
 `ReplaySubject` — передает новому подписчику все предыдущие значения, принимаемый параметр — количество предыдущих значений.
 
 ```ts
-let replaySubject = new ReplaySubject<Number>(2)
+let replaySubject = new ReplaySubject<Number>(2);
 
-replaySubject.next(3)
-replaySubject.next(6)
-replaySubject.next(9)
-replaySubject.next(12)
+replaySubject.next(3);
+replaySubject.next(6);
+replaySubject.next(9);
+replaySubject.next(12);
 
 replaySubject.subscribe((value) => {
-  console.log('ReplaySubject: ' + value)
-})
+    console.log('ReplaySubject: ' + value);
+});
 ```
 
 `AsyncSubject` — передает новому подписчику последнее значение, но только после того, как будет вызван метод `complete()`.
 
 ```ts
-let asyncSubject = new AsyncSubject<Number>(3)
+let asyncSubject = new AsyncSubject<Number>(3);
 
 asyncSubject.subscribe((value) => {
-  console.log('AsyncSubject: ' + value)
-})
+    console.log('AsyncSubject: ' + value);
+});
 
-asyncSubject.next(3)
-asyncSubject.next(6)
-asyncSubject.next(9)
+asyncSubject.next(3);
+asyncSubject.next(6);
+asyncSubject.next(9);
 
-asyncSubject.complete()
+asyncSubject.complete();
 ```
 
 ## Ссылки
 
-- [The RxJS library](https://angular.io/guide/rx-library)
-- [Observables in Angular](https://angular.io/guide/observables-in-angular)
+-   [The RxJS library](https://angular.io/guide/rx-library)
+-   [Observables in Angular](https://angular.io/guide/observables-in-angular)

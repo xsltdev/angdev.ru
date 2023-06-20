@@ -1,8 +1,8 @@
 nav:
     - 🏠: index.md
-    - doc
-    - guide
+    - angular
     - ngrx
     - rxjs
     - cheatsheet.md
+    - archive
     - Спасибо: https://boosty.to/bndby

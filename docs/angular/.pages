@@ -1,0 +1,54 @@
+title: Документация
+nav:
+    - index.md
+    - Начало работы:
+        - what-is-angular.md
+        - Попробовать:
+            - start.md
+            - start-routing.md
+            - start-data.md
+            - start-forms.md
+            - start-deployment.md
+        - setup-local.md
+    - Понимание Angular:
+        - understanding-angular-overview.md
+        - Компоненты:
+            - component-overview.md
+            - lifecycle-hooks.md
+            - view-encapsulation.md
+            - component-interaction.md
+            - component-styles.md
+            - inputs-outputs.md
+            - content-projection.md
+            - dynamic-component-loader.md
+            - elements.md
+        - Шаблоны:
+            - template-overview.md
+            - template-syntax.md
+            - interpolation.md
+            - template-statements.md
+            - Биндинг:
+                - binding-overview.md
+                - property-binding.md
+                - attribute-binding.md
+                - class-binding.md
+                - event-binding.md
+                - two-way-binding.md
+            - Пайпы:
+                - pipes-overview.md
+                - pipe-template.md
+                - pipes-transform-data.md
+            - template-reference-variables.md
+            - svg-in-templates.md
+        - Директивы:
+            - built-in-directives.md
+            - attribute-directives.md
+            - structural-directives.md
+            - directive-composition-api.md
+        - Внедрение зависимостей:
+            - dependency-injection-overview.md
+            - dependency-injection.md
+            - creating-injectable-service.md
+            - dependency-injection-providers.md
+            - hierarchical-dependency-injection.md
+    - ...
