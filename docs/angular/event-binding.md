@@ -1,91 +1,105 @@
-# Event binding
+# Привязка к событиям
 
-Event binding lets you listen for and respond to user actions such as keystrokes, mouse movements, clicks, and touches.
+Привязка событий позволяет вам прослушивать и реагировать на действия пользователя, такие как нажатие клавиш, движение мыши, щелчки и прикосновения.
 
 <div class="alert is-helpful">
 
-See the <live-example></live-example> for a working example containing the code snippets in this guide.
+Смотрите <live-example></live-example> для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
 
 </div>
 
-## Prerequisites
+## Предварительные условия
 
-* [Basics of components](guide/architecture-components)
-* [Basics of templates](guide/glossary#template)
-* [Binding syntax](guide/binding-syntax)
-* [Template statements](guide/template-statements)
+-   [Основы компонентов](guide/architecture-components)
 
-## Binding to events
+-   [Основы шаблонов](guide/glossary#template)
 
-To bind to an event you use the Angular event binding syntax.
-This syntax consists of a target event name within parentheses to the left of an equal sign, and a quoted template statement to the right.
+-   [Синтаксис связывания](guide/binding-syntax)
 
-Create the following example; the target event name is `click` and the template statement is `onSave()`.
+-   [Шаблонные утверждения](guide/template-statements)
+
+## Привязка к событиям
+
+Для привязки к событию используется синтаксис привязки событий Angular. Этот синтаксис состоит из имени целевого события в круглых скобках слева от знака равенства и цитируемого шаблонного утверждения справа.
+
+Создайте следующий пример; имя целевого события - `click`, а оператор шаблона - `onSave()`.
 
 <code-example language="html" header="Event binding syntax">
-&lt;button (click)="onSave()"&gt;Save&lt;/button&gt;
+ &lt;button (click)="onSave()"&gt;Save&lt;/button&gt;
 </code-example>
 
-The event binding listens for the button's click events and calls the component's `onSave()` method whenever a click occurs.
+Привязка событий прослушивает события нажатия кнопки и вызывает метод компонента `onSave()` всякий раз, когда происходит нажатие.
 
 <div class="lightbox">
-  <img src='generated/images/guide/template-syntax/syntax-diagram.svg' alt="Syntax diagram">
+   <img src='generated/images/guide/template-syntax/syntax-diagram.svg' alt="Syntax diagram">
 </div>
 
-### Determining an event target
+### Определение цели события
 
-To determine an event target, Angular checks if the name of the target event matches an event property of a known directive.
+Чтобы определить цель события, Angular проверяет, совпадает ли имя целевого события со свойством события известной директивы.
 
-Create the following example: (Angular checks to see if `myClick` is an event on the custom `ClickDirective`)
+Создайте следующий пример: (Angular проверяет, является ли `myClick` событием пользовательской директивы `ClickDirective`)
 
-<code-example path="event-binding/src/app/app.component.html" region="custom-directive" header="src/app/app.component.html"></code-example>
+<code-example path="event-binding/src/app/app.component.html" region="custom-directive" header="src/app/app.component.html"></code-example>.
 
-If the target event name, `myClick` fails to match an output property of `ClickDirective`, Angular will instead bind to the `myClick` event on the underlying DOM element.
+Если имя целевого события `myClick` не соответствует выходному свойству `ClickDirective`, Angular вместо этого привяжется к событию `myClick` на базовом элементе DOM.
 
-## Binding to passive events
+## Привязка к пассивным событиям
 
-This is an advanced technique that is not necessary for most applications. You may find this useful if you want to optimize frequently occurring events that are causing performance problems.
+Это продвинутая техника, которая не нужна для большинства приложений. Она может оказаться полезной, если вы хотите оптимизировать часто повторяющиеся события, вызывающие проблемы с производительностью.
 
-Angular also supports passive event listeners. For example, use the following steps to make a scroll event passive.
+Angular также поддерживает пассивные слушатели событий. Например, чтобы сделать событие прокрутки пассивным, выполните следующие действия.
 
-1. Create a file `zone-flags.ts` under `src` directory.
-2. Add the following line into this file.
-   ```typescript
-   (window as any)['__zone_symbol__PASSIVE_EVENTS'] = ['scroll'];
-   ```
-3. In the `src/polyfills.ts` file, before importing zone.js, import the newly created `zone-flags`.
-   ```typescript
-   import './zone-flags';
-   import 'zone.js';  // Included with Angular CLI.
-   ```
+1. Создайте файл `zone-flags.ts` в каталоге `src`.
 
-After those steps, if you add event listeners for the `scroll` event, the listeners will be `passive`.
+2. Добавьте в этот файл следующую строку.
 
-## Binding to keyboard events
+    ``typescript
 
-You can bind to keyboard events using Angular's binding syntax. You can specify the key or code that you would like to bind to keyboard events. They `key` and `code` fields are a native part of the browser keyboard event object. By default, event binding assumes you want to use the `key` field on the keyboard event. You can also use the `code` field.
+    (window as any)['__zone_symbol__PASSIVE_EVENTS'] = ['scroll'];
 
-Combinations of keys can be separated by a `.` (period). For example, `keydown.enter` will allow you to bind events to the `enter` key. You can also use modifier keys, such as `shift`, `alt`, `control`, and the `command` keys from Mac. The following example shows how to bind a keyboard event to `keydown.shift.t`.
+    ```
 
-   ```typescript
-   <input (keydown.shift.t)="onKeydown($event)" />
-   ```
+    ```
 
-Depending on the operating system, some key combinations might create special characters instead of the key combination that you expect. MacOS, for example, creates special characters when you use the option and shift keys together. If you bind to `keydown.shift.alt.t`, on macOS, that combination produces a `ˇ` character instead of a `t`, which doesn't match the binding and won't trigger your event handler. To bind to `keydown.shift.alt.t` on macOS, use the `code` keyboard event field to get the correct behavior, such as `keydown.code.shiftleft.altleft.keyt` shown in this example.
-   
-   ```typescript
-   <input (keydown.code.shiftleft.altleft.keyt)="onKeydown($event)" />
-   ```
+3. В файле `src/polyfills.ts`, перед импортом zone.js, импортируйте только что созданные `zone-flags`.
 
-The `code` field is more specific than the `key` field. The `key` field always reports `shift`, whereas the `code` field will specify `leftshift` or `rightshift`. When using the `code` field, you might need to add separate bindings to catch all the behaviors you want. Using the `code` field avoids the need to handle OS specific behaviors such as the `shift + option` behavior on macOS.
+    ```typescript
+    import './zone-flags';
 
-For more information, visit the full reference for [key](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values) and [code](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values) to help build out your event strings.
+    import 'zone.js'; // Включено с помощью Angular CLI.
+    ```
 
-## What's next
+После этих шагов, если вы добавите слушателей событий для события `scroll`, слушатели будут `пассивными`.
 
-* For more information on how event binding works, see [How event binding works](guide/event-binding-concepts).
-* [Property binding](guide/property-binding)
-* [Text interpolation](guide/interpolation)
-* [Two-way binding](guide/two-way-binding)
+## Привязка к событиям клавиатуры
 
-@reviewed 2022-05-10
+Вы можете привязываться к событиям клавиатуры, используя синтаксис привязки Angular. Вы можете указать клавишу или код, которые вы хотите привязать к событиям клавиатуры. Поля `key` и `code` являются встроенной частью объекта события клавиатуры браузера. По умолчанию привязка событий предполагает, что вы хотите использовать поле `key` в событии клавиатуры. Вы также можете использовать поле `code`.
+
+Комбинации клавиш можно разделять символом `.` (точка). Например, `keydown.enter` позволит вам привязать события к клавише `enter`. Вы также можете использовать клавиши-модификаторы, такие как `shift`, `alt`, `control` и `командные` клавиши Mac. В следующем примере показано, как привязать событие клавиатуры к `keydown.shift.t`.
+
+```typescript
+    <input (keydown.shift.t)="onKeydown($event)" />
+```
+
+В зависимости от операционной системы некоторые комбинации клавиш могут создавать специальные символы вместо ожидаемого сочетания клавиш. Например, macOS создает специальные символы, когда вы используете клавиши option и shift вместе. Если вы привяжетесь к `keydown.shift.alt.t`, в macOS эта комбинация создаст символ `ˇ` вместо `t`, что не соответствует привязке и не вызовет обработчик событий. Для привязки к `keydown.shift.alt.t` на macOS используйте поле событий клавиатуры `code`, чтобы получить правильное поведение, например `keydown.code.shiftleft.altleft.keyt`, как показано в этом примере.
+
+```typescript
+    <input (keydown.code.shiftleft.altleft.keyt)="onKeydown($event)" />
+```
+
+Поле `код` является более конкретным, чем поле `ключ`. Поле `key` всегда сообщает `shift`, тогда как поле `code` указывает `leftshift` или `rightshift`. При использовании поля `code` вам может понадобиться добавить отдельные привязки, чтобы уловить все нужные вам типы поведения. Использование поля `code` позволяет избежать необходимости обрабатывать поведение, специфичное для ОС, например, поведение `shift + option` в macOS.
+
+Для получения дополнительной информации посетите полное руководство по [key](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values) и [code](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values), которое поможет вам создать свои строки событий.
+
+## Что дальше
+
+-   Для получения дополнительной информации о том, как работает привязка событий, смотрите [Как работает привязка событий](guide/event-binding-concepts).
+
+-   [Связывание свойств](руководство/property-binding)
+
+-   [Интерполяция текста](руководство/интерполяция)
+
+-   [Двустороннее связывание](guide/two-way-binding)
+
+@ просмотрено 2022-05-10

@@ -1,30 +1,30 @@
-# Understanding dependency injection
+# Понимание инъекции зависимостей
 
-Dependency injection, or DI, is one of the fundamental concepts in Angular. DI is wired into the Angular framework and allows classes with Angular decorators, such as Components, Directives, Pipes, and Injectables, to configure dependencies that they need. 
+Инъекция зависимостей, или DI, является одной из фундаментальных концепций в Angular. DI встроен в фреймворк Angular и позволяет классам с декораторами Angular, такими как Components, Directives, Pipes и Injectables, настраивать необходимые им зависимости.
 
-Two main roles exist in the DI system: dependency consumer and dependency provider. 
+В системе DI существуют две основные роли: потребитель зависимостей и поставщик зависимостей.
 
-Angular facilitates the interaction between dependency consumers and dependency providers using an abstraction called [Injector](guide/glossary#injector). When a dependency is requested, the injector checks its registry to see if there is an instance already available there. If not, a new instance is created and stored in the registry. Angular creates an application-wide injector (also known as "root" injector) during the application bootstrap process, as well as any other injectors as needed. In most cases you don't need to manually create injectors, but you should know that there is a layer that connects providers and consumers.
+Angular облегчает взаимодействие между потребителями зависимостей и поставщиками зависимостей, используя абстракцию под названием [Injector](guide/glossary#injector). Когда запрашивается зависимость, инжектор проверяет свой реестр на предмет наличия уже доступного экземпляра. Если нет, создается новый экземпляр и сохраняется в реестре. Angular создает инжектор для всего приложения (также известный как "корневой" инжектор) во время процесса загрузки приложения, а также другие инжекторы по мере необходимости. В большинстве случаев вам не нужно вручную создавать инжекторы, но вы должны знать, что существует слой, соединяющий провайдеров и потребителей.
 
-This topic covers basic scenarios of how a class can act as a dependency. Angular also allows you to use functions, objects, primitive types such as string or Boolean, or any other types as dependencies. For more information, see [Dependency providers](guide/dependency-injection-providers).
+В этой теме рассматриваются основные сценарии того, как класс может выступать в качестве зависимости. Angular также позволяет использовать в качестве зависимостей функции, объекты, примитивные типы, такие как string или Boolean, или любые другие типы. Для получения дополнительной информации смотрите [Dependency providers](guide/dependency-injection-providers).
 
-## Providing dependency
+## Предоставление зависимостей
 
-Imagine there is a class called HeroService that needs to act as a dependency in a component.
+Представьте, что есть класс HeroService, который должен выступать в качестве зависимости в компоненте.
 
-The first step is to add the @Injectable decorator to show that the class can be injected.
+Первым шагом будет добавление декоратора @Injectable, чтобы показать, что класс может быть инжектирован.
 
 <code-example language="typescript">
-@Injectable()
+ @Injectable()
 class HeroService {}
 </code-example>
 
-The next step is to make it available in the DI by providing it.  A dependency can be provided in multiple places:
+Следующий шаг - сделать ее доступной в DI, предоставив ее. Зависимость может быть предоставлена в нескольких местах:
 
-* At the Component level, using the `providers` field of the `@Component` decorator. In this case the `HeroService` becomes available to all instances of this component and other components and directives used in the template. For example:
+-   На уровне компонента, используя поле `providers` декоратора `@Component`. В этом случае `HeroService` становится доступным для всех экземпляров этого компонента и других компонентов и директив, используемых в шаблоне. Например:
 
 <code-example language="typescript">
-@Component({
+ @Component({
   selector: 'hero-list',
   template: '...',
   providers: [HeroService]
@@ -32,53 +32,54 @@ The next step is to make it available in the DI by providing it.  A dependency c
 class HeroListComponent {}
 </code-example>
 
-When you register a provider at the component level, you get a new instance of the service with each new instance of that component.
+Когда вы регистрируете провайдера на уровне компонента, вы получаете новый экземпляр сервиса с каждым новым экземпляром этого компонента.
 
-* At the NgModule level, using the `providers` field of the `@NgModule` decorator. In this scenario, the `HeroService` is available to all components, directives, and pipes declared in this NgModule or other NgModule which is within the same ModuleInjector applicable for this NgModule. When you register a provider with a specific NgModule, the same instance of a service is available to all applicable components, directives and pipes.
-To understand all edge-cases, see [Hierarchical injectors](guide/hierarchical-dependency-injection). For example:
+-   На уровне NgModule, используя поле `providers` декоратора `@NgModule`. В этом сценарии `HeroService` доступен для всех компонентов, директив и труб, объявленных в этом NgModule или другом NgModule, который находится внутри того же ModuleInjector, применимого к этому NgModule. Когда вы регистрируете провайдера в определенном NgModule, один и тот же экземпляр сервиса становится доступным для всех применимых компонентов, директив и труб.
 
+Чтобы понять все крайние случаи, смотрите [Иерархические инжекторы](guide/hierarchical-dependency-injection). Например:
 
 <code-example language="typescript">
-@NgModule({
+ @NgModule({
   declarations: [HeroListComponent]
   providers: [HeroService]
 })
 class HeroListModule {}
 </code-example>
 
-* At the application root level, which allows injecting it into other classes in the application. This can be done by adding the `providedIn: 'root'` field to the `@Injectable` decorator:
+-   На уровне корня приложения, что позволяет инжектировать его в другие классы приложения. Это можно сделать, добавив поле `providedIn: 'root'` в декоратор `@Injectable`:
 
 <code-example language="typescript">
-@Injectable({
+ @Injectable({
   providedIn: 'root'
 })
 class HeroService {}
 </code-example>
 
-When you provide the service at the root level, Angular creates a single, shared instance of the `HeroService` and injects it into any class that asks for it. Registering the provider in the `@Injectable` metadata also allows Angular to optimize an app by removing the service from the compiled application if it isn't used, a process known as tree-shaking.
+Когда вы предоставляете сервис на корневом уровне, Angular создает единственный, общий экземпляр `HeroService` и внедряет его в любой класс, который его запрашивает. Регистрация провайдера в метаданных `@Injectable` также позволяет Angular оптимизировать приложение, удаляя сервис из скомпилированного приложения, если он не используется, процесс, известный как tree-shaking.
 
-## Injecting a dependency
+## Инжектирование зависимости
 
-The most common way to inject a dependency is to declare it in a class constructor. When Angular creates a new instance of a component, directive, or pipe class, it determines which services or other dependencies that class needs by looking at the constructor parameter types. For example, if the `HeroListComponent` needs the `HeroService`, the constructor can look like this:
+Самый распространенный способ внедрения зависимости - объявить ее в конструкторе класса. Когда Angular создает новый экземпляр компонента, директивы или класса pipe, он определяет, какие сервисы или другие зависимости нужны этому классу, глядя на типы параметров конструктора. Например, если `HeroListComponent` нуждается в `HeroService`, конструктор может выглядеть следующим образом:
 
 <code-example language="typescript">
-@Component({ … })
+ @Component({ … })
 class HeroListComponent {
   constructor(private service: HeroService) {}
 }
 </code-example>
 
-When Angular discovers that a component depends on a service, it first checks if the injector has any existing instances of that service. If a requested service instance doesn't yet exist, the injector creates one using the registered provider, and adds it to the injector before returning the service to Angular.
+Когда Angular обнаруживает, что компонент зависит от сервиса, он сначала проверяет, есть ли в инжекторе существующие экземпляры этого сервиса. Если запрошенный экземпляр сервиса еще не существует, инжектор создает его, используя зарегистрированного провайдера, и добавляет его в инжектор перед тем, как вернуть сервис в Angular.
 
-When all requested services have been resolved and returned, Angular can call the component's constructor with those services as arguments.
+Когда все запрошенные сервисы будут разрешены и возвращены, Angular может вызвать конструктор компонента с этими сервисами в качестве аргументов.
 
 <div class="lightbox">
-  <img src="generated/images/guide/architecture/injector-injects.png" alt="Service" class="left">
+   <img src="generated/images/guide/architecture/injector-injects.png" alt="Service" class="left">
 </div>
 
-## What's next
+## Что дальше
 
-* [Creating and injecting services](guide/creating-injectable-service)
-* [Dependency Injection in Action](guide/dependency-injection-in-action)
+-   [Создание и инъектирование сервисов](guide/creating-injectable-service)
+
+-   [Инъекция зависимостей в действии](guide/dependency-injection-in-action)
 
 @reviewed 2023-05-16

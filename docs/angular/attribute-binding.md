@@ -1,22 +1,20 @@
-# Attribute binding
+# Связывание атрибутов
 
-Attribute binding in Angular helps you set values for attributes directly.
-With attribute binding, you can improve accessibility, style your application dynamically, and manage multiple CSS classes or styles simultaneously.
+Привязка атрибутов в Angular позволяет задавать значения атрибутов напрямую. С помощью привязки атрибутов можно улучшить доступность, динамически изменять стиль приложения и управлять несколькими классами или стилями CSS одновременно.
 
 <div class="alert is-helpful">
 
-See the <live-example></live-example> for a working example containing the code snippets in this guide.
+Смотрите <live-example></live-example> для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
 
 </div>
 
-## Prerequisites
+## Предварительные условия
 
-* [Property Binding](guide/property-binding)
+-   [Property Binding](guide/property-binding)
 
-## Syntax
+## Синтаксис
 
-Attribute binding syntax resembles [property binding](guide/property-binding), but instead of an element property between brackets, you precede the name of the attribute with the prefix `attr`, followed by a dot.
-Then, you set the attribute value with an expression that resolves to a string.
+Синтаксис связывания атрибутов похож на [property binding](guide/property-binding), но вместо свойства элемента в скобках перед именем атрибута ставится префикс `attr`, за которым следует точка. Затем вы задаете значение атрибута с помощью выражения, которое преобразуется в строку.
 
 <code-example format="html" language="html">
 
@@ -26,47 +24,46 @@ Then, you set the attribute value with an expression that resolves to a string.
 
 <div class="alert is-helpful">
 
-When the expression resolves to `null` or `undefined`, Angular removes the attribute altogether.
+Когда выражение разрешается в `null` или `undefined`, Angular полностью удаляет атрибут.
 
 </div>
 
-## Binding ARIA attributes
+## Привязка атрибутов ARIA
 
-One of the primary use cases for attribute binding is to set ARIA attributes.
+Одним из основных вариантов использования привязки атрибутов является установка атрибутов ARIA.
 
-To bind to an ARIA attribute, type the following:
+Для привязки к атрибуту ARIA введите следующее:
 
 <code-example header="src/app/app.component.html" path="attribute-binding/src/app/app.component.html" region="attrib-binding-aria"></code-example>
 
 <a id="colspan"></a>
 
-## Binding to `colspan`
+## Привязка к `colspan`
 
-Another common use case for attribute binding is with the `colspan` attribute in tables.  Binding to the `colspan` attribute helps you to keep your tables programmatically dynamic.  Depending on the amount of data that your application populates a table with, the number of columns that a row spans could change.
+Другим распространенным случаем использования привязки атрибутов является атрибут `colspan` в таблицах. Привязка к атрибуту `colspan` помогает вам поддерживать программную динамику ваших таблиц. В зависимости от количества данных, которыми ваше приложение заполняет таблицу, количество столбцов, которые охватывает строка, может меняться.
 
-To use attribute binding with the `<td>` attribute `colspan`
-1. Specify the `colspan` attribute by using the following syntax: `[attr.colspan]`.
-1. Set `[attr.colspan]` equal to an expression.
+Чтобы использовать привязку атрибута `<td>` к атрибуту `colspan`, выполните следующие действия.
 
-In the following example, you bind the `colspan` attribute to the expression `1 + 1`.
+1. Укажите атрибут `colspan`, используя следующий синтаксис: `[attr.colspan]`.
 
-<code-example header="src/app/app.component.html" path="attribute-binding/src/app/app.component.html" region="colspan"></code-example>
+1. Установите `[attr.colspan]` равным выражению.
 
-This binding causes the `<tr>` to span two columns.
+В следующем примере вы связываете атрибут `colspan` с выражением `1 + 1`.
+
+<code-example header="src/app/app.component.html" path="attribute-binding/src/app/app/app.component.html" region="colspan"></code-example>.
+
+Эта привязка заставляет `<tr>` охватывать две колонки.
 
 <div class="alert is-helpful">
 
-Sometimes there are differences between the name of property and an attribute.
+Иногда существуют различия между названием свойства и атрибута.
 
-`colspan` is an attribute of `<td>`, while `colSpan`  with a capital "S" is a property.
-When using attribute binding, use `colspan` with a lowercase "s".
+`colspan` является атрибутом `<td>`, а `colSpan` с заглавной "S" - свойством. При использовании привязки к атрибутам используйте `colspan` со строчной буквой "s".
 
-For more information on how to bind to the `colSpan` property, see the [`colspan` and `colSpan`](guide/property-binding#colspan) section of [Property Binding](guide/property-binding).
+Подробнее о том, как привязать свойство `colSpan`, смотрите в разделе [`colspan` и `colSpan`](guide/property-binding#colspan) раздела [Property Binding](guide/property-binding).
 
 </div>
 
-## What’s next
+## Что дальше
 
-* [Class & Style Binding](guide/class-binding)
-
-@reviewed 2022-05-02
+-   [Class & Style Binding](guide/class-binding)

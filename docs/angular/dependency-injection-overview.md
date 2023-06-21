@@ -1,25 +1,25 @@
-# Dependency injection in Angular
+# Инъекция зависимостей в Angular
 
-When you develop a smaller part of your system, like a module or a class, you may need to use features from other classes. For example, you may need an HTTP service to make backend calls. Dependency Injection, or DI, is a design pattern and mechanism for creating and delivering some parts of an application to other parts of an application that require them. Angular supports this design pattern and you can use it in your applications to increase flexibility and modularity. 
+Когда вы разрабатываете небольшую часть системы, например, модуль или класс, вам может понадобиться использовать функции других классов. Например, вам может понадобиться HTTP-сервис для выполнения обращений к бэкенду. Инъекция зависимости (Dependency Injection, или DI) - это шаблон проектирования и механизм создания и передачи одних частей приложения другим частям приложения, которым они необходимы. Angular поддерживает этот шаблон проектирования, и вы можете использовать его в своих приложениях для повышения гибкости и модульности.
 
-In Angular, dependencies are typically services, but they also can be values, such as strings or functions. An injector for an application (created automatically during bootstrap) instantiates dependencies when needed, using a configured provider of the service or value. 
+В Angular зависимости обычно представляют собой сервисы, но они также могут быть значениями, например, строками или функциями. Инжектор для приложения (создаваемый автоматически во время bootstrap) инстанцирует зависимости, когда это необходимо, используя настроенный поставщик сервиса или значения.
 
 <div class="alert is-helpful">
 
-See the <live-example name="dependency-injection"></live-example> for a working example containing the code snippets in this guide.
+Смотрите <live-example name="dependency-injection"></live-example> для рабочего примера, содержащего фрагменты кода из этого руководства.
 
 </div>
 
-## Prerequisites
+## Предварительные условия
 
-You should be familiar with the Angular apps in general, and have the fundamental knowledge of Components, Directives, and NgModules. It's highly recommended that you complete the following tutorial:
+Вы должны быть знакомы с приложениями Angular в целом и иметь фундаментальные знания о компонентах, директивах и модулях NgModules. Настоятельно рекомендуем вам пройти следующий учебник:
 
-[Tour of Heroes application and tutorial](tutorial/tour-of-heroes)
+[приложение и учебник Tour of Heroes](tutorial/tour-of-heroes)
 
-## Learn about Angular dependency injection
+## Узнайте об инъекции зависимостей Angular
 
 <div class="card-container">
-  <a href="guide/dependency-injection" class="docs-card" title="Understanding dependency injection">
+   <a href="guide/dependency-injection" class="docs-card" title="Understanding dependency injection">
     <section>Understanding dependency injection</section>
     <p>Learn basic principles of dependency injection in Angular.</p>
     <p class="card-footer">Understanding dependency injection</p>
@@ -41,4 +41,4 @@ You should be familiar with the Angular apps in general, and have the fundamenta
   </a>
 </div>
 
-@reviewed 2022-08-02
+@ просмотрено 2022-08-02

@@ -4,43 +4,49 @@ In an Angular template, a binding creates a live connection between a part of th
 
 Examples of binding include:
 
-* text interpolations
-* property binding
-* event binding
-* two-way binding
+-   text interpolations
+
+-   property binding
+
+-   event binding
+
+-   two-way binding
 
 Bindings always have two parts: a _target_ which will receive the bound value, and a _template expression_ which produces a value from the model.
 
-
 ## Syntax
 
-Template expressions are similar to JavaScript expressions.
-Many JavaScript expressions are legal template expressions, with the following exceptions.
+Template expressions are similar to JavaScript expressions. Many JavaScript expressions are legal template expressions, with the following exceptions.
 
 You can't use JavaScript expressions that have or promote side effects, including:
 
-* Assignments (`=`, `+=`, `-=`, `...`)
-* Operators such as `new`, `typeof`, or `instanceof`
-* Chaining expressions with <code>;</code> or <code>,</code>
-* The increment and decrement operators `++` and `--`
-* Some of the ES2015+ operators
+-   Assignments (`=`, `+=`, `-=`, `...`)
 
-Other notable differences from JavaScript syntax include:
+-   Operators such as `new`, `typeof`, or `instanceof`
 
-* No support for the bitwise operators such as `|` and `&`
-* New [template expression operators](guide/template-expression-operators), such as `|`
+-   Chaining expressions with <code>;</code> or <code>,</code>
 
-## Expression context
+-   Операторы инкремента и декремента `++` и `--`
 
-Interpolated expressions have a context&mdash;a particular part of the application to which the expression belongs.  Typically, this context is the component instance.
+-   Некоторые операторы ES2015+
 
-In the following snippet, the expression `recommended` and the expression `itemImageUrl2` refer to properties of the `AppComponent`.
+Другие заметные отличия от синтаксиса JavaScript включают:
 
-<code-example path="interpolation/src/app/app.component.html" region="component-context" header="src/app/app.component.html"></code-example>
+-   Отсутствие поддержки побитовых операторов, таких как `|` и `&`.
 
-An expression can also refer to properties of the _template's_ context such as a [template input variable](guide/structural-directives#shorthand) or a [template reference variable](guide/template-reference-variables).
+-   Новые [операторы шаблонных выражений](guide/template-expression-operators), такие как `|`.
 
-The following example uses a template input variable of `customer`.
+## Контекст выражения
+
+Интерполированные выражения имеют контекст &mdash; определенную часть приложения, к которой принадлежит выражение. Обычно таким контекстом является экземпляр компонента.
+
+В следующем фрагменте выражение `recommended` и выражение `itemImageUrl2` относятся к свойствам `AppComponent`.
+
+<code-example path="interpolation/src/app/app.component.html" region="component-context" header="src/app/app.component.html"></code-example>.
+
+Выражение также может ссылаться на свойства контекста \_шаблона, такие как [входная переменная шаблона](guide/structural-directives#shorthand) или [переменная ссылки шаблона](guide/template-reference-variables).
+
+В следующем примере используется входная переменная шаблона `customer`.
 
 <code-example path="interpolation/src/app/app.component.html" region="template-input-variable" header="src/app/app.component.html (template input variable)"></code-example>
 
@@ -50,60 +56,61 @@ This next example features a template reference variable, `#customerInput`.
 
 <div class="alert is-helpful">
 
-Template expressions cannot refer to anything in the global namespace, except `undefined`.  They can't refer to `window` or `document`.  Additionally, they can't call `console.log()` or `Math.max()` and are restricted to referencing members of the expression context.
+Шаблонные выражения не могут ссылаться ни на что в глобальном пространстве имен, кроме `undefined`. Они не могут ссылаться на `window` или `document`. Кроме того, они не могут вызывать `console.log()` или `Math.max()` и ограничены ссылками на члены контекста выражения.
 
 </div>
 
-### Preventing name collisions
+### Предотвращение столкновений имен
 
-The context against which an expression evaluates is the union of the template variables, the directive's context object&mdash;if it has one&mdash;and the component's members.
-If you reference a name that belongs to more than one of these namespaces, Angular applies the following precedence logic to determine the context:
+Контекст, по которому оценивается выражение, представляет собой объединение переменных шаблона, контекстного объекта директивы &mdash; если он есть&mdash; и членов компонента. Если вы ссылаетесь на имя, принадлежащее более чем одному из этих пространств имен, Angular применяет следующую логику старшинства для определения контекста:
 
-1. The template variable name.
-1. A name in the directive's context.
-1. The component's member names.
+1. Имя переменной шаблона.
 
-To avoid variables shadowing variables in another context, keep variable names unique.
-In the following example, the `AppComponent` template greets the `customer`, Padma.
+1. Имя в контексте директивы.
 
-An `ngFor` then lists each `customer` in the `customers` array.
+1. Имена членов компонента.
 
-<code-example path="interpolation/src/app/app.component.1.ts" region="var-collision" header="src/app/app.component.ts"></code-example>
+Чтобы переменные не затеняли переменные в другом контексте, сохраняйте уникальность имен переменных. В следующем примере шаблон `AppComponent` приветствует `клиента`, Падму.
 
-The `customer` within the `ngFor` is in the context of an `<ng-template>` and so refers to the `customer` in the `customers` array, in this case Ebony and Chiho.
-This list does not feature Padma because `customer` outside of the `ngFor` is in a different context.
-Conversely, `customer` in the `<h1>` doesn't include Ebony or Chiho because the context for this `customer` is the class and the class value for `customer` is Padma.
+Затем `ngFor` перечисляет каждого `клиента` в массиве `customers`.
 
-## Expression best practices
+<code-example path="interpolation/src/app/app.component.1.ts" region="var-collision" header="src/app/app.component.ts"></code-example>.
 
-When using a template expression, follow these best practices:
+Клиент `customer` в `ngFor` находится в контексте `<ng-template>` и поэтому ссылается на клиента `customer` в массиве `customers`, в данном случае Ebony и Chiho. В этом списке нет Падмы, потому что `customer` вне `ngFor` находится в другом контексте.
 
-* **Use short expressions**
+И наоборот, `customer` в `<h1>` не включает Ebony или Chiho, потому что контекстом для этого `customer` является класс, а значением класса для `customer` является Padma.
 
-Use property names or method calls whenever possible.  Keep application and business logic in the component, where it is accessible to develop and test.
+## Лучшие практики использования выражений
 
-* **Quick execution**
+При использовании шаблонного выражения следуйте следующим рекомендациям:
 
-Angular executes a template expression after every [change detection](guide/glossary#change-detection) cycle.  Many asynchronous activities trigger change detection cycles, such as promise resolutions, HTTP results, timer events, key presses, and mouse moves.
+-   **Используйте короткие выражения**.
 
-An expression should finish quickly to keep the user experience as efficient as possible, especially on slower devices.  Consider caching values when their computation requires greater resources.
+Используйте имена свойств или вызовы методов, когда это возможно. Храните прикладную и бизнес-логику в компоненте, где она доступна для разработки и тестирования.
 
-## No visible side effects
+-   **Быстрое выполнение**.
 
-According to Angular's [unidirectional data flow model](guide/glossary#unidirectional-data-flow), a template expression should not change any application state other than the value of the target property.  Reading a component value should not change some other displayed value.  The view should be stable throughout a single rendering pass.
+Angular выполняет выражение шаблона после каждого цикла [обнаружения изменений](guide/glossary#change-detection). Многие асинхронные действия вызывают циклы обнаружения изменений, такие как выполнение обещаний, результаты HTTP, события таймера, нажатия клавиш и перемещения мыши.
+
+Выражение должно завершаться быстро, чтобы обеспечить максимальную эффективность работы пользователя, особенно на медленных устройствах. Рассмотрите возможность кэширования значений, если их вычисление требует больших ресурсов.
+
+## Отсутствие видимых побочных эффектов
+
+Согласно [однонаправленной модели потока данных Angular] (guide/glossary#unidirectional-data-flow), выражение шаблона не должно изменять состояние приложения, кроме значения целевого свойства. Чтение значения компонента не должно изменять какое-либо другое отображаемое значение. Представление должно быть стабильным в течение одного прохода рендеринга.
 
   <div class="callout is-important">
-    <header>Idempotent expressions reduce side effects</header>
+     <header>Idempotent expressions reduce side effects</header>
 
-An [idempotent](https://en.wikipedia.org/wiki/Idempotence) expression is free of side effects and improves Angular's change detection performance.  In Angular terms, an idempotent expression always returns *exactly the same thing* until one of its dependent values changes.
+Выражение [idempotent](https://en.wikipedia.org/wiki/Idempotence) не имеет побочных эффектов и улучшает производительность обнаружения изменений в Angular. В терминах Angular, идемпотентное выражение всегда возвращает _совершенно одно и то же_, пока одно из его зависимых значений не изменится.
 
-Dependent values should not change during a single turn of the event loop.  If an idempotent expression returns a string or a number, it returns the same string or number if you call it twice consecutively.  If the expression returns an object, including an `array`, it returns the same object *reference* if you call it twice consecutively.
+Зависимые значения не должны меняться в течение одного оборота цикла событий. Если идемпотентное выражение возвращает строку или число, оно возвращает ту же строку или число, если вы вызываете его дважды подряд. Если выражение возвращает объект, включая `массив`, оно возвращает один и тот же объект _ссылка_, если вы вызываете его дважды подряд.
 
   </div>
 
- ## What's next
+## Что дальше
 
-* [Property binding](guide/property-binding)
-* [Event binding](guide/event-binding)
+-   [Привязка свойств](руководство/привязка свойств)
 
-@reviewed 2022-05-12
+-   [Связывание событий](guide/event-binding)
+
+@ просмотрено 2022-05-12

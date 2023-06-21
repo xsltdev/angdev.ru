@@ -1,100 +1,102 @@
-# Content projection
+# Проекция содержимого
 
-This topic describes how to use content projection to create flexible, reusable components.
+В этой теме описывается, как использовать проекцию содержимого для создания гибких, многократно используемых компонентов.
 
 <div class="alert is-helpful">
 
-To view or download the example code used in this topic, see the <live-example></live-example>.
+Для просмотра или загрузки кода примера, использованного в этой теме, см. <live-example></live-example>.
 
 </div>
 
-Content projection is a pattern in which you insert, or *project*, the content you want to use inside another component.
-For example, you could have a `Card` component that accepts content provided by another component.
+Проекция содержимого - это шаблон, в котором вы вставляете, или _проектируете_, содержимое, которое хотите использовать, внутрь другого компонента. Например, у вас может быть компонент `Card`, который принимает содержимое, предоставленное другим компонентом.
 
-The following sections describe common implementations of content projection in Angular, including:
+В следующих разделах описываются общие реализации проекции содержимого в Angular, включая:
 
-| Content projection                             | Details |
-|:---                                            |:---     |
-| [Single-slot content projection](#single-slot) | With this type of content projection, a component accepts content from a single source.                  |
-| [Multi-slot content projection](#multi-slot)   | In this scenario, a component accepts content from multiple sources.                                     |
-| [Conditional content projection](#conditional) | Components that use conditional content projection render content only when specific conditions are met. |
+| Проекция контента | Подробности | |:--- |:--- |:---.
+
+| [Single-slot content projection](#single-slot) | При этом типе проекции контента компонент принимает контент из одного источника. |
+
+| [Multi-slot content projection](#multi-slot) | В этом сценарии компонент принимает содержимое из нескольких источников. |
+
+| | [Условная проекция контента](#conditional) | Компоненты, использующие условную проекцию контента, отображают контент только при выполнении определенных условий. |
 
 <a id="single-slot"></a>
 
-## Single-slot content projection
+## Однослотовая проекция контента
 
-The most basic form of content projection is *single-slot content projection*.
-Single-slot content projection refers to creating a component into which you can project one component.
+Самой основной формой проекции контента является _однослотовая проекция контента_. Однослотовая проекция содержимого относится к созданию компонента, в который вы можете спроецировать один компонент.
 
-To create a component that uses single-slot content projection:
+Чтобы создать компонент, использующий однослотовую проекцию содержимого, выполните следующие действия:
 
-1.  [Create a component](guide/component-overview#creating-a-component).
-1.  In the template for your component, add an `<ng-content>` element where you want the projected content to appear.
+1.  [Создать компонент] (guide/component-overview#creating-a-component).
 
-For example, the following component uses an `<ng-content>` element to display a message.
+1.  В шаблоне компонента добавьте элемент `<ng-content>` в то место, где должно отображаться проецируемое содержимое.
 
-<code-example header="content-projection/src/app/zippy-basic/zippy-basic.component.ts" path="content-projection/src/app/zippy-basic/zippy-basic.component.ts"></code-example>
+Например, следующий компонент использует элемент `<ng-content>` для отображения сообщения.
 
-With the `<ng-content>` element in place, users of this component can now project their own message into the component.
-For example:
+<code-example header="content-projection/src/app/zippy-basic/zippy-basic.component.ts" path="content-projection/src/app/zippy-basic/zippy-basic.component.ts"></code-example>.
+
+С установленным элементом `<ng-content>` пользователи этого компонента теперь могут проецировать свое собственное сообщение в компонент. Например:
 
 <code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="single-slot"></code-example>
 
 <div class="alert is-helpful">
 
-The `<ng-content>` element is a placeholder that does not create a real DOM element.
-Custom attributes applied to `<ng-content>` are ignored.
+Элемент `<ng-content>` - это заполнитель, который не создает реального элемента DOM. Пользовательские атрибуты, применяемые к `<ng-content>`, игнорируются.
 
 </div>
 
 <a id="multi-slot"></a>
 
-## Multi-slot content projection
+## Проекция содержимого на несколько слотов
 
-A component can have multiple slots.
-Each slot can specify a CSS selector that determines which content goes into that slot.
-This pattern is referred to as *multi-slot content projection*.
-With this pattern, you must specify where you want the projected content to appear.
-You accomplish this task by using the `select` attribute of `<ng-content>`.
+Компонент может иметь несколько слотов. Каждый слот может определять CSS-селектор, который определяет, какое содержимое попадает в этот слот.
 
-To create a component that uses multi-slot content projection:
+Этот шаблон называется _проекция содержимого на несколько слотов_.
 
-1.  [Create a component](guide/component-overview#creating-a-component).
-1.  In the template for your component, add an `<ng-content>` element where you want the projected content to appear.
-1.  Add a `select` attribute to the `<ng-content>` elements.
-    Angular supports [selectors](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) for any combination of tag name, attribute, CSS class, and the `:not` pseudo-class.
+При использовании этого шаблона вы должны указать, где должно отображаться проецируемое содержимое.
 
-    For example, the following component uses two  `<ng-content>` elements.
+Для этого используется атрибут `select` в `<ng-content>`.
 
-    <code-example header="content-projection/src/app/zippy-multislot/zippy-multislot.component.ts" path="content-projection/src/app/zippy-multislot/zippy-multislot.component.ts"></code-example>
+Чтобы создать компонент, использующий многослотовую проекцию содержимого, выполните следующие действия:
 
-Content that uses the `question` attribute is projected into the `<ng-content>` element with the `select=[question]` attribute.
+1.  [Создать компонент](guide/component-overview#creating-a-component).
 
-<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="multi-slot"></code-example>
+1.  В шаблоне компонента добавьте элемент `<ng-content>`, в котором должно отображаться проецируемое содержимое.
+
+1.  Добавьте атрибут `select` к элементам `<ng-content>`.
+
+    Angular поддерживает [selectors](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) для любой комбинации имени тега, атрибута, CSS-класса и псевдокласса `:not`.
+
+    Например, следующий компонент использует два элемента `<ng-content>`.
+
+    <code-example header="content-projection/src/app/zippy-multislot/zippy-multislot.component.ts" path="content-projection/src/app/zippy-multislot/zippy-multislot.component.ts"></code-example>.
+
+Содержимое, использующее атрибут `question`, проецируется в элемент `<ng-content>` с атрибутом `select=[question]`.
+
+<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="multi-slot"></code-example>.
 
 <div class="callout is-helpful">
 
 <header>ng-content without a select attribute</header>
 
-If your component includes an `<ng-content>` element without a `select` attribute, that instance receives all projected components that do not match any of the other `<ng-content>` elements.
+Если ваш компонент включает элемент `<ng-content>` без атрибута `select`, этот экземпляр получает все спроецированные компоненты, которые не соответствуют ни одному из других элементов `<ng-content>`.
 
-In the preceding example, only the second `<ng-content>` element defines a `select` attribute.
-As a result, the first `<ng-content>` element receives any other content projected into the component.
+В предыдущем примере только второй элемент `<ng-content>` определяет атрибут `select`. В результате первый элемент `<ng-content>` получает любое другое содержимое, проецируемое в компонент.
 
 </div>
 
 <a id="conditional"></a>
 
-## Conditional content projection
+## Условное проецирование содержимого
 
-If your component needs to *conditionally* render content, or render content multiple times, you should configure that component to accept an `<ng-template>` element that contains the content you want to conditionally render.
+Если ваш компонент должен _условно_ отображать содержимое или отображать его несколько раз, вы должны настроить этот компонент на прием элемента `<ng-template>`, который содержит содержимое, которое вы хотите условно отобразить.
 
-Using an `<ng-content>` element in these cases is not recommended, because when the consumer of a component supplies the content, that content is *always* initialized, even if the component does not define an `<ng-content>` element or if that `<ng-content>` element is inside of an `ngIf` statement.
+Использование элемента `<ng-content>` в этих случаях не рекомендуется, потому что когда потребитель компонента предоставляет содержимое, это содержимое _всегда_ инициализируется, даже если компонент не определяет элемент `<ng-content>` или если этот элемент `<ng-content>` находится внутри оператора `ngIf`.
 
-With an `<ng-template>` element, you can have your component explicitly render content based on any condition you want, as many times as you want.
-Angular will not initialize the content of an `<ng-template>` element until that element is explicitly rendered.
+С помощью элемента `<ng-template>` вы можете заставить свой компонент явно выводить содержимое на основе любого условия, сколько угодно раз. Angular не будет инициализировать содержимое элемента `<ng-template>` до тех пор, пока этот элемент не будет явно отрисован.
 
-The following steps demonstrate a typical implementation of conditional content projection using `<ng-template>`.
+Следующие шаги демонстрируют типичную реализацию условного проецирования содержимого с использованием `<ng-template>`.
 
 1.  [Create a component](guide/component-overview#creating-a-component).
 1.  In the component that accepts an `<ng-template>` element, use an `<ng-container>` element to render that template, such as:
@@ -141,36 +143,34 @@ The following steps demonstrate a typical implementation of conditional content 
 
     </div>
 
-<a id="ngprojectas "></a>
+<a id="ngprojectas"></a>
 
-## Projecting content in more complex environments
+## Проецирование содержимого в более сложных средах
 
-As described in [Multi-slot Content Projection](#multi-slot), you typically use either an attribute, element, CSS Class, or some combination of all three to identify where to project your content.
-For example, in the following HTML template, a paragraph tag uses a custom attribute, `question`, to project content into the `app-zippy-multislot` component.
+Как описано в [Многослотовое проецирование содержимого](#multi-slot), вы обычно используете либо атрибут, либо элемент, либо CSS-класс, либо некоторую комбинацию всех трех для определения места проецирования содержимого. Например, в следующем шаблоне HTML тег абзаца использует пользовательский атрибут `question` для проецирования содержимого в компонент `app-zippy-multislot`.
 
-<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="multi-slot"></code-example>
+<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="multi-slot"></code-example>.
 
-In some cases, you might want to project content as a different element.
-For example, the content you want to project might be a child of another element.
-Accomplish this with the `ngProjectAs` attribute.
+В некоторых случаях вы можете захотеть спроецировать содержимое как другой элемент. Например, содержимое, которое вы хотите спроецировать, может быть дочерним элементом другого элемента.
 
-For instance, consider the following HTML snippet:
+Для этого используется атрибут `ngProjectAs`.
 
-<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="ngprojectas"></code-example>
+Например, рассмотрим следующий фрагмент HTML:
 
-This example uses an `<ng-container>` attribute to simulate projecting a component into a more complex structure.
+<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="ngprojectas"></code-example>.
+
+В этом примере используется атрибут `<ng-container>` для имитации проецирования компонента в более сложную структуру.
 
 <div class="callout is-helpful">
 
 <header>Reminder</header>
 
-The `ng-container` element is a logical construct that is used to group other DOM elements; however, the `ng-container` itself is not rendered in the DOM tree.
+Элемент `ng-container` - это логическая конструкция, которая используется для группировки других элементов DOM; однако сам `ng-container` не отображается в дереве DOM.
 
 </div>
 
-In this example, the content we want to project resides inside another element.
-To project this content as intended, the template uses the `ngProjectAs` attribute.
-With `ngProjectAs`, the entire `<ng-container>` element is projected into a component using the `[question]` selector.
+В данном примере содержимое, которое мы хотим спроецировать, находится внутри другого элемента. Чтобы спроецировать это содержимое, шаблон использует атрибут `ngProjectAs`.
+С помощью `ngProjectAs` весь элемент `<ng-container>` проецируется в компонент с помощью селектора `[question]`.
 
 <!-- links -->
 
@@ -178,4 +178,4 @@ With `ngProjectAs`, the entire `<ng-container>` element is projected into a comp
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+@ просмотрено 2022-02-28

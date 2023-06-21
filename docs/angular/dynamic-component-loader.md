@@ -1,117 +1,111 @@
-# Dynamic component loader
+# Динамический загрузчик компонентов
 
-Component templates are not always fixed.
-An application might need to load new components at runtime.
-This cookbook shows you how to add components dynamically.
+Шаблоны компонентов не всегда фиксированы. Приложению может потребоваться загрузка новых компонентов во время выполнения.
 
-See the <live-example name="dynamic-component-loader"></live-example> of the code in this cookbook.
+В этой книге рецептов показано, как добавлять компоненты динамически.
+
+Смотрите <live-example name="dynamic-component-loader"></live-example> кода в этой поваренной книге.
 
 <a id="dynamic-loading"></a>
 
-## Dynamic component loading
+## Динамическая загрузка компонента
 
-The following example shows how to build a dynamic ad banner.
+В следующем примере показано, как создать динамический рекламный баннер.
 
-The hero agency is planning an ad campaign with several different ads cycling through the banner.
-New ad components are added frequently by several different teams.
-This makes it impractical to use a template with a static component structure.
+Агентство-герой планирует рекламную кампанию с несколькими различными объявлениями, циклически повторяющимися на баннере. Новые рекламные компоненты часто добавляются несколькими различными командами.
 
-Instead, you need a way to load a new component without a fixed reference to the component in the ad banner's template.
+Это делает нецелесообразным использование шаблона со статичной структурой компонентов.
 
-Angular comes with its own API for loading components dynamically.
+Вместо этого необходим способ загрузки нового компонента без фиксированной ссылки на компонент в шаблоне рекламного баннера.
+
+Angular поставляется с собственным API для динамической загрузки компонентов.
 
 <a id="directive"></a>
 
-## The anchor directive
+## Директива якоря
 
-Before adding components, you have to define an anchor point to tell Angular where to insert components.
+Перед добавлением компонентов необходимо определить точку привязки, чтобы указать Angular, куда вставлять компоненты.
 
-The ad banner uses a helper directive called `AdDirective` to mark valid insertion points in the template.
+Рекламный баннер использует вспомогательную директиву `AdDirective` для обозначения допустимых точек вставки в шаблоне.
 
 <code-example header="src/app/ad.directive.ts" path="dynamic-component-loader/src/app/ad.directive.ts"></code-example>
 
-`AdDirective` injects `ViewContainerRef` to gain access to the view container of the element that will host the dynamically added component.
+`AdDirective` инжектирует `ViewContainerRef` для получения доступа к контейнеру представления элемента, в котором будет размещен динамически добавляемый компонент.
 
-In the `@Directive` decorator, notice the selector name, `adHost`; that's what you use to apply the directive to the element.
-The next section shows you how.
+В декораторе `@Directive` обратите внимание на имя селектора `adHost`; именно его вы используете для применения директивы к элементу. В следующем разделе показано, как это сделать.
 
 <a id="loading-components"></a>
 
-## Loading components
+## Загрузка компонентов
 
-Most of the ad banner implementation is in `ad-banner.component.ts`.
-To keep things simple in this example, the HTML is in the `@Component` decorator's `template` property as a template string.
+Большая часть реализации рекламного баннера находится в `ad-banner.component.ts`. Для простоты в этом примере HTML находится в свойстве `@Component` декоратора `template` как строка шаблона.
 
-The `<ng-template>` element is where you apply the directive you just made.
-To apply the `AdDirective`, recall the selector from `ad.directive.ts`, `[adHost]`.
-Apply that to `<ng-template>` without the square brackets.
-Now Angular knows where to dynamically load components.
+Элемент `<ng-template>` является местом применения директивы, которую вы только что создали. Чтобы применить `AdDirective`, вспомните селектор из `ad.directive.ts`, `[adHost]`.
 
-<code-example header="src/app/ad-banner.component.ts (template)" path="dynamic-component-loader/src/app/ad-banner.component.ts" region="ad-host"></code-example>
+Примените его к `<ng-template>` без квадратных скобок.
 
-The `<ng-template>` element is a good choice for dynamic components because it doesn't render any additional output.
+Теперь Angular знает, куда динамически загружать компоненты.
+
+<code-example header="src/app/ad-banner.component.ts (template)" path="dynamic-component-loader/src/app/ad-banner.component.ts" region="ad-host"></code-example
+
+Элемент `<ng-template>` является хорошим выбором для динамических компонентов, поскольку он не выводит никаких дополнительных данных.
 
 <a id="resolving-components"></a>
 
-## Resolving components
+## Разрешение компонентов
 
-Take a closer look at the methods in `ad-banner.component.ts`.
+Рассмотрим подробнее методы в `ad-banner.component.ts`.
 
-`AdBannerComponent` takes an array of `AdItem` objects as input, which ultimately comes from `AdService`.
-`AdItem` objects specify the type of component to load and any data to bind to the component.`AdService` returns the actual ads making up the ad campaign.
+`AdBannerComponent` принимает массив объектов `AdItem` в качестве входных данных, которые в конечном итоге поступают из `AdService`. Объекты `AdItem` определяют тип компонента для загрузки и любые данные для привязки к компоненту.`AdService` возвращает фактические объявления, составляющие рекламную кампанию.
 
-Passing an array of components to `AdBannerComponent` allows for a dynamic list of ads without static elements in the template.
+Передача массива компонентов в `AdBannerComponent` позволяет получить динамический список объявлений без статических элементов в шаблоне.
 
-With its `getAds()` method, `AdBannerComponent` cycles through the array of `AdItems` and loads a new component every 3 seconds by calling `loadComponent()`.
+С помощью метода `getAds()`, `AdBannerComponent` циклически просматривает массив `AdItems` и загружает новый компонент каждые 3 секунды, вызывая `loadComponent()`.
 
-<code-example header="src/app/ad-banner.component.ts (excerpt)" path="dynamic-component-loader/src/app/ad-banner.component.ts" region="class"></code-example>
+<code-example header="src/app/ad-banner.component.ts (excerpt)" path="dynamic-component-loader/src/app/ad-banner.component.ts" region="class"></code-example>.
 
-The `loadComponent()` method is doing a lot of the heavy lifting here.
-Take it step by step.
-First, it picks an ad.
+Метод `loadComponent()` выполняет здесь большую часть тяжелой работы. Рассмотрим его шаг за шагом.
+
+Сначала он выбирает объявление.
 
 <div class="alert is-helpful">
 
-**How `loadComponent()` chooses an ad**
+**Как `loadComponent()` выбирает объявление**
 
-The `loadComponent()` method chooses an ad using some math.
+Метод `loadComponent()` выбирает объявление с помощью математики.
 
-First, it sets the `currentAdIndex` by taking whatever it currently is plus one, dividing that by the length of the `AdItem` array, and using the *remainder* as the new `currentAdIndex` value.
-Then, it uses that value to select an `adItem` from the array.
+Сначала он устанавливает `currentAdIndex`, взяв значение, равное текущему, плюс один, разделив его на длину массива `AdItem`, и используя _оставшуюся часть_ в качестве нового значения `currentAdIndex`. Затем это значение используется для выбора `adItem` из массива.
 
 </div>
 
-Next, you're targeting the `viewContainerRef` that exists on this specific instance of the component.
-How do you know it's this specific instance?
-Because it's referring to `adHost`, and `adHost` is the directive you set up earlier to tell Angular where to insert dynamic components.
+Далее, вы нацеливаетесь на `viewContainerRef`, который существует на этом конкретном экземпляре компонента. Откуда вы знаете, что это именно этот экземпляр?
+Потому что он ссылается на `adHost`, а `adHost` - это директива, которую вы установили ранее, чтобы указать Angular, куда вставлять динамические компоненты.
 
-As you may recall, `AdDirective` injects `ViewContainerRef` into its constructor.
-This is how the directive accesses the element that you want to use to host the dynamic component.
+Как вы помните, `AdDirective` вставляет `ViewContainerRef` в свой конструктор. Так директива получает доступ к элементу, который вы хотите использовать для размещения динамического компонента.
 
-To add the component to the template, you call `createComponent()` on `ViewContainerRef`.
+Чтобы добавить компонент в шаблон, вы вызываете `createComponent()` на `ViewContainerRef`.
 
-The `createComponent()` method returns a reference to the loaded component.
-Use that reference to interact with the component by assigning to its properties or calling its methods.
+Метод `createComponent()` возвращает ссылку на загруженный компонент. Используйте эту ссылку для взаимодействия с компонентом, присваивая ему свойства или вызывая его методы.
 
 <a id="common-interface"></a>
 
-## The `AdComponent` interface
+## Интерфейс `AdComponent`
 
-In the ad banner, all components implement a common `AdComponent` interface to standardize the API for passing data to the components.
+В рекламном баннере все компоненты реализуют общий интерфейс `AdComponent` для стандартизации API для передачи данных компонентам.
 
-Here are two sample components and the `AdComponent` interface for reference:
+Вот два примера компонентов и интерфейса `AdComponent` для справки:
 
 <code-tabs>
-    <code-pane header="hero-job-ad.component.ts" path="dynamic-component-loader/src/app/hero-job-ad.component.ts"></code-pane>
+     <code-pane header="hero-job-ad.component.ts" path="dynamic-component-loader/src/app/hero-job-ad.component.ts"></code-pane>
     <code-pane header="hero-profile.component.ts" path="dynamic-component-loader/src/app/hero-profile.component.ts"></code-pane>
     <code-pane header="ad.component.ts" path="dynamic-component-loader/src/app/ad.component.ts"></code-pane>
 </code-tabs>
 
 <a id="final-ad-baner"></a>
 
-## Final ad banner
+## Окончательный рекламный баннер
 
-The final ad banner looks like this:
+Окончательный рекламный баннер выглядит следующим образом:
 
 <div class="lightbox">
 
@@ -119,7 +113,7 @@ The final ad banner looks like this:
 
 </div>
 
-See the <live-example name="dynamic-component-loader"></live-example>.
+См. <live-example name="dynamic-component-loader"></live-example>.
 
 <!-- links -->
 
@@ -127,4 +121,4 @@ See the <live-example name="dynamic-component-loader"></live-example>.
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+@ просмотрено 2022-02-28

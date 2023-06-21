@@ -1,107 +1,114 @@
-# Built-in directives
+# Встроенные директивы
 
-Directives are classes that add additional behavior to elements
-in your Angular applications.
-Use Angular's built-in directives to manage forms, lists, styles, and what users see.
+Директивы - это классы, которые добавляют дополнительное поведение к элементам в ваших приложениях Angular.
+
+Используйте встроенные директивы Angular для управления формами, списками, стилями и тем, что видят пользователи.
 
 <div class="alert is-helpful">
 
-See the <live-example></live-example> for a working example containing the code snippets in this guide.
+Смотрите <live-example></live-example> для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
 
 </div>
 
-The different types of Angular directives are as follows:
+Ниже перечислены различные типы директив Angular:
 
-| Directive Types                                                                   | Details |
-|:---                                                                               |:---     |
-| [Components](guide/component-overview)                                            | Used with a template. This type of directive is the most common directive type.   |
-| [Attribute directives](guide/built-in-directives#built-in-attribute-directives)   | Change the appearance or behavior of an element, component, or another directive. |
-| [Structural directives](guide/built-in-directives#built-in-structural-directives) | Change the DOM layout by adding and removing DOM elements.                        |
+| Типы директив | Подробности | |:--- |:--- |:--- |
 
-This guide covers built-in [attribute directives](guide/built-in-directives#built-in-attribute-directives) and [structural directives](guide/built-in-directives#built-in-structural-directives).
+| [Components](guide/component-overview) | Используется с шаблоном. Этот тип директив является наиболее распространенным. |
+
+| [Директивы атрибутов](guide/built-in-directives#built-in-attribute-directives) | Изменяют внешний вид или поведение элемента, компонента или другой директивы. |
+
+| [Структурные директивы](guide/built-in-directives#built-in-structural-directives) | Изменяют компоновку DOM путем добавления и удаления элементов DOM. |
+
+Это руководство охватывает встроенные [атрибутивные директивы](guide/built-in-directives#built-in-attribute-directives) и [структурные директивы](guide/built-in-directives#built-in-structural-directives).
 
 <a id="attribute-directives"></a>
 
-## Built-in attribute directives
+## Встроенные директивы атрибутов
 
-Attribute directives listen to and modify the behavior of other HTML elements, attributes, properties, and components.
+Директивы атрибутов слушают и изменяют поведение других элементов HTML, атрибутов, свойств и компонентов.
 
-Many NgModules such as the [`RouterModule`](guide/router "Routing and Navigation") and the [`FormsModule`](guide/forms "Forms") define their own attribute directives.
-The most common attribute directives are as follows:
+Многие модули NgModule, такие как [`RouterModule`](guide/router 'Routing and Navigation') и [`FormsModule`](guide/forms 'Forms') определяют свои собственные директивы атрибутов. Наиболее распространенными директивами атрибутов являются следующие:
 
-| Common directives                              | Details |
-|:---                                            |:---     |
-| [`NgClass`](guide/built-in-directives#ngClass) | Adds and removes a set of CSS classes.             |
-| [`NgStyle`](guide/built-in-directives#ngstyle) | Adds and removes a set of HTML styles.             |
-| [`NgModel`](guide/built-in-directives#ngModel) | Adds two-way data binding to an HTML form element. |
+| Общие директивы | Подробности | |:--- |:--- |:--- |
+
+| [`NgClass`](guide/built-in-directives#ngClass) | Добавляет и удаляет набор классов CSS. |
+
+| [`NgStyle`](guide/built-in-directives#ngstyle) | Добавляет и удаляет набор стилей HTML. |
+
+| [`NgModel`](guide/built-in-directives#ngModel) | Добавляет двустороннюю привязку данных к элементу HTML-формы. |
 
 <div class="alert is-helpful">
 
-Built-in directives use only public APIs.
-They do not have special access to any private APIs that other directives can't access.
+Встроенные директивы используют только общедоступные API. Они не имеют специального доступа к каким-либо частным API, к которым не могут обращаться другие директивы.
 
 </div>
 
 <a id="ngClass"></a>
 
-## Adding and removing classes with `NgClass`
+## Добавление и удаление классов с помощью `NgClass`
 
-Add or remove multiple CSS classes simultaneously with `ngClass`.
+Добавьте или удалите несколько классов CSS одновременно с помощью `ngClass`.
 
 <div class="alert is-helpful">
 
-To add or remove a *single* class, use [class binding](guide/class-binding) rather than `NgClass`.
+Чтобы добавить или удалить _один_ класс, используйте [class binding](guide/class-binding), а не `NgClass`.
 
 </div>
 
 ### Using `NgClass` with an expression
 
-On the element you'd like to style, add `[ngClass]` and set it equal to an expression.
-In this case, `isSpecial` is a boolean set to `true` in `app.component.ts`.
+On the element you'd like to style, add `[ngClass]` and set it equal to an expression. In this case, `isSpecial` is a boolean set to `true` in `app.component.ts`.
+
 Because `isSpecial` is true, `ngClass` applies the class of `special` to the `<div>`.
 
-<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="special-div"></code-example>
+<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="special-div"></code-example>
 
-### Using `NgClass` with a method
+### Использование `NgClass` с методом
 
-1.  To use `NgClass` with a method, add the method to the component class.
-    In the following example, `setCurrentClasses()` sets the property `currentClasses` with an object that adds or removes three classes based on the `true` or `false` state of three other component properties.
+1.  Чтобы использовать `NgClass` с методом, добавьте метод в класс компонента.
 
-    Each key of the object is a CSS class name.
-    If a key is `true`, `ngClass` adds the class.
-    If a key is `false`, `ngClass` removes the class.
+    В следующем примере `setCurrentClasses()` устанавливает свойство `currentClasses` с объектом, который добавляет или удаляет три класса на основе состояния `true` или `false` трех других свойств компонента.
 
-    <code-example header="src/app/app.component.ts" path="built-in-directives/src/app/app.component.ts" region="setClasses"></code-example>
+    Каждый ключ объекта - это имя класса CSS.
 
-1.  In the template, add the `ngClass` property binding to `currentClasses` to set the element's classes:
+    Если ключ имеет значение `true`, `ngClass` добавляет класс.
 
-    <code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgClass-1"></code-example>
+    Если ключ равен `false`, то `ngClass` удаляет класс.
 
-For this use case, Angular applies the classes on initialization and in case of changes.
-The full example calls `setCurrentClasses()` initially with `ngOnInit()` and when the dependent properties change through a button click.
-These steps are not necessary to implement `ngClass`.
-For more information, see the <live-example></live-example> `app.component.ts` and `app.component.html`.
+    <code-example header="src/app/app.component.ts" path="built-in-directives/src/app/app/app.component.ts" region="setClasses"></code-example>
+
+1.  В шаблоне добавьте привязку свойства `ngClass` к `currentClasses` для установки классов элемента:
+
+    <code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="NgClass-1"></code-example>.
+
+Для этого случая использования Angular применяет классы при инициализации и в случае изменений. Полный пример вызывает `setCurrentClasses()` изначально с `ngOnInit()` и когда зависимые свойства изменяются по нажатию кнопки.
+
+Эти шаги не являются необходимыми для реализации `ngClass`.
+
+Для получения дополнительной информации смотрите <live-example></live-example> `app.component.ts` и `app.component.html`.
 
 <a id="ngstyle"></a>
 
-## Setting inline styles with `NgStyle`
+## Установка встроенных стилей с помощью `NgStyle`
 
-Use `NgStyle` to set multiple inline styles simultaneously, based on the state of the component.
+Используйте `NgStyle` для установки нескольких встроенных стилей одновременно, основываясь на состоянии компонента.
 
-1.  To use `NgStyle`, add a method to the component class.
+1.  Чтобы использовать `NgStyle`, добавьте метод в класс компонента.
 
-    In the following example, `setCurrentStyles()` sets the property `currentStyles` with an object that defines three styles, based on the state of three other component properties.
+    В следующем примере `setCurrentStyles()` устанавливает свойство `currentStyles` с объектом, определяющим три стиля, основываясь на состоянии трех других свойств компонента.
 
-    <code-example header="src/app/app.component.ts" path="built-in-directives/src/app/app.component.ts" region="setStyles"></code-example>
+    <code-example header="src/app/app.component.ts" path="built-in-directives/src/app/app/app.component.ts" region="setStyles"></code-example>.
 
-1.  To set the element's styles, add an `ngStyle` property binding to `currentStyles`.
+1.  Чтобы установить стили элемента, добавьте свойство `ngStyle`, связывающее `currentStyles`.
 
-    <code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgStyle-2"></code-example>
+    <code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="NgStyle-2"></code-example>.
 
-For this use case, Angular applies the styles upon initialization and in case of changes.
-To do this, the full example calls `setCurrentStyles()` initially with `ngOnInit()` and when the dependent properties change through a button click.
-However, these steps are not necessary to implement `ngStyle` on its own.
-See the <live-example></live-example> `app.component.ts` and `app.component.html` for this optional implementation.
+Для этого случая использования Angular применяет стили при инициализации и в случае изменений. Для этого в полном примере вызывается `setCurrentStyles()` изначально с `ngOnInit()` и при изменении зависимых свойств по нажатию кнопки.
+
+Однако эти шаги не являются необходимыми для самостоятельной реализации `ngStyle`.
+
+Смотрите <live-example></live-example> `app.component.ts` и `app.component.html` для этой дополнительной реализации.
 
 <a id="ngModel"></a>
 
@@ -109,7 +116,7 @@ See the <live-example></live-example> `app.component.ts` and `app.component.html
 
 Use the `NgModel` directive to display a data property and update that property when the user makes changes.
 
-1.  Import `FormsModule`  and add it to the NgModule's `imports` list.
+1.  Import `FormsModule` and add it to the NgModule's `imports` list.
 
     <code-example header="src/app/app.module.ts (FormsModule import)" path="built-in-directives/src/app/app.module.ts" region="import-forms-module"></code-example>
 
@@ -119,13 +126,13 @@ Use the `NgModel` directive to display a data property and update that property 
 
     This `[(ngModel)]` syntax can only set a data-bound property.
 
-To customize your configuration, write the expanded form, which separates the property and event binding.
-Use [property binding](guide/property-binding) to set the property and [event binding](guide/event-binding) to respond to changes.
+To customize your configuration, write the expanded form, which separates the property and event binding. Use [property binding](guide/property-binding) to set the property and [event binding](guide/event-binding) to respond to changes.
+
 The following example changes the `<input>` value to uppercase:
 
-<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="uppercase"></code-example>
+<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="uppercase"></code-example>.
 
-Here are all variations in action, including the uppercase version:
+Вот все варианты в действии, включая версию в верхнем регистре:
 
 <div class="lightbox">
 
@@ -133,53 +140,51 @@ Here are all variations in action, including the uppercase version:
 
 </div>
 
-### `NgModel` and value accessors
+### `NgModel` и аксессоры значений
 
-The `NgModel` directive works for an element supported by a [ControlValueAccessor](api/forms/ControlValueAccessor).
-Angular provides *value accessors* for all of the basic HTML form elements.
-For more information, see [Forms](guide/forms).
+Директива `NgModel` работает для элемента, поддерживаемого [ControlValueAccessor](api/forms/ControlValueAccessor). Angular предоставляет _аксессоры значений_ для всех основных элементов HTML-форм.
 
-To apply `[(ngModel)]` to a non-form built-in element or a third-party custom component, you have to write a value accessor.
-For more information, see the API documentation on [DefaultValueAccessor](api/forms/DefaultValueAccessor).
+Для получения дополнительной информации смотрите [Forms](guide/forms).
+
+Чтобы применить `[(ngModel)]` к встроенному элементу, не являющемуся формой, или стороннему пользовательскому компоненту, необходимо написать аксессор значения. Для получения дополнительной информации смотрите документацию API по [DefaultValueAccessor](api/forms/DefaultValueAccessor).
 
 <div class="alert is-helpful">
 
-When you write an Angular component, you don't need a value accessor or `NgModel` if you  name the value and event properties according to Angular's [two-way binding syntax](guide/two-way-binding#how-two-way-binding-works).
+Когда вы пишете компонент Angular, вам не нужен аксессор значения или `NgModel`, если вы называете свойства значения и события в соответствии с [синтаксисом двустороннего связывания Angular] (guide/two-way-binding#how-two-way-binding-works).
 
 </div>
 
 <a id="structural-directives"></a>
 
-## Built-in structural directives
+## Встроенные структурные директивы
 
-Structural directives are responsible for HTML layout.
-They shape or reshape the DOM's structure, typically by adding, removing, and manipulating the host elements to which they are attached.
+Структурные директивы отвечают за верстку HTML. Они формируют или изменяют структуру DOM, как правило, путем добавления, удаления и манипулирования элементами, к которым они прикреплены.
 
-This section introduces the most common built-in structural directives:
+В этом разделе представлены наиболее распространенные встроенные структурные директивы:
 
-| Common built-in structural directives            | Details |
-|:---                                              |:---     |
-| [`NgIf`](guide/built-in-directives#ngIf)         | Conditionally creates or disposes of subviews from the template. |
-| [`NgFor`](guide/built-in-directives#ngFor)       | Repeat a node for each item in a list.                           |
-| [`NgSwitch`](guide/built-in-directives#ngSwitch) | A set of directives that switch among alternative views.         |
+| Общие встроенные структурные директивы | Подробности | | |:--- |:--- |:---.
 
-For more information, see [Structural Directives](guide/structural-directives).
+| [`NgIf`](guide/built-in-directives#ngIf) | Условно создает или удаляет вложенные представления из шаблона. |
+
+| [`NgFor`](guide/built-in-directives#ngFor) | Повторяет узел для каждого элемента в списке. |
+
+| | [`NgSwitch`](guide/built-in-directives#ngSwitch) | Набор директив, переключающих между альтернативными представлениями. |
+
+Для получения дополнительной информации смотрите [Structural Directives](guide/structural-directives).
 
 <a id="ngIf"></a>
 
-## Adding or removing an element with `NgIf`
+## Добавление или удаление элемента с помощью `NgIf`
 
-Add or remove an element by applying an `NgIf` directive to a host element.
+Добавьте или удалите элемент, применив директиву `NgIf` к главному элементу.
 
-When `NgIf` is `false`, Angular removes an element and its descendants from the DOM.
-Angular then disposes of their components, which frees up memory and resources.
+Когда `NgIf` имеет значение `false`, Angular удаляет элемент и его потомков из DOM. Затем Angular утилизирует их компоненты, освобождая память и ресурсы.
 
-To add or remove an element, bind `*ngIf` to a condition expression such as `isActive` in the following example.
+Чтобы добавить или удалить элемент, привяжите `*ngIf` к выражению условия, например `isActive` в следующем примере.
 
 <code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgIf-1"></code-example>
 
-When the `isActive` expression returns a truthy value, `NgIf` adds the `ItemDetailComponent` to the DOM.
-When the expression is falsy, `NgIf` removes the `ItemDetailComponent` from the DOM and disposes of the component and all of its subcomponents.
+When the `isActive` expression returns a truthy value, `NgIf` adds the `ItemDetailComponent` to the DOM. When the expression is falsy, `NgIf` removes the `ItemDetailComponent` from the DOM and disposes of the component and all of its subcomponents.
 
 For more information on `NgIf` and `NgIfElse`, see the [NgIf API documentation](api/common/NgIf).
 
@@ -187,99 +192,101 @@ For more information on `NgIf` and `NgIfElse`, see the [NgIf API documentation](
 
 By default, `NgIf` prevents display of an element bound to a null value.
 
-To use `NgIf` to guard a `<div>`, add `*ngIf="yourProperty"` to the `<div>`.
-In the following example, the `currentCustomer` name appears because there is a `currentCustomer`.
+To use `NgIf` to guard a `<div>`, add `*ngIf="yourProperty"` to the `<div>`. In the following example, the `currentCustomer` name appears because there is a `currentCustomer`.
 
 <code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgIf-2"></code-example>
 
-However, if the property is `null`, Angular does not display the `<div>`.
-In this example, Angular does not display the `nullCustomer` because it is `null`.
+However, if the property is `null`, Angular does not display the `<div>`. In this example, Angular does not display the `nullCustomer` because it is `null`.
 
-<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgIf-2b"></code-example>
+<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="NgIf-2b"></code-example>.
 
 <a id="ngFor"></a>
 
-## Listing items with `NgFor`
+## Вывод списка элементов с помощью `NgFor`
 
-Use the `NgFor` directive to present a list of items.
+Используйте директиву `NgFor` для представления списка элементов.
 
-1.  Define a block of HTML that determines how Angular renders a single item.
-1.  To list your items, assign the shorthand `let item of items` to `*ngFor`.
+1.  Определите блок HTML, который определяет, как Angular отображает отдельный элемент.
 
-<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgFor-1"></code-example>
+1.  Чтобы перечислить элементы, назначьте сокращение `let item of items` для `*ngFor`.
 
-The string `"let item of items"` instructs Angular to do the following:
+<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="NgFor-1"></code-example>.
 
-*   Store each item in the `items` array in the local `item` looping variable
-*   Make each item available to the templated HTML for each iteration
-*   Translate `"let item of items"` into an `<ng-template>` around the host element
-*   Repeat the `<ng-template>` for each `item` in the list
+Строка `"let item of items"` инструктирует Angular делать следующее:
 
-For more information see the [Structural directive shorthand](guide/structural-directives#shorthand) section of [Structural directives](guide/structural-directives).
+-   Хранить каждый элемент массива `items` в локальной циклической переменной `item`.
 
-### Repeating a component view
+-   Сделать каждый элемент доступным в шаблоне HTML для каждой итерации.
 
-To repeat a component element, apply `*ngFor` to the selector.
-In the following example, the selector is `<app-item-detail>`.
+-   Перевести `пусть элемент items` в `<ng-шаблон>` вокруг основного элемента.
 
-<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgFor-2"></code-example>
+-   Повторять `<ng-шаблон>` для каждого `пункта` в списке.
 
-Reference a template input variable, such as `item`, in the following locations:
+Для получения дополнительной информации смотрите раздел [Structural directive shorthand](guide/structural-directives#shorthand) раздела [Structural directives](guide/structural-directives).
 
-*   Within the `ngFor` host element
-*   Within the host element descendants to access the item's properties
+### Повторение компонентного представления
 
-The following example references `item` first in an interpolation and then passes in a binding to the `item` property of the `<app-item-detail>` component.
+Чтобы повторить элемент компонента, примените `*ngFor` к селектору. В следующем примере селектором является `<app-item-detail>`.
 
-<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgFor-1-2"></code-example>
+<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="NgFor-2"></code-example>.
 
-For more information about template input variables, see [Structural directive shorthand](guide/structural-directives#shorthand).
+Ссылайтесь на входную переменную шаблона, такую как `item`, в следующих местах:
 
-### Getting the `index` of `*ngFor`
+-   В главном элементе `ngFor`.
 
-Get the `index` of `*ngFor` in a template input variable and use it in the template.
+-   В потомках главного элемента для доступа к свойствам элемента.
 
-In the `*ngFor`, add a semicolon and `let i=index` to the shorthand.
-The following example gets the `index` in a variable named `i` and displays it with the item name.
+Следующий пример сначала ссылается на `item` в интерполяции, а затем передает привязку к свойству `item` компонента `<app-item-detail>`.
 
-<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgFor-3"></code-example>
+<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="NgFor-1-2"></code-example>.
 
-The index property of the `NgFor` directive context returns the zero-based index of the item in each iteration.
+Для получения дополнительной информации о входных переменных шаблона смотрите [Сокращение структурных директив](guide/structural-directives#shorthand).
 
-Angular translates this instruction into an `<ng-template>` around the host element,
-then uses this template repeatedly to create a new set of elements and bindings for each `item`
-in the list.
-For more information about shorthand, see the [Structural Directives](guide/structural-directives#shorthand) guide.
+### Получение `index` из `*ngFor`.
 
+Получите `index` из `*ngFor` во входной переменной шаблона и используйте его в шаблоне.
 
-## Repeating elements when a condition is true
+В `*ngFor` добавьте точку с запятой и `let i=index` к сокращению. Следующий пример получает `index` в переменную с именем `i` и отображает его вместе с именем элемента.
 
-To repeat a block of HTML when a particular condition is true, put the `*ngIf` on a container element that wraps an `*ngFor` element.
+<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="NgFor-3"></code-example>.
 
-For more information see [one structural directive per element](guide/structural-directives#one-per-element).
+Свойство index контекста директивы `NgFor` возвращает нулевой индекс элемента в каждой итерации.
+
+Angular переводит эту инструкцию в `<ng-template>` вокруг основного элемента, затем использует этот шаблон несколько раз для создания нового набора элементов и привязок для каждого `item`.
+
+в списке.
+
+Более подробную информацию о сокращении см. в руководстве [Structural Directives](guide/structural-directives#shorthand).
+
+## Повторение элементов при истинности условия
+
+Чтобы повторить блок HTML, когда определенное условие истинно, поместите `*ngIf` в контейнерный элемент, который обертывает элемент `*ngFor`.
+
+Дополнительную информацию смотрите в разделе [одна структурная директива на элемент](guide/structural-directives#one-per-element).
 
 <a id="ngfor-with-trackby"></a>
 
-### Tracking items with `*ngFor` `trackBy`
+### Отслеживание элементов с `*ngFor` `trackBy`
 
-Reduce the number of calls your application makes to the server by tracking changes to an item list.
-With the `*ngFor` `trackBy` property, Angular can change and re-render only those items that have changed, rather than reloading the entire list of items.
+Сократите количество обращений вашего приложения к серверу, отслеживая изменения в списке элементов. С помощью свойства `*ngFor` `trackBy`, Angular может изменять и перерисовывать только те элементы, которые изменились, вместо того, чтобы перезагружать весь список элементов.
 
-1.  Add a method to the component that returns the value `NgFor` should track.
-    In this example, the value to track is the item's `id`.
-    If the browser has already rendered `id`, Angular keeps track of it and doesn't re-query the server for the same `id`.
+1.  Добавьте в компонент метод, возвращающий значение, которое должен отслеживать `NgFor`.
 
-    <code-example header="src/app/app.component.ts" path="built-in-directives/src/app/app.component.ts" region="trackByItems"></code-example>
+    В данном примере значением для отслеживания является `id` элемента.
 
-1.  In the shorthand expression, set `trackBy` to the `trackByItems()` method.
+    Если браузер уже отобразил `id`, Angular отслеживает его и не запрашивает сервер повторно для получения того же `id`.
 
-    <code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="trackBy"></code-example>
+    <code-example header="src/app/app.component.ts" path="built-in-directives/src/app/app/app.component.ts" region="trackByItems"></code-example>.
 
-**Change ids** creates new items with new `item.id`s.
-In the following illustration of the `trackBy` effect, **Reset items** creates new items with the same `item.id`s.
+1.  В сокращенном выражении установите `trackBy` на метод `trackByItems()`.
 
-*   With no `trackBy`, both buttons trigger complete DOM element replacement.
-*   With `trackBy`, only changing the `id` triggers element replacement.
+    <code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="trackBy"></code-example>
+
+**Изменение id** создает новые элементы с новыми `item.id`. В следующей иллюстрации эффекта `trackBy`, **Reset items** создает новые элементы с теми же `item.id`.
+
+-   При отсутствии `trackBy` обе кнопки вызывают полную замену элементов DOM.
+
+-   При использовании `trackBy` только изменение `id` вызывает замену элемента.
 
 <div class="lightbox">
 
@@ -289,13 +296,13 @@ In the following illustration of the `trackBy` effect, **Reset items** creates n
 
 <a id="ngcontainer"></a>
 
-## Hosting a directive without a DOM element
+## Размещение директивы без элемента DOM
 
-The Angular `<ng-container>` is a grouping element that doesn't interfere with styles or layout because Angular doesn't put it in the DOM.
+Angular `<ng-container>` - это группирующий элемент, который не вмешивается в стили или макет, потому что Angular не помещает его в DOM.
 
-Use `<ng-container>` when there's no single element to host the directive.
+Используйте `<ng-container>`, когда нет отдельного элемента для размещения директивы.
 
-Here's a conditional paragraph using `<ng-container>`.
+Вот условный параграф с использованием `<ng-container>`.
 
 <code-example header="src/app/app.component.html (ngif-ngcontainer)" path="structural-directives/src/app/app.component.html" region="ngif-ngcontainer"></code-example>
 
@@ -321,20 +328,21 @@ Here's a conditional paragraph using `<ng-container>`.
 
 <a id="ngSwitch"></a>
 
-## Switching cases with `NgSwitch`
+## Переключение случаев с помощью `NgSwitch`
 
-Like the JavaScript `switch` statement, `NgSwitch` displays one element from among several possible elements, based on a switch condition.
-Angular puts only the selected element into the DOM.
+Как и оператор JavaScript `switch`, `NgSwitch` отображает один элемент из нескольких возможных элементов, основываясь на условии переключения. Angular помещает в DOM только выбранный элемент.
 
 <!--todo: API Flagged -->
 
-`NgSwitch` is a set of three directives:
+`NgSwitch` - это набор из трех директив:
 
-| `NgSwitch` directives | Details |
-|:---                   |:---     |
-| `NgSwitch`            | An attribute directive that changes the behavior of its companion directives.                                                                                          |
-| `NgSwitchCase`        | Structural directive that adds its element to the DOM when its bound value equals the switch value and removes its bound value when it doesn't equal the switch value. |
-| `NgSwitchDefault`     | Structural directive that adds its element to the DOM when there is no selected `NgSwitchCase`.                                                                        |
+| Директивы `NgSwitch` | Подробности | | |:--- |:--- |.
+
+| `NgSwitch` | Атрибутивная директива, которая изменяет поведение сопутствующих директив. |
+
+| | `NgSwitchCase` | Структурная директива, которая добавляет свой элемент в DOM, когда его связанное значение равно значению switch и удаляет его связанное значение, когда оно не равно значению switch. |
+
+| `NgSwitchDefault` | Структурная директива, которая добавляет свой элемент в DOM, когда нет выбранного `NgSwitchCase`. |
 
 1.  On an element, such as a `<div>`, add `[ngSwitch]` bound to an expression that returns the switch value, such as `feature`.
     Though the `feature` value in this example is a string, the switch value can be of any type.
@@ -347,8 +355,10 @@ Angular puts only the selected element into the DOM.
 
     <code-example header="src/app/app.component.ts" path="built-in-directives/src/app/app.component.ts" region="item"></code-example>
 
-1.  In each child component, add an `item` [input property](guide/inputs-outputs#input "Input property") which is bound to the `currentItem` of the parent component.
+1.  In each child component, add an `item` [input property](guide/inputs-outputs#input 'Input property') which is bound to the `currentItem` of the parent component.
+
     The following two snippets show the parent component and one of the child components.
+
     The other child components are identical to `StoutItemComponent`.
 
     <code-example header="In each child component, here StoutItemComponent" path="built-in-directives/src/app/item-switch.component.ts" region="input"></code-example>
@@ -359,14 +369,13 @@ Angular puts only the selected element into the DOM.
 
     </div>
 
-Switch directives also work with built-in HTML elements and web components.
-For example, you could replace the `<app-best-item>` switch case with a `<div>` as follows.
+Switch directives also work with built-in HTML elements and web components. For example, you could replace the `<app-best-item>` switch case with a `<div>` as follows.
 
-<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app.component.html" region="NgSwitch-div"></code-example>
+<code-example header="src/app/app.component.html" path="built-in-directives/src/app/app/app.component.html" region="NgSwitch-div"></code-example>
 
-## What's next
+## Что дальше
 
-For information on how to build your own custom directives, see [Attribute Directives](guide/attribute-directives) and [Structural Directives](guide/structural-directives).
+Информацию о том, как создавать свои собственные пользовательские директивы, смотрите в [Attribute Directives](guide/attribute-directives) и [Structural Directives](guide/structural-directives).
 
 <!-- links -->
 
@@ -374,4 +383,4 @@ For information on how to build your own custom directives, see [Attribute Direc
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+@ просмотрено 2022-02-28
