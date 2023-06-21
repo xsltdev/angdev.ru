@@ -1,36 +1,36 @@
-# Understanding templates
+# Понимание шаблонов
 
-In Angular, a template is a blueprint for a fragment of a user interface (UI).  Templates are written in HTML, and special syntax can be used within a template to build on many of Angular's features.
+В Angular шаблон - это чертеж фрагмента пользовательского интерфейса (UI). Шаблоны пишутся на HTML, и в шаблоне можно использовать специальный синтаксис, чтобы использовать многие возможности Angular.
 
-## Prerequisites
+## Предварительные условия
 
-Before learning template syntax, you should be familiar with the following:
+Прежде чем изучать синтаксис шаблонов, вы должны быть знакомы со следующим:
 
-* [Angular concepts](guide/architecture)
-* JavaScript
-* HTML
-* CSS
+-   [Концепции Angular] (руководство/архитектура)
 
-## Enhancing HTML
+-   JavaScript
 
-Angular extends the HTML syntax in your templates with additional functionality.  
-For example, Angular’s data binding syntax helps to set Document Object Model (DOM) properties dynamically.
+-   HTML
 
-Almost all HTML syntax is valid template syntax.  However, because an Angular template is only a fragment of the UI, it does not include elements such as `<html>`, `<body>`, or `<base>`.
+-   CSS
+
+## Расширение HTML
+
+Angular расширяет синтаксис HTML в ваших шаблонах с помощью дополнительных функций. Например, синтаксис привязки данных Angular помогает динамически устанавливать свойства Document Object Model (DOM).
+
+Почти весь синтаксис HTML является допустимым синтаксисом шаблона. Однако, поскольку шаблон Angular - это только фрагмент пользовательского интерфейса, он не включает такие элементы, как `<html>`, `<body>` или `<base>`.
 
 <div class="alert is-important">
 
-To eliminate the risk of script injection attacks, Angular does not support the `<script>` element in templates.  Angular ignores the `<script>` tag and outputs a warning to the browser console.
-For more information, see the [Security](guide/security) page.
+Чтобы исключить риск атак внедрения сценариев, Angular не поддерживает элемент `<script>` в шаблонах. Angular игнорирует тег `<script>` и выводит предупреждение в консоль браузера. Для получения дополнительной информации см. страницу [Security](guide/security).
 
 </div>
 
-## More on template syntax
+## Подробнее о синтаксисе шаблонов
 
-You might also be interested in the following:
+Возможно, вас также заинтересует следующее:
 
-<div class="card-container">
-    <a href="guide/interpolation" class="docs-card" title="Interpolation">
+<div class="card-container">     <a href="guide/interpolation" class="docs-card" title="Interpolation">
         <section>Interpolation</section>
         <p>Learn how to use interpolation and expressions in HTML.</p>
         <p class="card-footer">Interpolation</p>
@@ -72,5 +72,4 @@ You might also be interested in the following:
     </a>
 </div>
 
-@reviewed 2022-05-11
- 
+@ просмотрено 2022-05-11

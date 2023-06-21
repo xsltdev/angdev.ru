@@ -46,9 +46,11 @@ nav:
             - structural-directives.md
             - directive-composition-api.md
         - Внедрение зависимостей:
-            - dependency-injection-overview.md
+            - dependesncy-injection-overview.md
             - dependency-injection.md
             - creating-injectable-service.md
             - dependency-injection-providers.md
             - hierarchical-dependency-injection.md
+    - Гайды разработчика:
+
     - ...

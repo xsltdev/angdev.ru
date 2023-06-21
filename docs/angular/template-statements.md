@@ -1,69 +1,70 @@
-# Template statements
+# Шаблонные утверждения
 
-Template statements are methods or properties that you can use in your HTML to respond to user events.
-With template statements, your application can engage users through actions such as displaying dynamic content or submitting forms.
-
-<div class="alert is-helpful">
-
-See the <live-example name="template-syntax">Template syntax</live-example> for the syntax and code snippets in this guide.
-
-</div>
-
-In the following example, the template statement `deleteHero()` appears in quotes to the right of the equals sign `=` character as in `(event)="statement"`.
-
-<code-example header="src/app/app.component.html" path="template-syntax/src/app/app.component.html" region="context-component-statement"></code-example>
-
-When the user clicks the **Delete hero** button, Angular calls the `deleteHero()` method in the component class.
-
-Use template statements with elements, components, or directives in response to events.
+Шаблонные утверждения - это методы или свойства, которые вы можете использовать в HTML для реагирования на события пользователя. С помощью утверждений шаблонов ваше приложение может привлекать пользователей к таким действиям, как отображение динамического содержимого или отправка форм.
 
 <div class="alert is-helpful">
 
-Responding to events is an aspect of Angular's [unidirectional data flow](guide/glossary#unidirectional-data-flow).
-You can change anything in your application during a single event loop.
+Смотрите <live-example name="template-syntax">Синтаксис шаблона</live-example> для синтаксиса и фрагментов кода в этом руководстве.
 
 </div>
 
-## Syntax
-
-Like [template expressions](guide/interpolation), template statements use a language that looks like JavaScript.
-However, the parser for template statements differs from the parser for template expressions.
-In addition, the template statements parser specifically supports both basic assignment \(`=`\) and chaining expressions with semicolons \(`;`\).
-
-The following JavaScript and template expression syntax is not allowed:
-
-*   `new`
-*   Increment and decrement operators, `++` and `--`
-*   Operator assignment, such as `+=` and `-=`
-*   The bitwise operators, such as `|` and `&`
-*   The [pipe operator](guide/pipes)
-
-## Statement context
-
-Statements have a context &mdash;a particular part of the application to which the statement belongs.
-
-Statements can refer only to what's in the statement context, which is typically the component instance.
-For example, `deleteHero()` of `(click)="deleteHero()"` is a method of the component in the following snippet.
+В следующем примере шаблонное утверждение `deleteHero()` заключается в кавычки справа от знака равенства `=`, как в `(event)="statement"`.
 
 <code-example header="src/app/app.component.html" path="template-syntax/src/app/app.component.html" region="context-component-statement"></code-example>
 
-The statement context may also refer to properties of the template's own context.
-In the following example, the component's event handling method, `onSave()` takes the template's own `$event` object as an argument.
-On the next two lines, the `deleteHero()` method takes a [template input variable](guide/structural-directives#shorthand), `hero`, and `onSubmit()` takes a [template reference variable](guide/template-reference-variables), `#heroForm`.
+Когда пользователь нажимает кнопку **Удалить героя**, Angular вызывает метод `deleteHero()` в классе компонента.
+
+Используйте шаблонные утверждения с элементами, компонентами или директивами в ответ на события.
+
+<div class="alert is-helpful">
+
+Реагирование на события - это аспект [однонаправленного потока данных] Angular (guide/glossary#unidirectional-data-flow). Вы можете изменить что угодно в своем приложении в течение одного цикла событий.
+
+</div>
+
+## Синтаксис
+
+Как и [template expressions](guide/interpolation), шаблонные выражения используют язык, похожий на JavaScript. Однако парсер для шаблонных утверждений отличается от парсера для шаблонных выражений.
+
+Кроме того, парсер шаблонных выражений специально поддерживает как базовое присваивание \(`=`\), так и цепочку выражений с запятой \(`;`\).
+
+Следующий синтаксис JavaScript и шаблонных выражений недопустим:
+
+-   `new`
+
+-   Операторы инкремента и декремента, `++` и `--`
+
+-   Операторы присваивания, такие как `+=` и `-=`
+
+-   битовые операторы, такие как `|` и `&`
+
+-   Оператор [pipe operator] (guide/pipes)
+
+## Контекст утверждения
+
+У утверждений есть контекст &mdash; определенная часть приложения, к которой относится утверждение.
+
+Утверждения могут ссылаться только на то, что находится в контексте утверждения, который обычно является экземпляром компонента. Например, `deleteHero()` из `(click)="deleteHero()"` является методом компонента в следующем фрагменте.
+
+<code-example header="src/app/app.component.html" path="template-syntax/src/app/app.component.html" region="context-component-statement"></code-example >
+
+Контекст утверждения может также ссылаться на свойства собственного контекста шаблона. В следующем примере метод обработки события компонента `onSave()` принимает в качестве аргумента собственный объект шаблона `$event`.
+
+В следующих двух строках метод `deleteHero()` принимает [входную переменную шаблона](guide/structural-directives#shorthand), `hero`, а `onSubmit()` принимает [переменную ссылки шаблона](guide/template-reference-variables), `#heroForm`.
 
 <code-example header="src/app/app.component.html" path="template-syntax/src/app/app.component.html" region="context-var-statement"></code-example>
 
-In this example, the context of the `$event` object, `hero`, and `#heroForm` is the template.
+В этом примере контекстом объекта `$event`, `hero` и `#heroForm` является шаблон.
 
-Template context names take precedence over component context names.
-In the preceding `deleteHero(hero)`, the `hero` is the template input variable, not the component's `hero` property.
+Имена контекстов шаблонов имеют приоритет над именами контекстов компонентов. В предыдущем примере `deleteHero(hero)`, `hero` является входной переменной шаблона, а не свойством `hero` компонента.
 
-## Statement best practices
+## Передовые методы работы с заявлениями
 
-| Practices               | Details |
-|:---                     |:---     |
-| Conciseness             | Use method calls or basic property assignments to keep template statements minimal.                                                                                                                                                                                                         |
-| Work within the context | The context of a template statement can be the component class instance or the template. Because of this, template statements cannot refer to anything in the global namespace such as `window` or `document`. For example, template statements can't call `console.log()` or `Math.max()`. |
+| Практика | Подробности | |:--- |:--- |:--- |
+
+| Краткость | Используйте вызовы методов или базовые присваивания свойств, чтобы сделать шаблонное утверждение минимальным. |
+
+| Работайте в контексте | Контекстом шаблонного утверждения может быть экземпляр класса компонента или шаблон. Поэтому утверждения шаблона не могут ссылаться на что-либо в глобальном пространстве имен, например, `window` или `document`. Например, утверждения шаблона не могут вызывать `console.log()` или `Math.max()`. |
 
 <!-- links -->
 
@@ -71,4 +72,4 @@ In the preceding `deleteHero(hero)`, the `hero` is the template input variable, 
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+@ просмотрено 2022-02-28

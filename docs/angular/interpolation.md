@@ -1,32 +1,35 @@
-# Displaying values with interpolation
+# Отображение значений с помощью интерполяции
 
-## Prerequisites
+## Предварительные условия
 
-* [Basics of components](guide/architecture-components)
-* [Basics of templates](guide/glossary#template)
-* [Binding syntax](guide/binding-syntax)
+-   [Основы компонентов](guide/architecture-components)
+
+-   [Основы шаблонов](guide/glossary#template)
+
+-   [Синтаксис связывания](guide/binding-syntax)
 
 <!--todo: needs a level 2 heading for info below -->
 
-Interpolation refers to embedding expressions into marked up text. By default, interpolation uses the double curly braces `{{` and `}}` as delimiters.
+Интерполяция - это вставка выражений в размеченный текст. По умолчанию интерполяция использует двойные фигурные скобки `{{` и `}}` в качестве разделителей.
 
-To illustrate how interpolation works, consider an Angular component that contains a `currentCustomer` variable:
+Чтобы проиллюстрировать работу интерполяции, рассмотрим компонент Angular, содержащий переменную `currentCustomer`:
 
-<code-example path="interpolation/src/app/app.component.ts" region="customer"></code-example>
+<code-example path="interpolation/src/app/app.component.ts" region="customer"></code-example>.
 
-Use interpolation to display the value of this variable in the corresponding component template:
+Используйте интерполяцию для отображения значения этой переменной в соответствующем шаблоне компонента:
 
-<code-example path="interpolation/src/app/app.component.html" region="interpolation-example1"></code-example>
+<code-example path="interpolation/src/app/app.component.html" region="interpolation-example1"></code-example>.
 
-Angular replaces `currentCustomer` with the string value of the corresponding component property. In this case, the value is `Maria`.
+Angular заменяет `currentCustomer` строковым значением соответствующего свойства компонента. В данном случае это значение `Maria`.
 
-In the following example, Angular evaluates the `title` and `itemImageUrl` properties to display some title text and an image.
+В следующем примере Angular оценивает свойства `title` и `itemImageUrl` для отображения текста заголовка и изображения.
 
 <code-example path="interpolation/src/app/app.component.html" region="component-property"></code-example>
 
-## What's Next
+## Что дальше
 
-* [Property binding](guide/property-binding)
-* [Event binding](guide/event-binding)
+-   [Привязка свойств](guide/property-binding)
 
-@reviewed 2022-04-14
+-   [Связывание событий](guide/event-binding)
+
+@ просмотрено 2022-04-14

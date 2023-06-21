@@ -1,26 +1,26 @@
-# SVG as templates
+# SVG как шаблоны
 
-You can use SVG files as templates in your Angular applications.
-When you use an SVG as the template, you are able to use directives and bindings just like with HTML templates.
-Use these features to dynamically generate interactive graphics.
+Вы можете использовать файлы SVG в качестве шаблонов в своих приложениях Angular. Когда вы используете SVG в качестве шаблона, вы можете использовать директивы и привязки так же, как и в шаблонах HTML.
+
+Используйте эти возможности для динамической генерации интерактивной графики.
 
 <div class="alert is-helpful">
 
-See the <live-example name="template-syntax"></live-example> for a working example containing the code snippets in this guide.
+Смотрите <live-example name="template-syntax"></live-example> для рабочего примера, содержащего фрагменты кода из этого руководства.
 
 </div>
 
-## SVG syntax example
+## Пример синтаксиса SVG
 
-The following example shows the syntax for using an SVG as a template.
+В следующем примере показан синтаксис для использования SVG в качестве шаблона.
 
-<code-example header="src/app/svg.component.ts" path="template-syntax/src/app/svg.component.ts"></code-example>
+<code-example header="src/app/svg.component.ts" path="template-syntax/src/app/svg.component.ts"></code-example>.
 
-To see property and event binding in action, add the following code to your `svg.component.svg` file:
+Чтобы увидеть привязку свойств и событий в действии, добавьте следующий код в файл `svg.component.svg`:
 
-<code-example header="src/app/svg.component.svg" path="template-syntax/src/app/svg.component.svg"></code-example>
+<code-example header="src/app/svg.component.svg" path="template-syntax/src/app/svg.component.svg"></code-example>.
 
-The example given uses a `click()` event binding and the property binding syntax \(`[attr.fill]="fillColor"`\).
+В приведенном примере используется привязка события `click()` и синтаксис привязки свойства \(`[attr.fill]="fillColor"`\).
 
 <!-- links -->
 
@@ -28,4 +28,4 @@ The example given uses a `click()` event binding and the property binding syntax
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+@ просмотрено 2022-02-28

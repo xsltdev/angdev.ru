@@ -1,81 +1,76 @@
-# Two-way binding
+# Двустороннее связывание
 
-Two-way binding gives components in your application a way to share data.
-Use two-way binding to listen for events and update values simultaneously between parent and child components.
+Двустороннее связывание дает компонентам вашего приложения возможность обмениваться данными. Используйте двустороннюю привязку для прослушивания событий и обновления значений одновременно между родительским и дочерним компонентами.
 
 <div class="alert is-helpful">
 
-See the <live-example></live-example> for a working example containing the code snippets in this guide.
+Смотрите <live-example></live-example> для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
 
 </div>
 
-## Prerequisites
+## Предварительные условия
 
-To get the most out of two-way binding, you should have a basic understanding of the following concepts:
+Чтобы получить максимальную отдачу от двустороннего связывания, вы должны иметь базовое представление о следующих концепциях:
 
-*   [Property binding](guide/property-binding)
-*   [Event binding](guide/event-binding)
-*   [Inputs and Outputs](guide/inputs-outputs)
+-   [Связывание свойств](руководство/связывание свойств)
 
-Two-way binding combines property binding with event binding:
+-   [Связывание событий](guide/event-binding)
 
-| Bindings                                   | Details |
-|:---                                        |:---     |
-| [Property binding](guide/property-binding) | Sets a specific element property.    |
-| [Event binding](guide/event-binding)       | Listens for an element change event. |
+-   [Входы и выходы](guide/inputs-outputs)
 
-## Adding two-way data binding
+Двустороннее связывание объединяет связывание свойств с связыванием событий:
 
-Angular's two-way binding syntax is a combination of square brackets and parentheses, `[()]`.
-The `[()]` syntax combines the brackets of property binding, `[]`, with the parentheses of event binding, `()`, as follows.
+| Связывание | Подробности | |:--- |:--- |:--- |
 
-<code-example header="src/app/app.component.html" path="two-way-binding/src/app/app.component.html" region="two-way-syntax"></code-example>
+| [Property binding](guide/property-binding) | Устанавливает определенное свойство элемента. |
 
-## How two-way binding works
+| [Event binding](guide/event-binding) | Слушает событие изменения элемента. |
 
-For two-way data binding to work, the `@Output()` property must use the pattern, `inputChange`, where `input` is the name of the `@Input()` property.
-For example, if the `@Input()` property is `size`, the `@Output()` property must be `sizeChange`.
+## Добавление двусторонней привязки данных
 
-The following `sizerComponent` has a `size` value property and a `sizeChange` event.
-The `size` property is an `@Input()`, so data can flow into the `sizerComponent`.
-The `sizeChange` event is an `@Output()`, which lets data flow out of the `sizerComponent` to the parent component.
+Синтаксис двустороннего связывания данных в Angular представляет собой комбинацию квадратных скобок и круглых скобок, `[()]`. Синтаксис `[()]` сочетает скобки привязки свойств, `[]`, со скобками привязки событий, `()`, следующим образом.
 
-Next, there are two methods, `dec()` to decrease the font size and `inc()` to increase the font size.
-These two methods use `resize()` to change the value of the `size` property within min/max value constraints, and to emit an event that conveys the new `size` value.
+<code-example header="src/app/app.component.html" path="two-way-binding/src/app/app.component.html" region="two-way-syntax"></code-example>.
+
+## Как работает двустороннее связывание
+
+Чтобы двустороннее связывание данных работало, свойство `@Output()` должно использовать шаблон `inputChange`, где `input` - это имя свойства `@Input()`. Например, если свойством `@Input()` является `size`, то свойство `@Output()` должно быть `sizeChange`.
+
+Следующий `sizerComponent` имеет свойство значения `size` и событие `sizeChange`. Свойство `size` является `@Input()`, поэтому данные могут поступать в `sizerComponent`.
+
+Событие `sizeChange` - это `@Output()`, которое позволяет данным выходить из `sizerComponent` в родительский компонент.
+
+Далее есть два метода, `dec()` для уменьшения размера шрифта и `inc()` для увеличения размера шрифта. Эти два метода используют `resize()` для изменения значения свойства `size` в пределах ограничений min/max, а также для эмиссии события, передающего новое значение `size`.
 
 <code-example header="src/app/sizer.component.ts" path="two-way-binding/src/app/sizer/sizer.component.ts" region="sizer-component"></code-example>
 
-The `sizerComponent` template has two buttons that each bind the click event to the `inc()` and `dec()` methods.
-When the user clicks one of the buttons, the `sizerComponent` calls the corresponding method.
-Both methods, `inc()` and `dec()`, call the `resize()` method with a `+1` or `-1`, which in turn raises the `sizeChange` event with the new size value.
+Шаблон `sizerComponent` имеет две кнопки, каждая из которых привязывает событие click к методам `inc()` и `dec()`. Когда пользователь нажимает на одну из кнопок, `sizerComponent` вызывает соответствующий метод.
 
-<code-example header="src/app/sizer.component.html" path="two-way-binding/src/app/sizer/sizer.component.html"></code-example>
+Оба метода, `inc()` и `dec()`, вызывают метод `resize()` с `+1` или `-1`, который в свою очередь вызывает событие `sizeChange` с новым значением размера.
 
-In the `AppComponent` template, `fontSizePx` is two-way bound to the `SizerComponent`.
+<code-example header="src/app/sizer.component.html" path="two-way-binding/src/app/sizer/sizer.component.html"></code-example>.
+
+В шаблоне `AppComponent`, `fontSizePx` двусторонне связан с `SizerComponent`.
 
 <code-example header="src/app/app.component.html" path="two-way-binding/src/app/app.component.html" region="two-way-1"></code-example>
 
-In the `AppComponent`, `fontSizePx` establishes the initial `SizerComponent.size` value by setting the value to `16`.
+В `AppComponent`, `fontSizePx` устанавливает начальное значение `SizerComponent.size`, задавая значение `16`.
 
-<code-example header="src/app/app.component.ts" path="two-way-binding/src/app/app.component.ts" region="font-size"></code-example>
+<code-example header="src/app/app.component.ts" path="two-way-binding/src/app/app/app.component.ts" region="font-size"></code-example>.
 
-Clicking the buttons updates the `AppComponent.fontSizePx`.
-The revised `AppComponent.fontSizePx` value updates the style binding, which makes the displayed text bigger or smaller.
+Нажатие на кнопки обновляет `AppComponent.fontSizePx`. Измененное значение `AppComponent.fontSizePx` обновляет привязку стиля, что делает отображаемый текст больше или меньше.
 
-The two-way binding syntax is shorthand for a combination of property binding and event binding.
-The `SizerComponent` binding as separate property binding and event binding is as follows.
+Синтаксис двусторонней привязки является сокращением для комбинации привязки свойств и привязки событий. Привязка `SizerComponent` как отдельная привязка свойств и привязка событий выглядит следующим образом.
 
-<code-example header="src/app/app.component.html (expanded)" path="two-way-binding/src/app/app.component.html" region="two-way-2"></code-example>
+<code-example header="src/app/app.component.html (expanded)" path="two-way-binding/src/app/app/app.component.html" region="two-way-2"></code-example>.
 
-The `$event` variable contains the data of the `SizerComponent.sizeChange` event.
-Angular assigns the `$event` value to the `AppComponent.fontSizePx` when the user clicks the buttons.
+Переменная `$event` содержит данные события `SizerComponent.sizeChange`. Angular присваивает значение `$event` событию `AppComponent.fontSizePx`, когда пользователь нажимает на кнопки.
 
 <div class="callout is-helpful">
 
 <header>Two-way binding in forms</header>
 
-Because no built-in HTML element follows the `x` value and `xChange` event pattern, two-way binding with form elements requires `NgModel`.
-For more information on how to use two-way binding in forms, see Angular [NgModel](guide/built-in-directives#ngModel).
+Поскольку ни один встроенный элемент HTML не следует шаблону событий `x` value и `xChange`, для двустороннего связывания с элементами формы требуется `NgModel`. Для получения дополнительной информации о том, как использовать двустороннее связывание в формах, смотрите Angular [NgModel](guide/built-in-directives#ngModel).
 
 </div>
 
@@ -85,4 +80,4 @@ For more information on how to use two-way binding in forms, see Angular [NgMode
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+@ просмотрено 2022-02-28

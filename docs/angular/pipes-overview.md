@@ -1,52 +1,54 @@
-# Understanding Pipes
+# Понимание труб
 
-Use [pipes](guide/glossary#pipe "Definition of a pipe") to transform strings, currency amounts, dates, and other data for display.
+Используйте [pipes](guide/glossary#pipe 'Определение трубы') для преобразования строк, валютных сумм, дат и других данных для отображения.
 
-## What is a pipe
+## Что такое труба
 
-Pipes are simple functions to use in [template expressions](/guide/glossary#template-expression "Definition of template expression") to accept an input value and return a transformed value. Pipes are useful because you can use them throughout your application, while only declaring each pipe once.
-For example, you would use a pipe to show a date as **April 15, 1988** rather than the raw string format.
-
-<div class="alert is-helpful">
-
-For the sample application used in this topic, see the <live-example name="pipes"></live-example>.
-
-</div>
-
-## Built-in pipes
-
-Angular provides built-in pipes for typical data transformations, including transformations for internationalization (i18n), which use locale information to format data.
-The following are commonly used built-in pipes for data formatting:
-
-*   [`DatePipe`](api/common/DatePipe): Formats a date value according to locale rules.
-*   [`UpperCasePipe`](api/common/UpperCasePipe): Transforms text to all upper case.
-*   [`LowerCasePipe`](api/common/LowerCasePipe): Transforms text to all lower case.
-*   [`CurrencyPipe`](api/common/CurrencyPipe): Transforms a number to a currency string, formatted according to locale rules.
-*   [`DecimalPipe`](/api/common/DecimalPipe): Transforms a number into a string with a decimal point, formatted according to locale rules.
-*   [`PercentPipe`](api/common/PercentPipe): Transforms a number to a percentage string, formatted according to locale rules.
+Трубы - это простые функции, используемые в [шаблонных выражениях](/guide/glossary#template-expression 'Определение шаблонного выражения') для приема входного значения и возврата преобразованного значения. Трубы полезны тем, что вы можете использовать их во всем приложении, объявляя каждую трубу только один раз. Например, вы можете использовать трубу для отображения даты как **April 15, 1988**, а не в формате необработанной строки.
 
 <div class="alert is-helpful">
 
-*   For a complete list of built-in pipes, see the [pipes API documentation](/api/common#pipes "Pipes API reference summary").
-*   To learn more about using pipes for internationalization (i18n) efforts, see [formatting data based on locale][AioGuideI18nCommonFormatDataLocale].
+Пример приложения, используемого в этой теме, см. в <live-example name="pipes"></live-example>.
 
 </div>
 
-Create pipes to encapsulate custom transformations and use your custom pipes in template expressions.
+## Встроенные трубы
 
-## Pipes and precedence
+Angular предоставляет встроенные трубы для типичных преобразований данных, включая преобразования для интернационализации (i18n), которые используют информацию о локали для форматирования данных. Ниже перечислены часто используемые встроенные трубы для форматирования данных:
 
-The pipe operator has a higher precedence than the ternary operator (`?:`), which means `a ? b : c | x` is parsed as `a ? b : (c | x)`.
-The pipe operator cannot be used without parentheses in the first and second operands of `?:`.
+-   [`DatePipe`](api/common/DatePipe): Форматирует значение даты в соответствии с правилами локали.
 
-Due to precedence, if you want a pipe to apply to the result of a ternary, wrap the entire expression in parentheses; for example, `(a ? b : c) | x`.
+-   [`UpperCasePipe`](api/common/UpperCasePipe): Преобразовывает текст в верхний регистр.
+
+-   [`LowerCasePipe`](api/common/LowerCasePipe): Преобразование текста во все строчные регистры.
+
+-   [`CurrencyPipe`](api/common/CurrencyPipe): Преобразует число в строку валюты, отформатированную в соответствии с правилами локали.
+
+-   [`DecimalPipe`](/api/common/DecimalPipe): Преобразует число в строку с десятичной точкой, отформатированную в соответствии с правилами локали.
+
+-   [`PercentPipe`](api/common/PercentPipe): Преобразует число в строку с процентами, отформатированную в соответствии с правилами локали.
+
+<div class="alert is-helpful">
+
+-   Полный список встроенных труб см. в документации [pipes API](/api/common#pipes 'Pipes API reference summary').
+-   Чтобы узнать больше об использовании труб для интернационализации (i18n), смотрите [форматирование данных на основе локали][aioguidei18ncommonformatdatalocale].
+
+</div>
+
+Создавайте трубы для инкапсуляции пользовательских преобразований и используйте свои трубы в выражениях шаблонов.
+
+## Трубы и старшинство
+
+Оператор pipe имеет более высокий приоритет, чем тернарный оператор (`?:`), что означает, что `a ? b : c | x` будет разобрано как `a ? b : (c | x)`. Оператор pipe нельзя использовать без круглых скобок в первом и втором операндах `?:`.
+
+В силу старшинства, если вы хотите, чтобы оператор pipe применялся к результату троичного оператора, оберните все выражение в круглые скобки; например, `(a ? b : c) | x`.
 
 <code-example path="pipes/src/app/precedence.component.html" region="precedence" header="src/app/precedence.component.html"></code-example>
 
 <!-- links -->
 
-[AioGuideI18nCommonFormatDataLocale]: guide/i18n-common-format-data-locale "Format data based on locale | Angular"
+[aioguidei18ncommonformatdatalocale]: guide/i18n-common-format-data-locale 'Format data based on locale | Angular'
 
 <!-- end links -->
 
-@reviewed 2022-04-01
+@ просмотрено 2022-04-01
