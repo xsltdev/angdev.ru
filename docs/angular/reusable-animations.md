@@ -6,8 +6,8 @@ This topic provides some examples of how to create reusable animations.
 
 Before continuing with this topic, you should be familiar with the following:
 
-*   [Introduction to Angular animations](guide/animations)
-*   [Transition and triggers](guide/transition-and-triggers)
+-   [Introduction to Angular animations](guide/animations)
+-   [Transition and triggers](guide/transition-and-triggers)
 
 ## Create reusable animations
 
@@ -39,9 +39,9 @@ For example, the following code snippet imports the `transitionAnimation` variab
 
 You might also be interested in the following:
 
-*   [Introduction to Angular animations](guide/animations)
-*   [Transition and triggers](guide/transition-and-triggers)
-*   [Complex animation Sequences](guide/complex-animation-sequences)
-*   [Route transition animations](guide/route-animations)
+-   [Introduction to Angular animations](guide/animations)
+-   [Transition and triggers](guide/transition-and-triggers)
+-   [Complex animation Sequences](guide/complex-animation-sequences)
+-   [Route transition animations](guide/route-animations)
 
-@reviewed 2022-10-11
+:date: 11.10.2022

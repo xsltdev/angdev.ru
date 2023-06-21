@@ -7,10 +7,10 @@ This page shows how to validate user input from the UI and display useful valida
 
 Before reading about form validation, you should have a basic understanding of the following.
 
-*   [TypeScript](https://www.typescriptlang.org/ "The TypeScript language") and HTML5  programming
-*   Fundamental concepts of [Angular application design](guide/architecture "Introduction to Angular application-design concepts")
-*   The [two types of forms that Angular supports](guide/forms-overview "Introduction to Angular forms")
-*   Basics of either [Template-driven Forms](guide/forms "Template-driven forms guide") or [Reactive Forms](guide/reactive-forms "Reactive forms guide")
+-   [TypeScript](https://www.typescriptlang.org/ 'The TypeScript language') and HTML5 programming
+-   Fundamental concepts of [Angular application design](guide/architecture 'Introduction to Angular application-design concepts')
+-   The [two types of forms that Angular supports](guide/forms-overview 'Introduction to Angular forms')
+-   Basics of either [Template-driven Forms](guide/forms 'Template-driven forms guide') or [Reactive Forms](guide/reactive-forms 'Reactive forms guide')
 
 <div class="alert is-helpful">
 
@@ -21,7 +21,7 @@ Run the <live-example></live-example>.
 
 <a id="template-driven-validation"></a>
 
-##  Validating input in template-driven forms
+## Validating input in template-driven forms
 
 To add validation to a template-driven form, you add the same validation attributes as you would with [native HTML form validation](https://developer.mozilla.org/docs/Web/Guide/HTML/HTML5/Constraint_validation).
 Angular uses directives to match these attributes with validator functions in the framework.
@@ -35,17 +35,17 @@ The following example exports `NgModel` into a variable called `name`:
 
 Notice the following features illustrated by the example.
 
-*   The `<input>` element carries the HTML validation attributes: `required` and `minlength`.
+-   The `<input>` element carries the HTML validation attributes: `required` and `minlength`.
     It also carries a custom validator directive, `forbiddenName`.
     For more information, see the [Custom validators](#custom-validators) section.
 
-*   `#name="ngModel"` exports `NgModel` into a local variable called `name`.
+-   `#name="ngModel"` exports `NgModel` into a local variable called `name`.
     `NgModel` mirrors many of the properties of its underlying `FormControl` instance, so you can use this in the template to check for control states such as `valid` and `dirty`.
     For a full list of control properties, see the [AbstractControl](api/forms/AbstractControl) API reference.
 
-    *   The `*ngIf` on the `<div>` element reveals a set of nested message `divs` but only if the `name` is invalid and the control is either `dirty` or `touched`.
+    -   The `*ngIf` on the `<div>` element reveals a set of nested message `divs` but only if the `name` is invalid and the control is either `dirty` or `touched`.
 
-    *   Each nested `<div>` can present a custom message for one of the possible validation errors.
+    -   Each nested `<div>` can present a custom message for one of the possible validation errors.
         There are messages for `required`, `minlength`, and `forbiddenName`.
 
 <a id="dirty-or-touched"></a>
@@ -54,8 +54,8 @@ Notice the following features illustrated by the example.
 
 To prevent the validator from displaying errors before the user has a chance to edit the form, you should check for either the `dirty` or `touched` states in a control.
 
-*   When the user changes the value in the watched field, the control is marked as "dirty"
-*   When the user blurs the form control element, the control is marked as "touched"
+-   When the user changes the value in the watched field, the control is marked as "dirty"
+-   When the user blurs the form control element, the control is marked as "touched"
 
 </div>
 
@@ -71,8 +71,8 @@ Angular then calls these functions whenever the value of the control changes.
 
 Validator functions can be either synchronous or asynchronous.
 
-| Validator type   | Details |
-|:---              |:---     |
+| Validator type   | Details                                                                                                                                                                                                                 |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Sync validators  | Synchronous functions that take a control instance and immediately return either a set of validation errors or `null`. Pass these in as the second argument when you instantiate a `FormControl`.                       |
 | Async validators | Asynchronous functions that take a control instance and return a Promise or Observable that later emits a set of validation errors or `null`. Pass these in as the third argument when you instantiate a `FormControl`. |
 
@@ -107,7 +107,7 @@ If you look at the template for the `name` input again, it is fairly similar to 
 <code-example header="reactive/hero-form-reactive.component.html (name with error msg)" path="form-validation/src/app/reactive/hero-form-reactive.component.html" region="name-with-error-msg"></code-example>
 
 This form differs from the template-driven version in that it no longer exports any directives.
-Instead, it uses the `name` getter defined in  the component class.
+Instead, it uses the `name` getter defined in the component class.
 
 Notice that the `required` attribute is still present in the template.
 Although it's not necessary for validation, it should be retained to for accessibility purposes.
@@ -123,13 +123,13 @@ Here's what the definition of that function looks like.
 
 <code-example header="shared/forbidden-name.directive.ts (forbiddenNameValidator)" path="form-validation/src/app/shared/forbidden-name.directive.ts" region="custom-validator"></code-example>
 
-The function is a factory that takes a regular expression to detect a *specific* forbidden name and returns a validator function.
+The function is a factory that takes a regular expression to detect a _specific_ forbidden name and returns a validator function.
 
 In this sample, the forbidden name is "bob", so the validator rejects any hero name containing "bob".
 Elsewhere it could reject "alice" or any name that the configuring regular expression matches.
 
 The `forbiddenNameValidator` factory returns the configured validator function.
-That function takes an Angular control object and returns *either* null if the control value is valid *or* a validation error object.
+That function takes an Angular control object and returns _either_ null if the control value is valid _or_ a validation error object.
 The validation error object typically has a property whose name is the validation key, `'forbiddenName'`, and whose value is an arbitrary dictionary of values that you could insert into an error message, `{name}`.
 
 Custom async validators are similar to sync validators, but they must instead return a Promise or observable that later emits null or a validation error object.
@@ -168,7 +168,7 @@ For example:
 <div class="alert is-helpful">
 
 Notice that the custom validation directive is instantiated with `useExisting` rather than `useClass`.
-The registered validator must be *this instance* of the `ForbiddenValidatorDirective` &mdash;the instance in the form with its `forbiddenName` property bound to "bob".
+The registered validator must be _this instance_ of the `ForbiddenValidatorDirective` &mdash;the instance in the form with its `forbiddenName` property bound to "bob".
 
 If you were to replace `useExisting` with `useClass`, then you'd be registering a new class instance, one that doesn't have a `forbiddenName`.
 
@@ -180,14 +180,14 @@ Angular automatically mirrors many control properties onto the form control elem
 Use these classes to style form control elements according to the state of the form.
 The following classes are currently supported.
 
-*   `.ng-valid`
-*   `.ng-invalid`
-*   `.ng-pending`
-*   `.ng-pristine`
-*   `.ng-dirty`
-*   `.ng-untouched`
-*   `.ng-touched`
-*   `.ng-submitted` \(enclosing form element only\)
+-   `.ng-valid`
+-   `.ng-invalid`
+-   `.ng-pending`
+-   `.ng-pristine`
+-   `.ng-dirty`
+-   `.ng-untouched`
+-   `.ng-touched`
+-   `.ng-submitted` \(enclosing form element only\)
 
 In the following example, the hero form uses the `.ng-valid` and `.ng-invalid` classes to
 set the color of each form control's border.
@@ -196,14 +196,14 @@ set the color of each form control's border.
 
 ## Cross-field validation
 
-A cross-field validator is a [custom validator](#custom-validators "Read about custom validators") that compares the values of different fields in a form and accepts or rejects them in combination.
+A cross-field validator is a [custom validator](#custom-validators 'Read about custom validators') that compares the values of different fields in a form and accepts or rejects them in combination.
 For example, you might have a form that offers mutually incompatible options, so that if the user can choose A or B, but not both.
 Some field values might also depend on others; a user might be allowed to choose B only if A is also chosen.
 
 The following cross validation examples show how to do the following:
 
-*   Validate reactive or template-based form input based on the values of two sibling controls,
-*   Show a descriptive error message after the user interacted with the form and the validation failed.
+-   Validate reactive or template-based form input based on the values of two sibling controls,
+-   Show a descriptive error message after the user interacted with the form and the validation failed.
 
 The examples use cross-validation to ensure that heroes do not reveal their true identities by filling out the Hero Form.
 The validators do this by checking that the hero names and alter egos do not match.
@@ -215,9 +215,9 @@ The form has the following structure:
 <code-example format="javascript" language="javascript">
 
 const heroForm = new FormGroup({
-  'name': new FormControl(),
-  'alterEgo': new FormControl(),
-  'power': new FormControl()
+'name': new FormControl(),
+'alterEgo': new FormControl(),
+'power': new FormControl()
 });
 
 </code-example>
@@ -231,9 +231,9 @@ To add a validator to the `FormGroup`, pass the new validator in as the second a
 <code-example format="javascript" language="javascript">
 
 const heroForm = new FormGroup({
-  'name': new FormControl(),
-  'alterEgo': new FormControl(),
-  'power': new FormControl()
+'name': new FormControl(),
+'alterEgo': new FormControl(),
+'power': new FormControl()
 }, { validators: identityRevealedValidator });
 
 </code-example>
@@ -259,7 +259,7 @@ This `*ngIf` displays the error if the `FormGroup` has the cross validation erro
 ### Adding cross-validation to template-driven forms
 
 For a template-driven form, you must create a directive to wrap the validator function.
-You provide that directive as the validator using the [`NG_VALIDATORS` token](#adding-to-template-driven-forms "Read about providing validators"), as shown in the following example.
+You provide that directive as the validator using the [`NG_VALIDATORS` token](#adding-to-template-driven-forms 'Read about providing validators'), as shown in the following example.
 
 <code-example header="shared/identity-revealed.directive.ts" path="form-validation/src/app/shared/identity-revealed.directive.ts" region="cross-validation-directive"></code-example>
 
@@ -279,8 +279,8 @@ This is the same in both template-driven and reactive forms.
 Asynchronous validators implement the `AsyncValidatorFn` and `AsyncValidator` interfaces.
 These are very similar to their synchronous counterparts, with the following differences.
 
-*   The `validate()` functions must return a Promise or an observable,
-*   The observable returned must be finite, meaning it must complete at some point.
+-   The `validate()` functions must return a Promise or an observable,
+-   The observable returned must be finite, meaning it must complete at some point.
     To convert an infinite observable into a finite one, pipe the observable through a filtering operator such as `first`, `last`, `take`, or `takeUntil`.
 
 Asynchronous validation happens after the synchronous validation, and is performed only if the synchronous validation is successful.
@@ -295,7 +295,7 @@ The following example shows how to achieve this in a template-driven form.
 <code-example format="html" language="html">
 
 &lt;input [(ngModel)]="name" #model="ngModel" appSomeAsyncValidator&gt;
-&lt;app-spinner *ngIf="model.pending"&gt;&lt;/app-spinner&gt;
+&lt;app-spinner \*ngIf="model.pending"&gt;&lt;/app-spinner&gt;
 
 </code-example>
 
@@ -314,7 +314,7 @@ The constructor injects the `HeroesService`, which defines the following interfa
 <code-example format="typescript" language="typescript">
 
 interface HeroesService {
-  isAlterEgoTaken: (alterEgo: string) =&gt; Observable&lt;boolean&gt;;
+isAlterEgoTaken: (alterEgo: string) =&gt; Observable&lt;boolean&gt;;
 }
 
 </code-example>
@@ -399,4 +399,4 @@ See the [API docs](api/forms/NgForm#native-dom-validation-ui) for details.
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

@@ -1,14 +1,14 @@
 # Format data based on locale
 
-Angular provides the following built-in data transformation [pipes][AioGuideGlossaryPipe].
-The data transformation pipes use the [`LOCALE_ID`][AioApiCoreLocaleId] token to format data based on rules of each locale.
+Angular provides the following built-in data transformation [pipes][aioguideglossarypipe].
+The data transformation pipes use the [`LOCALE_ID`][aioapicorelocaleid] token to format data based on rules of each locale.
 
-| Data transformation pipe                   | Details |
-|:---                                        |:---     |
-| [`DatePipe`][AioApiCommonDatepipe]         | Formats a date value.                             |
-| [`CurrencyPipe`][AioApiCommonCurrencypipe] | Transforms a number into a currency string.       |
-| [`DecimalPipe`][AioApiCommonDecimalpipe]   | Transforms a number into a decimal number string. |
-| [`PercentPipe`][AioApiCommonPercentpipe]   | Transforms a number into a percentage string.     |
+| Data transformation pipe                   | Details                                           |
+| :----------------------------------------- | :------------------------------------------------ |
+| [`DatePipe`][aioapicommondatepipe]         | Formats a date value.                             |
+| [`CurrencyPipe`][aioapicommoncurrencypipe] | Transforms a number into a currency string.       |
+| [`DecimalPipe`][aioapicommondecimalpipe]   | Transforms a number into a decimal number string. |
+| [`PercentPipe`][aioapicommonpercentpipe]   | Transforms a number into a percentage string.     |
 
 ## Use DatePipe to display the current date
 
@@ -45,22 +45,20 @@ The locale specified for the `CurrencyPipe` overrides the global `LOCALE_ID` tok
 
 ## What's next
 
-*   [Prepare component for translation][AioGuideI18nCommonPrepare]
+-   [Prepare component for translation][aioguidei18ncommonprepare]
 
 <!-- links -->
 
-[AioApiCommonCurrencypipe]: api/common/CurrencyPipe "CurrencyPipe | Common - API | Angular"
-[AioApiCommonDatepipe]: api/common/DatePipe "DatePipe | Common - API | Angular"
-[AioApiCommonDecimalpipe]: api/common/DecimalPipe "DecimalPipe | Common - API | Angular"
-[AioApiCommonPercentpipe]: api/common/PercentPipe "PercentPipe | Common - API | Angular"
-[AioApiCoreLocaleId]: api/core/LOCALE_ID "LOCALE_ID | Core - API | Angular"
-
-[AioGuideGlossaryPipe]: guide/glossary#pipe "pipe - Glossary | Angular"
-
-[AioGuideI18nCommonPrepare]: guide/i18n-common-prepare "Prepare component for translation | Angular"
+[aioapicommoncurrencypipe]: api/common/CurrencyPipe 'CurrencyPipe | Common - API | Angular'
+[aioapicommondatepipe]: api/common/DatePipe 'DatePipe | Common - API | Angular'
+[aioapicommondecimalpipe]: api/common/DecimalPipe 'DecimalPipe | Common - API | Angular'
+[aioapicommonpercentpipe]: api/common/PercentPipe 'PercentPipe | Common - API | Angular'
+[aioapicorelocaleid]: api/core/LOCALE_ID 'LOCALE_ID | Core - API | Angular'
+[aioguideglossarypipe]: guide/glossary#pipe 'pipe - Glossary | Angular'
+[aioguidei18ncommonprepare]: guide/i18n-common-prepare 'Prepare component for translation | Angular'
 
 <!-- external links -->
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

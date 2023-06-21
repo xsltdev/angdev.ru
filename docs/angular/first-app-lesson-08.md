@@ -1,4 +1,5 @@
-# Lesson 8 - Use *ngFor to list objects in component
+# Lesson 8 - Use \*ngFor to list objects in component
+
 This tutorial lesson demonstrates how to use `ngFor` directive in Angular templates in order to display dynamically repeat data data in a template.
 
 **Time required:** expect to spend about 10 minutes to complete this lesson.
@@ -7,20 +8,22 @@ This tutorial lesson demonstrates how to use `ngFor` directive in Angular templa
 
 This lesson starts with the code from the previous lesson, so you can:
 
-*   Use the code that you created in Lesson 7 in your integrated development environment (IDE).
-*   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-07"></live-example> from Lesson 7 where you can:
-    *   Use the *live example* in StackBlitz, where the StackBlitz interface is your IDE.
-    *   Use the *download example* and open it in your IDE.
+-   Use the code that you created in Lesson 7 in your integrated development environment (IDE).
+-   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-07"></live-example> from Lesson 7 where you can:
+    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
+    -   Use the _download example_ and open it in your IDE.
 
 If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
 
 If you have any trouble during this lesson, you can review the completed code for this lesson, in the <live-example></live-example> for this lesson.
 
 ## After you finish
-* You will have added a data set to the app
-* Your app will display a list of elements from the new data set using `ngFor`
+
+-   You will have added a data set to the app
+-   Your app will display a list of elements from the new data set using `ngFor`
 
 ## Conceptual preview of ngFor
+
 In Angular, `ngFor` is a specific type of [directive](guide/built-in-directives) used to dynamically repeat data in a template. In plain JavaScript you would use a for loop - ngFor provides similar functionality for Angular templates. We use [Angular template syntax](guide/template-syntax) to specify the details for the directive.
 
 You can utilize `ngFor` to iterate over arrays and even asynchronous values. In this lesson, you'll add a new array of data to iterate over.
@@ -42,7 +45,8 @@ In the `HomeComponent` there is only a single housing location. In this step, yo
     Note: Do not remove the `@Component` decorator, you will update that code in an upcoming step.
 
 ### Step 2 - Update the `HomeComponent` template to use `ngFor`
-Now the app has a dataset that you can use to display the entries in the browser using the `ngFor` directive. 
+
+Now the app has a dataset that you can use to display the entries in the browser using the `ngFor` directive.
 
 1.  Update the `<app-housing-location>` tag in the template code to this:
     <code-example header="Add ngFor to HomeComponent template" path="first-app-lesson-08/src/app/home/home.component.ts" region="add-ngFor"></code-example>
@@ -58,7 +62,8 @@ Now the app has a dataset that you can use to display the entries in the browser
     </section>
 
 ## Lesson review
-In this lesson, you used the `ngFor` directive to repeat data dynamically in Angular templates. You also added a new array of data to be used in the Angular app. The application now dynamically renders a list of housing locations in the browser. 
+
+In this lesson, you used the `ngFor` directive to repeat data dynamically in Angular templates. You also added a new array of data to be used in the Angular app. The application now dynamically renders a list of housing locations in the browser.
 
 The app is taking shape, great job.
 
@@ -66,9 +71,10 @@ If you are having any trouble with this lesson, you can review the completed cod
 
 ## Next steps
 
-* [Lesson 9 - Add a service to the application](tutorial/first-app/first-app-lesson-09)
+-   [Lesson 9 - Add a service to the application](tutorial/first-app/first-app-lesson-09)
 
 ## For more information about the topics covered in this lesson, visit:
-* [Structural Directives](/guide/structural-directives)
-* [ngFor guide](/guide/built-in-directives#ngFor)
-* [ngFor](/api/common/NgFor)
+
+-   [Structural Directives](/guide/structural-directives)
+-   [ngFor guide](/guide/built-in-directives#ngFor)
+-   [ngFor](/api/common/NgFor)

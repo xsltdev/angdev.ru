@@ -1,7 +1,7 @@
 # Optimizing client application size with lightweight injection tokens
 
 This page provides a conceptual overview of a dependency injection technique that is recommended for library developers.
-Designing your library with *lightweight injection tokens* helps optimize the bundle size of client applications that use your library.
+Designing your library with _lightweight injection tokens_ helps optimize the bundle size of client applications that use your library.
 
 You can manage the dependency structure among your components and injectable services to optimize bundle size by using [tree-shakable providers](guide/architecture-services#introduction-to-services-and-dependency-injection).
 This normally ensures that if a provided component or service is never actually used by the application, the compiler can remove its code from the bundle.
@@ -24,7 +24,7 @@ To better explain the condition under which token retention occurs, consider a l
 <code-example format="html" language="html">
 
 &lt;lib-card&gt;
-  &lt;lib-header&gt;&hellip;&lt;/lib-header&gt;
+&lt;lib-header&gt;&hellip;&lt;/lib-header&gt;
 &lt;/lib-card&gt;
 
 </code-example>
@@ -34,18 +34,18 @@ In a likely implementation, the `<lib-card>` component uses `@ContentChild()` or
 <code-example format="typescript" language="typescript">
 
 &commat;Component({
-  selector: 'lib-header',
-  &hellip;,
+selector: 'lib-header',
+&hellip;,
 })
 class LibHeaderComponent {}
 
 &commat;Component({
-  selector: 'lib-card',
-  &hellip;,
+selector: 'lib-card',
+&hellip;,
 })
 class LibCardComponent {
-  &commat;ContentChild(LibHeaderComponent)
-  header: LibHeaderComponent|null = null;
+&commat;ContentChild(LibHeaderComponent)
+header: LibHeaderComponent|null = null;
 }
 
 </code-example>
@@ -60,15 +60,15 @@ This is because `LibCardComponent` actually contains two references to the `LibH
 
 </code-example>
 
-*   One of these reference is in the *type position*-- that is, it specifies `LibHeaderComponent` as a type: `header: LibHeaderComponent;`.
+-   One of these reference is in the _type position_-- that is, it specifies `LibHeaderComponent` as a type: `header: LibHeaderComponent;`.
 
-*   The other reference is in the *value position*-- that is, LibHeaderComponent is the value of the `@ContentChild()` parameter decorator: `@ContentChild(LibHeaderComponent)`.
+-   The other reference is in the _value position_-- that is, LibHeaderComponent is the value of the `@ContentChild()` parameter decorator: `@ContentChild(LibHeaderComponent)`.
 
 The compiler handles token references in these positions differently.
 
-*   The compiler erases *type position* references after conversion from TypeScript, so they have no impact on tree-shaking.
+-   The compiler erases _type position_ references after conversion from TypeScript, so they have no impact on tree-shaking.
 
-*   The compiler must keep *value position* references at runtime, which prevents the component from being tree-shaken.
+-   The compiler must keep _value position_ references at runtime, which prevents the component from being tree-shaken.
 
 In the example, the compiler retains the `LibHeaderComponent` token that occurs in the value position. This prevents the referenced component from being tree-shaken, even if the application developer does not actually use `<lib-header>` anywhere.
 If `LibHeaderComponent` 's code, template, and styles combined becomes too large, including it unnecessarily can significantly increase the size of the client application.
@@ -78,18 +78,18 @@ If `LibHeaderComponent` 's code, template, and styles combined becomes too large
 The tree-shaking problem arises when a component is used as an injection token.
 There are two cases when that can happen.
 
-*   The token is used in the value position of a [content query](guide/lifecycle-hooks#using-aftercontent-hooks "See more about using content queries.").
-*   The token is used as a type specifier for constructor injection.
+-   The token is used in the value position of a [content query](guide/lifecycle-hooks#using-aftercontent-hooks 'See more about using content queries.').
+-   The token is used as a type specifier for constructor injection.
 
 In the following example, both uses of the `OtherComponent` token cause retention of `OtherComponent`, preventing it from being tree-shaken when it is not used.
 
 <code-example format="typescript" language="typescript">
 
 class MyComponent {
-  constructor(&commat;Optional() other: OtherComponent) {}
+constructor(&commat;Optional() other: OtherComponent) {}
 
-  &commat;ContentChild(OtherComponent)
-  other: OtherComponent|null;
+&commat;ContentChild(OtherComponent)
+other: OtherComponent|null;
 }
 
 </code-example>
@@ -116,20 +116,20 @@ The following example shows how this works for the `LibHeaderComponent`.
 abstract class LibHeaderToken {}
 
 &commat;Component({
-  selector: 'lib-header',
-  providers: [
-    {provide: LibHeaderToken, useExisting: LibHeaderComponent}
-  ]
-  &hellip;,
+selector: 'lib-header',
+providers: [
+{provide: LibHeaderToken, useExisting: LibHeaderComponent}
+]
+&hellip;,
 })
 class LibHeaderComponent extends LibHeaderToken {}
 
 &commat;Component({
-  selector: 'lib-card',
-  &hellip;,
+selector: 'lib-card',
+&hellip;,
 })
 class LibCardComponent {
-  &commat;ContentChild(LibHeaderToken) header: LibHeaderToken|null = null;
+&commat;ContentChild(LibHeaderToken) header: LibHeaderToken|null = null;
 }
 
 </code-example>
@@ -162,38 +162,38 @@ The following example shows how the pattern lets `LibCardComponent` communicate 
 <code-example format="typescript" language="typescript">
 
 abstract class LibHeaderToken {
-  abstract doSomething(): void;
+abstract doSomething(): void;
 }
 
 &commat;Component({
-  selector: 'lib-header',
-  providers: [
-    {provide: LibHeaderToken, useExisting: LibHeaderComponent}
-  ]
-  &hellip;,
+selector: 'lib-header',
+providers: [
+{provide: LibHeaderToken, useExisting: LibHeaderComponent}
+]
+&hellip;,
 })
 class LibHeaderComponent extends LibHeaderToken {
-  doSomething(): void {
-    // Concrete implementation of `doSomething`
-  }
+doSomething(): void {
+// Concrete implementation of `doSomething`
+}
 }
 
 &commat;Component({
-  selector: 'lib-card',
-  &hellip;,
+selector: 'lib-card',
+&hellip;,
 })
 class LibCardComponent implement AfterContentInit {
-  &commat;ContentChild(LibHeaderToken)
-  header: LibHeaderToken|null = null;
+&commat;ContentChild(LibHeaderToken)
+header: LibHeaderToken|null = null;
 
-  ngAfterContentInit(): void {
-    this.header &amp;&amp; this.header.doSomething();
-  }
+ngAfterContentInit(): void {
+this.header &amp;&amp; this.header.doSomething();
+}
 }
 
 </code-example>
 
-In this example the parent  queries the token to get the child component, and stores the resulting component reference if it is present.
+In this example the parent queries the token to get the child component, and stores the resulting component reference if it is present.
 Before calling a method in the child, the parent component checks to see if the child component is present.
 If the child component has been tree-shaken, there is no runtime reference to it, and no call to its method.
 
@@ -211,4 +211,4 @@ You should maintain the relationship between the component and its token while s
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

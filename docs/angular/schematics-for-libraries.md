@@ -20,9 +20,9 @@ The following steps show you how to add initial support without modifying any pr
 
     <code-example header="projects/my-lib/schematics/collection.json (Schematics Collection)" path="schematics-for-libraries/projects/my-lib/schematics/collection.1.json"></code-example>
 
-    *   The `$schema` path is relative to the Angular Devkit collection schema.
-    *   The `schematics` object describes the named schematics that are part of this collection.
-    *   The first entry is for a schematic named `ng-add`.
+    -   The `$schema` path is relative to the Angular Devkit collection schema.
+    -   The `schematics` object describes the named schematics that are part of this collection.
+    -   The first entry is for a schematic named `ng-add`.
         It contains the description, and points to the factory function that is called when your schematic is executed.
 
 1.  In your library project's `package.json` file, add a "schematics" entry with the path to your schema file.
@@ -54,8 +54,8 @@ Use the `save` option of `ng-add` to configure if the library should be added to
 
 Possible values are:
 
-| Values              | Details |
-|:---                 |:---     |
+| Values              | Details                                 |
+| :------------------ | :-------------------------------------- |
 | `false`             | Don't add the package to `package.json` |
 | `true`              | Add the package to the dependencies     |
 | `"dependencies"`    | Add the package to the dependencies     |
@@ -64,10 +64,10 @@ Possible values are:
 ## Building your schematics
 
 To bundle your schematics together with your library, you must configure the library to build the schematics separately, then add them to the bundle.
-You must build your schematics *after* you build your library, so they are placed in the correct directory.
+You must build your schematics _after_ you build your library, so they are placed in the correct directory.
 
-*   Your library needs a custom Typescript configuration file with instructions on how to compile your schematics into your distributed library
-*   To add the schematics to the library bundle, add scripts to the library's `package.json` file
+-   Your library needs a custom Typescript configuration file with instructions on how to compile your schematics into your distributed library
+-   To add the schematics to the library bundle, add scripts to the library's `package.json` file
 
 Assume you have a library project `my-lib` in your Angular workspace.
 To tell the library how to build the schematics, add a `tsconfig.schematics.json` file next to the generated `tsconfig.lib.json` file that configures the library build.
@@ -76,8 +76,8 @@ To tell the library how to build the schematics, add a `tsconfig.schematics.json
 
     <code-example header="projects/my-lib/tsconfig.schematics.json (TypeScript Config)" path="schematics-for-libraries/projects/my-lib/tsconfig.schematics.json"></code-example>
 
-    | Options | Details |
-    |:---     |:---     |
+    | Options   | Details                                                                                                          |
+    | :-------- | :--------------------------------------------------------------------------------------------------------------- |
     | `rootDir` | Specifies that your `schematics` folder contains the input files to be compiled.                                 |
     | `outDir`  | Maps to the library's output folder. By default, this is the `dist/my-lib` folder at the root of your workspace. |
 
@@ -85,9 +85,9 @@ To tell the library how to build the schematics, add a `tsconfig.schematics.json
 
     <code-example header="projects/my-lib/package.json (Build Scripts)" path="schematics-for-libraries/projects/my-lib/package.json"></code-example>
 
-    *   The `build` script compiles your schematic using the custom `tsconfig.schematics.json` file
-    *   The `postbuild` script copies the schematic files after the `build` script completes
-    *   Both the `build` and the `postbuild` scripts require the `copyfiles` and `typescript` dependencies.
+    -   The `build` script compiles your schematic using the custom `tsconfig.schematics.json` file
+    -   The `postbuild` script copies the schematic files after the `build` script completes
+    -   Both the `build` and the `postbuild` scripts require the `copyfiles` and `typescript` dependencies.
         To install the dependencies, navigate to the path defined in `devDependencies` and run `npm install` before you run the scripts.
 
 ## Providing generation support
@@ -118,10 +118,10 @@ When you add a schematic to the collection, you have to point to it in the colle
 
     <code-example header="projects/my-lib/schematics/my-service/schema.json (Schematic JSON Schema)" path="schematics-for-libraries/projects/my-lib/schematics/my-service/schema.json"></code-example>
 
-    *   *id*: A unique ID for the schema in the collection.
-    *   *title*: A human-readable description of the schema.
-    *   *type*: A descriptor for the type provided by the properties.
-    *   *properties*: An object that defines the available options for the schematic.
+    -   _id_: A unique ID for the schema in the collection.
+    -   _title_: A human-readable description of the schema.
+    -   _type_: A descriptor for the type provided by the properties.
+    -   _properties_: An object that defines the available options for the schematic.
 
     Each option associates key with a type, description, and optional alias.
     The type defines the shape of the value you expect, and the description is displayed when the user requests usage help for your schematic.
@@ -132,8 +132,8 @@ When you add a schematic to the collection, you have to point to it in the colle
 
     <code-example header="projects/my-lib/schematics/my-service/schema.ts (Schematic Interface)" path="schematics-for-libraries/projects/my-lib/schematics/my-service/schema.ts"></code-example>
 
-    | Options | Details |
-    |:---     |:---     |
+    | Options | Details                                                                                                                                     |
+    | :------ | :------------------------------------------------------------------------------------------------------------------------------------------ |
     | name    | The name you want to provide for the created service.                                                                                       |
     | path    | Overrides the path provided to the schematic. The default path value is based on the current working directory.                             |
     | project | Provides a specific project to run the schematic on. In the schematic, you can provide a default if the option is not provided by the user. |
@@ -153,17 +153,17 @@ Schematic templates support special syntax to execute code and variable substitu
     import { HttpClient } from '&commat;angular/common/http';
 
     &commat;Injectable({
-      providedIn: 'root'
+    providedIn: 'root'
     })
     export class &lt;%= classify(name) %&gt;Service {
-      constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
     }
 
     </code-example>
 
-    *   The `classify` and `dasherize` methods are utility functions that your schematic uses to transform your source template and filename.
+    -   The `classify` and `dasherize` methods are utility functions that your schematic uses to transform your source template and filename.
 
-    *   The `name` is provided as a property from your factory function.
+    -   The `name` is provided as a property from your factory function.
         It is the same `name` you defined in the schema.
 
 ### Add the factory function
@@ -214,7 +214,7 @@ The `Tree` methods give you access to the complete file tree in your workspace, 
 
     Be sure to check that the context exists and throw the appropriate error.
 
-1. Now that you have the project name, use it to retrieve the project-specific configuration information.
+1.  Now that you have the project name, use it to retrieve the project-specific configuration information.
 
     <code-example header="projects/my-lib/schematics/my-service/index.ts (Project)" path="schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="project-info"></code-example>
 
@@ -236,8 +236,8 @@ Use the templating to generate any custom files required for your schematic.
 
     <code-example header="projects/my-lib/schematics/my-service/index.ts (Template transform)" path="schematics-for-libraries/projects/my-lib/schematics/my-service/index.ts" region="template"></code-example>
 
-    | Methods            | Details |
-    |:---                |:---     |
+    | Methods            | Details                                                                                                                                                                                                                                          |
+    | :----------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | `apply()`          | Applies multiple rules to a source and returns the transformed source. It takes 2 arguments, a source and an array of rules.                                                                                                                     |
     | `url()`            | Reads source files from your filesystem, relative to the schematic.                                                                                                                                                                              |
     | `applyTemplates()` | Receives an argument of methods and properties you want make available to the schematic template and the schematic filenames. It returns a `Rule`. This is where you define the `classify()` and `dasherize()` methods, and the `name` property. |
@@ -318,4 +318,4 @@ CREATE src/app/my-data.service.ts (208 bytes)
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

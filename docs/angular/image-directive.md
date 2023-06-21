@@ -4,18 +4,18 @@ The `NgOptimizedImage` directive makes it easy to adopt performance best practic
 
 The directive ensures that the loading of the [Largest Contentful Paint (LCP)](http://web.dev/lcp) image is prioritized by:
 
-*   Automatically setting the `fetchpriority` attribute on the `<img>` tag
-*   Lazy loading other images by default
-*   Asserting that there is a corresponding preconnect link tag in the document head
-*   Automatically generating a `srcset` attribute
-*   Generating a [preload hint](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload) if app is using SSR
+-   Automatically setting the `fetchpriority` attribute on the `<img>` tag
+-   Lazy loading other images by default
+-   Asserting that there is a corresponding preconnect link tag in the document head
+-   Automatically generating a `srcset` attribute
+-   Generating a [preload hint](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload) if app is using SSR
 
 In addition to optimizing the loading of the LCP image, `NgOptimizedImage` enforces a number of image best practices, such as:
 
-*   Using [image CDN URLs to apply image optimizations](https://web.dev/image-cdns/#how-image-cdns-use-urls-to-indicate-optimization-options)
-*   Preventing layout shift by requiring `width` and `height`
-*   Warning if `width` or `height` have been set incorrectly
-*   Warning if the image will be visually distorted when rendered
+-   Using [image CDN URLs to apply image optimizations](https://web.dev/image-cdns/#how-image-cdns-use-urls-to-indicate-optimization-options)
+-   Preventing layout shift by requiring `width` and `height`
+-   Warning if `width` or `height` have been set incorrectly
+-   Warning if the image will be visually distorted when rendered
 
 ## Getting Started
 
@@ -59,9 +59,9 @@ Always mark the [LCP image](https://web.dev/lcp/#what-elements-are-considered) o
 
 Marking an image as `priority` applies the following optimizations:
 
-*   Sets `fetchpriority=high` (read more about priority hints [here](https://web.dev/priority-hints))
-*   Sets `loading=eager` (read more about native lazy loading [here](https://web.dev/browser-level-image-lazy-loading))
-*   Automatically generates a [preload link element](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload) if [rendering on the server](/guide/universal).
+-   Sets `fetchpriority=high` (read more about priority hints [here](https://web.dev/priority-hints))
+-   Sets `loading=eager` (read more about native lazy loading [here](https://web.dev/browser-level-image-lazy-loading))
+-   Automatically generates a [preload link element](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload) if [rendering on the server](/guide/universal).
 
 Angular displays a warning during development if the LCP element is an image that does not have the `priority` attribute. A page’s LCP element can vary based on a number of factors - such as the dimensions of a user's screen, so a page may have multiple images that should be marked `priority`. See [CSS for Web Vitals](https://web.dev/css-web-vitals/#images-and-largest-contentful-paint-lcp) for more details.
 
@@ -93,13 +93,13 @@ When you add the `fill` attribute to your image, you do not need and should not 
 
 </code-example>
 
-You can use the [object-fit](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) CSS property to change how the image will fill its container. If you style your image with `object-fit: "contain"`, the image will maintain its aspect ratio and be "letterboxed" to fit the element. If you set `object-fit: "cover"`, the element will retain its aspect ratio, fully fill the element, and some content may be "cropped" off. 
+You can use the [object-fit](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) CSS property to change how the image will fill its container. If you style your image with `object-fit: "contain"`, the image will maintain its aspect ratio and be "letterboxed" to fit the element. If you set `object-fit: "cover"`, the element will retain its aspect ratio, fully fill the element, and some content may be "cropped" off.
 
 See visual examples of the above at the [MDN object-fit documentation.](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
 
 You can also style your image with the [object-position property](https://developer.mozilla.org/en-US/docs/Web/CSS/object-position) to adjust its position within its containing element.
 
-**Important note:** For the "fill" image to render properly, its parent element **must** be styled with `position: "relative"`, `position: "fixed"`, or `position: "absolute"`. 
+**Important note:** For the "fill" image to render properly, its parent element **must** be styled with `position: "relative"`, `position: "fixed"`, or `position: "absolute"`.
 
 ### Adjusting image styling
 
@@ -130,7 +130,7 @@ To disable these warnings, inject the `PRECONNECT_CHECK_BLOCKLIST` token:
 <code-example format="typescript" language="typescript">
 
 providers: [
-  {provide: PRECONNECT_CHECK_BLOCKLIST, useValue: 'https://your-domain.com'}
+{provide: PRECONNECT_CHECK_BLOCKLIST, useValue: 'https://your-domain.com'}
 ],
 
 </code-example>
@@ -141,7 +141,7 @@ Defining a [`srcset` attribute](https://developer.mozilla.org/en-US/docs/Web/API
 
 #### Fixed-size images
 
-If your image should be "fixed" in size  (i.e. the same size across devices, except for [pixel density](https://web.dev/codelab-density-descriptors/)), there is no need to set a `sizes` attribute. A `srcset` can be generated automatically from the image's width and height attributes with no further input required. 
+If your image should be "fixed" in size (i.e. the same size across devices, except for [pixel density](https://web.dev/codelab-density-descriptors/)), there is no need to set a `sizes` attribute. A `srcset` can be generated automatically from the image's width and height attributes with no further input required.
 
 Example srcset generated: `<img ... srcset="image-400w.jpg 1x, image-800w.jpg 2x">`
 
@@ -226,20 +226,20 @@ A "loader" is a function that generates an [image transformation URL](https://we
 
 `NgOptimizedImage` provides both a generic loader that applies no transformations, as well as loaders for various third-party image services. It also supports writing your own custom loader.
 
-| Loader type| Behavior |
-|:--- |:--- |
-| Generic loader | The URL returned by the generic loader will always match the value of `src`. In other words, this loader applies no transformations. Sites that use Angular to serve images are the primary intended use case for this loader.|
-| Loaders for third-party image services | The URL returned by the loaders for third-party image services will follow API conventions used by that particular image service. |
-| Custom loaders | A custom loader's behavior is defined by its developer. You should use a custom loader if your image service isn't supported by the loaders that come preconfigured with `NgOptimizedImage`.|
+| Loader type                            | Behavior                                                                                                                                                                                                                       |
+| :------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Generic loader                         | The URL returned by the generic loader will always match the value of `src`. In other words, this loader applies no transformations. Sites that use Angular to serve images are the primary intended use case for this loader. |
+| Loaders for third-party image services | The URL returned by the loaders for third-party image services will follow API conventions used by that particular image service.                                                                                              |
+| Custom loaders                         | A custom loader's behavior is defined by its developer. You should use a custom loader if your image service isn't supported by the loaders that come preconfigured with `NgOptimizedImage`.                                   |
 
 Based on the image services commonly used with Angular applications, `NgOptimizedImage` provides loaders preconfigured to work with the following image services:
 
-| Image Service | Angular API | Documentation |
-|:--- |:--- |:--- |
-| Cloudflare Image Resizing | `provideCloudflareLoader` | [Documentation](https://developers.cloudflare.com/images/image-resizing/) |
-| Cloudinary | `provideCloudinaryLoader` | [Documentation](https://cloudinary.com/documentation/resizing_and_cropping) |
-| ImageKit | `provideImageKitLoader` | [Documentation](https://docs.imagekit.io/) |
-| Imgix | `provideImgixLoader` | [Documentation](https://docs.imgix.com/) |
+| Image Service             | Angular API               | Documentation                                                               |
+| :------------------------ | :------------------------ | :-------------------------------------------------------------------------- |
+| Cloudflare Image Resizing | `provideCloudflareLoader` | [Documentation](https://developers.cloudflare.com/images/image-resizing/)   |
+| Cloudinary                | `provideCloudinaryLoader` | [Documentation](https://cloudinary.com/documentation/resizing_and_cropping) |
+| ImageKit                  | `provideImageKitLoader`   | [Documentation](https://docs.imagekit.io/)                                  |
+| Imgix                     | `provideImgixLoader`      | [Documentation](https://docs.imgix.com/)                                    |
 
 To use the **generic loader** no additional code changes are necessary. This is the default behavior.
 
@@ -255,9 +255,9 @@ providers: [
 
 The base URL for your image assets should be passed to the provider factory as an argument. For most sites, this base URL should match one of the following patterns:
 
-*   https://yoursite.yourcdn.com
-*   https://subdomain.yoursite.com
-*   https://subdomain.yourcdn.com/yoursite
+-   https://yoursite.yourcdn.com
+-   https://subdomain.yoursite.com
+-   https://subdomain.yourcdn.com/yoursite
 
 You can learn more about the base URL structure in the docs of a corresponding CDN provider.
 
@@ -318,4 +318,4 @@ Note that in the above example, we've invented the 'roundedCorners' property nam
 
 <!--end links -->
 
-@reviewed 2022-11-07
+:date: 7.11.2022

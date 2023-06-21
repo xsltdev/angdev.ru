@@ -2,18 +2,18 @@
 
 The following are metadata errors you may encounter, with explanations and suggested corrections.
 
-[Expression form not supported](#expression-form-not-supported) <br /> 
-[Reference to a local (non-exported) symbol](#reference-to-a-local-symbol) <br /> 
-[Only initialized variables and constants](#only-initialized-variables) <br /> 
-[Reference to a non-exported class](#reference-to-a-non-exported-class) <br /> 
-[Reference to a non-exported function](#reference-to-a-non-exported-function) <br /> 
-[Function calls are not supported](#function-calls-not-supported) <br /> 
-[Destructured variable or constant not supported](#destructured-variable-not-supported) <br /> 
-[Could not resolve type](#could-not-resolve-type) <br /> 
-[Name expected](#name-expected) <br /> 
-[Unsupported enum member name](#unsupported-enum-member-name) <br /> 
-[Tagged template expressions are not supported](#tagged-template-expressions-not-supported) <br /> 
-[Symbol reference expected](#symbol-reference-expected) <br /> 
+[Expression form not supported](#expression-form-not-supported) <br />
+[Reference to a local (non-exported) symbol](#reference-to-a-local-symbol) <br />
+[Only initialized variables and constants](#only-initialized-variables) <br />
+[Reference to a non-exported class](#reference-to-a-non-exported-class) <br />
+[Reference to a non-exported function](#reference-to-a-non-exported-function) <br />
+[Function calls are not supported](#function-calls-not-supported) <br />
+[Destructured variable or constant not supported](#destructured-variable-not-supported) <br />
+[Could not resolve type](#could-not-resolve-type) <br />
+[Name expected](#name-expected) <br />
+[Unsupported enum member name](#unsupported-enum-member-name) <br />
+[Tagged template expressions are not supported](#tagged-template-expressions-not-supported) <br />
+[Symbol reference expected](#symbol-reference-expected) <br />
 
 <a id="expression-form-not-supported"></a>
 
@@ -21,7 +21,7 @@ The following are metadata errors you may encounter, with explanations and sugge
 
 <div class="alert is-helpful">
 
-*The compiler encountered an expression it didn't understand while evaluating Angular metadata.*
+_The compiler encountered an expression it didn't understand while evaluating Angular metadata._
 
 </div>
 
@@ -34,10 +34,10 @@ can produce this error, as seen in the following example:
 export class Fooish { &hellip; }
 &hellip;
 const prop = typeof Fooish; // typeof is not valid in metadata
-  &hellip;
-  // bracket notation is not valid in metadata
-  { provide: 'token', useValue: { [prop]: 'value' } };
-  &hellip;
+&hellip;
+// bracket notation is not valid in metadata
+{ provide: 'token', useValue: { [prop]: 'value' } };
+&hellip;
 
 </code-example>
 
@@ -54,7 +54,7 @@ and be wary of new or unusual TypeScript features.
 
 <div class="alert is-helpful">
 
-*Reference to a local \(non-exported\) symbol 'symbol name'. Consider exporting the symbol.*
+_Reference to a local \(non-exported\) symbol 'symbol name'. Consider exporting the symbol._
 
 </div>
 
@@ -68,17 +68,17 @@ Here's a `provider` example of the problem.
 let foo: number; // neither exported nor initialized
 
 &commat;Component({
-  selector: 'my-component',
-  template: &hellip; ,
-  providers: [
-    { provide: Foo, useValue: foo }
-  ]
+selector: 'my-component',
+template: &hellip; ,
+providers: [
+{ provide: Foo, useValue: foo }
+]
 })
 export class MyComponent {}
 
 </code-example>
 
-The compiler generates the component factory, which includes the `useValue` provider code, in a separate module. *That* factory module can't reach back to *this* source module to access the local \(non-exported\) `foo` variable.
+The compiler generates the component factory, which includes the `useValue` provider code, in a separate module. _That_ factory module can't reach back to _this_ source module to access the local \(non-exported\) `foo` variable.
 
 You could fix the problem by initializing `foo`.
 
@@ -93,7 +93,7 @@ The compiler will [fold](guide/aot-compiler#code-folding) the expression into th
 <code-example format="typescript" language="typescript">
 
 providers: [
-  { provide: Foo, useValue: 42 }
+{ provide: Foo, useValue: 42 }
 ]
 
 </code-example>
@@ -106,19 +106,19 @@ Alternatively, you can fix it by exporting `foo` with the expectation that `foo`
 export let foo: number; // exported
 
 &commat;Component({
-  selector: 'my-component',
-  template: &hellip; ,
-  providers: [
-    { provide: Foo, useValue: foo }
-  ]
+selector: 'my-component',
+template: &hellip; ,
+providers: [
+{ provide: Foo, useValue: foo }
+]
 })
 export class MyComponent {}
 
 </code-example>
 
-Adding `export` often works for variables referenced in metadata such as `providers` and `animations` because the compiler can generate *references* to the exported variables in these expressions. It doesn't need the *values* of those variables.
+Adding `export` often works for variables referenced in metadata such as `providers` and `animations` because the compiler can generate _references_ to the exported variables in these expressions. It doesn't need the _values_ of those variables.
 
-Adding `export` doesn't work when the compiler needs the *actual value*
+Adding `export` doesn't work when the compiler needs the _actual value_
 in order to generate code.
 For example, it doesn't work for the `template` property.
 
@@ -128,14 +128,14 @@ For example, it doesn't work for the `template` property.
 export let someTemplate: string; // exported but not initialized
 
 &commat;Component({
-  selector: 'my-component',
-  template: someTemplate
+selector: 'my-component',
+template: someTemplate
 })
 export class MyComponent {}
 
 </code-example>
 
-The compiler needs the value of the `template` property *right now* to generate the component factory.
+The compiler needs the value of the `template` property _right now_ to generate the component factory.
 The variable reference alone is insufficient.
 Prefixing the declaration with `export` merely produces a new error, "[`Only initialized variables and constants can be referenced`](#only-initialized-variables)".
 
@@ -145,14 +145,14 @@ Prefixing the declaration with `export` merely produces a new error, "[`Only ini
 
 <div class="alert is-helpful">
 
-*Only initialized variables and constants can be referenced because the value of this variable is needed by the template compiler.*
+_Only initialized variables and constants can be referenced because the value of this variable is needed by the template compiler._
 
 </div>
 
 The compiler found a reference to an exported variable or static field that wasn't initialized.
 It needs the value of that variable to generate code.
 
-The following example tries to set the component's `template` property to the value of the exported `someTemplate` variable which is declared but *unassigned*.
+The following example tries to set the component's `template` property to the value of the exported `someTemplate` variable which is declared but _unassigned_.
 
 <code-example format="typescript" language="typescript">
 
@@ -160,8 +160,8 @@ The following example tries to set the component's `template` property to the va
 export let someTemplate: string;
 
 &commat;Component({
-  selector: 'my-component',
-  template: someTemplate
+selector: 'my-component',
+template: someTemplate
 })
 export class MyComponent {}
 
@@ -175,8 +175,8 @@ You'd also get this error if you imported `someTemplate` from some other module 
 import { someTemplate } from './config';
 
 &commat;Component({
-  selector: 'my-component',
-  template: someTemplate
+selector: 'my-component',
+template: someTemplate
 })
 export class MyComponent {}
 
@@ -185,7 +185,7 @@ export class MyComponent {}
 The compiler cannot wait until runtime to get the template information.
 It must statically derive the value of the `someTemplate` variable from the source code so that it can generate the component factory, which includes instructions for building the element based on the template.
 
-To correct this error, provide the initial value of the variable in an initializer clause *on the same line*.
+To correct this error, provide the initial value of the variable in an initializer clause _on the same line_.
 
 <code-example format="typescript" language="typescript">
 
@@ -193,8 +193,8 @@ To correct this error, provide the initial value of the variable in an initializ
 export let someTemplate = '&lt;h1&gt;Greetings from Angular&lt;/h1&gt;';
 
 &commat;Component({
-  selector: 'my-component',
-  template: someTemplate
+selector: 'my-component',
+template: someTemplate
 })
 export class MyComponent {}
 
@@ -206,8 +206,8 @@ export class MyComponent {}
 
 <div class="alert is-helpful">
 
-*Reference to a non-exported class `<class name>`.*
-*Consider exporting the class.*
+_Reference to a non-exported class `<class name>`._
+_Consider exporting the class._
 
 </div>
 
@@ -220,11 +220,11 @@ For example, you may have defined a class and used it as an injection token in a
 // ERROR
 abstract class MyStrategy { }
 
-  &hellip;
-  providers: [
-    { provide: MyStrategy, useValue: &hellip; }
-  ]
-  &hellip;
+&hellip;
+providers: [
+{ provide: MyStrategy, useValue: &hellip; }
+]
+&hellip;
 
 </code-example>
 
@@ -236,11 +236,11 @@ To correct this error, export the referenced class.
 // CORRECTED
 export abstract class MyStrategy { }
 
-  &hellip;
-  providers: [
-    { provide: MyStrategy, useValue: &hellip; }
-  ]
-  &hellip;
+&hellip;
+providers: [
+{ provide: MyStrategy, useValue: &hellip; }
+]
+&hellip;
 
 </code-example>
 
@@ -250,7 +250,7 @@ export abstract class MyStrategy { }
 
 <div class="alert is-helpful">
 
-*Metadata referenced a function that wasn't exported.*
+_Metadata referenced a function that wasn't exported._
 
 </div>
 
@@ -261,11 +261,11 @@ For example, you may have set a providers `useFactory` property to a locally def
 // ERROR
 function myStrategy() { &hellip; }
 
-  &hellip;
-  providers: [
-    { provide: MyStrategy, useFactory: myStrategy }
-  ]
-  &hellip;
+&hellip;
+providers: [
+{ provide: MyStrategy, useFactory: myStrategy }
+]
+&hellip;
 
 </code-example>
 
@@ -277,11 +277,11 @@ To correct this error, export the function.
 // CORRECTED
 export function myStrategy() { &hellip; }
 
-  &hellip;
-  providers: [
-    { provide: MyStrategy, useFactory: myStrategy }
-  ]
-  &hellip;
+&hellip;
+providers: [
+{ provide: MyStrategy, useFactory: myStrategy }
+]
+&hellip;
 
 </code-example>
 
@@ -291,7 +291,7 @@ export function myStrategy() { &hellip; }
 
 <div class="alert is-helpful">
 
-*Function calls are not supported. Consider replacing the function or lambda with a reference to an exported function.*
+_Function calls are not supported. Consider replacing the function or lambda with a reference to an exported function._
 
 </div>
 
@@ -301,12 +301,12 @@ For example, you cannot set a provider's `useFactory` to an anonymous function o
 <code-example format="typescript" language="typescript">
 
 // ERROR
-  &hellip;
-  providers: [
-    { provide: MyStrategy, useFactory: function() { &hellip; } },
-    { provide: OtherStrategy, useFactory: () =&gt; { &hellip; } }
-  ]
-  &hellip;
+&hellip;
+providers: [
+{ provide: MyStrategy, useFactory: function() { &hellip; } },
+{ provide: OtherStrategy, useFactory: () =&gt; { &hellip; } }
+]
+&hellip;
 
 </code-example>
 
@@ -317,11 +317,11 @@ You also get this error if you call a function or method in a provider's `useVal
 // ERROR
 import { calculateValue } from './utilities';
 
-  &hellip;
-  providers: [
-    { provide: SomeValue, useValue: calculateValue() }
-  ]
-  &hellip;
+&hellip;
+providers: [
+{ provide: SomeValue, useValue: calculateValue() }
+]
+&hellip;
 
 </code-example>
 
@@ -335,15 +335,15 @@ import { calculateValue } from './utilities';
 export function myStrategy() { &hellip; }
 export function otherStrategy() { &hellip; }
 export function someValueFactory() {
-  return calculateValue();
+return calculateValue();
 }
-  &hellip;
-  providers: [
-    { provide: MyStrategy, useFactory: myStrategy },
-    { provide: OtherStrategy, useFactory: otherStrategy },
-    { provide: SomeValue, useFactory: someValueFactory }
-  ]
-  &hellip;
+&hellip;
+providers: [
+{ provide: MyStrategy, useFactory: myStrategy },
+{ provide: OtherStrategy, useFactory: otherStrategy },
+{ provide: SomeValue, useFactory: someValueFactory }
+]
+&hellip;
 
 </code-example>
 
@@ -353,7 +353,7 @@ export function someValueFactory() {
 
 <div class="alert is-helpful">
 
-*Referencing an exported destructured variable or constant is not supported by the template compiler. Consider simplifying this to avoid destructuring.*
+_Referencing an exported destructured variable or constant is not supported by the template compiler. Consider simplifying this to avoid destructuring._
 
 </div>
 
@@ -368,12 +368,12 @@ import { configuration } from './configuration';
 
 // destructured assignment to foo and bar
 const {foo, bar} = configuration;
-  &hellip;
-  providers: [
-    {provide: Foo, useValue: foo},
-    {provide: Bar, useValue: bar},
-  ]
-  &hellip;
+&hellip;
+providers: [
+{provide: Foo, useValue: foo},
+{provide: Bar, useValue: bar},
+]
+&hellip;
 
 </code-example>
 
@@ -383,12 +383,12 @@ To correct this error, refer to non-destructured values.
 
 // CORRECTED
 import { configuration } from './configuration';
-  &hellip;
-  providers: [
-    {provide: Foo, useValue: configuration.foo},
-    {provide: Bar, useValue: configuration.bar},
-  ]
-  &hellip;
+&hellip;
+providers: [
+{provide: Foo, useValue: configuration.foo},
+{provide: Bar, useValue: configuration.bar},
+]
+&hellip;
 
 </code-example>
 
@@ -398,7 +398,7 @@ import { configuration } from './configuration';
 
 <div class="alert is-helpful">
 
-*The compiler encountered a type and can't determine which module exports that type.*
+_The compiler encountered a type and can't determine which module exports that type._
 
 </div>
 
@@ -412,7 +412,7 @@ You'll get an error if you reference it in the component constructor, which the 
 // ERROR
 &commat;Component({ })
 export class MyComponent {
-  constructor (private win: Window) { &hellip; }
+constructor (private win: Window) { &hellip; }
 }
 
 </code-example>
@@ -440,16 +440,16 @@ Here's an illustrative example.
 import { Inject } from '&commat;angular/core';
 
 export const WINDOW = new InjectionToken('Window');
-export function _window() { return window; }
+export function \_window() { return window; }
 
 &commat;Component({
-  &hellip;
-  providers: [
-    { provide: WINDOW, useFactory: _window }
-  ]
+&hellip;
+providers: [
+{ provide: WINDOW, useFactory: _window }
+]
 })
 export class MyComponent {
-  constructor (&commat;Inject(WINDOW) private win: Window) { &hellip; }
+constructor (&commat;Inject(WINDOW) private win: Window) { &hellip; }
 }
 
 </code-example>
@@ -461,12 +461,12 @@ Angular does something similar with the `DOCUMENT` token so you can inject the b
 
 <code-example format="typescript" language="typescript">
 
-import { Inject }   from '&commat;angular/core';
+import { Inject } from '&commat;angular/core';
 import { DOCUMENT } from '&commat;angular/common';
 
 &commat;Component({ &hellip; })
 export class MyComponent {
-  constructor (&commat;Inject(DOCUMENT) private doc: Document) { &hellip; }
+constructor (&commat;Inject(DOCUMENT) private doc: Document) { &hellip; }
 }
 
 </code-example>
@@ -477,7 +477,7 @@ export class MyComponent {
 
 <div class="alert is-helpful">
 
-*The compiler expected a name in an expression it was evaluating.*
+_The compiler expected a name in an expression it was evaluating._
 
 </div>
 
@@ -505,7 +505,7 @@ provider: [{ provide: Foo, useValue: { '0': 'test' } }]
 
 <div class="alert is-helpful">
 
-*Angular couldn't determine the value of the [enum member](https://www.typescriptlang.org/docs/handbook/enums.html) that you referenced in metadata.*
+_Angular couldn't determine the value of the [enum member](https://www.typescriptlang.org/docs/handbook/enums.html) that you referenced in metadata._
 
 </div>
 
@@ -515,18 +515,18 @@ The compiler can understand simple enum values but not complex values such as th
 
 // ERROR
 enum Colors {
-  Red = 1,
-  White,
-  Blue = "Blue".length // computed
+Red = 1,
+White,
+Blue = "Blue".length // computed
 }
 
-  &hellip;
-  providers: [
-    { provide: BaseColor,   useValue: Colors.White } // ok
-    { provide: DangerColor, useValue: Colors.Red }   // ok
-    { provide: StrongColor, useValue: Colors.Blue }  // bad
-  ]
-  &hellip;
+&hellip;
+providers: [
+{ provide: BaseColor, useValue: Colors.White } // ok
+{ provide: DangerColor, useValue: Colors.Red } // ok
+{ provide: StrongColor, useValue: Colors.Blue } // bad
+]
+&hellip;
 
 </code-example>
 
@@ -538,7 +538,7 @@ Avoid referring to enums with complicated initializers or computed properties.
 
 <div class="alert is-helpful">
 
-*Tagged template expressions are not supported in metadata.*
+_Tagged template expressions are not supported in metadata._
 
 </div>
 
@@ -549,13 +549,13 @@ The compiler encountered a JavaScript ES2015 [tagged template expression](https:
 // ERROR
 const expression = 'funky';
 const raw = String.raw`A tagged template &dollar;{expression} string`;
- &hellip;
- template: '&lt;div&gt;' + raw + '&lt;/div&gt;'
- &hellip;
+&hellip;
+template: '&lt;div&gt;' + raw + '&lt;/div&gt;'
+&hellip;
 
 </code-example>
 
-[`String.raw()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/raw) is a *tag function* native to JavaScript ES2015.
+[`String.raw()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/raw) is a _tag function_ native to JavaScript ES2015.
 
 The AOT compiler does not support tagged template expressions; avoid them in metadata expressions.
 
@@ -565,7 +565,7 @@ The AOT compiler does not support tagged template expressions; avoid them in met
 
 <div class="alert is-helpful">
 
-*The compiler expected a reference to a symbol at the location specified in the error message.*
+_The compiler expected a reference to a symbol at the location specified in the error message._
 
 </div>
 
@@ -579,4 +579,4 @@ This error can occur if you use an expression in the `extends` clause of a class
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

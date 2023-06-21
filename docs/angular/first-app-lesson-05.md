@@ -8,10 +8,10 @@ This tutorial lesson demonstrates how to create a component `@Input()`, use it t
 
 This lesson starts with the code from the previous lesson, so you can:
 
-*   Use the code that you created in Lesson 4 in your integrated development environment (IDE).
-*   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-04"></live-example> from Lesson 4 where you can:
-    *   Use the *live example* in StackBlitz, where the StackBlitz interface is your IDE.
-    *   Use the *download example* and open it in your IDE.
+-   Use the code that you created in Lesson 4 in your integrated development environment (IDE).
+-   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-04"></live-example> from Lesson 4 where you can:
+    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
+    -   Use the _download example_ and open it in your IDE.
 
 If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
 
@@ -19,9 +19,10 @@ If you have any trouble during this lesson, you can review the completed code fo
 
 ## After you finish
 
-* Your app's `HousingLocationComponent` template has a `HousingLocation` property to receive input.
+-   Your app's `HousingLocationComponent` template has a `HousingLocation` property to receive input.
 
 ## Conceptual preview of Inputs
+
 [Inputs](api/core/Input) allow components to share data. The direction of the data sharing is from parent component to child component.
 
 To receive data from a parent component, a child component must mark a class property with the `@Input()` decorator. This decorator can be used in components and directives.
@@ -35,15 +36,18 @@ In this lesson, you'll define `@Input()` properties in the `HousingLocationCompo
 Perform these steps on the app code in your IDE.
 
 ### Step 1 - Import the Input decorator
+
 This step imports the `Input` decorator into the class.
 
 In the code editor:
+
 1.  Navigate to `src/app/housing-location/housing-location.component.ts`
 1.  Update the file imports to include `Input` and `HousingLocation`:
 
     <code-example header="Import HousingLocationComponent and Input in src/app/housing-location/housing-location.component.ts" path="first-app-lesson-05/src/app/housing-location/housing-location.component.ts" region="add-imports"></code-example>
 
 ### Step 2 - Add the Input property
+
 1.  In the same file, add a property called `housingLocation` of type `HousingLocation` to the `HousingLocationComponent` class. Add an `!` after the property name and prefix it with the `@Input()` decorator:
 
     <code-example header="Import HousingLocationComponent and Input in src/app/housing-location/housing-location.component.ts" path="first-app-lesson-05/src/app/housing-location/housing-location.component.ts" region="add-housing-location-property"></code-example>
@@ -62,7 +66,8 @@ If you are having any trouble with this lesson, you can review the completed cod
 
 ## Next steps
 
-* [Lesson 6 - Add a property binding to an component’s template](tutorial/first-app/first-app-lesson-06)
+-   [Lesson 6 - Add a property binding to an component’s template](tutorial/first-app/first-app-lesson-06)
 
 ## For more information about the topics covered in this lesson, visit:
-* [Sharing data between child and parent directives and components](guide/inputs-outputs)
+
+-   [Sharing data between child and parent directives and components](guide/inputs-outputs)

@@ -88,4 +88,4 @@ Angular CLI предоставляет команду для создания н
 
 -   [Dependency Injection in Action](guide/dependency-injection-in-action)
 
-@ просмотрено 2022-08-02
+:date: 2.08.2022

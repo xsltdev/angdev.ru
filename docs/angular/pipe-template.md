@@ -14,4 +14,4 @@
 
 Значение `birthday` компонента передается через оператор pipe, `|` в функцию [`date`](api/common/DatePipe).
 
-@reviewed 2022-04-07
+:date: 7.04.2022

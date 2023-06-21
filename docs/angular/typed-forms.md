@@ -6,7 +6,7 @@ As of Angular 14, reactive forms are strictly typed by default.
 
 ## Prerequisites
 
-As background for this guide, you should already be familiar with [Angular Reactive Forms](guide/reactive-forms "Reactive Forms").
+As background for this guide, you should already be familiar with [Angular Reactive Forms](guide/reactive-forms 'Reactive Forms').
 
 <a id="intro"></a>
 
@@ -14,7 +14,7 @@ As background for this guide, you should already be familiar with [Angular React
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/L-odCf4MfJc" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-With Angular reactive forms, you explicitly specify a *form model*. As a simple example, consider this basic user login form:
+With Angular reactive forms, you explicitly specify a _form model_. As a simple example, consider this basic user login form:
 
 ```ts
 const login = new FormGroup({
@@ -35,7 +35,7 @@ With strictly typed reactive forms, the above code does not compile, because the
 
 In addition to the added safety, the types enable a variety of other improvements, such as better autocomplete in IDEs, and an explicit way to specify form structure.
 
-These improvements currently apply only to *reactive* forms (not [*template-driven* forms](guide/forms "Forms Guide")).
+These improvements currently apply only to _reactive_ forms (not [_template-driven_ forms](guide/forms 'Forms Guide')).
 
 <a id="automated-migration"></a>
 
@@ -64,9 +64,9 @@ const email = new FormControl('angularrox@gmail.com');
 
 This control will be automatically inferred to have the type `FormControl<string|null>`. TypeScript will automatically enforce this type throughout the [`FormControl` API](api/forms/FormControl), such as `email.value`, `email.valueChanges`, `email.setValue(...)`, etc.
 
-### Nullability 
+### Nullability
 
-You might wonder: why does the type of this control include `null`?  This is because the control can become `null` at any time, by calling reset:
+You might wonder: why does the type of this control include `null`? This is because the control can become `null` at any time, by calling reset:
 
 ```ts
 const email = new FormControl('angularrox@gmail.com');
@@ -77,7 +77,9 @@ console.log(email.value); // null
 TypeScript will enforce that you always handle the possibility that the control has become `null`. If you want to make this control non-nullable, you may use the `nonNullable` option. This will cause the control to reset to its initial value, instead of `null`:
 
 ```ts
-const email = new FormControl('angularrox@gmail.com', {nonNullable: true});
+const email = new FormControl('angularrox@gmail.com', {
+    nonNullable: true,
+});
 email.reset();
 console.log(email.value); // angularrox@gmail.com
 ```
@@ -96,7 +98,7 @@ email.setValue('angularrox@gmail.com'); // Error!
 To prevent this, we explicitly specify the type as `string|null`:
 
 ```ts
-const email = new FormControl<string|null>(null);
+const email = new FormControl<string | null>(null);
 email.setValue('angularrox@gmail.com');
 ```
 
@@ -127,8 +129,8 @@ Consider again a login form:
 
 ```ts
 const login = new FormGroup({
-    email: new FormControl('', {nonNullable: true}),
-    password: new FormControl('', {nonNullable: true}),
+    email: new FormControl('', { nonNullable: true }),
+    password: new FormControl('', { nonNullable: true }),
 });
 ```
 
@@ -138,11 +140,11 @@ As a consequence, the type of `login.value` is `Partial<{email: string, password
 
 More specifically, the type of `login.value.email` is `string|undefined`, and TypeScript will enforce that you handle the possibly `undefined` value (if you have `strictNullChecks` enabled).
 
-If you want to access the value *including* disabled controls, and thus bypass possible `undefined` fields, you can use `login.getRawValue()`.
+If you want to access the value _including_ disabled controls, and thus bypass possible `undefined` fields, you can use `login.getRawValue()`.
 
 ### Optional Controls and Dynamic Groups
 
-Some forms have controls that may or may not be present, which can be added and removed at runtime. You can represent these controls using *optional fields*:
+Some forms have controls that may or may not be present, which can be added and removed at runtime. You can represent these controls using _optional fields_:
 
 ```ts
 interface LoginForm {
@@ -151,8 +153,8 @@ interface LoginForm {
 }
 
 const login = new FormGroup<LoginForm>({
-    email: new FormControl('', {nonNullable: true}),
-    password: new FormControl('', {nonNullable: true}),
+    email: new FormControl('', { nonNullable: true }),
+    password: new FormControl('', { nonNullable: true }),
 });
 
 login.removeControl('password');
@@ -165,8 +167,13 @@ In this form, we explicitly specify the type, which allows us to make the `passw
 Some `FormGroup` usages do not fit the above pattern because the keys are not known ahead of time. The `FormRecord` class is designed for that case:
 
 ```ts
-const addresses = new FormRecord<FormControl<string|null>>({});
-addresses.addControl('Andrew', new FormControl('2340 Folsom St'));
+const addresses = new FormRecord<
+    FormControl<string | null>
+>({});
+addresses.addControl(
+    'Andrew',
+    new FormControl('2340 Folsom St')
+);
 ```
 
 Any control of type `string|null` can be added to this `FormRecord`.
@@ -176,7 +183,7 @@ If you need a `FormGroup` that is both dynamic (open-ended) and heterogeneous (t
 A `FormRecord` can also be built with the `FormBuilder`:
 
 ```ts
-const addresses = fb.record({'Andrew': '2340 Folsom St'});
+const addresses = fb.record({ Andrew: '2340 Folsom St' });
 ```
 
 ## `FormBuilder` and `NonNullableFormBuilder`
@@ -201,8 +208,8 @@ You can also inject it using the name `NonNullableFormBuilder`.
 
 <!-- external links -->
 
-[NinjaSquadTypedFormsBlog]: https://blog.ninja-squad.com/2022/04/21/strictly-typed-forms-angular/ "NinjaSquad | Strictly typed forms in Angular"
+[ninjasquadtypedformsblog]: https://blog.ninja-squad.com/2022/04/21/strictly-typed-forms-angular/ 'NinjaSquad | Strictly typed forms in Angular'
 
 <!-- end links -->
 
-@reviewed 2022-05-10
+:date: 10.05.2022

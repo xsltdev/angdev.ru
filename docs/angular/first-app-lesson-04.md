@@ -8,10 +8,10 @@ This tutorial lesson demonstrates how to create an interface and include it in a
 
 This lesson starts with the code from the previous lesson, so you can:
 
-*   Use the code that you created in Lesson 3 in your integrated development environment (IDE).
-*   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-03"></live-example> from Lesson 3 where you can:
-    *   Use the *live example* in StackBlitz, where the StackBlitz interface is your IDE.
-    *   Use the *download example* and open it in your IDE.
+-   Use the code that you created in Lesson 3 in your integrated development environment (IDE).
+-   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-03"></live-example> from Lesson 3 where you can:
+    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
+    -   Use the _download example_ and open it in your IDE.
 
 If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
 
@@ -19,8 +19,8 @@ If you have any trouble during this lesson, you can review the completed code fo
 
 ## After you finish
 
-*  Your app has a new interface that it can use as a data type.
-*  Your app has an instance of the new interface with sample data.
+-   Your app has a new interface that it can use as a data type.
+-   Your app has an instance of the new interface with sample data.
 
 ## Conceptual preview of interfaces
 
@@ -112,8 +112,7 @@ If you are having any trouble with this lesson, you can review the completed cod
 
 ## Next steps
 
-* [Lesson 5 - Add an input parameter to the component](tutorial/first-app/first-app-lesson-05)
-
+-   [Lesson 5 - Add an input parameter to the component](tutorial/first-app/first-app-lesson-05)
 
 ## More information
 
@@ -121,5 +120,5 @@ For more information about the topics covered in this lesson, visit:
 
 <!-- vale Angular.Google_WordListSuggestions = NO -->
 
-*  [ng generate interface](cli/generate#interface-command)
-*  [ng generate](cli/generate)
+-   [ng generate interface](cli/generate#interface-command)
+-   [ng generate](cli/generate)

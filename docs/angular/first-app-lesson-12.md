@@ -12,10 +12,10 @@ Using a REST API to send and receive the form's data is not covered in this less
 
 This lesson starts with the code from the previous lesson, so you can:
 
-*   Use the code that you created in Lesson 11 in your integrated development environment (IDE).
-*   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-11"></live-example> from Lesson 11 where you can:
-    *   Use the *live example* in StackBlitz, where the StackBlitz interface is your IDE.
-    *   Use the *download example* and open it in your IDE.
+-   Use the code that you created in Lesson 11 in your integrated development environment (IDE).
+-   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-11"></live-example> from Lesson 11 where you can:
+    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
+    -   Use the _download example_ and open it in your IDE.
 
 If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
 
@@ -23,8 +23,8 @@ If you have any trouble during this lesson, you can review the completed code fo
 
 ## After you finish
 
-*  Your app has a form into which users can enter data that is sent to your app's service.
-*  The service writes the data from the form to the browser's console.
+-   Your app has a form into which users can enter data that is sent to your app's service.
+-   The service writes the data from the form to the browser's console.
 
 ## Lesson steps
 
@@ -58,13 +58,13 @@ In the **Edit** pane of your IDE, in `src/app/details/details.component.ts`:
 
     <code-example header="imports directive in src/app/details/details.component.ts" path="first-app-lesson-12/src/app/details/details.component.ts" region="component-imports"></code-example>
 
-1. In the `DetailsComponent` class, before the `constructor()` method, add the following code to create the form object.
+1.  In the `DetailsComponent` class, before the `constructor()` method, add the following code to create the form object.
 
     <code-example header="template directive in src/app/details/details.component.ts" path="first-app-lesson-12/src/app/details/details.component.ts" region="form-code"></code-example>
 
     In Angular, `FormGroup` and `FormControl` are types that enable you to build forms. The `FormControl` type can provide a default value and shape the form data. In this example `firstName` is a `string` and the default value is empty string.
 
-1. In the `DetailsComponent` class, after the `constructor()` method, add the following code to handle the **Apply now** click.
+1.  In the `DetailsComponent` class, after the `constructor()` method, add the following code to handle the **Apply now** click.
 
     <code-example header="template directive in src/app/details/details.component.ts" path="first-app-lesson-12/src/app/details/details.component.ts" region="form-submit"></code-example>
 
@@ -85,9 +85,8 @@ In the **Edit** pane of your IDE, in `src/app/details/details.component.ts`:
 
     The template now includes an event handler `(submit)="submitApplication()"`. Angular uses parentheses syntax around the event name to create define events in the template code. The code on the right hand side of the equals sign is the code that should be executed when this event is triggered. You can bind to browser events and custom events.
 
-1.  Confirm that the app builds without error.
-    Correct any errors before you continue to the next step.
-
+1. Confirm that the app builds without error.
+   Correct any errors before you continue to the next step.
 
     <section class="lightbox">
     <img alt="details page with a form for applying to live at this location" src="generated/images/guide/faa/homes-app-lesson-12-step-3.png">
@@ -112,18 +111,19 @@ This step tests the new form to see that when the form data is submitted to the 
 ## Lesson review
 
 In this lesson, you updated your app to:
-*  add a form using Angular's forms feature
-*  connect the data captured in the form to a form using an event handler
+
+-   add a form using Angular's forms feature
+-   connect the data captured in the form to a form using an event handler
 
 If you are having any trouble with this lesson, you can review the completed code for it in the <live-example></live-example>.
 
 ## Next steps
 
-*  [Lesson 13 - Add the search feature to your application](tutorial/first-app/first-app-lesson-13)
+-   [Lesson 13 - Add the search feature to your application](tutorial/first-app/first-app-lesson-13)
 
 ## More information
 
 For more information about the topics covered in this lesson, visit:
 
-*  [Angular Forms](/guide/forms)
-*  [Event Handling](/guide/event-binding)
+-   [Angular Forms](/guide/forms)
+-   [Event Handling](/guide/event-binding)

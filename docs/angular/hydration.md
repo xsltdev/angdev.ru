@@ -37,14 +37,14 @@ bootstrapApplication(RootCmp, {
 Alternatively if you are using NgModules, you would add `provideClientHydration` to your root app module's provider list.
 
 ```typescript
-import {provideClientHydration} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { provideClientHydration } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
 @NgModule({
-  declarations: [RootCmp],
-  exports: [RootCmp],
-  bootstrap: [RootCmp],
-  providers: [provideClientHydration()],
+    declarations: [RootCmp],
+    exports: [RootCmp],
+    bootstrap: [RootCmp],
+    providers: [provideClientHydration()],
 })
 export class AppModule {}
 ```
@@ -61,7 +61,7 @@ After you've followed these steps and have started up your server, load your app
 
 <div class="alert is-helpful">
 
-  You will likely need to fix instances of Direct DOM Manipulation before hydration will fully work either by switching to Angular constructs or by using `ngSkipHydration`. See [Constraints](#constraints), [Direct DOM Manipulation](#dom-manipulation), and [How to skip hydration for particular components](#ngskiphydration) for more details.
+You will likely need to fix instances of Direct DOM Manipulation before hydration will fully work either by switching to Angular constructs or by using `ngSkipHydration`. See [Constraints](#constraints), [Direct DOM Manipulation](#dom-manipulation), and [How to skip hydration for particular components](#ngskiphydration) for more details.
 
 </div>
 
@@ -93,18 +93,19 @@ It is best to refactor your component to avoid this sort of DOM manipulation. Tr
 
 ### Valid HTML structure
 
-There are a few cases where if you have a component template that does not have valid HTML structure, this could result in a DOM mismatch error during hydration. 
+There are a few cases where if you have a component template that does not have valid HTML structure, this could result in a DOM mismatch error during hydration.
 
 As an example, here are some of the most common cases of this issue.
 
-* `<table>` without a `<tbody>`
-* `<div>` inside a `<p>`
-* `<a>` inside an `<h1>`
-* `<a>` inside another `<a>`
+-   `<table>` without a `<tbody>`
+-   `<div>` inside a `<p>`
+-   `<a>` inside an `<h1>`
+-   `<a>` inside another `<a>`
 
 If you are uncertain about whether your HTML is valid, you can use a [syntax validator](https://validator.w3.org/) to check it.
 
 <a id="preserve-whitespaces"></a>
+
 ### Preserve Whitespaces Configuration
 
 When using the hydration feature, we recommend using the default setting of `false` for `preserveWhitespaces`. If this setting is not in your tsconfig, the value will be `false` and no changes are required. If you choose to enable preserving whitespaces by adding `preserveWhitespaces: true` to your tsconfig, it is possible you may encounter issues with hydration. This is not yet a fully supported configuration.
@@ -122,7 +123,6 @@ If you choose to set this setting in your tsconfig, we recommend to set it only 
 Hydration relies on a signal from Zone.js when it becomes stable inside an application, so that Angular can start the serialization process on the server or post-hydration cleanup on the client to remove DOM nodes that remained unclaimed.
 
 Providing a custom or a "noop" Zone.js implementation may lead to a different timing of the "stable" event, thus triggering the serialization or the cleanup too early or too late. This is not yet a fully supported configuration and you may need to adjust the timing of the `onStable` event in the custom Zone.js implementation.
-
 
 <a id="errors"></a>
 

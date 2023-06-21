@@ -162,4 +162,4 @@ If you want your template to span multiple lines, use backticks \(<code>&grave;<
 
 <!-- end links -->
 
-@ просмотрено 2022-02-28
+:date: 28.02.2022

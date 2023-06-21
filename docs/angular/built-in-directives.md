@@ -383,4 +383,4 @@ Switch directives also work with built-in HTML elements and web components. For 
 
 <!-- end links -->
 
-@ просмотрено 2022-02-28
+:date: 28.02.2022

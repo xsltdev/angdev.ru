@@ -7,7 +7,7 @@ It explains how the Angular service worker fits into the larger production envir
 
 A basic understanding of the following:
 
-*   [Service Worker Communication](guide/service-worker-communications)
+-   [Service Worker Communication](guide/service-worker-communications)
 
 ## Service worker and caching of application resources
 
@@ -72,9 +72,9 @@ If necessary, the service worker enters a safe mode where requests fall back on 
 
 Hash mismatches can occur for a variety of reasons:
 
-*   Caching layers between the origin server and the end user could serve stale content
-*   A non-atomic deployment could result in the Angular service worker having visibility of partially updated content
-*   Errors during the build process could result in updated resources without `ngsw.json` being updated.
+-   Caching layers between the origin server and the end user could serve stale content
+-   A non-atomic deployment could result in the Angular service worker having visibility of partially updated content
+-   Errors during the build process could result in updated resources without `ngsw.json` being updated.
     The reverse could also happen resulting in an updated `ngsw.json` without updated resources.
 
 #### Unhashed content
@@ -82,7 +82,7 @@ Hash mismatches can occur for a variety of reasons:
 The only resources that have hashes in the `ngsw.json` manifest are resources that were present in the `dist` directory at the time the manifest was built.
 Other resources, especially those loaded from CDNs, have content that is unknown at build time or are updated more frequently than the application is deployed.
 
-If the Angular service worker does not have a hash to verify a resource is valid, it still caches its contents. At the same time, it honors the HTTP caching headers by using a policy of *stale while revalidate*.
+If the Angular service worker does not have a hash to verify a resource is valid, it still caches its contents. At the same time, it honors the HTTP caching headers by using a policy of _stale while revalidate_.
 The Angular service worker continues to serve a resource even after its HTTP caching headers indicate
 that it is no longer valid. At the same time, it attempts to refresh the expired resource in the background.
 This way, broken unhashed resources do not remain in the cache beyond their configured lifetimes.
@@ -108,15 +108,15 @@ Without a service worker, there is no guarantee that lazily loaded code is from 
 
 The Angular service worker might change the version of a running application under error conditions such as:
 
-*   The current version becomes non-valid due to a failed hash
-*   An unrelated error causes the service worker to enter safe mode and deactivates it temporarily
+-   The current version becomes non-valid due to a failed hash
+-   An unrelated error causes the service worker to enter safe mode and deactivates it temporarily
 
 The Angular service worker cleans up application versions when no tab is using them.
 
 Other reasons the Angular service worker might change the version of a running application are normal events:
 
-*   The page is reloaded/refreshed
-*   The page requests an update be immediately activated using the `SwUpdate` service
+-   The page is reloaded/refreshed
+-   The page requests an update be immediately activated using the `SwUpdate` service
 
 ### Service worker updates
 
@@ -141,7 +141,7 @@ The value of the header or query parameter is ignored and can be empty or omitte
 ### Service worker requests when the server can't be reached
 
 The service worker processes all requests unless the [service worker is explicitly bypassed](#bypassing-the-service-worker).
-The service worker either returns a cached response or sends the request to the server, depending on the state and configuration of the cache. 
+The service worker either returns a cached response or sends the request to the server, depending on the state and configuration of the cache.
 The service worker only caches responses to non-mutating requests, such as `GET` and `HEAD`.
 
 If the service worker receives an error from the server or it doesn't receive a response, it returns an error status that indicates the result of the call.
@@ -174,8 +174,7 @@ Clients: 7b79a015-69af-4d3d-9ae6-95ba90c79486, 5bc08295-aaf2-42f3-a4cc-9e4ef9100
 === Idle Task Queue ===
 Last update tick: 1s496u
 Last update run: never
-Task queue:
- &ast; init post-load (update, cleanup)
+Task queue: \* init post-load (update, cleanup)
 
 Debug log:
 
@@ -195,10 +194,10 @@ Driver state: NORMAL ((nominal))
 
 There are two possible degraded states:
 
-| Degraded states         | Details |
-|:---                     |:---     |
+| Degraded states         | Details                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `EXISTING_CLIENTS_ONLY` | The service worker does not have a clean copy of the latest known version of the application. Older cached versions are safe to use, so existing tabs continue to run from cache, but new loads of the application will be served from the network. The service worker will try to recover from this state when a new version of the application is detected and installed. This happens when a new `ngsw.json` is available. |
-| `SAFE_MODE`             | The service worker cannot guarantee the safety of using cached data. Either an unexpected error occurred or all cached versions are invalid. All traffic will be served from the network, running as little service worker code as possible.                                                                                                                                                                                 |
+| `SAFE_MODE`             | The service worker cannot guarantee the safety of using cached data. Either an unexpected error occurred or all cached versions are invalid. All traffic will be served from the network, running as little service worker code as possible.                                                                                                                                                                                  |
 
 In both cases, the parenthetical annotation provides the
 error that caused the service worker to enter the degraded state.
@@ -258,8 +257,7 @@ Each client is listed by its ID from the `Clients` API in the browser.
 === Idle Task Queue ===
 Last update tick: 1s496u
 Last update run: never
-Task queue:
- &ast; init post-load (update, cleanup)
+Task queue: \* init post-load (update, cleanup)
 
 </code-example>
 
@@ -286,13 +284,13 @@ Errors that occur within the service worker are logged here.
 Browsers such as Chrome provide developer tools for interacting with service workers.
 Such tools can be powerful when used properly, but there are a few things to keep in mind.
 
-*   When using developer tools, the service worker is kept running in the background and never restarts.
+-   When using developer tools, the service worker is kept running in the background and never restarts.
     This can cause behavior with Dev Tools open to differ from behavior a user might experience.
 
-*   If you look in the Cache Storage viewer, the cache is frequently out of date.
+-   If you look in the Cache Storage viewer, the cache is frequently out of date.
     Right-click the Cache Storage title and refresh the caches.
 
-*   Stopping and starting the service worker in the Service Worker pane checks for updates
+-   Stopping and starting the service worker in the Service Worker pane checks for updates
 
 ## Service worker safety
 
@@ -346,7 +344,7 @@ To remedy this, you might need to deactivate the old worker using one of the pre
 
 You might also be interested in the following:
 
-*   [Service Worker Configuration](guide/service-worker-config)
+-   [Service Worker Configuration](guide/service-worker-config)
 
 <!-- links -->
 
@@ -354,4 +352,4 @@ You might also be interested in the following:
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

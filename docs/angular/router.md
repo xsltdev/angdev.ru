@@ -150,7 +150,7 @@ To set up a wildcard route, add the following code to your `routes` definition.
 
 <code-example header="AppRoutingModule (excerpt)">
 
-{ path: '**', component: &lt;component-name&gt; }
+{ path: '\*\*', component: &lt;component-name&gt; }
 
 </code-example>
 
@@ -278,17 +278,17 @@ This code snippet assumes that you have a heroes list, a hero service, a functio
 
 <code-example header="Component 1 (excerpt)">
 
-heroes&dollar;: Observable&lt;Hero[]&gt;;
+heroes\$: Observable&lt;Hero[]&gt;;
 selectedId: number;
 heroes = HEROES;
 
 ngOnInit() {
-  this.heroes&dollar; = this.route.paramMap.pipe(
-    switchMap(params =&gt; {
-      this.selectedId = Number(params.get('id'));
-      return this.service.getHeroes();
-    })
-  );
+this.heroes\$ = this.route.paramMap.pipe(
+switchMap(params =&gt; {
+this.selectedId = Number(params.get('id'));
+return this.service.getHeroes();
+})
+);
 }
 
 </code-example>
@@ -306,22 +306,22 @@ Inject `ActivatedRoute` and `Router` in the constructor of the component class s
 
 <code-example header="Component 2 (excerpt)">
 
-hero&dollar;: Observable&lt;Hero&gt;;
+hero\$: Observable&lt;Hero&gt;;
 
 constructor(
-  private route: ActivatedRoute,
-  private router: Router  ) {}
+private route: ActivatedRoute,
+private router: Router ) {}
 
 ngOnInit() {
-  const heroId = this.route.snapshot.paramMap.get('id');
-  this.hero&dollar; = this.service.getHero(heroId);
+const heroId = this.route.snapshot.paramMap.get('id');
+this.hero\$ = this.service.getHero(heroId);
 }
 
 gotoItems(hero: Hero) {
-  const heroId = hero ? hero.id : null;
-  // Pass along the hero id if available
-  // so that the HeroList component can select that item.
-  this.router.navigate(['/heroes', { id: heroId }]);
+const heroId = hero ? hero.id : null;
+// Pass along the hero id if available
+// so that the HeroList component can select that item.
+this.router.navigate(['/heroes', { id: heroId }]);
 }
 
 </code-example>
@@ -340,12 +340,12 @@ For more information on lazy loading and preloading see the dedicated guide [Laz
 Use route guards to prevent users from navigating to parts of an application without authorization.
 The following route guards are available in Angular:
 
-*   [`canActivate`](api/router/CanActivateFn)
-*   [`canActivateChild`](api/router/CanActivateChildFn)
-*   [`canDeactivate`](api/router/CanDeactivateFn)
-*   [`canMatch`](api/router/CanMatchFn)
-*   [`resolve`](api/router/ResolveFn)
-*   [`canLoad`](api/router/CanLoadFn)
+-   [`canActivate`](api/router/CanActivateFn)
+-   [`canActivateChild`](api/router/CanActivateChildFn)
+-   [`canDeactivate`](api/router/CanDeactivateFn)
+-   [`canMatch`](api/router/CanMatchFn)
+-   [`resolve`](api/router/ResolveFn)
+-   [`canLoad`](api/router/CanLoadFn)
 
 To use route guards, consider using [component-less routes](api/router/Route#componentless-routes) as this facilitates guarding child routes.
 
@@ -363,18 +363,18 @@ The following example uses `canActivateFn` to guard the route.
 <code-example header="guard (excerpt)">
 
 export const yourGuardFunction: CanActivateFn = (
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot) => {
-      // your  logic goes here
-  }
+next: ActivatedRouteSnapshot,
+state: RouterStateSnapshot) => {
+// your logic goes here
+}
 </code-example>
 In your routing module, use the appropriate property in your `routes` configuration.
 Here, `canActivate` tells the router to mediate navigation to this particular route.
 <code-example header="Routing module (excerpt)">
 {
-  path: '/your-path',
-  component: YourComponent,
-  canActivate: [yourGuardFunction],
+path: '/your-path',
+component: YourComponent,
+canActivate: [yourGuardFunction],
 }
 
 </code-example>
@@ -385,8 +385,8 @@ For more information with a working example, see the [routing tutorial section o
 
 A link parameters array holds the following ingredients for router navigation:
 
-*   The path of the route to the destination component
-*   Required and optional route parameters that go into the route URL
+-   The path of the route to the destination component
+-   Required and optional route parameters that go into the route URL
 
 Bind the `RouterLink` directive to such an array like this:
 
@@ -409,21 +409,21 @@ The following minimal `RouterLink` example builds upon a specified [default chil
 
 Review the following:
 
-*   The first item in the array identifies the parent route \(`/crisis-center`\)
-*   There are no parameters for this parent route
-*   There is no default for the child route so you need to pick one
-*   You're navigating to the `CrisisListComponent`, whose route path is `/`, but you don't need to explicitly add the slash
+-   The first item in the array identifies the parent route \(`/crisis-center`\)
+-   There are no parameters for this parent route
+-   There is no default for the child route so you need to pick one
+-   You're navigating to the `CrisisListComponent`, whose route path is `/`, but you don't need to explicitly add the slash
 
 Consider the following router link that navigates from the root of the application down to the Dragon Crisis:
 
 <code-example header="src/app/app.component.ts (Dragon-anchor)" path="router/src/app/app.component.3.ts" region="Dragon-anchor"></code-example>
 
-*   The first item in the array identifies the parent route \(`/crisis-center`\)
-*   There are no parameters for this parent route
-*   The second item identifies the child route details about a particular crisis \(`/:id`\)
-*   The details child route requires an `id` route parameter
-*   You added the `id` of the Dragon Crisis as the second item in the array \(`1`\)
-*   The resulting path is `/crisis-center/1`
+-   The first item in the array identifies the parent route \(`/crisis-center`\)
+-   There are no parameters for this parent route
+-   The second item identifies the child route details about a particular crisis \(`/:id`\)
+-   The details child route requires an `id` route parameter
+-   You added the `id` of the Dragon Crisis as the second item in the array \(`1`\)
+-   The resulting path is `/crisis-center/1`
 
 You could also redefine the `AppComponent` template with Crisis Center routes exclusively:
 
@@ -439,7 +439,7 @@ The link parameters array affords the flexibility to represent any routing depth
 
 When the router navigates to a new component view, it updates the browser's location and history with a URL for that view.
 
-Modern HTML5 browsers support [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries "HTML5 browser history push-state"), a technique that changes a browser's location and history without triggering a server page request.
+Modern HTML5 browsers support [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries 'HTML5 browser history push-state'), a technique that changes a browser's location and history without triggering a server page request.
 The router can compose a "natural" URL that is indistinguishable from one that would otherwise require a page load.
 
 Here's the Crisis Center URL in this "HTML5 pushState" style:
@@ -462,8 +462,8 @@ localhost:3002/src/#/crisis-center
 
 The router supports both styles with two `LocationStrategy` providers:
 
-| Providers              | Details |
-|:---                    |:---     |
+| Providers              | Details                              |
+| :--------------------- | :----------------------------------- |
 | `PathLocationStrategy` | The default "HTML5 pushState" style. |
 | `HashLocationStrategy` | The "hash URL" style.                |
 
@@ -490,7 +490,7 @@ This option is only available if application URLs look like normal web URLs with
 
 ## `<base href>`
 
-The router uses the browser's [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries "HTML5 browser history push-state") for navigation.
+The router uses the browser's [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries 'HTML5 browser history push-state') for navigation.
 `pushState` lets you customize in-application URL paths; for example, `localhost:4200/crisis-center`.
 The in-application URLs can be indistinguishable from server URLs.
 
@@ -503,7 +503,7 @@ In the [LocationStrategy and browser URL styles](#browser-url-styles) section, l
 
 </div>
 
-You must add a [`<base href>` element](https://developer.mozilla.org/docs/Web/HTML/Element/base "base href") to the application's `index.html` for `pushState` routing to work.
+You must add a [`<base href>` element](https://developer.mozilla.org/docs/Web/HTML/Element/base 'base href') to the application's `index.html` for `pushState` routing to work.
 The browser uses the `<base href>` value to prefix relative URLs when referencing CSS files, scripts, and images.
 
 Add the `<base>` element just after the `<head>` tag.
@@ -519,15 +519,15 @@ This diagram outlines what those parts refer to:
 <code-example format="output" hideCopy language="none">
 
 foo://example.com:8042/over/there?name=ferret#nose
-&bsol;&lowbar;/   &bsol;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;/&bsol;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;/ &bsol;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;&lowbar;/ &bsol;&lowbar;&lowbar;/
- &verbar;           &verbar;            &verbar;            &verbar;        &verbar;
-scheme    authority      path        query   fragment
+&bsol;\_/ &bsol;\_\_\_\_\_\_\_\_\_\_\_\_\_\_/&bsol;\_\_\_\_\_\_\_\_\_/ &bsol;\_\_\_\_\_\_\_\_\_/ &bsol;\_\_/
+&verbar; &verbar; &verbar; &verbar; &verbar;
+scheme authority path query fragment
 
 </code-example>
 
-While the router uses the [HTML5 pushState](https://developer.mozilla.org/docs/Web/API/History_API#Adding_and_modifying_history_entries "Browser history push-state") style by default, you must configure that strategy with a `<base href>`.
+While the router uses the [HTML5 pushState](https://developer.mozilla.org/docs/Web/API/History_API#Adding_and_modifying_history_entries 'Browser history push-state') style by default, you must configure that strategy with a `<base href>`.
 
-The preferred way to configure the strategy is to add a [`<base href>` element](https://developer.mozilla.org/docs/Web/HTML/Element/base "base href") tag in the `<head>` of the `index.html`.
+The preferred way to configure the strategy is to add a [`<base href>` element](https://developer.mozilla.org/docs/Web/HTML/Element/base 'base href') tag in the `<head>` of the `index.html`.
 
 <code-example header="src/index.html (base-href)" path="router/src/index.html" region="base-href"></code-example>
 
@@ -540,14 +540,14 @@ Those developers can still use HTML5 URLs by taking the following two steps:
 1.  Provide the router with an appropriate `APP_BASE_HREF` value.
 1.  Use root URLs \(URLs with an `authority`\) for all web resources: CSS, images, scripts, and template HTML files.
 
-    *   The `<base href>` `path` should end with a "/", as browsers ignore characters in the `path` that follow the right-most "`/`"
-    *   If the `<base href>` includes a `query` part, the `query` is only used if the `path` of a link in the page is empty and has no `query`.
+    -   The `<base href>` `path` should end with a "/", as browsers ignore characters in the `path` that follow the right-most "`/`"
+    -   If the `<base href>` includes a `query` part, the `query` is only used if the `path` of a link in the page is empty and has no `query`.
         This means that a `query` in the `<base href>` is only included when using `HashLocationStrategy`.
 
-    *   If a link in the page is a root URL \(has an `authority`\), the `<base href>` is not used.
+    -   If a link in the page is a root URL \(has an `authority`\), the `<base href>` is not used.
         In this way, an `APP_BASE_HREF` with an authority will cause all links created by Angular to ignore the `<base href>` value.
 
-    *   A fragment in the `<base href>` is *never* persisted
+    -   A fragment in the `<base href>` is _never_ persisted
 
 For more complete information on how `<base href>` is used to construct target URIs, see the [RFC](https://tools.ietf.org/html/rfc3986#section-5.2.2) section on transforming references.
 
@@ -565,4 +565,4 @@ Use `HashLocationStrategy` by providing the `useHash: true` in an object as the 
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

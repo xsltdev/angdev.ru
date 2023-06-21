@@ -82,4 +82,4 @@ class HeroListComponent {
 
 -   [Инъекция зависимостей в действии](guide/dependency-injection-in-action)
 
-@reviewed 2023-05-16
+:date: 16.05.2023

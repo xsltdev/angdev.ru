@@ -4,7 +4,7 @@
 
 <div class="alert is-helpful">
 
-To explore the sample application with French translations used in the [Angular Internationalization][AioGuideI18nOverview] guide, see <live-example name="i18n" title="live example"></live-example>.
+To explore the sample application with French translations used in the [Angular Internationalization][aioguidei18noverview] guide, see <live-example name="i18n" title="live example"></live-example>.
 
 </div>
 
@@ -22,10 +22,10 @@ The following tabs display the example application and the associated translatio
 
 <!-- links -->
 
-[AioGuideI18nOverview]: guide/i18n-overview "Angular Internationalization | Angular"  
+[aioguidei18noverview]: guide/i18n-overview 'Angular Internationalization | Angular'
 
 <!-- external links -->
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

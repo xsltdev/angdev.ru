@@ -25,11 +25,11 @@ For more information about how Google handles security issues, see [Google's sec
 
 <header>Best practices</header>
 
-| Practices                                                           | Details |
-|:---                                                                 |:---     |
+| Practices                                                           | Details                                                                                                                                                                                                                                          |
+| :------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Keep current with the latest Angular library releases               | The Angular libraries get regular updates, and these updates might fix security defects discovered in previous versions. Check the Angular [change log](https://github.com/angular/angular/blob/main/CHANGELOG.md) for security-related updates. |
-| Don't alter your copy of Angular                                   | Private, customized versions of Angular tend to fall behind the current version and might not include important security fixes and enhancements. Instead, share your Angular improvements with the community and make a pull request.              |
-| Avoid Angular APIs marked in the documentation as "*Security Risk*" | For more information, see the [Trusting safe values](guide/security#bypass-security-apis) section of this page.                                                                                                                                    |
+| Don't alter your copy of Angular                                    | Private, customized versions of Angular tend to fall behind the current version and might not include important security fixes and enhancements. Instead, share your Angular improvements with the community and make a pull request.            |
+| Avoid Angular APIs marked in the documentation as "_Security Risk_" | For more information, see the [Trusting safe values](guide/security#bypass-security-apis) section of this page.                                                                                                                                  |
 
 </div>
 
@@ -61,15 +61,15 @@ For this reason, it is strongly encouraged to take advantage of these features. 
 
 ### Sanitization and security contexts
 
-*Sanitization* is the inspection of an untrusted value, turning it into a value that's safe to insert into the DOM.
+_Sanitization_ is the inspection of an untrusted value, turning it into a value that's safe to insert into the DOM.
 In many cases, sanitization doesn't change a value at all.
 Sanitization depends on context:
 A value that's harmless in CSS is potentially dangerous in a URL.
 
 Angular defines the following security contexts:
 
-| Security contexts | Details |
-|:---               |:---     |
+| Security contexts | Details                                                                           |
+| :---------------- | :-------------------------------------------------------------------------------- |
 | HTML              | Used when interpreting a value as HTML, for example, when binding to `innerHtml`. |
 | Style             | Used when binding CSS into the `style` property.                                  |
 | URL               | Used for URL properties, such as `<a href>`.                                      |
@@ -117,17 +117,17 @@ That function also accepts values that were marked as trusted using the `bypassS
 
 Sometimes applications genuinely need to include executable code, display an `<iframe>` from some URL, or construct potentially dangerous URLs.
 To prevent automatic sanitization in these situations, tell Angular that you inspected a value, checked how it was created, and made sure it is secure.
-Do *be careful*.
+Do _be careful_.
 If you trust a value that might be malicious, you are introducing a security vulnerability into your application.
 If in doubt, find a professional security reviewer.
 
 To mark a value as trusted, inject `DomSanitizer` and call one of the following methods:
 
-*   `bypassSecurityTrustHtml`
-*   `bypassSecurityTrustScript`
-*   `bypassSecurityTrustStyle`
-*   `bypassSecurityTrustUrl`
-*   `bypassSecurityTrustResourceUrl`
+-   `bypassSecurityTrustHtml`
+-   `bypassSecurityTrustScript`
+-   `bypassSecurityTrustStyle`
+-   `bypassSecurityTrustUrl`
+-   `bypassSecurityTrustResourceUrl`
 
 Remember, whether a value is safe depends on context, so choose the right context for your intended use of the value.
 Imagine that the following template needs to bind a URL to a `javascript:alert(...)` call:
@@ -170,7 +170,7 @@ default-src 'self'; style-src 'self' 'nonce-randomNonceGoesHere'; script-src 'se
 
 </code-example>
 
-When serving your Angular application, the server should include a  randomly-generated nonce in the HTTP header for each request.
+When serving your Angular application, the server should include a randomly-generated nonce in the HTTP header for each request.
 You must provide this nonce to Angular so that the framework can render `<style>` elements.
 You can set the nonce for Angular in one of two ways:
 
@@ -183,10 +183,10 @@ import {bootstrapApplication, CSP_NONCE} from '&commat;angular/core';
 import {AppComponent} from './app/app.component';
 
 bootstrapApplication(AppComponent, {
-  providers: [{
-    provide: CSP_NONCE,
-    useValue: globalThis.myRandomNonceValue
-  }]
+providers: [{
+provide: CSP_NONCE,
+useValue: globalThis.myRandomNonceValue
+}]
 });
 
 </code-example>
@@ -200,11 +200,11 @@ If an attacker can predict future nonces, they can circumvent the protections of
 
 If you cannot generate nonces in your project, you can allow inline styles by adding `'unsafe-inline'` to the `style-src` section of the CSP header.
 
-| Sections                | Details |
-|:---                     |:---     |
-| `default-src 'self';`   | Allows the page to load all its required resources from the same origin. |
-| `style-src 'self' 'nonce-randomNonceGoesHere';`     | Allows the page to load global styles from the same origin \(`'self'`\) and styles inserted by Angular with the `nonce-randomNonceGoesHere`. |
-| `script-src 'self' 'nonce-randomNonceGoesHere';`     | Allows the page to load JavaScript from the same origin \(`'self'`\) and scripts inserted by the Angular CLI with the `nonce-randomNonceGoesHere`. This is only required if you're using critical CSS inlining. |
+| Sections                                         | Details                                                                                                                                                                                                         |
+| :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `default-src 'self';`                            | Allows the page to load all its required resources from the same origin.                                                                                                                                        |
+| `style-src 'self' 'nonce-randomNonceGoesHere';`  | Allows the page to load global styles from the same origin \(`'self'`\) and styles inserted by Angular with the `nonce-randomNonceGoesHere`.                                                                    |
+| `script-src 'self' 'nonce-randomNonceGoesHere';` | Allows the page to load JavaScript from the same origin \(`'self'`\) and scripts inserted by the Angular CLI with the `nonce-randomNonceGoesHere`. This is only required if you're using critical CSS inlining. |
 
 Angular itself requires only these settings to function correctly.
 As your project grows, you may need to expand your CSP settings to accommodate extra features specific to your application.
@@ -231,18 +231,18 @@ See [caniuse.com/trusted-types](https://caniuse.com/trusted-types) for the curre
 
 To enforce Trusted Types for your application, you must configure your application's web server to emit HTTP headers with one of the following Angular policies:
 
-| Policies                | Detail |
-|:---                     |:---    |
-| `angular`               | This policy is used in security-reviewed code that is internal to Angular, and is required for Angular to function when Trusted Types are enforced. Any inline template values or content sanitized by Angular is treated as safe by this policy.                           |
-| `angular#unsafe-bypass` | This policy is used for applications that use any of the methods in Angular's [DomSanitizer](api/platform-browser/DomSanitizer) that bypass security, such as `bypassSecurityTrustHtml`. Any application that uses these methods must enable this policy.                   |
+| Policies                | Detail                                                                                                                                                                                                                                                                                     |
+| :---------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `angular`               | This policy is used in security-reviewed code that is internal to Angular, and is required for Angular to function when Trusted Types are enforced. Any inline template values or content sanitized by Angular is treated as safe by this policy.                                          |
+| `angular#unsafe-bypass` | This policy is used for applications that use any of the methods in Angular's [DomSanitizer](api/platform-browser/DomSanitizer) that bypass security, such as `bypassSecurityTrustHtml`. Any application that uses these methods must enable this policy.                                  |
 | `angular#unsafe-jit`    | This policy is used by the [Just-In-Time (JIT) compiler](api/core/Compiler). You must enable this policy if your application interacts directly with the JIT compiler or is running in JIT mode using the [platform browser dynamic](api/platform-browser-dynamic/platformBrowserDynamic). |
-| `angular#bundler`       | This policy is used by the Angular CLI bundler when creating lazy chunk files.                    |
+| `angular#bundler`       | This policy is used by the Angular CLI bundler when creating lazy chunk files.                                                                                                                                                                                                             |
 
 You should configure the HTTP headers for Trusted Types in the following locations:
 
-*   Production serving infrastructure
-*   Angular CLI \(`ng serve`\), using the `headers` property in the `angular.json` file, for local development and end-to-end testing
-*   Karma \(`ng test`\), using the `customHeaders` property in the `karma.config.js` file, for unit testing
+-   Production serving infrastructure
+-   Angular CLI \(`ng serve`\), using the `headers` property in the `angular.json` file, for local development and end-to-end testing
+-   Karma \(`ng test`\), using the `customHeaders` property in the `karma.config.js` file, for unit testing
 
 The following is an example of a header specifically configured for Trusted Types and Angular:
 
@@ -338,7 +338,7 @@ In a common anti-XSRF technique, the application server sends a randomly created
 The client code reads the cookie and adds a custom request header with the token in all following requests.
 The server compares the received cookie value to the request header value and rejects the request if the values are missing or don't match.
 
-This technique is effective because all browsers implement the *same origin policy*.
+This technique is effective because all browsers implement the _same origin policy_.
 Only code from the website on which cookies are set can read the cookies from that site and set custom headers on requests to that site.
 That means only your application can read this cookie token and set the custom header.
 The malicious code on `evil.com` can't.
@@ -349,7 +349,7 @@ Read about it more in the [HttpClient guide](guide/http#security-xsrf-protection
 For information about CSRF at the Open Web Application Security Project \(OWASP\), see [Cross-Site Request Forgery (CSRF)](https://owasp.org/www-community/attacks/csrf) and [Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html).
 The Stanford University paper [Robust Defenses for Cross-Site Request Forgery](https://seclab.stanford.edu/websec/csrf/csrf.pdf) is a rich source of detail.
 
-See also Dave Smith's [talk on XSRF at AngularConnect 2016](https://www.youtube.com/watch?v=9inczw6qtpY "Cross Site Request Funkery Securing Your Angular Apps From Evil Doers").
+See also Dave Smith's [talk on XSRF at AngularConnect 2016](https://www.youtube.com/watch?v=9inczw6qtpY 'Cross Site Request Funkery Securing Your Angular Apps From Evil Doers').
 
 <!-- vale Angular.Google_Acronyms = YES -->
 
@@ -372,7 +372,7 @@ For more information, see the XSSI section of this [Google web security blog pos
 ## Auditing Angular applications
 
 Angular applications must follow the same security principles as regular web applications, and must be audited as such.
-Angular-specific APIs that should be audited in a security review, such as the [*bypassSecurityTrust*](guide/security#bypass-security-apis) methods, are marked in the documentation as security sensitive.
+Angular-specific APIs that should be audited in a security review, such as the [_bypassSecurityTrust_](guide/security#bypass-security-apis) methods, are marked in the documentation as security sensitive.
 
 <!-- links -->
 
@@ -380,4 +380,4 @@ Angular-specific APIs that should be audited in a security review, such as the [
 
 <!-- end links -->
 
-@reviewed 2023-05-16
+:date: 16.05.2023

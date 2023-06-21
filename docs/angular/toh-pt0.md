@@ -17,13 +17,13 @@ To view the application's code, see the <live-example></live-example>.
 
 ## Set up your environment
 
-To set up your development environment, follow the instructions in [Local Environment Setup](guide/setup-local "Setting up for Local Development").
+To set up your development environment, follow the instructions in [Local Environment Setup](guide/setup-local 'Setting up for Local Development').
 
 ## Create a new workspace and an initial application
 
 You develop applications in the context of an Angular [workspace](guide/glossary#workspace).
-A *workspace* contains the files for one or more [projects](guide/glossary#project).
-A *project* is the set of files that make up an application or a library.
+A _workspace_ contains the files for one or more [projects](guide/glossary#project).
+A _project_ is the set of files that make up an application or a library.
 
 To create a new workspace and an initial project:
 
@@ -46,9 +46,9 @@ This can take a few minutes.
 
 `ng new` also creates the following workspace and starter project files:
 
-*   A new workspace, with a root directory named `angular-tour-of-heroes`
-*   An initial skeleton application project in the `src/app` subdirectory
-*   Related configuration files
+-   A new workspace, with a root directory named `angular-tour-of-heroes`
+-   An initial skeleton application project in the `src/app` subdirectory
+-   Related configuration files
 
 The initial application project contains a simple application that's ready to run.
 
@@ -67,10 +67,10 @@ ng serve --open
 
 The `ng serve` command:
 
-* Builds the application
-* Starts the development server
-* Watches the source files
-* Rebuilds the application as you make changes
+-   Builds the application
+-   Starts the development server
+-   Watches the source files
+-   Rebuilds the application as you make changes
 
 The `--open` flag opens a browser to `http://localhost:4200`.
 
@@ -80,10 +80,10 @@ You should see the application running in your browser.
 
 ## Angular components
 
-The page you see is the *application shell*.
+The page you see is the _application shell_.
 The shell is controlled by an Angular **component** named `AppComponent`.
 
-*Components* are the fundamental building blocks of Angular applications.
+_Components_ are the fundamental building blocks of Angular applications.
 They display data on the screen, listen for user input, and take action based on that input.
 
 ## Make changes to the application
@@ -91,8 +91,8 @@ They display data on the screen, listen for user input, and take action based on
 Open the project in your favorite editor or IDE. Navigate to the `src/app` directory to edit the starter application.
 In the IDE, locate these files, which make up the `AppComponent` that you just created:
 
-| Files                | Details |
-|:---                  |:---     |
+| Files                | Details                                          |
+| :------------------- | :----------------------------------------------- |
 | `app.component.ts`   | The component class code, written in TypeScript. |
 | `app.component.html` | The component template, written in HTML.         |
 | `app.component.css`  | The component's private CSS styles.              |
@@ -119,7 +119,7 @@ Replace it with the following line of HTML.
 
 <code-example header="app.component.html (template)" path="toh-pt0/src/app/app.component.html"></code-example>
 
-The double curly braces are Angular's *interpolation binding* syntax.
+The double curly braces are Angular's _interpolation binding_ syntax.
 This interpolation binding presents the component's `title` property value inside the HTML header tag.
 
 The browser refreshes and displays the new application title.
@@ -148,8 +148,8 @@ Here are the code files discussed on this page.
 
 ## Summary
 
-*   You created the initial application structure using `ng new`.
-*   You learned that Angular components display data
-*   You used the double curly braces of interpolation to display the application title
+-   You created the initial application structure using `ng new`.
+-   You learned that Angular components display data
+-   You used the double curly braces of interpolation to display the application title
 
-@reviewed 2022-02-28
+:date: 28.02.2022

@@ -1,21 +1,21 @@
 # Usage of Angular libraries published to npm
 
 When you build your Angular application, take advantage of sophisticated first-party libraries, as well as rich ecosystem of third-party libraries.
-[Angular Material][AngularMaterialMain] is an example of a sophisticated first-party library.
-For links to the most popular libraries, see [Angular Resources][AioResources].
+[Angular Material][angularmaterialmain] is an example of a sophisticated first-party library.
+For links to the most popular libraries, see [Angular Resources][aioresources].
 
 ## Install libraries
 
-Libraries are published as [npm packages][AioGuideNpmPackages], usually together with schematics that integrate them with the Angular CLI.
+Libraries are published as [npm packages][aioguidenpmpackages], usually together with schematics that integrate them with the Angular CLI.
 To integrate reusable library code into an application, you need to install the package and import the provided functionality in the location you use it.
 For most published Angular libraries, use the `ng add <lib_name>` Angular CLI command.
 
 The `ng add` Angular CLI command uses a package manager to install the library package and invokes schematics that are included in the package to other scaffolding within the project code.
-Examples of package managers include [npm][NpmjsMain] or [yarn][YarnpkgMain].
+Examples of package managers include [npm][npmjsmain] or [yarn][yarnpkgmain].
 Additional scaffolding within the project code includes import statements, fonts, and themes.
 
 A published library typically provides a `README` file or other documentation on how to add that library to your application.
-For an example, see the [Angular Material][AngularMaterialMain] documentation.
+For an example, see the [Angular Material][angularmaterialmain] documentation.
 
 ### Library typings
 
@@ -45,12 +45,12 @@ To do this:
     <code-example format="typescript" language="typescript">
 
     declare module 'host' {
-      export interface Host {
-        protocol?: string;
-        hostname?: string;
-        pathname?: string;
-      }
-      export function parse(url: string, queryString?: string): Host;
+    export interface Host {
+    protocol?: string;
+    hostname?: string;
+    pathname?: string;
+    }
+    export function parse(url: string, queryString?: string): Host;
     }
 
     </code-example>
@@ -59,7 +59,7 @@ To do this:
 
     <code-example format="typescript" language="typescript">
 
-    import * as host from 'host';
+    import \* as host from 'host';
     const parsedUrl = host.parse('https://angular.io');
     console.log(parsedUrl.hostname);
 
@@ -70,21 +70,21 @@ Define more typings as needed.
 ## Updating libraries
 
 A library is able to be updated by the publisher, and also has individual dependencies which need to be kept current.
-To check for updates to your installed libraries, use the [`ng update`][AioCliUpdate] Angular CLI command.
+To check for updates to your installed libraries, use the [`ng update`][aiocliupdate] Angular CLI command.
 
 Use `ng update <lib_name>` Angular CLI command to update individual library versions.
 The Angular CLI checks the latest published release of the library, and if the latest version is newer than your installed version, downloads it and updates your `package.json` to match the latest version.
 
 When you update Angular to a new version, you need to make sure that any libraries you are using are current.
 If libraries have interdependencies, you might have to update them in a particular order.
-See the [Angular Update Guide][AngularUpdateMain] for help.
+See the [Angular Update Guide][angularupdatemain] for help.
 
 ## Adding a library to the runtime global scope
 
 If a legacy JavaScript library is not imported into an application, you may add it to the runtime global scope and load it as if it was added in a script tag.
-Configure the Angular CLI to do this at build time using the `scripts` and `styles` options of the build target in the [`angular.json`][AioGuideWorkspaceConfig] workspace build configuration file.
+Configure the Angular CLI to do this at build time using the `scripts` and `styles` options of the build target in the [`angular.json`][aioguideworkspaceconfig] workspace build configuration file.
 
-For example, to use the [Bootstrap 4][GetbootstrapDocs40GettingStartedIntroduction] library
+For example, to use the [Bootstrap 4][getbootstrapdocs40gettingstartedintroduction] library
 
 1.  Install the library and the associated dependencies using the npm package manager:
 
@@ -101,9 +101,9 @@ For example, to use the [Bootstrap 4][GetbootstrapDocs40GettingStartedIntroducti
     <code-example format="json" language="json">
 
     "scripts": [
-      "node_modules/jquery/dist/jquery.slim.js",
-      "node_modules/popper.js/dist/umd/popper.js",
-      "node_modules/bootstrap/dist/js/bootstrap.js"
+    "node_modules/jquery/dist/jquery.slim.js",
+    "node_modules/popper.js/dist/umd/popper.js",
+    "node_modules/bootstrap/dist/js/bootstrap.js"
     ],
 
     </code-example>
@@ -113,8 +113,8 @@ For example, to use the [Bootstrap 4][GetbootstrapDocs40GettingStartedIntroducti
     <code-example format="css" language="css">
 
     "styles": [
-      "node_modules/bootstrap/dist/css/bootstrap.css",
-      "src/styles.css"
+    "node_modules/bootstrap/dist/css/bootstrap.css",
+    "src/styles.css"
     ],
 
     </code-example>
@@ -128,7 +128,7 @@ The following code snippet is an example import statement.
 
 <code-example format="typescript" language="typescript">
 
-import * as &dollar; from 'jquery';
+import \* as \$ from 'jquery';
 
 </code-example>
 
@@ -154,7 +154,7 @@ Some scripts extend other libraries; for instance with JQuery plugins:
 
 <code-example format="typescript" language="typescript">
 
-&dollar;('.test').myPlugin();
+\$('.test').myPlugin();
 
 </code-example>
 
@@ -164,7 +164,7 @@ For example:
 <code-example format="typescript" language="typescript">
 
 interface JQuery {
-  myPlugin(options?: any): any;
+myPlugin(options?: any): any;
 }
 
 </code-example>
@@ -173,31 +173,25 @@ If you do not add the interface for the script-defined extension, your IDE shows
 
 <code-example format="none" language="none">
 
-[TS][Error] Property 'myPlugin' does not exist on type 'JQuery'
+[TS][error] Property 'myPlugin' does not exist on type 'JQuery'
 
 </code-example>
 
 <!-- links -->
 
-[AioCliUpdate]: cli/update "ng update | CLI |Angular"
-
-[AioGuideNpmPackages]: guide/npm-packages "Workspace npm dependencies | Angular"
-[AioGuideWorkspaceConfig]: guide/workspace-config "Angular workspace configuration | Angular"
-
-[AioResources]: resources "Explore Angular Resources | Angular"
+[aiocliupdate]: cli/update 'ng update | CLI |Angular'
+[aioguidenpmpackages]: guide/npm-packages 'Workspace npm dependencies | Angular'
+[aioguideworkspaceconfig]: guide/workspace-config 'Angular workspace configuration | Angular'
+[aioresources]: resources 'Explore Angular Resources | Angular'
 
 <!-- external links -->
 
-[AngularMaterialMain]: https://material.angular.io "Angular Material | Angular"
-
-[AngularUpdateMain]: https://update.angular.io "Angular Update Guide | Angular"
-
-[GetbootstrapDocs40GettingStartedIntroduction]: https://getbootstrap.com/docs/4.0/getting-started/introduction "Introduction | Bootstrap"
-
-[NpmjsMain]: https://www.npmjs.com "npm"
-
-[YarnpkgMain]: https://yarnpkg.com " Yarn"
+[angularmaterialmain]: https://material.angular.io 'Angular Material | Angular'
+[angularupdatemain]: https://update.angular.io 'Angular Update Guide | Angular'
+[getbootstrapdocs40gettingstartedintroduction]: https://getbootstrap.com/docs/4.0/getting-started/introduction 'Introduction | Bootstrap'
+[npmjsmain]: https://www.npmjs.com 'npm'
+[yarnpkgmain]: https://yarnpkg.com ' Yarn'
 
 <!-- end links -->
 
-@reviewed 2022-01-05
+:date: 5.01.2022

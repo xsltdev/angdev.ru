@@ -16,7 +16,7 @@ To learn more about the browser APIs involved see [Push API](https://developer.m
 
 We recommend you have a basic understanding of the following:
 
-*   [Getting Started with Service Workers](guide/service-worker-getting-started)
+-   [Getting Started with Service Workers](guide/service-worker-getting-started)
 
 ## Notification payload
 
@@ -40,14 +40,14 @@ This is especially useful for when there are no open clients when a notification
 <code-example format="json" language="json">
 
 {
-  "notification": {
-    "title": "New Notification!",
-    "data": {
-      "onActionClick": {
-        "default": {"operation": "openWindow", "url": "foo"}
-      }
-    }
-  }
+"notification": {
+"title": "New Notification!",
+"data": {
+"onActionClick": {
+"default": {"operation": "openWindow", "url": "foo"}
+}
+}
+}
 }
 
 </code-example>
@@ -56,12 +56,12 @@ This is especially useful for when there are no open clients when a notification
 
 The Angular service worker supports the following operations:
 
-| Operations                  | Details |
-|:---                         |:---     |
+| Operations                  | Details                                                                                                                                          |
+| :-------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `openWindow`                | Opens a new tab at the specified URL.                                                                                                            |
 | `focusLastFocusedOrOpen`    | Focuses the last focused client. If there is no client open, then it opens a new tab at the specified URL.                                       |
 | `navigateLastFocusedOrOpen` | Focuses the last focused client and navigates it to the specified URL. If there is no client open, then it opens a new tab at the specified URL. |
-| `sendRequest`               | Send a simple GET request to the specified URL.                                                                                                                                                          |
+| `sendRequest`               | Send a simple GET request to the specified URL.                                                                                                  |
 
 <div class="alert is-important">
 
@@ -82,25 +82,25 @@ In addition, using the `onActionClick` property on the `data` object, you can ti
 <code-example format="typescript" language="typescript">
 
 {
-  "notification": {
-    "title": "New Notification!",
-    "actions": [
-      {"action": "foo", "title": "Open new tab"},
-      {"action": "bar", "title": "Focus last"},
-      {"action": "baz", "title": "Navigate last"},
-      {"action": "qux", "title": "Send request in the background"}
-      {"action": "other", "title": "Just notify existing clients"}
-    ],
-    "data": {
-      "onActionClick": {
-        "default": {"operation": "openWindow"},
-        "foo": {"operation": "openWindow", "url": "/absolute/path"},
-        "bar": {"operation": "focusLastFocusedOrOpen", "url": "relative/path"},
-        "baz": {"operation": "navigateLastFocusedOrOpen", "url": "https://other.domain.com/"},
-        "qux": {"operation": "sendRequest", "url": "https://yet.another.domain.com/"}
-      }
-    }
-  }
+"notification": {
+"title": "New Notification!",
+"actions": [
+{"action": "foo", "title": "Open new tab"},
+{"action": "bar", "title": "Focus last"},
+{"action": "baz", "title": "Navigate last"},
+{"action": "qux", "title": "Send request in the background"}
+{"action": "other", "title": "Just notify existing clients"}
+],
+"data": {
+"onActionClick": {
+"default": {"operation": "openWindow"},
+"foo": {"operation": "openWindow", "url": "/absolute/path"},
+"bar": {"operation": "focusLastFocusedOrOpen", "url": "relative/path"},
+"baz": {"operation": "navigateLastFocusedOrOpen", "url": "https://other.domain.com/"},
+"qux": {"operation": "sendRequest", "url": "https://yet.another.domain.com/"}
+}
+}
+}
 }
 
 </code-example>
@@ -115,7 +115,7 @@ If an action does not have a corresponding `onActionClick` entry, then the notif
 
 You might also be interested in the following:
 
-*   [Service Worker in Production](guide/service-worker-devops)
+-   [Service Worker in Production](guide/service-worker-devops)
 
 <!-- links -->
 
@@ -123,4 +123,4 @@ You might also be interested in the following:
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

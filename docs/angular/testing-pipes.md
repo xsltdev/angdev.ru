@@ -28,7 +28,7 @@ Use simple Jasmine to explore the expected cases and the edge cases.
 
 ## Writing DOM tests to support a pipe test
 
-These are tests of the pipe *in isolation*.
+These are tests of the pipe _in isolation_.
 They can't tell if the `TitleCasePipe` is working properly as applied in the application components.
 
 Consider adding component tests such as this one:
@@ -41,4 +41,4 @@ Consider adding component tests such as this one:
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

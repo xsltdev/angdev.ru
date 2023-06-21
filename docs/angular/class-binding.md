@@ -112,4 +112,4 @@ A single HTML element can have its CSS class list and style values bound to mult
 
 -   [Введение в анимации Angular](/guide/animations)
 
-@reviewed 2022-05-09
+:date: 9.05.2022

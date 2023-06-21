@@ -6,9 +6,9 @@ Routing enables users to navigate between different routes in an application.
 
 A basic understanding of the following concepts:
 
-*   [Introduction to Angular animations](guide/animations)
-*   [Transition and triggers](guide/transition-and-triggers)
-*   [Reusable animations](guide/reusable-animations)
+-   [Introduction to Angular animations](guide/animations)
+-   [Transition and triggers](guide/transition-and-triggers)
+-   [Reusable animations](guide/reusable-animations)
 
 ## Enable routing transition animation
 
@@ -25,7 +25,7 @@ To enable routing transition animation, do the following:
 1.  Add a router outlet to tell the Angular router where to place the activated components in the DOM.
 1.  Define the animation.
 
-Illustrate a router transition animation by navigating between two routes, *Home* and *About* associated with the `HomeComponent` and `AboutComponent` views respectively.
+Illustrate a router transition animation by navigating between two routes, _Home_ and _About_ associated with the `HomeComponent` and `AboutComponent` views respectively.
 Both of these component views are children of the top-most view, hosted by `AppComponent`.
 Implement a router transition animation that slides in the new view to the right and slides out the old view when navigating between the two routes.
 
@@ -65,7 +65,7 @@ The `data` property value is passed into `AppComponent` when the route changes.
 
 **NOTE**: <br />
 The `data` property names that you use can be arbitrary.
-For example, the name *animation* used in the preceding example is an arbitrary choice.
+For example, the name _animation_ used in the preceding example is an arbitrary choice.
 
 </div>
 
@@ -99,9 +99,9 @@ The following code snippet defines a reusable animation named `slideInAnimation`
 
 The animation definition performs the following tasks:
 
-*   Defines two transitions \(a single `trigger` can define multiple states and transitions\)
-*   Adjusts the styles of the host and child views to control their relative positions during the transition
-*   Uses `query()` to determine which child view is entering and which is leaving the host view
+-   Defines two transitions \(a single `trigger` can define multiple states and transitions\)
+-   Adjusts the styles of the host and child views to control their relative positions during the transition
+-   Uses `query()` to determine which child view is entering and which is leaving the host view
 
 A route change activates the animation trigger, and a transition matching the state change is applied.
 
@@ -130,7 +130,7 @@ Adding these styles to the views animates the containers in place and prevents o
 Use the `query()` method to find and animate elements within the current host component.
 The `query(":enter")` statement returns the view that is being inserted, and `query(":leave")` returns the view that is being removed.
 
-Assume that you are routing from the *Home =&gt; About*.
+Assume that you are routing from the _Home =&gt; About_.
 
 <code-example header="src/app/animations.ts (excerpt)" path="animations/src/app/animations.ts" region="query"></code-example>
 
@@ -140,6 +140,7 @@ The animation code does the following after styling the views:
 1.  Calls `animateChild()` on the view that is leaving, to run its child animations.
 1.  Uses [`group()`](api/animations/group) function to make the inner animations run in parallel.
 1.  Within the [`group()`](api/animations/group) function:
+
     1.  Queries the view that is removed and animates it to slide far to the right.
     1.  Slides in the new view by animating the view with an easing function and duration.
 
@@ -153,9 +154,9 @@ You now have a basic routable animation that animates routing from one view to a
 
 You might also be interested in the following:
 
-*   [Introduction to Angular animations](guide/animations)
-*   [Transition and triggers](guide/transition-and-triggers)
-*   [Complex animation sequences](guide/complex-animation-sequences)
-*   [Reusable animations](guide/reusable-animations)
+-   [Introduction to Angular animations](guide/animations)
+-   [Transition and triggers](guide/transition-and-triggers)
+-   [Complex animation sequences](guide/complex-animation-sequences)
+-   [Reusable animations](guide/reusable-animations)
 
-@reviewed 2022-10-11
+:date: 11.10.2022

@@ -1,6 +1,6 @@
 # Angular compiler options
 
-When you use [ahead-of-time compilation (AOT)](guide/aot-compiler), you can control how your application is compiled by specifying *template* compiler options in the [TypeScript configuration file](guide/typescript-configuration).
+When you use [ahead-of-time compilation (AOT)](guide/aot-compiler), you can control how your application is compiled by specifying _template_ compiler options in the [TypeScript configuration file](guide/typescript-configuration).
 
 The template options object, `angularCompilerOptions`, is a sibling to the `compilerOptions` object that supplies standard options to the TypeScript compiler.
 
@@ -32,8 +32,8 @@ Modifies how Angular-specific annotations are emitted to improve tree-shaking.
 Non-Angular annotations are not affected.
 One of `static fields` or `decorators`. The default value is `static fields`.
 
-*   By default, the compiler replaces decorators with a static field in the class, which allows advanced tree-shakers like [Closure compiler](https://github.com/google/closure-compiler) to remove unused classes
-*   The `decorators` value leaves the decorators in place, which makes compilation faster.
+-   By default, the compiler replaces decorators with a static field in the class, which allows advanced tree-shakers like [Closure compiler](https://github.com/google/closure-compiler) to remove unused classes
+-   The `decorators` value leaves the decorators in place, which makes compilation faster.
     TypeScript emits calls to the `__decorate` helper.
     Use `--emitDecoratorMetadata` for runtime reflection.
 
@@ -58,8 +58,8 @@ Default is `false`.
 Specifies the compilation mode to use.
 The following modes are available:
 
-| Modes       | Details |
-|:---         |:---     |
+| Modes       | Details                                                                                             |
+| :---------- | :-------------------------------------------------------------------------------------------------- |
 | `'full'`    | Generates fully AOT-compiled code according to the version of Angular that is currently being used. |
 | `'partial'` | Generates code in a stable, but intermediate form suitable for a published library.                 |
 
@@ -81,7 +81,7 @@ Default is `false`.
 ### `enableI18nLegacyMessageIdFormat`
 
 Instructs the Angular template compiler to create legacy ids for messages that are tagged in templates by the `i18n` attribute.
-See [Mark text for translations][AioGuideI18nCommonPrepareMarkTextInComponentTemplate] for more information about marking messages for localization.
+See [Mark text for translations][aioguidei18ncommonpreparemarktextincomponenttemplate] for more information about marking messages for localization.
 
 Set this option to `false` unless your project relies upon translations that were created earlier using legacy IDs.
 Default is `true`.
@@ -242,8 +242,8 @@ Besides the configuration file, you can also use [`tsc` command line options](ht
 
 <!-- links -->
 
-[AioGuideI18nCommonPrepareMarkTextInComponentTemplate]: guide/i18n-common-prepare#mark-text-in-component-template "Mark text in component template - Prepare component for translation | Angular"
+[aioguidei18ncommonpreparemarktextincomponenttemplate]: guide/i18n-common-prepare#mark-text-in-component-template 'Mark text in component template - Prepare component for translation | Angular'
 
 <!-- end links -->
 
-@reviewed 2023-04-19
+:date: 19.04.2023

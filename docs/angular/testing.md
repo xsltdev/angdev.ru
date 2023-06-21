@@ -10,14 +10,14 @@ Testing your Angular application helps you check that your application is workin
 
 Before writing tests for your Angular application, you should have a basic understanding of the following concepts:
 
-*   [Angular fundamentals](guide/architecture)
-*   [JavaScript](https://javascript.info/)
-*   HTML
-*   CSS
-*   [Angular CLI](cli)
+-   [Angular fundamentals](guide/architecture)
+-   [JavaScript](https://javascript.info/)
+-   HTML
+-   CSS
+-   [Angular CLI](cli)
 
 The testing documentation offers tips and techniques for unit and integration testing Angular applications through a sample application created with the [Angular CLI](cli).
-This sample application is much like the one in the [*Tour of Heroes* tutorial](tutorial/tour-of-heroes).
+This sample application is much like the one in the [_Tour of Heroes_ tutorial](tutorial/tour-of-heroes).
 
 <div class="alert is-helpful">
 
@@ -40,7 +40,7 @@ ng test
 
 </code-example>
 
-The `ng test` command builds the application in *watch mode*,
+The `ng test` command builds the application in _watch mode_,
 and launches the [Karma test runner](https://karma-runner.github.io).
 
 The console output looks the below:
@@ -102,14 +102,14 @@ Inside the `src/app` folder the Angular CLI generated a test file for the `AppCo
 
 <div class="alert is-important">
 
-The test file extension **must be `.spec.ts`** so that tooling can identify it as a file with tests \(also known as a *spec* file\).
+The test file extension **must be `.spec.ts`** so that tooling can identify it as a file with tests \(also known as a _spec_ file\).
 
 </div>
 
 The `app.component.ts` and `app.component.spec.ts` files are siblings in the same folder.
 The root file names \(`app.component`\) are the same for both files.
 
-Adopt these two conventions in your own projects for *every kind* of test file.
+Adopt these two conventions in your own projects for _every kind_ of test file.
 
 <a id="q-spec-file-location"></a>
 
@@ -118,11 +118,11 @@ Adopt these two conventions in your own projects for *every kind* of test file.
 It's a good idea to put unit test spec files in the same folder
 as the application source code files that they test:
 
-*   Such tests are painless to find
-*   You see at a glance if a part of your application lacks tests
-*   Nearby tests can reveal how a part works in context
-*   When you move the source \(inevitable\), you remember to move the test
-*   When you rename the source file \(inevitable\), you remember to rename the test file
+-   Such tests are painless to find
+-   You see at a glance if a part of your application lacks tests
+-   Nearby tests can reveal how a part works in context
+-   When you move the source \(inevitable\), you remember to move the test
+-   When you rename the source file \(inevitable\), you remember to rename the test file
 
 <a id="q-specs-in-test-folder"></a>
 
@@ -154,13 +154,12 @@ ng test --no-watch --no-progress
 
 </code-example>
 
-
 ## More information on testing
 
 After you've set up your application for testing, you might find the following testing guides useful.
 
-|                                                                    | Details |
-|:---                                                                |:---     |
+|                                                                    | Details                                                                           |
+| :----------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
 | [Code coverage](guide/testing-code-coverage)                       | How much of your app your tests are covering and how to specify required amounts. |
 | [Testing services](guide/testing-services)                         | How to test the services your application uses.                                   |
 | [Basics of testing components](guide/testing-components-basics)    | Basics of testing Angular components.                                             |
@@ -176,4 +175,4 @@ After you've set up your application for testing, you might find the following t
 
 <!-- end links -->
 
-@reviewed 2023-01-17
+:date: 17.01.2023

@@ -4,14 +4,14 @@ If `myapp` is the directory that contains the distributable files of your projec
 For example, your French version is located in the `myapp/fr` directory and the Spanish version is located in the `myapp/es` directory.
 
 The HTML `base` tag with the `href` attribute specifies the base URI, or URL, for relative links.
-If you set the `"localize"` option in [`angular.json`][AioGuideWorkspaceConfig] workspace build configuration file to `true` or to an array of locale IDs, the CLI adjusts the base `href` for each version of the application.
+If you set the `"localize"` option in [`angular.json`][aioguideworkspaceconfig] workspace build configuration file to `true` or to an array of locale IDs, the CLI adjusts the base `href` for each version of the application.
 To adjust the base `href` for each version of the application, the CLI adds the locale to the configured `"baseHref"`.
-Specify the `"baseHref"` for each locale in your [`angular.json`][AioGuideWorkspaceConfig] workspace build configuration file.
+Specify the `"baseHref"` for each locale in your [`angular.json`][aioguideworkspaceconfig] workspace build configuration file.
 The following example displays `"baseHref"` set to an empty string.
 
 <code-example header="angular.json" path="i18n/angular.json" region="i18n-baseHref"></code-example>
 
-Also, to declare the base `href` at compile time, use the CLI `--baseHref` option with [`ng build`][AioCliBuild].
+Also, to declare the base `href` at compile time, use the CLI `--baseHref` option with [`ng build`][aioclibuild].
 
 ## Configure a server
 
@@ -23,7 +23,7 @@ The change of subdirectory often occurs using a menu implemented in the applicat
 
 <div class="alert is-helpful">
 
-For more information on how to deploy apps to a remote server, see [Deployment][AioGuideDeployment].
+For more information on how to deploy apps to a remote server, see [Deployment][aioguidedeployment].
 
 </div>
 
@@ -41,14 +41,12 @@ The following example displays an Apache configuration.
 
 <!-- links -->
 
-[AioCliBuild]: cli/build "ng build | CLI | Angular"
-
-[AioGuideDeployment]: guide/deployment "Deployment | Angular"
-
-[AioGuideWorkspaceConfig]: guide/workspace-config "Angular workspace configuration | Angular"
+[aioclibuild]: cli/build 'ng build | CLI | Angular'
+[aioguidedeployment]: guide/deployment 'Deployment | Angular'
+[aioguideworkspaceconfig]: guide/workspace-config 'Angular workspace configuration | Angular'
 
 <!-- external links -->
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

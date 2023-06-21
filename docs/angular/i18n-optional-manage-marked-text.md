@@ -2,10 +2,10 @@
 
 The Angular extractor generates a file with a translation unit entry each of the following instances.
 
-*   Each `i18n` attribute in a component template
-*   Each [`$localize`][AioApiLocalizeInitLocalize] tagged message string in component code
+-   Each `i18n` attribute in a component template
+-   Each [`$localize`][aioapilocalizeinitlocalize] tagged message string in component code
 
-As described in [How meanings control text extraction and merges][AioGuideI18nCommonPrepareHowMeaningsControlTextExtractionAndMerges], Angular assigns each translation unit a unique ID.
+As described in [How meanings control text extraction and merges][aioguidei18ncommonpreparehowmeaningscontroltextextractionandmerges], Angular assigns each translation unit a unique ID.
 
 The following example displays translation units with unique IDs.
 
@@ -21,7 +21,7 @@ Most developers don't need to use a custom ID.
 If you want to use a unique syntax to convey additional metadata, use a custom ID.
 Additional metadata may include the library, component, or area of the application in which the text appears.
 
-To specify a custom ID in the `i18n` attribute or [`$localize`][AioApiLocalizeInitLocalize] tagged message string, use the `@@` prefix.
+To specify a custom ID in the `i18n` attribute or [`$localize`][aioapilocalizeinitlocalize] tagged message string, use the `@@` prefix.
 The following example defines the `introductionHeader` custom ID in a heading element.
 
 <code-example header="app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-solo-id"></code-example>
@@ -32,7 +32,7 @@ The following example defines the `introductionHeader` custom ID for a variable.
 
 <code-example format="typescript" language="typescript">
 
-variableText1 = &dollar;localize `:&commat;&commat;introductionHeader:Hello i18n!`;
+variableText1 = \$localize `:&commat;&commat;introductionHeader:Hello i18n!`;
 
 </code-example>
 
@@ -58,7 +58,7 @@ The following example defines the `introductionHeader` custom ID and description
 
 <code-example format="typescript" language="typescript">
 
-variableText2 = &dollar;localize `:An introduction header for this sample&commat;&commat;introductionHeader:Hello i18n!`;
+variableText2 = \$localize `:An introduction header for this sample&commat;&commat;introductionHeader:Hello i18n!`;
 
 </code-example>
 
@@ -72,7 +72,7 @@ The following example defines the `introductionHeader` custom ID for a variable.
 
 <code-example format="typescript" language="typescript">
 
-variableText3 = &dollar;localize `:site header|An introduction header for this sample&commat;&commat;introductionHeader:Hello i18n!`;
+variableText3 = \$localize `:site header|An introduction header for this sample&commat;&commat;introductionHeader:Hello i18n!`;
 
 </code-example>
 
@@ -95,12 +95,11 @@ Both elements now use the same translation \(`Bonjour`\), because both were defi
 
 <!-- links -->
 
-[AioApiLocalizeInitLocalize]: api/localize/init/$localize "$localize | init - localize - API | Angular"
-
-[AioGuideI18nCommonPrepareHowMeaningsControlTextExtractionAndMerges]: guide/i18n-common-prepare#how-meanings-control-text-extraction-and-merges "How meanings control text extraction and merges - Prepare components for translations | Angular"
+[aioapilocalizeinitlocalize]: api/localize/init/$localize '$localize | init - localize - API | Angular'
+[aioguidei18ncommonpreparehowmeaningscontroltextextractionandmerges]: guide/i18n-common-prepare#how-meanings-control-text-extraction-and-merges 'How meanings control text extraction and merges - Prepare components for translations | Angular'
 
 <!-- external links -->
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

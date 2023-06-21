@@ -14,4 +14,4 @@ Watch this video if you prefer to learn more about performance optimizations in 
 
 </div>
 
-@reviewed 2022-05-04
+:date: 4.05.2022

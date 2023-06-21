@@ -19,7 +19,7 @@ ng generate component heroes
 
 </code-example>
 
-`ng generate` creates a new directory , `src/app/heroes/`, and generates the three files of the  `HeroesComponent` along with a test file.
+`ng generate` creates a new directory , `src/app/heroes/`, and generates the three files of the `HeroesComponent` along with a test file.
 
 The `HeroesComponent` class file is as follows:
 
@@ -31,8 +31,8 @@ You always import the `Component` symbol from the Angular core library and annot
 
 `ng generate` created three metadata properties:
 
-| Properties    | Details |
-|:---           |:---     |
+| Properties    | Details                                             |
+| :------------ | :-------------------------------------------------- |
 | `selector`    | The component's CSS element selector.               |
 | `templateUrl` | The location of the component's template file.      |
 | `styleUrls`   | The location of the component's private CSS styles. |
@@ -65,7 +65,7 @@ Add an `<app-heroes>` element to the `AppComponent` template file, just below th
 
 <code-example header="src/app/app.component.html" path="toh-pt1/src/app/app.component.html"></code-example>
 
-If  `ng serve` is still running,
+If `ng serve` is still running,
 the browser should refresh and display both the application title and the hero's name.
 
 ## Create a `Hero` interface
@@ -113,8 +113,8 @@ Angular ships with several built-in pipes and you can create your own.
 
 Users should be able to edit the hero's name in an `<input>` text box.
 
-The text box should both *display* the hero's `name` property and *update* that property as the user types.
-That means data flows from the component class *out to the screen* and from the screen *back to the class*.
+The text box should both _display_ the hero's `name` property and _update_ that property as the user types.
+That means data flows from the component class _out to the screen_ and from the screen _back to the class_.
 
 To automate that data flow, set up a two-way data binding between the `<input>` form element and the `hero.name` property.
 
@@ -126,7 +126,7 @@ Refactor the details area in the `HeroesComponent` template so it looks like thi
 
 `[(ngModel)]` is Angular's two-way data binding syntax.
 
-Here it binds the `hero.name` property to the HTML text box so that data can flow *in both directions*.
+Here it binds the `hero.name` property to the HTML text box so that data can flow _in both directions_.
 Data can flow from the `hero.name` property to the text box and from the text box back to the `hero.name`.
 
 ### The missing `FormsModule`
@@ -145,12 +145,12 @@ Can't bind to 'ngModel' since it isn't a known property of 'input'.
 
 Although `ngModel` is a valid Angular directive, it isn't available by default.
 
-It belongs to the optional `FormsModule` and you must *opt in* to using it.
+It belongs to the optional `FormsModule` and you must _opt in_ to using it.
 
 ## `AppModule`
 
 Angular needs to know how the pieces of your application fit together and what other files and libraries the application requires.
-This information is called *metadata*.
+This information is called _metadata_.
 
 Some of the metadata is in the `@Component` decorators that you added to your component classes.
 Other critical metadata is in [`@NgModule`](guide/ngmodules) decorators.
@@ -158,7 +158,7 @@ Other critical metadata is in [`@NgModule`](guide/ngmodules) decorators.
 The most important `@NgModule` decorator annotates the top-level **AppModule** class.
 
 `ng new` created an `AppModule` class in `src/app/app.module.ts` when it created the project.
-This is where you *opt in* to the `FormsModule`.
+This is where you _opt in_ to the `FormsModule`.
 
 ### Import `FormsModule`
 
@@ -167,7 +167,7 @@ Open `app.module.ts` and import the `FormsModule` symbol from the `@angular/form
 <code-example path="toh-pt1/src/app/app.module.ts" header="app.module.ts (FormsModule symbol import)"
  region="formsmodule-js-import"></code-example>
 
-Add `FormsModule` to the  `imports` array in `@NgModule`.
+Add `FormsModule` to the `imports` array in `@NgModule`.
 The `imports` array contains the list of external modules that the application needs.
 
 <code-example header="app.module.ts (@NgModule imports)" path="toh-pt1/src/app/app.module.ts" region="ng-imports"></code-example>
@@ -177,9 +177,9 @@ You can edit the hero's name and see the changes reflected immediately in the `<
 
 ### Declare `HeroesComponent`
 
-Every component must be declared in *exactly one* [NgModule](guide/ngmodules).
+Every component must be declared in _exactly one_ [NgModule](guide/ngmodules).
 
-*You* didn't declare the `HeroesComponent`.
+_You_ didn't declare the `HeroesComponent`.
 Why did the application work?
 
 It worked because the `ng generate` declared `HeroesComponent` in `AppModule` when it created that component.
@@ -194,7 +194,7 @@ The `HeroesComponent` is declared in the `@NgModule.declarations` array.
 
 <div class="alert is-helpful">
 
-`AppModule`  declares both application components, `AppComponent` and `HeroesComponent`.
+`AppModule` declares both application components, `AppComponent` and `HeroesComponent`.
 
 </div>
 
@@ -213,12 +213,12 @@ Here are the code files discussed on this page.
 
 ## Summary
 
-*   You used `ng generate` to create a second `HeroesComponent`.
-*   You displayed the `HeroesComponent` by adding it to the `AppComponent` shell.
-*   You applied the `UppercasePipe` to format the name.
-*   You used two-way data binding with the `ngModel` directive.
-*   You learned about the `AppModule`.
-*   You imported the `FormsModule` in the `AppModule` so that Angular would recognize and apply the `ngModel` directive.
-*   You learned the importance of declaring components in the `AppModule`.
+-   You used `ng generate` to create a second `HeroesComponent`.
+-   You displayed the `HeroesComponent` by adding it to the `AppComponent` shell.
+-   You applied the `UppercasePipe` to format the name.
+-   You used two-way data binding with the `ngModel` directive.
+-   You learned about the `AppModule`.
+-   You imported the `FormsModule` in the `AppModule` so that Angular would recognize and apply the `ngModel` directive.
+-   You learned the importance of declaring components in the `AppModule`.
 
-@reviewed 2022-02-28
+:date: 28.02.2022

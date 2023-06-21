@@ -15,25 +15,25 @@ When a schematic runs, the transformations are recorded in memory, and only appl
 
 The public API for schematics defines classes that represent the basic concepts.
 
-*   The virtual file system is represented by a `Tree`.
-    The `Tree` data structure contains a *base* \(a set of files that already exists\) and a *staging area* \(a list of changes to be applied to the base\).
+-   The virtual file system is represented by a `Tree`.
+    The `Tree` data structure contains a _base_ \(a set of files that already exists\) and a _staging area_ \(a list of changes to be applied to the base\).
     When making modifications, you don't actually change the base, but add those modifications to the staging area.
 
-*   A `Rule` object defines a function that takes a `Tree`, applies transformations, and returns a new `Tree`.
+-   A `Rule` object defines a function that takes a `Tree`, applies transformations, and returns a new `Tree`.
     The main file for a schematic, `index.ts`, defines a set of rules that implement the schematic's logic.
 
-*   A transformation is represented by an `Action`.
+-   A transformation is represented by an `Action`.
     There are four action types: `Create`, `Rename`, `Overwrite`, and `Delete`.
 
-*   Each schematic runs in a context, represented by a `SchematicContext` object.
+-   Each schematic runs in a context, represented by a `SchematicContext` object.
 
 The context object passed into a rule provides access to utility functions and metadata that the schematic might need to work with, including a logging API to help with debugging.
-The context also defines a *merge strategy* that determines how changes are merged from the staged tree into the base tree.
+The context also defines a _merge strategy_ that determines how changes are merged from the staged tree into the base tree.
 A change can be accepted or ignored, or throw an exception.
 
 ### Defining rules and actions
 
-When you create a new blank schematic with the [Schematics CLI](#cli), the generated entry function is a *rule factory*.
+When you create a new blank schematic with the [Schematics CLI](#cli), the generated entry function is a _rule factory_.
 A `RuleFactory` object defines a higher-order function that creates a `Rule`.
 
 <code-example header="index.ts" language="typescript">
@@ -42,10 +42,10 @@ import { Rule, SchematicContext, Tree } from '&commat;angular-devkit/schematics'
 
 // You don't have to export the function as default.
 // You can also have more than one rule factory per file.
-export function helloWorld(_options: any): Rule {
- return (tree: Tree, _context: SchematicContext) =&gt; {
-   return tree;
- };
+export function helloWorld(\_options: any): Rule {
+return (tree: Tree, \_context: SchematicContext) =&gt; {
+return tree;
+};
 }
 
 </code-example>
@@ -59,13 +59,13 @@ Look for helper functions for working with modules, dependencies, TypeScript, AS
 <code-example header="index.ts" language="typescript">
 
 import {
-  JsonAstObject,
-  JsonObject,
-  JsonValue,
-  Path,
-  normalize,
-  parseJsonAst,
-  strings,
+JsonAstObject,
+JsonObject,
+JsonValue,
+Path,
+normalize,
+parseJsonAst,
+strings,
 } from '&commat;angular-devkit/core';
 
 </code-example>
@@ -82,16 +82,16 @@ For example, the hypothetical "Hello World" schematic might have the following s
 <code-example header="src/hello-world/schema.json" language="json">
 
 {
-    "properties": {
-        "name": {
-            "type": "string",
-            "minLength": 1,
-            "default": "world"
-        },
-        "useColor": {
-            "type": "boolean"
-        }
-    }
+"properties": {
+"name": {
+"type": "string",
+"minLength": 1,
+"default": "world"
+},
+"useColor": {
+"type": "boolean"
+}
+}
 }
 </code-example>
 
@@ -99,7 +99,7 @@ See examples of schema files for the Angular CLI command schematics in [`@schema
 
 ### Schematic prompts
 
-Schematic *prompts* introduce user interaction into schematic execution.
+Schematic _prompts_ introduce user interaction into schematic execution.
 Configure schematic options to display a customizable question to the user.
 The prompts are displayed before the execution of the schematic, which then uses the response as the value for the option.
 This lets users direct the operation of the schematic without requiring in-depth knowledge of the full spectrum of available options.
@@ -113,18 +113,18 @@ The schema with both prompts would be as follows.
 <code-example header="src/hello-world/schema.json" language="json">
 
 {
-    "properties": {
-        "name": {
-            "type": "string",
-            "minLength": 1,
-            "default": "world",
-            "x-prompt": "What is your name?"
-        },
-        "useColor": {
-            "type": "boolean",
-            "x-prompt": "Would you like the response in color?"
-        }
-    }
+"properties": {
+"name": {
+"type": "string",
+"minLength": 1,
+"default": "world",
+"x-prompt": "What is your name?"
+},
+"useColor": {
+"type": "boolean",
+"x-prompt": "Would you like the response in color?"
+}
+}
 }
 </code-example>
 
@@ -140,16 +140,16 @@ In this case, "yes" corresponds to `true` and "no" corresponds to `false`.
 
 There are three supported input types.
 
-| Input type   | Details |
-|:---          |:----    |
+| Input type   | Details                                            |
+| :----------- | :------------------------------------------------- |
 | confirmation | A yes or no question; ideal for Boolean options.   |
 | input        | Textual input; ideal for string or number options. |
 | list         | A predefined set of allowed values.                |
 
 In the short form, the type is inferred from the property's type and constraints.
 
-| Property schema |	Prompt type |
-|:---             |:---         |
+| Property schema    | Prompt type                                  |
+| :----------------- | :------------------------------------------- |
 | "type": "boolean"  | confirmation \("yes"=`true`, "no"=`false`\)  |
 | "type": "string"   | input                                        |
 | "type": "number"   | input \(only valid numbers accepted\)        |
@@ -161,17 +161,17 @@ In the following example, the property takes an enumerated value, so the schemat
 <code-example header="schema.json" language="json">
 
 "style": {
-  "description": "The file extension or preprocessor to use for style files.",
-  "type": "string",
-  "default": "css",
-  "enum": [
-    "css",
-    "scss",
-    "sass",
-    "less",
-    "styl"
-  ],
-  "x-prompt": "Which stylesheet format would you like to use?"
+"description": "The file extension or preprocessor to use for style files.",
+"type": "string",
+"default": "css",
+"enum": [
+"css",
+"scss",
+"sass",
+"less",
+"styl"
+],
+"x-prompt": "Which stylesheet format would you like to use?"
 }
 
 </code-example>
@@ -185,8 +185,8 @@ This ensures that any values passed to the schematic meet the expectations of th
 The `x-prompt` field syntax supports a long form for cases where you require additional customization and control over the prompt.
 In this form, the `x-prompt` field value is a JSON object with subfields that customize the behavior of the prompt.
 
-| Field   | Data value |
-|:---     |:---        |
+| Field   | Data value                                                                  |
+| :------ | :-------------------------------------------------------------------------- |
 | type    | `confirmation`, `input`, or `list` \(selected automatically in short form\) |
 | message | string \(required\)                                                         |
 | items   | string and/or label/value object pair \(only valid with type `list`\)       |
@@ -198,25 +198,25 @@ By using the long form, the schematic can provide more explicit formatting of th
 <code-example header="package/schematics/angular/application/schema.json" language="json">
 
 "style": {
-  "description": "The file extension or preprocessor to use for style files.",
-  "type": "string",
-  "default": "css",
-  "enum": [
-    "css",
-    "scss",
-    "sass",
-    "less"
-  ],
-  "x-prompt": {
-    "message": "Which stylesheet format would you like to use?",
-    "type": "list",
-    "items": [
-      { "value": "css",  "label": "CSS" },
-      { "value": "scss", "label": "SCSS   [ https://sass-lang.com/documentation/syntax#scss                ]" },
-      { "value": "sass", "label": "Sass   [ https://sass-lang.com/documentation/syntax#the-indented-syntax ]" },
-      { "value": "less", "label": "Less   [ http://lesscss.org/                                            ]" }
-    ]
-  },
+"description": "The file extension or preprocessor to use for style files.",
+"type": "string",
+"default": "css",
+"enum": [
+"css",
+"scss",
+"sass",
+"less"
+],
+"x-prompt": {
+"message": "Which stylesheet format would you like to use?",
+"type": "list",
+"items": [
+{ "value": "css", "label": "CSS" },
+{ "value": "scss", "label": "SCSS [ https://sass-lang.com/documentation/syntax#scss ]" },
+{ "value": "sass", "label": "Sass [ https://sass-lang.com/documentation/syntax#the-indented-syntax ]" },
+{ "value": "less", "label": "Less [ http://lesscss.org/ ]" }
+]
+},
 },
 
 </code-example>
@@ -230,33 +230,33 @@ The following JSON schema is a complete description of the long-form syntax for 
 <code-example header="x-prompt schema" language="json">
 
 {
-    "oneOf": [
-        { "type": "string" },
-        {
-            "type": "object",
-            "properties": {
-                "type": { "type": "string" },
-                "message": { "type": "string" },
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "oneOf": [
-                            { "type": "string" },
-                            {
-                                "type": "object",
-                                "properties": {
-                                    "label": { "type": "string" },
-                                    "value": { }
-                                },
-                                "required": [ "value" ]
-                            }
-                        ]
-                    }
-                }
-            },
-            "required": [ "message" ]
-        }
-    ]
+"oneOf": [
+{ "type": "string" },
+{
+"type": "object",
+"properties": {
+"type": { "type": "string" },
+"message": { "type": "string" },
+"items": {
+"type": "array",
+"items": {
+"oneOf": [
+{ "type": "string" },
+{
+"type": "object",
+"properties": {
+"label": { "type": "string" },
+"value": { }
+},
+"required": [ "value" ]
+}
+]
+}
+}
+},
+"required": [ "message" ]
+}
+]
 }
 
 </code-example>
@@ -354,36 +354,36 @@ Each schematic is created with a name, description, and factory function.
 <code-example language="json">
 
 {
-  "&dollar;schema":
-     "../node_modules/&commat;angular-devkit/schematics/collection-schema.json",
-  "schematics": {
-    "hello-world": {
-      "description": "A blank schematic.",
-      "factory": "./hello-world/index#helloWorld"
-    }
-  }
+"\$schema":
+"../node_modules/&commat;angular-devkit/schematics/collection-schema.json",
+"schematics": {
+"hello-world": {
+"description": "A blank schematic.",
+"factory": "./hello-world/index#helloWorld"
+}
+}
 }
 
 </code-example>
 
-*   The `$schema` property specifies the schema that the CLI uses for validation.
-*   The `schematics` property lists named schematics that belong to this collection.
+-   The `$schema` property specifies the schema that the CLI uses for validation.
+-   The `schematics` property lists named schematics that belong to this collection.
     Each schematic has a plain-text description, and points to the generated entry function in the main file.
 
-*   The `factory` property points to the generated entry function.
+-   The `factory` property points to the generated entry function.
     In this example, you invoke the `hello-world` schematic by calling the `helloWorld()` factory function.
 
-*   The optional  `schema` property points to a JSON schema file that defines the command-line options available to the schematic.
-*   The optional `aliases` array specifies one or more strings that can be used to invoke the schematic.
+-   The optional `schema` property points to a JSON schema file that defines the command-line options available to the schematic.
+-   The optional `aliases` array specifies one or more strings that can be used to invoke the schematic.
     For example, the schematic for the Angular CLI "generate" command has an alias "g", that lets you use the command `ng g`.
 
 ### Named schematics
 
 When you use the Schematics CLI to create a blank schematics project, the new blank schematic is the first member of the collection, and has the same name as the collection.
-When you add a new named schematic to this collection, it is automatically added to the  `collection.json`  schema.
+When you add a new named schematic to this collection, it is automatically added to the `collection.json` schema.
 
 In addition to the name and description, each schematic has a `factory` property that identifies the schematic's entry point.
-In the example, you invoke the schematic's defined functionality by calling the `helloWorld()` function in the main file,  `hello-world/index.ts`.
+In the example, you invoke the schematic's defined functionality by calling the `helloWorld()` function in the main file, `hello-world/index.ts`.
 
 <div class="lightbox">
 
@@ -393,12 +393,12 @@ In the example, you invoke the schematic's defined functionality by calling the 
 
 Each named schematic in the collection has the following main parts.
 
-| Parts          | Details |
-|:---            |:---     |
-| `index.ts`     | Code that defines the transformation logic for a named schematic.  |
-| `schema.json`  | Schematic variable definition.                                     |
-| `schema.d.ts`  | Schematic variables.                                               |
-| `files/`       | Optional component/template files to replicate.                    |
+| Parts         | Details                                                           |
+| :------------ | :---------------------------------------------------------------- |
+| `index.ts`    | Code that defines the transformation logic for a named schematic. |
+| `schema.json` | Schematic variable definition.                                    |
+| `schema.d.ts` | Schematic variables.                                              |
+| `files/`      | Optional component/template files to replicate.                   |
 
 It is possible for a schematic to provide all of its logic in the `index.ts` file, without additional templates.
 You can create dynamic schematics for Angular, however, by providing components and templates in the `files` folder, like those in standalone Angular projects.
@@ -410,4 +410,4 @@ The logic in the index file configures these templates by defining rules that in
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

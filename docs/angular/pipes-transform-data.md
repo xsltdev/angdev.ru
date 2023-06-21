@@ -97,4 +97,4 @@ The second tab for the `src/app/app.component.html` template passes the `fullDat
     <code-pane header="src/app/app.component.html (2)" region="chained-parameter-birthday" path="pipes/src/app/app.component.html"></code-pane>
 </code-tabs>
 
-@reviewed 2022-4-01
+:date: 1.04.2022

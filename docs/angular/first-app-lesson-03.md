@@ -8,17 +8,18 @@ This tutorial lesson demonstrates how to add the `HousingLocation` component to 
 
 This lesson starts with the code from the previous lesson, so you can:
 
-*   Use the code that you created in Lesson 2 in your integrated development environment (IDE).
-*   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-02"></live-example> from Lesson 1 where you can:
-    *   Use the *live example* in StackBlitz, where the StackBlitz interface is your IDE.
-    *   Use the *download example* and open it in your IDE.
+-   Use the code that you created in Lesson 2 in your integrated development environment (IDE).
+-   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-02"></live-example> from Lesson 1 where you can:
+    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
+    -   Use the _download example_ and open it in your IDE.
 
 If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
 
 If you have any trouble during this lesson, you can review the completed code for this lesson, in the <live-example></live-example> for this lesson.
 
 ## After you finish
-* Your app has a new component: `HousingLocationComponent` and it displays a message confirming that the component was added to your application.
+
+-   Your app has a new component: `HousingLocationComponent` and it displays a message confirming that the component was added to your application.
 
 ## Lesson steps
 
@@ -32,9 +33,9 @@ In the **Terminal** pane of your IDE:
 
 1. Run this command to create a new `HousingLocationComponent`
 
-    <code-example format="shell" language="shell">
-    ng generate component HousingLocation --standalone --inline-template --skip-tests
-    </code-example>
+ <code-example format="shell" language="shell">
+ ng generate component HousingLocation --standalone --inline-template --skip-tests
+ </code-example>
 
 1. Run this command to build and serve your app.
 
@@ -44,11 +45,12 @@ In the **Terminal** pane of your IDE:
 
     </code-example>
 
-1.  Open a browser and navigate to `http://localhost:4200` to find the application.
-1.  Confirm that the app builds without error.
+1. Open a browser and navigate to `http://localhost:4200` to find the application.
+1. Confirm that the app builds without error.
 
-    *Note: It should render the same as it did in the previous lesson because even though you added a new component, you haven't included it in any of the app's templates, yet.*
-1.  Leave `ng serve` running as you complete the next steps.
+    _Note: It should render the same as it did in the previous lesson because even though you added a new component, you haven't included it in any of the app's templates, yet._
+
+1. Leave `ng serve` running as you complete the next steps.
 
 ### Step 2 - Add the new component to your app's layout
 
@@ -74,15 +76,14 @@ In the **Edit** pane of your IDE:
 In this step, you will copy over the pre-written styles for the `HousingLocationComponent` to your app so that the app renders properly.
 
 1. Open `src/app/housing-location/housing-location.css`, and paste the styles below into the file:
-        
+
     <code-example header="Add CSS styles to housing location to the component in src/app/housing-location/housing-location.component.css" path="first-app-lesson-03/src/app/housing-location/housing-location.component.css"></code-example>
 
-1.  Save your code, return to the browser and confirm that the app builds without error. You should find the message "housing-location works!" rendered to the screen.Correct any errors before you continue to the next step.
+1. Save your code, return to the browser and confirm that the app builds without error. You should find the message "housing-location works!" rendered to the screen.Correct any errors before you continue to the next step.
 
     <section class="lightbox">
     <img alt="browser frame of homes-app displaying logo, filter text input box and search button and the message 'housing-location works!" src="generated/images/guide/faa/homes-app-lesson-03-step-2.png">
     </section>
-
 
 ## Lesson review
 
@@ -92,4 +93,4 @@ If you are having any trouble with this lesson, you can review the completed cod
 
 ## Next steps
 
-* [First Angular app lesson 4 -  Add a housing location interface to the application](tutorial/first-app/first-app-lesson-04)
+-   [First Angular app lesson 4 - Add a housing location interface to the application](tutorial/first-app/first-app-lesson-04)

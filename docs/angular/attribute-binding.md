@@ -67,3 +67,5 @@
 ## Что дальше
 
 -   [Class & Style Binding](guide/class-binding)
+
+:date: 2.05.2022

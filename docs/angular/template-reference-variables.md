@@ -129,4 +129,4 @@ However, accessing a template variable from a child scope in the parent template
 
 [Написание структурных директив](/guide/structural-directives)
 
-@reviewed 2022-05-12
+:date: 12.05.2022

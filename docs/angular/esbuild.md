@@ -9,9 +9,9 @@ It's ready for you to try, but it might change before it is stable and is not ye
 
 In v16 and higher, the new build system provides a way to build Angular applications. This new build system includes:
 
-- A modern output format using ESM, with dynamic import expressions to support lazy module loading.
-- Faster build-time performance for both initial builds and incremental rebuilds.
-- Newer JavaScript ecosystem tools such as [esbuild](https://esbuild.github.io/) and [Vite](https://vitejs.dev/).
+-   A modern output format using ESM, with dynamic import expressions to support lazy module loading.
+-   Faster build-time performance for both initial builds and incremental rebuilds.
+-   Newer JavaScript ecosystem tools such as [esbuild](https://esbuild.github.io/) and [Vite](https://vitejs.dev/).
 
 You can opt-in to use the new builder on a per application basis with minimal configuration updates required.
 
@@ -76,10 +76,10 @@ The developer preview currently does not provide HMR support and the HMR related
 
 Several build options are not yet implemented but will be added in the future as the build system moves towards a stable status. If your application uses these options, you can still try out the build system without removing them. Warnings will be issued for any unimplemented options but they will otherwise be ignored. However, if your application relies on any of these options to function, you may want to wait to try.
 
-- [Bundle budgets](https://github.com/angular/angular-cli/issues/25100) (`budgets`)
-- [Localization](https://github.com/angular/angular-cli/issues/25099) (`localize`/`i18nDuplicateTranslation`/`i18nMissingTranslation`)
-- [Web workers](https://github.com/angular/angular-cli/issues/25101) (`webWorkerTsConfig`)
-- [WASM imports](https://github.com/angular/angular-cli/issues/25102) -- WASM can still be loaded manually via [standard web APIs](https://developer.mozilla.org/en-US/docs/WebAssembly/Loading_and_running).
+-   [Bundle budgets](https://github.com/angular/angular-cli/issues/25100) (`budgets`)
+-   [Localization](https://github.com/angular/angular-cli/issues/25099) (`localize`/`i18nDuplicateTranslation`/`i18nMissingTranslation`)
+-   [Web workers](https://github.com/angular/angular-cli/issues/25101) (`webWorkerTsConfig`)
+-   [WASM imports](https://github.com/angular/angular-cli/issues/25102) -- WASM can still be loaded manually via [standard web APIs](https://developer.mozilla.org/en-US/docs/WebAssembly/Loading_and_running).
 
 Building libraries with the new build system via `ng-packagr` is also not yet possible but library build support will be available in a future release.
 
@@ -143,12 +143,12 @@ Supported:
 
 ```ts
 switch (name) {
-  case 'x':
-    return await import('/abc/x.json');
-  case 'y':
-    return await import('/abc/y.json');
-  case 'z':
-    return await import('/abc/z.json');
+    case 'x':
+        return await import('/abc/x.json');
+    case 'y':
+        return await import('/abc/y.json');
+    case 'z':
+        return await import('/abc/z.json');
 }
 ```
 

@@ -1,7 +1,7 @@
 # Angular Routing
 
 In a single-page app, you change what the user sees by showing or hiding portions of the display that correspond to particular components, rather than going out to the server to get a new page.
-As users perform application tasks, they need to move between the different [views](guide/glossary#view "Definition of view") that you have defined.
+As users perform application tasks, they need to move between the different [views](guide/glossary#view 'Definition of view') that you have defined.
 
 To handle the navigation from one [view](guide/glossary#view) to the next, you use the Angular **`Router`**.
 The **`Router`** enables navigation by interpreting a browser URL as an instruction to change the view.
@@ -12,9 +12,9 @@ To explore a sample app featuring the router's primary features, see the <live-e
 
 Before creating a route, you should be familiar with the following:
 
-*   [Basics of components](guide/architecture-components)
-*   [Basics of templates](guide/glossary#template)
-*   An Angular app &mdash;you can generate a basic Angular application using the [Angular CLI](cli).
+-   [Basics of components](guide/architecture-components)
+-   [Basics of templates](guide/glossary#template)
+-   An Angular app &mdash;you can generate a basic Angular application using the [Angular CLI](cli).
 
 ## Learn about Angular routing
 
@@ -52,4 +52,4 @@ Before creating a route, you should be familiar with the following:
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

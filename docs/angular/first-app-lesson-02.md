@@ -8,10 +8,10 @@ This tutorial lesson demonstrates how to create a new [component](/guide/compone
 
 This lesson starts with the code from the previous lesson, so you can:
 
-*   Use the code that you created in Lesson 1 in your integrated development environment (IDE).
-*   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-01"></live-example> from Lesson 1 where you can:
-    *   Use the *live example* in StackBlitz, where the StackBlitz interface is your IDE.
-    *   Use the *download example* and open it in your IDE.
+-   Use the code that you created in Lesson 1 in your integrated development environment (IDE).
+-   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-01"></live-example> from Lesson 1 where you can:
+    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
+    -   Use the _download example_ and open it in your IDE.
 
 If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
 
@@ -19,7 +19,7 @@ If you have any trouble during this lesson, you can review the completed code fo
 
 ## After you finish
 
-* Your app has a new component: `HomeComponent`.
+-   Your app has a new component: `HomeComponent`.
 
 ## Conceptual preview of Angular components
 
@@ -34,11 +34,11 @@ In later lessons, you create more components to provide more features to the app
 In Angular, components have metadata that define its properties.
 When you create your `HomeComponent`, you use these properties:
 
-*   `selector`: to describe how Angular refers to the component in templates.
-*   `standalone`: to describe whether the component requires a `ngModule`.
-*   `imports`: to describe the component's dependencies.
-*   `template`: to describe the component's HTML markup and layout.
-*   `styleUrls`: to list the URLs of the CSS files that the component users in an array.
+-   `selector`: to describe how Angular refers to the component in templates.
+-   `standalone`: to describe whether the component requires a `ngModule`.
+-   `imports`: to describe the component's dependencies.
+-   `template`: to describe the component's HTML markup and layout.
+-   `styleUrls`: to list the URLs of the CSS files that the component users in an array.
 
 Components have other [properties](/api/core/Component), but these are the ones used by `HomeComponent`.
 
@@ -72,7 +72,8 @@ In the **Terminal** pane of your IDE:
 1.  Open a browser and navigate to `http://localhost:4200` to find the application.
 1.  Confirm that the app builds without error.
 
-    *Note: It should render the same as it did in the previous lesson because even though you added a new component, you haven't included it in any of the app's templates, yet.*
+    _Note: It should render the same as it did in the previous lesson because even though you added a new component, you haven't included it in any of the app's templates, yet._
+
 1.  Leave `ng serve` running as you complete the next steps.
 
 ### Step 2 - Add the new component to your app's layout
@@ -89,13 +90,15 @@ In the **Edit** pane of your IDE:
 1.  In `app.component.ts`, in `@Component`, update the `imports` array property and add `HomeComponent`.
 
     <code-example header="Replace in src/app/app.component.ts" path="first-app-lesson-02/src/app/app.component.ts" region="app-metadata-imports"></code-example>
+
 1.  In `app.component.ts`, in `@Component`, update the `template` property to include the following HTML code.
 
     <code-example header="Replace in src/app/app.component.ts" path="first-app-lesson-02/src/app/app.component.ts" region="app-metadata-template"></code-example>
-1.  Save your changes to  `app.component.ts`.
+
+1.  Save your changes to `app.component.ts`.
 1.  If `ng serve` is running, the app should update.
     If `ng serve` is not running, start it again.
-    *Hello world* in your app should change to *home works!* from the `HomeComponent`.
+    _Hello world_ in your app should change to _home works!_ from the `HomeComponent`.
 1.  Check the running app in the browser and confirm that the app has been updated.
 
 <section class="lightbox">
@@ -138,12 +141,12 @@ If you are having any trouble with this lesson, you can review the completed cod
 
 ## Next steps
 
-* [First Angular app lesson 3 - Create the application’s HousingLocation component](tutorial/first-app/first-app-lesson-03)
+-   [First Angular app lesson 3 - Create the application’s HousingLocation component](tutorial/first-app/first-app-lesson-03)
 
 ## More information
 
 For more information about the topics covered in this lesson, visit:
 
-*  [`ng generate component`](cli/generate#component-command)
-*  [`Component` reference](api/core/Component)
-*  [Angular components overview](guide/component-overview)
+-   [`ng generate component`](cli/generate#component-command)
+-   [`Component` reference](api/core/Component)
+-   [Angular components overview](guide/component-overview)

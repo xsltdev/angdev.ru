@@ -28,9 +28,9 @@ As a best practice, use only properties and methods that return values.
 A template expression should result in the type of value that the target property expects.
 For example, return:
 
-*   a `string`, if the target property expects a string
-*   a `number`, if it expects a number
-*   an `object`, if it expects an object.
+-   a `string`, if the target property expects a string
+-   a `number`, if it expects a number
+-   an `object`, if it expects an object.
 
 ### Passing in a string
 
@@ -46,7 +46,7 @@ The `parentItem` in `AppComponent` is a string, which means that the expression,
 
 <code-example header="src/app/app.component.ts" path="property-binding/src/app/app.component.ts" region="parent-data-type"></code-example>
 
-If `parentItem` were some other type, you would need to specify `childItem`  `@Input()` as that type as well.
+If `parentItem` were some other type, you would need to specify `childItem` `@Input()` as that type as well.
 
 ### Passing in an object
 
@@ -74,4 +74,4 @@ By supplying an object in the same shape, you meet the expectations of `items` w
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

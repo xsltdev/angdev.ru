@@ -36,46 +36,46 @@ After running this command you can see that the `angular.json` configuration fil
 <code-example language="json">
 
 "server": {
-  "builder": "&commat;angular-devkit/build-angular:server",
-  "defaultConfiguration": "production",
-  "options": {
-    "outputPath": "dist/my-app/server",
-    "main": "src/main.server.ts",
-    "tsConfig": "tsconfig.server.json"
-  },
-  "configurations": {
-    "development": {
-      "outputHashing": "none",
-    },
-    "production": {
-      "outputHashing": "media",
-      "fileReplacements": [
-        {
-          "replace": "src/environments/environment.ts",
-          "with": "src/environments/environment.prod.ts"
-        }
-      ],
-      "sourceMap": false,
-      "optimization": true
-    }
-  }
+"builder": "&commat;angular-devkit/build-angular:server",
+"defaultConfiguration": "production",
+"options": {
+"outputPath": "dist/my-app/server",
+"main": "src/main.server.ts",
+"tsConfig": "tsconfig.server.json"
+},
+"configurations": {
+"development": {
+"outputHashing": "none",
+},
+"production": {
+"outputHashing": "media",
+"fileReplacements": [
+{
+"replace": "src/environments/environment.ts",
+"with": "src/environments/environment.prod.ts"
+}
+],
+"sourceMap": false,
+"optimization": true
+}
+}
 },
 "app-shell": {
-  "builder": "&commat;angular-devkit/build-angular:app-shell",
-  "defaultConfiguration": "production",
-  "options": {
-    "route": "shell"
-  },
-  "configurations": {
-    "development": {
-      "browserTarget": "my-app:build:development",
-      "serverTarget": "my-app:server:development",
-    },
-    "production": {
-      "browserTarget": "my-app:build:production",
-      "serverTarget": "my-app:server:production"
-    }
-  }
+"builder": "&commat;angular-devkit/build-angular:app-shell",
+"defaultConfiguration": "production",
+"options": {
+"route": "shell"
+},
+"configurations": {
+"development": {
+"browserTarget": "my-app:build:development",
+"serverTarget": "my-app:server:development",
+},
+"production": {
+"browserTarget": "my-app:build:production",
+"serverTarget": "my-app:server:production"
+}
+}
 }
 
 </code-example>
@@ -107,4 +107,4 @@ Look for default text `app-shell works!` to show that the application shell rout
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

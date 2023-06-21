@@ -1,4 +1,5 @@
 # First Angular app lesson 09 - Angular services
+
 This tutorial lesson demonstrates how to create an Angular service and use dependency injection to include it in your app.
 
 **Time required:** expect to spend about 15 minutes to complete this lesson.
@@ -7,10 +8,10 @@ This tutorial lesson demonstrates how to create an Angular service and use depen
 
 This lesson starts with the code from the previous lesson, so you can:
 
-*   Use the code that you created in Lesson 8 in your integrated development environment (IDE).
-*   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-08"></live-example> from Lesson 8 where you can:
-    *   Use the *live example* in StackBlitz, where the StackBlitz interface is your IDE.
-    *   Use the *download example* and open it in your IDE.
+-   Use the code that you created in Lesson 8 in your integrated development environment (IDE).
+-   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-08"></live-example> from Lesson 8 where you can:
+    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
+    -   Use the _download example_ and open it in your IDE.
 
 If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
 
@@ -18,9 +19,9 @@ If you have any trouble during this lesson, you can review the completed code fo
 
 ## After you finish
 
-*  Your app has a service to serve the data to your app.
-   At the end of this lesson, the service reads data from local, static data.
-   In a later lesson, you update the service to get data from a web service.
+-   Your app has a service to serve the data to your app.
+    At the end of this lesson, the service reads data from local, static data.
+    In a later lesson, you update the service to get data from a web service.
 
 ## Conceptual preview of services
 
@@ -30,14 +31,14 @@ This tutorial introduces Angular services and dependency injection.
 
 #### Angular services
 
-*Angular services* provide a way for you to separate Angular app data and functions that can be used by multiple components in your app.
-To be used by multiple components, a service must be made *injectable*.
+_Angular services_ provide a way for you to separate Angular app data and functions that can be used by multiple components in your app.
+To be used by multiple components, a service must be made _injectable_.
 Services that are injectable and used by a component become dependencies of that component.
 The component depends on those services and can't function without them.
 
 #### Dependency injection
 
-*Dependency injection* is the mechanism that manages the dependencies of an app's components and the services that other components can use.
+_Dependency injection_ is the mechanism that manages the dependencies of an app's components and the services that other components can use.
 
 ## Lesson steps
 
@@ -72,6 +73,7 @@ In the **Edit** pane of your IDE:
 
 1.  In `src/app/home/home.component.ts`, from `HomeComponent`, copy the `housingLocationList` variable and its array value.
 1.  In `src/app/housing.service.ts`:
+
     1.  Inside the `HousingService` class, paste the variable that you copied from `HomeComponent` in the previous step.
     1.  Inside the `HousingService` class, paste these functions after the data you just copied.
         These functions allow dependencies to access the service's data.
@@ -122,7 +124,7 @@ If you are having any trouble with this lesson, you can review the completed cod
 
 ## Next steps
 
-*  [Lesson 10 - Add routes to the application](tutorial/first-app/first-app-lesson-10)
+-   [Lesson 10 - Add routes to the application](tutorial/first-app/first-app-lesson-10)
 
 ## More information
 
@@ -130,7 +132,7 @@ For more information about the topics covered in this lesson, visit:
 
 <!-- vale Angular.Google_WordListSuggestions = NO -->
 
-*  [Creating an injectable service](guide/creating-injectable-service)
-*  [Dependency injection in Angular](guide/dependency-injection-overview)
-*  [ng generate service](cli/generate#service)
-*  [ng generate](cli/generate)
+-   [Creating an injectable service](guide/creating-injectable-service)
+-   [Dependency injection in Angular](guide/dependency-injection-overview)
+-   [ng generate service](cli/generate#service)
+-   [ng generate](cli/generate)

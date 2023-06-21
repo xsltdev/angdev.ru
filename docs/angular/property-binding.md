@@ -116,4 +116,4 @@ Using the property `itemImageUrl`, type the following code:
 
 -   [Привязка атрибутов](guide/attribute-binding)
 
-@ просмотрено 2022-04-14
+:date: 14.04.2022

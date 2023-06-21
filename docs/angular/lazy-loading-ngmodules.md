@@ -22,10 +22,10 @@ To lazy load Angular modules, use `loadChildren` \(instead of `component`\) in y
 <code-example header="AppRoutingModule (excerpt)">
 
 const routes: Routes = [
-  {
-    path: 'items',
-    loadChildren: () =&gt; import('./items/items.module').then(m =&gt; m.ItemsModule)
-  }
+{
+path: 'items',
+loadChildren: () =&gt; import('./items/items.module').then(m =&gt; m.ItemsModule)
+}
 ];
 
 </code-example>
@@ -35,10 +35,10 @@ In the lazy-loaded module's routing module, add a route for the component.
 <code-example header="Routing module for lazy loaded module (excerpt)">
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ItemsComponent
-  }
+{
+path: '',
+component: ItemsComponent
+}
 ];
 
 </code-example>
@@ -241,7 +241,7 @@ The Angular CLI also adds `RouterModule.forChild(routes)` to feature routing mod
 This way, Angular knows that the route list is only responsible for providing extra routes and is intended for feature modules.
 You can use `forChild()` in multiple modules.
 
-The `forRoot()` method takes care of the *global* injector configuration for the Router.
+The `forRoot()` method takes care of the _global_ injector configuration for the Router.
 The `forChild()` method has no injector configuration.
 It uses directives such as `RouterOutlet` and `RouterLink`.
 For more information, see the [`forRoot()` pattern](guide/singleton-services#forRoot) section of the [Singleton Services](guide/singleton-services) guide.
@@ -251,7 +251,7 @@ For more information, see the [`forRoot()` pattern](guide/singleton-services#for
 ## Preloading
 
 Preloading improves UX by loading parts of your application in the background.
-You can preload modules, standalone components or component data. 
+You can preload modules, standalone components or component data.
 
 ### Preloading modules and standalone components
 
@@ -272,36 +272,36 @@ Still in the `AppRoutingModule`, specify your preloading strategy in `forRoot()`
 <code-example header="AppRoutingModule (excerpt)">
 
 RouterModule.forRoot(
-  appRoutes,
-  {
-    preloadingStrategy: PreloadAllModules
-  }
+appRoutes,
+{
+preloadingStrategy: PreloadAllModules
+}
 )
 
 </code-example>
 
 ### Standalone application
 
-For standalone applications configure preloading strategies by adding `withPreloading` to  `provideRouter`s RouterFeatures in `app.config.ts`
+For standalone applications configure preloading strategies by adding `withPreloading` to `provideRouter`s RouterFeatures in `app.config.ts`
 
 <code-example header="`app.config.ts`">
 
 import { ApplicationConfig } from '@angular/core';
 import {
-  PreloadAllModules,
-  provideRouter
-  withPreloading,
+PreloadAllModules,
+provideRouter
+withPreloading,
 } from '@angular/router';
 
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(
-      routes,
-      withPreloading(PreloadAllModules)
-    ),
-  ],
+providers: [
+provideRouter(
+routes,
+withPreloading(PreloadAllModules)
+),
+],
 };
 
 </code-example>
@@ -330,16 +330,16 @@ import { Resolve } from '&commat;angular/router';
 
 &hellip;
 
-/* An interface that represents your data model */
+/_ An interface that represents your data model _/
 export interface Crisis {
-  id: number;
-  name: string;
+id: number;
+name: string;
 }
 
 export class CrisisDetailResolverService implements Resolve&lt;Crisis&gt; {
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable&lt;Crisis&gt; {
-    // your logic goes here
-  }
+resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable&lt;Crisis&gt; {
+// your logic goes here
+}
 }
 
 </code-example>
@@ -357,11 +357,11 @@ Add a `resolve` object to the component's `route` configuration.
 <code-example header="Feature module's routing module (excerpt)">
 
 {
-  path: '/your-path',
-  component: YourComponent,
-  resolve: {
-    crisis: CrisisDetailResolverService
-  }
+path: '/your-path',
+component: YourComponent,
+resolve: {
+crisis: CrisisDetailResolverService
+}
 }
 
 </code-example>
@@ -374,7 +374,7 @@ import { ActivatedRoute } from '&commat;angular/router';
 
 &commat;Component({ &hellip; })
 class YourComponent {
-  constructor(private route: ActivatedRoute) {}
+constructor(private route: ActivatedRoute) {}
 }
 
 </code-example>
@@ -387,15 +387,15 @@ import { ActivatedRoute } from '&commat;angular/router';
 
 &commat;Component({ &hellip; })
 class YourComponent {
-  constructor(private route: ActivatedRoute) {}
+constructor(private route: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.route.data
-      .subscribe(data =&gt; {
-        const crisis: Crisis = data.crisis;
-        // &hellip;
-      });
-  }
+ngOnInit() {
+this.route.data
+.subscribe(data =&gt; {
+const crisis: Crisis = data.crisis;
+// &hellip;
+});
+}
 }
 
 </code-example>
@@ -417,11 +417,11 @@ For more information on Angular Modules, see [NgModules](guide/ngmodules).
 
 You might also be interested in the following:
 
-*   [Routing and Navigation](guide/router)
-*   [Providers](guide/providers)
-*   [Types of Feature Modules](guide/module-types)
-*   [Route-level code-splitting in Angular](https://web.dev/route-level-code-splitting-in-angular)
-*   [Route preloading strategies in Angular](https://web.dev/route-preloading-in-angular)
+-   [Routing and Navigation](guide/router)
+-   [Providers](guide/providers)
+-   [Types of Feature Modules](guide/module-types)
+-   [Route-level code-splitting in Angular](https://web.dev/route-level-code-splitting-in-angular)
+-   [Route preloading strategies in Angular](https://web.dev/route-preloading-in-angular)
 
 <!-- links -->
 
@@ -429,4 +429,4 @@ You might also be interested in the following:
 
 <!-- end links -->
 
-@reviewed 2022-05-07
+:date: 7.05.2022

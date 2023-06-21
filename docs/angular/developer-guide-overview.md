@@ -10,9 +10,9 @@ This topic lists the various developer guides for you to learn more about these 
 
 To get the most out of these developer guides, you should review the following topics:
 
-*   [What is Angular][AioGuideWhatIsAngular]
-*   [Getting started tutorial][AioStart]
-*   [Understanding Angular][AioGuideUnderstandingAngularOverview]
+-   [What is Angular][aioguidewhatisangular]
+-   [Getting started tutorial][aiostart]
+-   [Understanding Angular][aioguideunderstandingangularoverview]
 
 ## Learn about Angular's features
 
@@ -71,14 +71,12 @@ To get the most out of these developer guides, you should review the following t
 
 <!-- links -->
 
-[AioGuideUnderstandingAngularOverview]: guide/understanding-angular-overview "Understanding Angular | Angular"
-
-[AioGuideWhatIsAngular]: guide/what-is-angular "What is Angular\? | Angular"
-
-[AioStart]: start "Getting started with Angular | Angular"
+[aioguideunderstandingangularoverview]: guide/understanding-angular-overview 'Understanding Angular | Angular'
+[aioguidewhatisangular]: guide/what-is-angular 'What is Angular? | Angular'
+[aiostart]: start 'Getting started with Angular | Angular'
 
 <!-- external links -->
 
 <!-- end links -->
 
-@reviewed 2021-11-05
+:date: 5.11.2021

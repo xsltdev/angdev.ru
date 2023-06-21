@@ -1,7 +1,7 @@
 # DevTools Overview
 
 Angular DevTools is a browser extension that provides debugging and profiling capabilities for Angular applications.
-Angular DevTools supports Angular v12 and later when compiled with the [optimization configuration option](guide/workspace-config#optimization-configuration) disabled (<code>{optimization:false}</code>). 
+Angular DevTools supports Angular v12 and later when compiled with the [optimization configuration option](guide/workspace-config#optimization-configuration) disabled (<code>{optimization:false}</code>).
 
 <div class="video-container">
 
@@ -21,8 +21,8 @@ After installing Angular DevTools, find the extension under the Angular tab in y
 
 When you open the extension, you'll see two additional tabs:
 
-| Tabs                      | Details |
-|:---                       |:---     |
+| Tabs                      | Details                                                                                                                |
+| :------------------------ | :--------------------------------------------------------------------------------------------------------------------- |
 | [Components](#components) | Lets you explore the components and directives in your application and preview or edit their state.                    |
 | [Profiler](#profiler)     | Lets you profile your application and understand what the performance bottleneck is during change detection execution. |
 
@@ -64,7 +64,7 @@ In the next couple of sections we'll look into how to use this tab effectively t
 
 In the preceding screenshot, you can see the component tree of an application.
 
-The component tree displays a hierarchical relationship of the *components and directives* within your application.
+The component tree displays a hierarchical relationship of the _components and directives_ within your application.
 When you select a component or a directive instance, Angular DevTools presents additional information about that instance.
 
 ### View properties
@@ -74,8 +74,8 @@ Angular DevTools displays their properties and metadata on the right-hand side o
 
 Navigate in the component tree using the mouse or the following keyboard shortcuts:
 
-| Keyboard shortcut     | Details |
-|:---                   |:---     |
+| Keyboard shortcut     | Details                            |
+| :-------------------- | :--------------------------------- |
 | Up and down arrows    | Select the previous and next nodes |
 | Left and right arrows | Collapse and expand a node         |
 
@@ -132,7 +132,7 @@ Type `$ng0` to get a reference to the instance of the currently selected compone
 ### Select a directive or component
 
 Similar to browsers' DevTools, you can inspect the page to select a particular component or directive.
-Click the ***Inspect element*** icon in the top left corner within Angular DevTools and hover over a DOM element on the page.
+Click the **_Inspect element_** icon in the top left corner within Angular DevTools and hover over a DOM element on the page.
 The extension recognizes the associated directives and/or components and lets you select the corresponding element in the Component tree.
 
 <div class="lightbox">
@@ -248,4 +248,4 @@ Then, import the file in the initial view of the profiler by clicking the **Choo
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

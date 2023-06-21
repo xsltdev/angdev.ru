@@ -216,4 +216,4 @@ document.querySelector('my-other-element') //--&gt; NgElement &amp; WithProperti
 
 <!-- end links -->
 
-@ просмотрено 2022-02-28
+:date: 28.02.2022

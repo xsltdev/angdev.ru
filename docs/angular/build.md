@@ -49,7 +49,7 @@ For example:
 <code-example format="typescript" language="typescript">
 
 export const environment = {
-  production: true
+production: true
 };
 
 </code-example>
@@ -61,8 +61,8 @@ For example, the following adds a default for a variable to the default environm
 <code-example format="typescript" language="typescript">
 
 export const environment = {
-  production: true,
-  apiUrl: 'http://my-prod-url'
+production: true,
+apiUrl: 'http://my-prod-url'
 };
 
 </code-example>
@@ -73,8 +73,8 @@ The following content sets default values for the development build target:
 <code-example format="typescript" language="typescript">
 
 export const environment = {
-  production: false,
-  apiUrl: 'http://my-api-url'
+production: false,
+apiUrl: 'http://my-api-url'
 };
 
 </code-example>
@@ -130,21 +130,22 @@ The following code in the component file \(`app.component.ts`\) uses an environm
 
 <code-example format="typescript" language="typescript">
 
-  import { Component } from '&commat;angular/core';
-  import { environment } from './../environments/environment';
+import { Component } from '&commat;angular/core';
+import { environment } from './../environments/environment';
 
-  &commat;Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
-  })
-  export class AppComponent {
-    constructor() {
-      console.log(environment.production); // Logs false for development environment
-    }
+&commat;Component({
+selector: 'app-root',
+templateUrl: './app.component.html',
+styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+constructor() {
+console.log(environment.production); // Logs false for development environment
+}
 
     title = 'app works!';
-  }
+
+}
 
 </code-example>
 
@@ -161,15 +162,15 @@ For example:
 
 <code-example format="json" language="json">
 
-  "configurations": {
-    "development": {
-      "fileReplacements": [
-          {
-            "replace": "src/environments/environment.ts",
-            "with": "src/environments/environment.development.ts"
-          }
-        ],
-        &hellip;
+"configurations": {
+"development": {
+"fileReplacements": [
+{
+"replace": "src/environments/environment.ts",
+"with": "src/environments/environment.development.ts"
+}
+],
+&hellip;
 
 </code-example>
 
@@ -180,18 +181,18 @@ To add a staging environment, create a copy of `src/environments/environment.ts`
 
 <code-example format="json" language="json">
 
-  "configurations": {
-    "development": { &hellip; },
-    "production": { &hellip; },
-    "staging": {
-      "fileReplacements": [
-        {
-          "replace": "src/environments/environment.ts",
-          "with": "src/environments/environment.staging.ts"
-        }
-      ]
-    }
-  }
+"configurations": {
+"development": { &hellip; },
+"production": { &hellip; },
+"staging": {
+"fileReplacements": [
+{
+"replace": "src/environments/environment.ts",
+"with": "src/environments/environment.staging.ts"
+}
+]
+}
+}
 
 </code-example>
 
@@ -210,23 +211,23 @@ You can also configure the `serve` command to use the targeted build configurati
 
 <code-example format="json" language="json">
 
-  "serve": {
-    "builder": "&commat;angular-devkit/build-angular:dev-server",
-    "options": {
-      "browserTarget": "your-project-name:build"
-    },
-    "configurations": {
-      "development": {
-        "browserTarget": "your-project-name:build:development"
-      },
-      "production": {
-        "browserTarget": "your-project-name:build:production"
-      },
-      "staging": {
-        "browserTarget": "your-project-name:build:staging"
-      }
-    }
-  },
+"serve": {
+"builder": "&commat;angular-devkit/build-angular:dev-server",
+"options": {
+"browserTarget": "your-project-name:build"
+},
+"configurations": {
+"development": {
+"browserTarget": "your-project-name:build:development"
+},
+"production": {
+"browserTarget": "your-project-name:build:production"
+},
+"staging": {
+"browserTarget": "your-project-name:build:staging"
+}
+}
+},
 
 </code-example>
 
@@ -243,13 +244,13 @@ Define your size boundaries in the CLI configuration file, `angular.json`, in a 
 <code-example format="json" language="json">
 
 {
-  &hellip;
-  "configurations": {
-    "production": {
-      &hellip;
-      "budgets": []
-    }
-  }
+&hellip;
+"configurations": {
+"production": {
+&hellip;
+"budgets": []
+}
+}
 }
 
 </code-example>
@@ -300,14 +301,14 @@ To disable these warnings, add the CommonJS module name to `allowedCommonJsDepen
 <code-example language="json">
 
 "build": {
-  "builder": "&commat;angular-devkit/build-angular:browser",
-  "options": {
-     "allowedCommonJsDependencies": [
-        "lodash"
-     ]
-     &hellip;
-   }
-   &hellip;
+"builder": "&commat;angular-devkit/build-angular:browser",
+"options": {
+"allowedCommonJsDependencies": [
+"lodash"
+]
+&hellip;
+}
+&hellip;
 },
 
 </code-example>
@@ -352,10 +353,10 @@ For example, to divert all calls for `http://localhost:4200/api` to a server run
     <code-example format="json" language="json">
 
     {
-      "/api": {
-        "target": "http://localhost:3000",
-        "secure": false
-      }
+    "/api": {
+    "target": "http://localhost:3000",
+    "secure": false
+    }
     }
 
     </code-example>
@@ -364,14 +365,14 @@ For example, to divert all calls for `http://localhost:4200/api` to a server run
 
     <code-example format="json" language="json">
 
-      &hellip;
-      "architect": {
-        "serve": {
-          "builder": "&commat;angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "your-application-name:build",
-            "proxyConfig": "src/proxy.conf.json"
-          },
+    &hellip;
+    "architect": {
+    "serve": {
+    "builder": "&commat;angular-devkit/build-angular:dev-server",
+    "options": {
+    "browserTarget": "your-application-name:build",
+    "proxyConfig": "src/proxy.conf.json"
+    },
     &hellip;
 
     </code-example>
@@ -396,13 +397,13 @@ For example, specify the following `pathRewrite` value to the proxy configuratio
 <code-example format="json" language="json">
 
 {
-  "/api": {
-    "target": "http://localhost:3000",
-    "secure": false,
-    "pathRewrite": {
-      "^/api": ""
-    }
-  }
+"/api": {
+"target": "http://localhost:3000",
+"secure": false,
+"pathRewrite": {
+"^/api": ""
+}
+}
 }
 
 </code-example>
@@ -413,14 +414,14 @@ For example:
 <code-example format="json" language="json">
 
 {
-  "/api": {
-    "target": "http://npmjs.org",
-    "secure": false,
-    "pathRewrite": {
-      "^/api": ""
-    },
-    "changeOrigin": true
-  }
+"/api": {
+"target": "http://npmjs.org",
+"secure": false,
+"pathRewrite": {
+"^/api": ""
+},
+"changeOrigin": true
+}
 }
 
 </code-example>
@@ -431,14 +432,14 @@ For example:
 <code-example format="json" language="json">
 
 {
-  "/api": {
-    "target": "http://localhost:3000",
-    "secure": false,
-    "pathRewrite": {
-      "^/api": ""
-    },
-    "logLevel": "debug"
-  }
+"/api": {
+"target": "http://localhost:3000",
+"secure": false,
+"pathRewrite": {
+"^/api": ""
+},
+"logLevel": "debug"
+}
 }
 
 </code-example>
@@ -454,19 +455,19 @@ Set the proxy configuration file to `proxy.conf.mjs` \(instead of `proxy.conf.js
 <code-example format="javascript" language="javascript">
 
 export default [
-  {
-    context: [
-        '/my',
-        '/many',
-        '/endpoints',
-        '/i',
-        '/need',
-        '/to',
-        '/proxy'
-    ],
-    target: 'http://localhost:3000',
-    secure: false
-  }
+{
+context: [
+'/my',
+'/many',
+'/endpoints',
+'/i',
+'/need',
+'/to',
+'/proxy'
+],
+target: 'http://localhost:3000',
+secure: false
+}
 ];
 
 </code-example>
@@ -477,12 +478,12 @@ In the CLI configuration file, `angular.json`, point to the JavaScript proxy con
 
 &hellip;
 "architect": {
-  "serve": {
-    "builder": "&commat;angular-devkit/build-angular:dev-server",
-    "options": {
-      "browserTarget": "your-application-name:build",
-      "proxyConfig": "src/proxy.conf.mjs"
-    },
+"serve": {
+"builder": "&commat;angular-devkit/build-angular:dev-server",
+"options": {
+"browserTarget": "your-application-name:build",
+"proxyConfig": "src/proxy.conf.mjs"
+},
 &hellip;
 
 </code-example>
@@ -494,17 +495,17 @@ If you need to optionally bypass the proxy, or dynamically change the request be
 <code-example format="javascript" language="javascript">
 
 export default {
-  '/api/proxy': {
-    "target": 'http://localhost:3000',
-    "secure": false,
-    "bypass": function (req, res, proxyOptions) {
-        if (req.headers.accept.includes('html')) {
-            console.log('Skipping proxy for browser request.');
-            return '/index.html';
-        }
-        req.headers['X-Custom-Header'] = 'yes';
-    }
-  }
+'/api/proxy': {
+"target": 'http://localhost:3000',
+"secure": false,
+"bypass": function (req, res, proxyOptions) {
+if (req.headers.accept.includes('html')) {
+console.log('Skipping proxy for browser request.');
+return '/index.html';
+}
+req.headers['X-Custom-Header'] = 'yes';
+}
+}
 };
 
 </code-example>
@@ -529,23 +530,24 @@ Use the following content in the JavaScript configuration file.
 import HttpsProxyAgent from 'https-proxy-agent';
 
 const proxyConfig = [{
-  context: '/api',
-  target: 'http://your-remote-server.com:3000',
-  secure: false
+context: '/api',
+target: 'http://your-remote-server.com:3000',
+secure: false
 }];
 
 export default (proxyConfig) => {
-  const proxyServer = process.env.http_proxy &verbar;&verbar; process.env.HTTP_PROXY;
-  if (proxyServer) {
-    const agent = new HttpsProxyAgent(proxyServer);
-    console.log('Using corporate proxy server: ' + proxyServer);
+const proxyServer = process.env.http_proxy &verbar;&verbar; process.env.HTTP_PROXY;
+if (proxyServer) {
+const agent = new HttpsProxyAgent(proxyServer);
+console.log('Using corporate proxy server: ' + proxyServer);
 
     for (const entry of proxyConfig) {
       entry.agent = agent;
     }
-  }
 
-  return proxyConfig;
+}
+
+return proxyConfig;
 };
 
 </code-example>
@@ -556,4 +558,4 @@ export default (proxyConfig) => {
 
 <!-- end links -->
 
-@reviewed 2023-01-17
+:date: 17.01.2023

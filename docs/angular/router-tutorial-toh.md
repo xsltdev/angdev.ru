@@ -2418,4 +2418,4 @@ For the completed router application, see the <live-example name="router"></live
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

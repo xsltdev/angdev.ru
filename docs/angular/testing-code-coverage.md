@@ -27,9 +27,9 @@ If you want to create code-coverage reports every time you test, set the followi
 <code-example format="json" language="json">
 
 "test": {
-  "options": {
-    "codeCoverage": true
-  }
+"options": {
+"codeCoverage": true
+}
 }
 
 </code-example>
@@ -45,31 +45,29 @@ To enable this, open the [Karma](https://karma-runner.github.io) test platform c
 <code-example format="javascript" language="javascript">
 
 coverageReporter: {
-  dir: require('path').join(__dirname, './coverage/&lt;project-name&gt;'),
-  subdir: '.',
-  reporters: [
-    { type: 'html' },
-    { type: 'text-summary' }
-  ],
-  check: {
-    global: {
-      statements: 80,
-      branches: 80,
-      functions: 80,
-      lines: 80
-    }
-  }
+dir: require('path').join(\_\_dirname, './coverage/&lt;project-name&gt;'),
+subdir: '.',
+reporters: [
+{ type: 'html' },
+{ type: 'text-summary' }
+],
+check: {
+global: {
+statements: 80,
+branches: 80,
+functions: 80,
+lines: 80
+}
+}
 }
 
 </code-example>
-
 
 <div class="alert is-helpful">
 
 Read more about creating and fine tunning Karma configuration in the [testing guide](guide/testing#configuration).
 
 </div>
-
 
 The `check` property causes the tool to enforce a minimum of 80% code coverage when the unit tests are run in the project.
 
@@ -81,4 +79,4 @@ Read more on coverage configuration options in the [karma coverage documentation
 
 <!-- end links -->
 
-@reviewed 2023-01-17
+:date: 17.01.2023

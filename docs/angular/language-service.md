@@ -10,7 +10,7 @@ To enable the latest Language Service features, set the `strictTemplates` option
 <code-example language="json">
 
 "angularCompilerOptions": {
-  "strictTemplates": true
+"strictTemplates": true
 }
 
 </code-example>
@@ -24,10 +24,10 @@ It then uses the Angular Language Service to read your `tsconfig.json` file, fin
 
 Language services include:
 
-*   Completions lists
-*   AOT Diagnostic messages
-*   Quick info
-*   Go to definition
+-   Completions lists
+-   AOT Diagnostic messages
+-   Quick info
+-   Go to definition
 
 ### Autocompletion
 
@@ -117,17 +117,17 @@ Starting with TypeScript 2.3, TypeScript has a plug-in model that the language s
 
     </code-example>
 
-1.  Once the package is installed,  add the following to the `"compilerOptions"` section of your project's `tsconfig.json`.
+1.  Once the package is installed, add the following to the `"compilerOptions"` section of your project's `tsconfig.json`.
 
     <code-example header="tsconfig.json" language="json">
 
     "plugins": [
-        {"name": "&commat;angular/language-service"}
+    {"name": "&commat;angular/language-service"}
     ]
 
     </code-example>
 
-1. In your editor's user preferences \(`Cmd+,` or `Ctrl+,`\), add the following:
+1.  In your editor's user preferences \(`Cmd+,` or `Ctrl+,`\), add the following:
 
     <code-example header="Sublime Text user preferences" language="json">
 
@@ -158,9 +158,9 @@ The Angular Language Services then looks at `data.---` within its context, asks 
 
 ## More information
 
-*   For more in-depth information on the implementation, see the [Angular Language Service API](https://github.com/angular/angular/blob/main/packages/language-service/src/types.ts)
-*   For more on the design considerations and intentions, see [design documentation here](https://github.com/angular/vscode-ng-language-service/wiki/Design)
-*   See also [Chuck Jazdzewski's presentation](https://www.youtube.com/watch?v=ez3R0Gi4z5A&t=368s) on the Angular Language Service from [ng-conf](https://www.ng-conf.org) 2017
+-   For more in-depth information on the implementation, see the [Angular Language Service API](https://github.com/angular/angular/blob/main/packages/language-service/src/types.ts)
+-   For more on the design considerations and intentions, see [design documentation here](https://github.com/angular/vscode-ng-language-service/wiki/Design)
+-   See also [Chuck Jazdzewski's presentation](https://www.youtube.com/watch?v=ez3R0Gi4z5A&t=368s) on the Angular Language Service from [ng-conf](https://www.ng-conf.org) 2017
 
 <!-- links -->
 
@@ -168,4 +168,4 @@ The Angular Language Services then looks at `data.---` within its context, asks 
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

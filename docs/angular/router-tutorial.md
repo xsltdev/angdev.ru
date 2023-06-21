@@ -14,32 +14,32 @@ To explore a sample application featuring the contents of this tutorial, see the
 
 ## Objectives
 
-*   Organize a sample application's features into modules.
-*   Define how to navigate to a component.
-*   Pass information to a component using a parameter.
-*   Structure routes by nesting several routes.
-*   Check whether users can access a route.
-*   Control whether the application can discard unsaved changes.
-*   Improve performance by pre-fetching route data and lazy loading feature modules.
-*   Require specific criteria to load components.
+-   Organize a sample application's features into modules.
+-   Define how to navigate to a component.
+-   Pass information to a component using a parameter.
+-   Structure routes by nesting several routes.
+-   Check whether users can access a route.
+-   Control whether the application can discard unsaved changes.
+-   Improve performance by pre-fetching route data and lazy loading feature modules.
+-   Require specific criteria to load components.
 
 ## Prerequisites
 
 To complete this tutorial, you should have a basic understanding of the following concepts:
 
-*   JavaScript
-*   HTML
-*   CSS
-*   [Angular CLI](cli)
+-   JavaScript
+-   HTML
+-   CSS
+-   [Angular CLI](cli)
 
 You might find the [Tour of Heroes tutorial](tutorial/tour-of-heroes) helpful, but it is not required.
 
 ## Create a sample application
 
-Using the Angular CLI, create a new application, *angular-router-sample*.
-This application will have two components: *crisis-list* and *heroes-list*.
+Using the Angular CLI, create a new application, _angular-router-sample_.
+This application will have two components: _crisis-list_ and _heroes-list_.
 
-1.  Create a new Angular project, *angular-router-sample*.
+1.  Create a new Angular project, _angular-router-sample_.
 
     <code-example format="shell" language="shell">
 
@@ -54,7 +54,7 @@ This application will have two components: *crisis-list* and *heroes-list*.
     After a few moments, a new project, `angular-router-sample`, is ready.
 
 1.  From your terminal, navigate to the `angular-router-sample` directory.
-1.  Create a component, *crisis-list*.
+1.  Create a component, _crisis-list_.
 
     <code-example format="shell" language="shell">
 
@@ -66,7 +66,7 @@ This application will have two components: *crisis-list* and *heroes-list*.
 
     <code-example header="src/app/crisis-list/crisis-list.component.html" path="router-tutorial/src/app/crisis-list/crisis-list.component.html"></code-example>
 
-1.  Create a second component, *heroes-list*.
+1.  Create a second component, _heroes-list_.
 
     <code-example format="shell" language="shell">
 
@@ -109,8 +109,8 @@ You import this module from `@angular/router`.
 
 In this section, you'll define two routes:
 
-*   The route `/crisis-center` opens the `crisis-center` component.
-*   The route `/heroes-list` opens the `heroes-list` component.
+-   The route `/crisis-center` opens the `crisis-center` component.
+-   The route `/heroes-list` opens the `heroes-list` component.
 
 A route definition is a JavaScript object.
 Each route typically has two properties.
@@ -206,6 +206,7 @@ By adding the `routerLinkActive` directive, you inform your application to apply
 In this tutorial, that CSS class is `activebutton`, but you could use any class that you want.
 
 Note that we are also specifying a value for the `routerLinkActive`'s `ariaCurrentWhenActive`. This makes sure that visually impaired users (which may not perceive the different styling being applied) can also identify the active button. For more information see the Accessibility Best Practices [Active links identification section](/guide/accessibility#active-links-identification).
+
 ## Adding a redirect
 
 In this step of the tutorial, you add a route that redirects the user to display the `/heroes-list` component.
@@ -218,8 +219,8 @@ In this step of the tutorial, you add a route that redirects the user to display
     Notice that this new route uses an empty string as its path.
     In addition, it replaces the `component` property with two new ones:
 
-    | Properties   | Details |
-    |:---          |:---     |
+    | Properties   | Details                                                                                                                                                                                                                                                                                           |
+    | :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
     | `redirectTo` | This property instructs Angular to redirect from an empty path to the `heroes-list` path.                                                                                                                                                                                                         |
     | `pathMatch`  | This property instructs Angular on how much of the URL to match. For this tutorial, you should set this property to `full`. This strategy is recommended when you have an empty string for a path. For more information about this property, see the [Route API documentation](api/router/Route). |
 
@@ -270,8 +271,8 @@ You have extended these features to include a redirect, as well as a wildcard ro
 
 For more information about routing, see the following topics:
 
-*   [In-app Routing and Navigation](guide/router)
-*   [Router API](api/router)
+-   [In-app Routing and Navigation](guide/router)
+-   [Router API](api/router)
 
 <!-- links -->
 
@@ -279,4 +280,4 @@ For more information about routing, see the following topics:
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

@@ -17,19 +17,19 @@ Implement Angular's `UrlMatcher` to create a custom route matcher.
 
 To complete this tutorial, you should have a basic understanding of the following concepts:
 
-*   JavaScript
-*   HTML
-*   CSS
-*   [Angular CLI](cli)
+-   JavaScript
+-   HTML
+-   CSS
+-   [Angular CLI](cli)
 
 If you are unfamiliar with how Angular's router works, review [Using Angular routes in a single-page application](guide/router-tutorial).
 
 ## Create a sample application
 
-Using the Angular CLI, create a new application, *angular-custom-route-match*.
-In addition to the default Angular application framework, you will also create a *profile* component.
+Using the Angular CLI, create a new application, _angular-custom-route-match_.
+In addition to the default Angular application framework, you will also create a _profile_ component.
 
-1.  Create a new Angular project, *angular-custom-route-match*.
+1.  Create a new Angular project, _angular-custom-route-match_.
 
     <code-example format="shell" language="shell">
 
@@ -44,11 +44,11 @@ In addition to the default Angular application framework, you will also create a
     After a few moments, a new project, `angular-custom-route-match`, is ready.
 
 1.  From your terminal, navigate to the `angular-custom-route-match` directory.
-1.  Create a component, *profile*.
+1.  Create a component, _profile_.
 
    <code-example format="shell" language="shell">
 
-   ng generate component profile
+ng generate component profile
 
    </code-example>
 
@@ -81,10 +81,10 @@ This handle is identified by a preceding `@` symbol.
 
 This custom matcher is a function that performs the following tasks:
 
-*   The matcher verifies that the array contains only one segment
-*   The matcher employs a regular expression to ensure that the format of the username is a match
-*   If there is a match, the function returns the entire URL, defining a `username` route parameter as a substring of the path
-*   If there isn't a match, the function returns null and the router continues to look for other routes that match the URL
+-   The matcher verifies that the array contains only one segment
+-   The matcher employs a regular expression to ensure that the format of the username is a match
+-   If there is a match, the function returns the entire URL, defining a `username` route parameter as a substring of the path
+-   If there isn't a match, the function returns null and the router continues to look for other routes that match the URL
 
 <div class="is-helpful">
 
@@ -139,8 +139,8 @@ With your code in place, you can now test your custom URL matcher.
 Pattern matching with the Angular Router provides you with a lot of flexibility when you have dynamic URLs in your application.
 To learn more about the Angular Router, see the following topics:
 
-*   [In-app Routing and Navigation](guide/router)
-*   [Router API](api/router)
+-   [In-app Routing and Navigation](guide/router)
+-   [Router API](api/router)
 
 <div class="alert is-helpful">
 
@@ -154,4 +154,4 @@ This content is based on [Custom Route Matching with the Angular Router](https:/
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

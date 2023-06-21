@@ -25,12 +25,12 @@ The preceding command completes the following actions:
 1.  Enables service worker build support in the CLI.
 1.  Imports and registers the service worker in the application module.
 1.  Updates the `index.html` file:
-    *   Includes a link to add the `manifest.webmanifest` file
-    *   Adds a meta tag for `theme-color`
+    -   Includes a link to add the `manifest.webmanifest` file
+    -   Adds a meta tag for `theme-color`
 1.  Installs icon files to support the installed Progressive Web App \(PWA\).
 1.  Creates the service worker configuration file called [`ngsw-config.json`](guide/service-worker-config), which specifies the caching behaviors and other settings.
 
- Now, build the project:
+Now, build the project:
 
 <code-example format="shell" language="shell">
 
@@ -109,11 +109,11 @@ Instead, they are being loaded from the service worker's cache.
 Notice that all of the files the browser needs to render this application are cached.
 The `ngsw-config.json` boilerplate configuration is set up to cache the specific resources used by the CLI:
 
-*   `index.html`
-*   `favicon.ico`
-*   Build artifacts \(JS and CSS bundles\)
-*   Anything under `assets`
-*   Images and fonts directly under the configured `outputPath` \(by default `./dist/<project-name>/`\) or `resourcesOutputPath`.
+-   `index.html`
+-   `favicon.ico`
+-   Build artifacts \(JS and CSS bundles\)
+-   Anything under `assets`
+-   Images and fonts directly under the configured `outputPath` \(by default `./dist/<project-name>/`\) or `resourcesOutputPath`.
     See [`ng build`](cli/build) for more information about these options.
 
 <div class="alert is-important">
@@ -179,14 +179,14 @@ Now look at how the browser and service worker handle the updated application.
 
     </div>
 
-    The service worker installed the updated version of your application *in the background*, and the next time the page is loaded or reloaded, the service worker switches to the latest version.
+    The service worker installed the updated version of your application _in the background_, and the next time the page is loaded or reloaded, the service worker switches to the latest version.
 
 ## More on Angular service workers
 
 You might also be interested in the following:
 
-*   [App Shell](guide/app-shell)
-*   [Communicating with service workers](guide/service-worker-communications)
+-   [App Shell](guide/app-shell)
+-   [Communicating with service workers](guide/service-worker-communications)
 
 <!-- links -->
 
@@ -194,4 +194,4 @@ You might also be interested in the following:
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

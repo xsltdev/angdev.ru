@@ -19,12 +19,12 @@ npm run prerender
 
 When you add prerendering to your application, the following build options are available:
 
-| Options         | Details |
-|:---             |:---     |
+| Options         | Details                                                                                                                                            |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `browserTarget` | Specify the target to build.                                                                                                                       |
 | `serverTarget`  | Specify the Server target to use for prerendering the application.                                                                                 |
-| `routes`        | Define an array of extra routes to prerender.                                                                                                 |
-| `guessRoutes`   | Whether builder should extract routes and guess which paths to render. Defaults to `true`.                                                          |
+| `routes`        | Define an array of extra routes to prerender.                                                                                                      |
+| `guessRoutes`   | Whether builder should extract routes and guess which paths to render. Defaults to `true`.                                                         |
 | `routesFile`    | Specify a file that contains a list of all routes to prerender, separated by newlines. This option is useful if you have a large number of routes. |
 | `numProcesses`  | Specify the number of CPUs to be used while running the prerendering command.                                                                      |
 
@@ -35,9 +35,9 @@ An example of a dynamic route is `product/:id`, where `id` is dynamically provid
 
 To prerender dynamic routes, choose one from the following options:
 
-*   Provide extra routes in the command line
-*   Provide routes using a file
-*   Prerender specific routes
+-   Provide extra routes in the command line
+-   Provide routes using a file
+-   Prerender specific routes
 
 #### Provide extra routes in the command line
 
@@ -91,4 +91,4 @@ ng run &lt;app-name&gt;:prerender --no-guess-routes --routes /product/1 /product
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022

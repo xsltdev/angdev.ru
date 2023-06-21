@@ -128,4 +128,4 @@ Angular DI знает, как построить зависимость `UserSer
 
 -   [Dependency Injection in Action](guide/dependency-injection-in-action)
 
-@reviewed 2022-08-02
+:date: 2.08.2022

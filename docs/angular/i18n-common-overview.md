@@ -2,22 +2,22 @@
 
 Use the following Angular tasks to internationalize your project.
 
-*   Use built-in pipes to display dates, numbers, percentages, and currencies in a local format.
-*   Mark text in component templates for translation.
-*   Mark plural forms of expressions for translation.
-*   Mark alternate text for translation.
+-   Use built-in pipes to display dates, numbers, percentages, and currencies in a local format.
+-   Mark text in component templates for translation.
+-   Mark plural forms of expressions for translation.
+-   Mark alternate text for translation.
 
-After you prepare your project for an international audience, use the [Angular CLI][AioCliMain] to localize your project.
+After you prepare your project for an international audience, use the [Angular CLI][aioclimain] to localize your project.
 Complete the following tasks to localize your project.
 
-*   Use the CLI to extract marked text to a *source language* file.
-*   Make a copy of the *source language* file for each language, and send all of *translation* files to a translator or service.
-*   Use the CLI to merge the finished translation files when you build your project for one or more locales.
+-   Use the CLI to extract marked text to a _source language_ file.
+-   Make a copy of the _source language_ file for each language, and send all of _translation_ files to a translator or service.
+-   Use the CLI to merge the finished translation files when you build your project for one or more locales.
 
 <div class="alert is-helpful">
 
 Create an adaptable user interface for all of your target locales that takes into consideration the differences in spacing for different languages.
-For more details, see [How to approach internationalization][ThinkwithgoogleMarketfinderIntlEnUsGuideHowToApproachI18nOverview].
+For more details, see [How to approach internationalization][thinkwithgooglemarketfinderintlenusguidehowtoapproachi18noverview].
 
 </div>
 
@@ -25,10 +25,10 @@ For more details, see [How to approach internationalization][ThinkwithgoogleMark
 
 To prepare your project for translations, you should have a basic understanding of the following subjects.
 
-*   [Templates][AioGuideGlossaryTemplate]
-*   [Components][AioGuideGlossaryComponent]
-*   [Angular CLI][AioCliMain] [command-line][AioGuideGlossaryCommandLineInterfaceCli] tool for managing the Angular development cycle
-*   [Extensible Markup Language (XML)][W3Xml] used for translation files
+-   [Templates][aioguideglossarytemplate]
+-   [Components][aioguideglossarycomponent]
+-   [Angular CLI][aioclimain] [command-line][aioguideglossarycommandlineinterfacecli] tool for managing the Angular development cycle
+-   [Extensible Markup Language (XML)][w3xml] used for translation files
 
 ## Learn about common Angular internationalization tasks
 
@@ -72,18 +72,16 @@ To prepare your project for translations, you should have a basic understanding 
 
 <!-- links -->
 
-[AioCliMain]: cli "CLI Overview and Command Reference | Angular"
-
-[AioGuideGlossaryCommandLineInterfaceCli]: guide/glossary#command-line-interface-cli "command-line interface (CLI) - Glossary | Angular"
-[AioGuideGlossaryComponent]: guide/glossary#component "component - Glossary | Angular"
-[AioGuideGlossaryTemplate]: guide/glossary#template "template - Glossary | Angular"
+[aioclimain]: cli 'CLI Overview and Command Reference | Angular'
+[aioguideglossarycommandlineinterfacecli]: guide/glossary#command-line-interface-cli 'command-line interface (CLI) - Glossary | Angular'
+[aioguideglossarycomponent]: guide/glossary#component 'component - Glossary | Angular'
+[aioguideglossarytemplate]: guide/glossary#template 'template - Glossary | Angular'
 
 <!-- external links -->
 
-[ThinkwithgoogleMarketfinderIntlEnUsGuideHowToApproachI18nOverview]: https://marketfinder.thinkwithgoogle.com/intl/en_us/guide/how-to-approach-i18n#overview "Overview - How to approach internationalization | Market Finder | Think with Google"
-
-[W3Xml]: https://www.w3.org/XML "Extensible Markup Language (XML) | W3C"
+[thinkwithgooglemarketfinderintlenusguidehowtoapproachi18noverview]: https://marketfinder.thinkwithgoogle.com/intl/en_us/guide/how-to-approach-i18n#overview 'Overview - How to approach internationalization | Market Finder | Think with Google'
+[w3xml]: https://www.w3.org/XML 'Extensible Markup Language (XML) | W3C'
 
 <!-- end links -->
 
-@reviewed 2021-10-07
+:date: 7.10.2021

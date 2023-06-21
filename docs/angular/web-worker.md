@@ -31,13 +31,13 @@ ng generate web-worker app
 The command performs the following actions.
 
 1.  Configures your project to use web workers, if it isn't already.
-1.  Adds the following scaffold code to `src/app/app.worker.ts` to  receive messages.
+1.  Adds the following scaffold code to `src/app/app.worker.ts` to receive messages.
 
     <code-example language="typescript" header="src/app/app.worker.ts">
 
     addEventListener('message', ({ data }) =&gt; {
-      const response = `worker response to &dollar;{data}`;
-      postMessage(response);
+    const response = `worker response to &dollar;{data}`;
+    postMessage(response);
     });
 
     </code-example>
@@ -47,15 +47,15 @@ The command performs the following actions.
     <code-example language="typescript" header="src/app/app.component.ts">
 
     if (typeof Worker !== 'undefined') {
-      // Create a new
-      const worker = new Worker(new URL('./app.worker', import.meta.url));
-      worker.onmessage = ({ data }) =&gt; {
-        console.log(`page got message: &dollar;{data}`);
-      };
-      worker.postMessage('hello');
+    // Create a new
+    const worker = new Worker(new URL('./app.worker', import.meta.url));
+    worker.onmessage = ({ data }) =&gt; {
+    console.log(`page got message: &dollar;{data}`);
+    };
+    worker.postMessage('hello');
     } else {
-      // Web workers are not supported in this environment.
-      // You should add a fallback so that your program still executes correctly.
+    // Web workers are not supported in this environment.
+    // You should add a fallback so that your program still executes correctly.
     }
 
     </code-example>
@@ -75,4 +75,4 @@ To ensure that your application works in these environments, you must provide a 
 
 <!-- end links -->
 
-@reviewed 2022-02-28
+:date: 28.02.2022
