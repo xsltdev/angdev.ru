@@ -46,11 +46,138 @@ nav:
             - structural-directives.md
             - directive-composition-api.md
         - Внедрение зависимостей:
-            - dependesncy-injection-overview.md
+            - dependency-injection-overview.md
             - dependency-injection.md
             - creating-injectable-service.md
             - dependency-injection-providers.md
             - hierarchical-dependency-injection.md
     - Гайды разработчика:
-
+        - developer-guide-overview.md
+        - Автономно:
+            - standalone-components.md
+            - standalone-migration.md
+        - Обнаружение изменений:
+            - change-detection.md
+            - change-detection-zone-pollution.md
+            - change-detection-slow-computations.md
+            - change-detection-skipping-subtrees.md
+        - Роутинг и навигация:
+            - routing-overview.md
+            - router.md
+            - router-tutorial.md
+            - routing-with-urlmatcher.md
+            - router-tutorial-toh.md
+            - router-reference.md
+        - Формы:
+            - forms-overview.md
+            - reactive-forms.md
+            - typed-forms.md
+            - form-validation.md
+            - dynamic-form.md
+        - esbuild.md
+        - http.md
+        - hydration.md
+        - image-directive.md
+        - Тестирование:
+            - testing.md
+            - testing-code-coverage.md
+            - testing-services.md
+            - testing-components-basics.md
+            - testing-components-scenarios.md
+            - testing-attribute-directives.md
+            - testing-pipes.md
+            - test-debugging.md
+            - testing-utility-apis.md
+        - Интернационализация:
+            - i18n-overview.md
+            - Общие задачи интернационализации:
+                - i18n-common-overview.md
+                - i18n-common-add-package.md
+                - i18n-common-locale-id.md
+                - i18n-common-format-data-locale.md
+                - i18n-common-prepare.md
+                - i18n-common-translation-files.md
+                - i18n-common-merge.md
+                - i18n-common-deploy.md
+            - i18n-example.md
+            - Дополнительные практики интернационализации:
+                - i18n-optional-overview.md
+                - i18n-optional-manual-runtime-locale.md
+                - i18n-optional-import-global-variants.md
+                - i18n-optional-manage-marked-text.md
+        - Анимация:
+            - animations.md
+            - transition-and-triggers.md
+            - complex-animation-sequences.md
+            - reusable-animations.md
+            - route-animations.md
+        - Service workers и PWA:
+            - service-worker-intro.md
+            - service-worker-getting-started.md
+            - app-shell.md
+            - service-worker-communications.md
+            - service-worker-notifications.md
+            - service-worker-devops.md
+            - service-worker-config.md
+        - web-worker.md
+        - universal.md
+        - prerendering.md
+        - Библиотеки Angular:
+            - libraries.md
+            - using-libraries.md
+            - creating-libraries.md
+            - angular-package-format.md
+        - Предварительный обзор возможностей:
+            - signals.md
+            - rxjs-interop.md
+    - Лучшие практики:
+        - security.md
+        - accessibility.md
+        - updating.md
+        - property-binding-best-practices.md
+        - lazy-loading-ngmodules.md
+        - lightweight-injection-tokens.md
+    - Инструменты Angular:
+        - cli-builder.md
+        - Процесс разработки:
+            - deployment.md
+            - AOT компилятор:
+                - aot-compiler.md
+                - angular-compiler-options.md
+                - aot-metadata-errors.md
+                - template-typecheck.md
+            - build.md
+        - language-service.md
+        - devtools.md
+        - Схемы:
+            - schematics.md
+            - schematics-authoring.md
+            - schematics-for-libraries.md
+    - Туториалы:
+        - Ваше первое приложение:
+            - first-app.md
+            - first-app-lesson-01.md
+            - first-app-lesson-02.md
+            - first-app-lesson-03.md
+            - first-app-lesson-04.md
+            - first-app-lesson-05.md
+            - first-app-lesson-06.md
+            - first-app-lesson-07.md
+            - first-app-lesson-08.md
+            - first-app-lesson-09.md
+            - first-app-lesson-10.md
+            - first-app-lesson-11.md
+            - first-app-lesson-12.md
+            - first-app-lesson-13.md
+            - first-app-lesson-14.md
+        - Тур героев:
+            - toh.md
+            - toh-pt0.md
+            - toh-pt1.md
+            - toh-pt2.md
+            - toh-pt3.md
+            - toh-pt4.md
+            - toh-pt5.md
+            - toh-pt6.md
+        - forms.md
     - ...

@@ -67,4 +67,4 @@ The complete component is as follows:
 
 [Перейдите к разделу "Развертывание"](start/start-deployment 'Try it: Deployment'), чтобы перейти к локальной разработке, или разверните приложение на Firebase или собственном сервере.
 
-@reviewed 2021-09-15
+:date: 15.09.2021

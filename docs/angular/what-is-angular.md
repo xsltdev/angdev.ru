@@ -322,3 +322,5 @@ Some of the libraries available to you include:
 
 -   [Понимание Angular](understanding-angular-overview.md)
 -   [Гайд разработчика Angular](developer-guide-overview.md)
+
+:date: 28.02.2022

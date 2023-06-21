@@ -373,3 +373,5 @@ To continue exploring Angular and developing this application:
 
 -   Continue to [In-app navigation](start-routing.md) to create a product details page.
 -   Skip ahead to [Deployment](start-deployment.md) to move to local development, or deploy your application to Firebase or your own server.
+
+:date: 28.02.2022

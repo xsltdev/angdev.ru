@@ -180,3 +180,5 @@ If a product exists, the `<div>` renders with a name, price, and description.
 
 -   Перейдите к разделу [Управление данными](start-data.md), чтобы добавить функцию корзины, управлять данными корзины и получать внешние данные для цен доставки.
 -   Перейдите к [Deployment](start-deployment.md), чтобы развернуть ваше приложение на Firebase или перейти к локальной разработке.
+
+:date: 28.02.2022
