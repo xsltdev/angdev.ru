@@ -1,23 +1,25 @@
-# Angular developer guides
+# Руководства для разработчиков Angular
 
-As an application framework, Angular includes a collection of well-integrated libraries that cover a wide variety of features.
+Как фреймворк для приложений, Angular включает в себя набор хорошо интегрированных библиотек, которые охватывают широкий спектр функций.
 
-The Angular libraries include routing, forms management, client-server communication, and more.
+Библиотеки Angular включают маршрутизацию, управление формами, взаимодействие клиент-сервер и многое другое.
 
-This topic lists the various developer guides for you to learn more about these Angular features and to help you determine the correct use of each in your application.
+В этой теме перечислены различные руководства для разработчиков, которые помогут вам узнать больше об этих функциях Angular и определить правильное использование каждой из них в вашем приложении.
 
-## Prerequisites
+## Предварительные условия
 
-To get the most out of these developer guides, you should review the following topics:
+Чтобы получить максимальную пользу от этих руководств для разработчиков, вам следует изучить следующие темы:
 
--   [What is Angular][aioguidewhatisangular]
--   [Getting started tutorial][aiostart]
--   [Understanding Angular][aioguideunderstandingangularoverview]
+-   [Что такое Angular][aioguidewhatisangular]
 
-## Learn about Angular's features
+-   [Руководство по началу работы][aiostart]
+
+-   [Понимание Angular][aioguideunderstandingangularoverview]
+
+## Узнайте о возможностях Angular
 
 <div class="card-container">
-  <a href="guide/routing-overview" class="docs-card" title="Routing and navigation developer guide">
+   <a href="guide/routing-overview" class="docs-card" title="Routing and navigation developer guide">
     <section>Routing and Navigation</section>
     <p>Learn how to use the Angular router to handle page navigation and other tasks.</p>
     <p class="card-footer">Router</p>

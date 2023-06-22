@@ -1,93 +1,96 @@
-# Getting started with the CLI's esbuild-based build system
+# Начало работы с системой сборки CLI на основе esbuild
 
 <div class="alert is-important">
 
-The esbuild-based ECMAScript module (ESM) application build system feature is available for [developer preview](/guide/releases#developer-preview).
-It's ready for you to try, but it might change before it is stable and is not yet recommended for production builds.
+Функция системы сборки приложений на основе модуля ECMAScript (ESM) в esbuild доступна для [предварительного просмотра разработчиком](/guide/releases#developer-preview). Она уже готова к использованию, но может измениться до того, как станет стабильной, и пока не рекомендуется для производственных сборок.
 
 </div>
 
-In v16 and higher, the new build system provides a way to build Angular applications. This new build system includes:
+В версии 16 и выше новая система сборки предоставляет способ создания приложений Angular. Новая система сборки включает в себя:
 
--   A modern output format using ESM, with dynamic import expressions to support lazy module loading.
--   Faster build-time performance for both initial builds and incremental rebuilds.
--   Newer JavaScript ecosystem tools such as [esbuild](https://esbuild.github.io/) and [Vite](https://vitejs.dev/).
+-   Современный формат вывода с использованием ESM, с динамическими выражениями импорта для поддержки ленивой загрузки модулей.
 
-You can opt-in to use the new builder on a per application basis with minimal configuration updates required.
+-   Более высокая производительность при сборке как для начальных сборок, так и для инкрементных перестроек.
 
-## Trying the ESM build system in an Angular CLI application
+-   Новые инструменты экосистемы JavaScript, такие как [esbuild](https://esbuild.github.io/) и [Vite](https://vitejs.dev/).
 
-A new builder named `browser-esbuild` is available within the `@angular-devkit/build-angular` package that is present in an Angular CLI generated application. The build is a drop-in replacement for the existing `browser` builder that provides the current stable browser application build system.
-You can try out the new build system for applications that use the `browser` builder.
+Вы можете выбрать использование нового билдера для каждого приложения с минимальными обновлениями конфигурации.
 
-### Updating the application configuration
+## Пробуем систему сборки ESM в приложении Angular CLI
 
-The new build system was implemented to minimize the amount of changes necessary to transition your applications. Currently, the new build system is provided via an alternate builder (`browser-esbuild`). You can update the `build` target for any application target to try out the new build system.
+Новый билдер под названием `browser-esbuild` доступен в пакете `@angular-devkit/build-angular`, который присутствует в сгенерированном приложении Angular CLI. Этот билд является заменой существующего билдера `browser`, который обеспечивает текущую стабильную систему сборки браузерных приложений. Вы можете опробовать новую систему сборки для приложений, использующих конструктор `browser`.
 
-The following is what you would typically find in `angular.json` for an application:
+### Обновление конфигурации приложения
+
+Новая система сборки была внедрена, чтобы минимизировать количество изменений, необходимых для перехода ваших приложений. В настоящее время новая система сборки предоставляется через альтернативный билдер (`browser-esbuild`). Вы можете обновить цель `build` для любого приложения, чтобы опробовать новую систему сборки.
+
+Ниже приведено то, что вы обычно находите в файле `angular.json` для приложения:
 
 <code-example language="json" hideCopy="true">
-...
+ ...
 "architect": {
   "build": {
     "builder": "@angular-devkit/build-angular:browser",
 ...
 </code-example>
 
-Changing the `builder` field is the only change you will need to make.
+Изменение поля `builder` - это единственное изменение, которое вам нужно будет сделать.
 
 <code-example language="json" hideCopy="true">
-...
+ ...
 "architect": {
   "build": {
     "builder": "@angular-devkit/build-angular:browser-esbuild",
 ...
 </code-example>
 
-### Executing a build
+### Выполнение сборки
 
-Once you have updated the application configuration, builds can be performed using the `ng build` as was previously done. For the remaining options that are currently not yet implemented in the developer preview, a warning will be issued for each and the option will be ignored during the build.
-
-<code-example language="shell">
-
-ng build
-
-</code-example>
-
-### Starting the development server
-
-The development server now has the ability to automatically detect the new build system and use it to build the application. To start the development server no changes are necessary to the `dev-server` builder configuration or command line.
+После обновления конфигурации приложения сборку можно выполнить с помощью команды `ng build`, как это было сделано ранее. Для остальных опций, которые в настоящее время еще не реализованы в предварительной версии для разработчиков, будет выдано предупреждение, и опция будет проигнорирована во время сборки.
 
 <code-example language="shell">
 
-ng serve
+строительство
 
 </code-example>
 
-You can continue to use the [command line options](/cli/serve) you have used in the past with the development server.
+### Запуск сервера разработки
+
+Сервер разработки теперь имеет возможность автоматически определять новую систему сборки и использовать ее для сборки приложения. Для запуска сервера разработки не требуется вносить изменения в конфигурацию сборщика `dev-server` или командную строку.
+
+<code-example language="shell">
+
+служить
+
+</code-example>
+
+Вы можете продолжать использовать [опции командной строки](/cli/serve), которые вы использовали в прошлом с сервером разработки.
 
 <div class="alert is-important">
 
-The developer preview currently does not provide HMR support and the HMR related options will be ignored if used. Angular focused HMR capabilities are currently planned and will be introduced in a future version.
+Предварительная версия для разработчиков в настоящее время не обеспечивает поддержку HMR, и опции, связанные с HMR, будут игнорироваться при использовании. Возможности HMR, ориентированные на Angular, в настоящее время планируются и будут представлены в будущей версии.
 
 </div>
 
-### Unimplemented options and behavior
+### Нереализованные опции и поведение
 
-Several build options are not yet implemented but will be added in the future as the build system moves towards a stable status. If your application uses these options, you can still try out the build system without removing them. Warnings will be issued for any unimplemented options but they will otherwise be ignored. However, if your application relies on any of these options to function, you may want to wait to try.
+Несколько опций сборки еще не реализованы, но будут добавлены в будущем по мере продвижения системы сборки к стабильному состоянию. Если ваше приложение использует эти опции, вы можете опробовать систему сборки, не удаляя их. Для всех нереализованных опций будут выдаваться предупреждения, но в остальном они будут игнорироваться. Однако, если ваше приложение полагается на функционирование каких-либо из этих опций, возможно, вы захотите подождать, чтобы попробовать.
 
 -   [Bundle budgets](https://github.com/angular/angular-cli/issues/25100) (`budgets`)
--   [Localization](https://github.com/angular/angular-cli/issues/25099) (`localize`/`i18nDuplicateTranslation`/`i18nMissingTranslation`)
+
+-   [Локализация](https://github.com/angular/angular-cli/issues/25099) (`localize`/`i18nDuplicateTranslation`/`i18nMissingTranslation`)
+
 -   [Web workers](https://github.com/angular/angular-cli/issues/25101) (`webWorkerTsConfig`)
--   [WASM imports](https://github.com/angular/angular-cli/issues/25102) -- WASM can still be loaded manually via [standard web APIs](https://developer.mozilla.org/en-US/docs/WebAssembly/Loading_and_running).
 
-Building libraries with the new build system via `ng-packagr` is also not yet possible but library build support will be available in a future release.
+-   [Импорт WASM](https://github.com/angular/angular-cli/issues/25102) -- WASM по-прежнему может быть загружен вручную через [стандартные веб-интерфейсы API](https://developer.mozilla.org/en-US/docs/WebAssembly/Loading_and_running).
 
-### ESM default imports vs. namespace imports
+Сборка библиотек с помощью новой системы сборки через `ng-packagr` также пока невозможна, но поддержка сборки библиотек будет доступна в будущем релизе.
 
-TypeScript by default allows default exports to be imported as namespace imports and then used in call expressions. This is unfortunately a divergence from the ECMAScript specification. The underlying bundler (`esbuild`) within the new build system expects ESM code that conforms to the specification. The build system will now generate a warning if your application uses an incorrect type of import of a package. However, to allow TypeScript to accept the correct usage, a TypeScript option must be enabled within the application's `tsconfig` file. When enabled, the [`esModuleInterop`](https://www.typescriptlang.org/tsconfig#esModuleInterop) option provides better alignment with the ECMAScript specification and is also recommended by the TypeScript team. Once enabled, you can update package imports where applicable to an ECMAScript conformant form.
+### Импорты ESM по умолчанию в сравнении с импортами пространств имен
 
-Using the [`moment`](https://npmjs.com/package/moment) package as an example, the following application code will cause runtime errors:
+TypeScript по умолчанию позволяет импортировать экспорты по умолчанию как импорт пространства имен и затем использовать их в выражениях вызова. К сожалению, это расхождение со спецификацией ECMAScript. Базовый компоновщик (`esbuild`) в новой системе сборки ожидает код ESM, соответствующий спецификации. Система сборки теперь будет выдавать предупреждение, если ваше приложение использует неправильный тип импорта пакета. Однако, чтобы TypeScript мог принять правильное использование, в файле `tsconfig` приложения должна быть включена опция TypeScript. Если опция [`esModuleInterop`](https://www.typescriptlang.org/tsconfig#esModuleInterop) включена, она обеспечивает лучшее соответствие спецификации ECMAScript, а также рекомендуется командой разработчиков TypeScript. Если опция включена, вы можете обновить импорт пакетов, где это необходимо, до формы, соответствующей ECMAScript.
+
+На примере пакета [`moment`](https://npmjs.com/package/moment) следующий код приложения приведет к ошибкам во время выполнения:
 
 ```ts
 import * as moment from 'moment';
@@ -95,25 +98,25 @@ import * as moment from 'moment';
 console.log(moment().format());
 ```
 
-The build will generate a warning to notify you that there is a potential problem. The warning will be similar to:
+Сборка выдаст предупреждение, чтобы сообщить вам о потенциальной проблеме. Предупреждение будет выглядеть следующим образом:
 
 <code-example format="shell" language="shell" hideCopy="true">
-▲ [WARNING] Calling "moment" will crash at run-time because it's an import namespace object, not a function [call-import-namespace]
+ ▲ [WARNING] Calling "moment" will crash at run-time because it's an import namespace object, not a function [call-import-namespace]
 
     src/main.ts:2:12:
-      2 │ console.log(moment().format());
+       2 │ console.log(moment().format());
         ╵             ~~~~~~
 
-Consider changing "moment" to a default import instead:
+Подумайте о том, чтобы вместо этого изменить "момент" на импорт по умолчанию:
 
     src/main.ts:1:7:
-      1 │ import * as moment from 'moment';
+       1 │ import * as moment from 'moment';
         │        ~~~~~~~~~~~
         ╵        moment
 
 </code-example>
 
-However, you can avoid the runtime errors and the warning by enabling the `esModuleInterop` TypeScript option for the application and changing the import to the following:
+Однако вы можете избежать ошибок времени выполнения и предупреждения, включив опцию `esModuleInterop` TypeScript для приложения и изменив импорт на следующий:
 
 ```ts
 import moment from 'moment';
@@ -121,25 +124,25 @@ import moment from 'moment';
 console.log(moment().format());
 ```
 
-## Vite as a development server
+## Vite в качестве сервера разработки
 
-The usage of Vite in the Angular CLI is currently only within a _development server capacity only_. Even without using the underlying Vite build system, Vite provides a full-featured development server with client side support that has been bundled into a low dependency npm package. This makes it an ideal candidate to provide comprehensive development server functionality. The current development server process uses the new build system to generate a development build of the application in memory and passes the results to Vite to serve the application. The usage of Vite, much like the Webpack-based development server, is encapsulated within the Angular CLI `dev-server` builder and currently cannot be directly configured.
+Использование Vite в Angular CLI в настоящее время возможно только в качестве _сервера разработки_. Даже без использования базовой системы сборки Vite предоставляет полнофункциональный сервер разработки с поддержкой клиентской стороны, собранный в малозависимый пакет npm. Это делает его идеальным кандидатом для обеспечения комплексной функциональности сервера разработки. Текущий процесс сервера разработки использует новую систему сборки для создания сборки приложения в памяти и передает результаты в Vite для обслуживания приложения. Использование Vite, как и сервера разработки на основе Webpack, инкапсулировано в конструкторе Angular CLI `dev-server` и в настоящее время не может быть настроено напрямую.
 
-## Known Issues
+## Известные проблемы
 
-There are currently several known issues that you may encounter when trying the new build system. This list will be updated to stay current. If any of these issues are currently blocking you from trying out the new build system, please check back in the future as it may have been solved.
+В настоящее время существует несколько известных проблем, с которыми вы можете столкнуться при использовании новой системы сборки. Этот список будет обновляться, чтобы оставаться актуальным. Если какая-либо из этих проблем мешает вам опробовать новую систему сборки, пожалуйста, загляните сюда в будущем, возможно, она уже решена.
 
-### Runtime-evaluated dynamic import expressions
+### Выражения динамического импорта с оценкой времени выполнения
 
-Dynamic import expressions that do not contain static values will be kept in their original form and not processed at build time. This is a limitation of the underlying bundler but is [planned](https://github.com/evanw/esbuild/pull/2508) to be implemented in the future. In many cases, application code can be made to work by changing the import expressions into static strings with some form of conditional statement such as an `if` or `switch` for the known potential files.
+Выражения динамического импорта, не содержащие статических значений, будут сохранены в исходном виде и не будут обрабатываться во время сборки. Это ограничение базового бандлера, но оно [планируется](https://github.com/evanw/esbuild/pull/2508) быть реализовано в будущем. Во многих случаях код приложения можно заставить работать, изменив выражения импорта на статические строки с некоторой формой условного оператора, такого как `if` или `switch` для известных потенциальных файлов.
 
-Unsupported:
+Не поддерживается:
 
 ```ts
 return await import(`/abc/${name}.json`);
 ```
 
-Supported:
+Поддерживается:
 
 ```ts
 switch (name) {
@@ -152,24 +155,24 @@ switch (name) {
 }
 ```
 
-### Order-dependent side-effectful imports in lazy modules
+### Зависимый от порядка импорт с побочными эффектами в ленивых модулях
 
-Import statements that are dependent on a specific ordering and are also used in multiple lazy modules can cause top-level statements to be executed out of order.
-This is not common as it depends on the usage of side-effectful modules and does not apply to the `polyfills` option.
-This is caused by a [defect](https://github.com/evanw/esbuild/issues/399) in the underlying bundler but will be addressed in a future update.
+Операторы импорта, которые зависят от определенного порядка, а также используются в нескольких ленивых модулях, могут привести к тому, что операторы верхнего уровня будут выполняться не по порядку. Это не частое явление, поскольку оно зависит от использования побочных модулей и не относится к опции `polyfills`.
+
+Это вызвано [дефектом](https://github.com/evanw/esbuild/issues/399) в базовом бандлере, но будет устранено в одном из будущих обновлений.
 
 <div class="alert is-important">
 
-Avoiding the use of modules with non-local side effects (outside of polyfills) is recommended whenever possible regardless of the build system being used and avoids this particular issue. Modules with non-local side effects can have a negative effect on both application size and runtime performance as well.
+Избегать использования модулей с нелокальными побочными эффектами (вне полифиллов) рекомендуется всегда, когда это возможно, независимо от используемой системы сборки, что позволяет избежать этой конкретной проблемы. Модули с нелокальными побочными эффектами могут оказывать негативное влияние как на размер приложения, так и на производительность во время выполнения.
 
 </div>
 
-### Hashed filenames for non-injected global styles/scripts
+### Хэшированные имена файлов для неинжектируемых глобальных стилей/скриптов
 
-If your application currently uses the [`inject`](guide/workspace-config#styles-and-scripts-configuration) sub-option for any global styles and scripts via the `styles` or `scripts` build options, the output file names for those styles/scripts will incorrectly contain a hash. Depending on the usage of the output files, this may cause runtime failures for your application. See the related [issue](https://github.com/angular/angular-cli/issues/25098) for more information.
+Если ваше приложение в настоящее время использует под-опцию [`inject`](guide/workspace-config#styles-and-scripts-configuration) для любых глобальных стилей и скриптов через опции сборки `styles` или `scripts`, имена выходных файлов для этих стилей/скриптов будут неправильно содержать хэш. В зависимости от использования выходных файлов, это может привести к сбоям во время выполнения вашего приложения. Дополнительную информацию см. в соответствующем [issue](https://github.com/angular/angular-cli/issues/25098).
 
-## Bug reports
+## Сообщения об ошибках
 
-Report issues and feature requests on [GitHub](https://github.com/angular/angular-cli/issues).
+Сообщайте о проблемах и запросах на [GitHub](https://github.com/angular/angular-cli/issues).
 
-Please provide a minimal reproduction where possible to aid the team in addressing issues.
+Пожалуйста, по возможности предоставляйте минимальное воспроизведение, чтобы помочь команде в решении проблем.

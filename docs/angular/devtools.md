@@ -1,7 +1,6 @@
 # DevTools Overview
 
-Angular DevTools is a browser extension that provides debugging and profiling capabilities for Angular applications.
-Angular DevTools supports Angular v12 and later when compiled with the [optimization configuration option](guide/workspace-config#optimization-configuration) disabled (<code>{optimization:false}</code>).
+Angular DevTools is a browser extension that provides debugging and profiling capabilities for Angular applications. Angular DevTools supports Angular v12 and later when compiled with the [optimization configuration option](guide/workspace-config#optimization-configuration) disabled (<code>{optimization:false}</code>).
 
 <div class="video-container">
 
@@ -9,9 +8,9 @@ Angular DevTools supports Angular v12 and later when compiled with the [optimiza
 
 </div>
 
-You can find Angular DevTools in the [Chrome Web Store](https://chrome.google.com/webstore/detail/angular-developer-tools/ienfalfjdbdpebioblfackkekamfmbnh) and in [Firefox Addons](https://addons.mozilla.org/en-GB/firefox/addon/angular-devtools/).
+Angular DevTools можно найти в [Chrome Web Store](https://chrome.google.com/webstore/detail/angular-developer-tools/ienfalfjdbdpebioblfackkekamfmbnh) и в [Firefox Addons](https://addons.mozilla.org/en-GB/firefox/addon/angular-devtools/).
 
-After installing Angular DevTools, find the extension under the Angular tab in your browser DevTools.
+После установки Angular DevTools найдите расширение на вкладке Angular в DevTools вашего браузера.
 
 <div class="lightbox">
 
@@ -19,12 +18,13 @@ After installing Angular DevTools, find the extension under the Angular tab in y
 
 </div>
 
-When you open the extension, you'll see two additional tabs:
+Когда вы откроете расширение, вы увидите две дополнительные вкладки:
 
-| Tabs                      | Details                                                                                                                |
-| :------------------------ | :--------------------------------------------------------------------------------------------------------------------- |
-| [Components](#components) | Lets you explore the components and directives in your application and preview or edit their state.                    |
-| [Profiler](#profiler)     | Lets you profile your application and understand what the performance bottleneck is during change detection execution. |
+| Tabs | Details | | :------------------------ | :--------------------------------------------------------------------------------------------------------------------- | .
+
+| [Компоненты](#components) | Позволяет исследовать компоненты и директивы в вашем приложении, просматривать или редактировать их состояние. |
+
+| [Profiler](#profiler) | Позволяет профилировать приложение и понять, что является узким местом в производительности во время выполнения обнаружения изменений. |
 
 <div class="lightbox">
 
@@ -32,29 +32,29 @@ When you open the extension, you'll see two additional tabs:
 
 </div>
 
-In the top-right corner of Angular DevTools you'll find which version of Angular is running on the page as well as the latest commit hash for the extension.
+В правом верхнем углу Angular DevTools вы увидите, какая версия Angular запущена на странице, а также хэш последнего коммита для расширения.
 
-## Bug reports
+## Сообщения об ошибках
 
-Report issues and feature requests on [GitHub](https://github.com/angular/angular/issues).
+Сообщайте о проблемах и запросах на [GitHub](https://github.com/angular/angular/issues).
 
-To report an issue with the Profiler, export the Profiler recording by clicking the **Save Profile** button, and then attaching that export as a file in the issue.
+Чтобы сообщить о проблеме с Profiler, экспортируйте запись Profiler, нажав на кнопку **Save Profile**, а затем прикрепите этот экспорт в виде файла к проблеме.
 
 <div class="alert is-helpful">
 
-Make sure that the Profiler recording does not contain any confidential information.
+Убедитесь, что запись Profiler не содержит никакой конфиденциальной информации.
 
 </div>
 
 <a id="components"></a>
 
-## Debug your application
+## Отладка вашего приложения
 
-The **Components** tab lets you explore the structure of your application.
-You can visualize and inspect the component and directive instances and preview or modify their state.
-In the next couple of sections we'll look into how to use this tab effectively to debug your application.
+Вкладка **Компоненты** позволяет исследовать структуру вашего приложения. Вы можете визуализировать и проверять экземпляры компонентов и директив, а также просматривать или изменять их состояние.
 
-### Explore the application structure
+В следующих двух разделах мы рассмотрим, как эффективно использовать эту вкладку для отладки приложения.
+
+### Исследовать структуру приложения
 
 <div class="lightbox">
 
@@ -62,26 +62,25 @@ In the next couple of sections we'll look into how to use this tab effectively t
 
 </div>
 
-In the preceding screenshot, you can see the component tree of an application.
+На предыдущем снимке экрана вы можете видеть дерево компонентов приложения.
 
-The component tree displays a hierarchical relationship of the _components and directives_ within your application.
-When you select a component or a directive instance, Angular DevTools presents additional information about that instance.
+Дерево компонентов отображает иерархические отношения _компонентов и директив_ в вашем приложении. Когда вы выбираете компонент или экземпляр директивы, Angular DevTools представляет дополнительную информацию об этом экземпляре.
 
-### View properties
+### Свойства просмотра
 
-Click the individual components or directives in the component explorer to select them and preview their properties.
-Angular DevTools displays their properties and metadata on the right-hand side of the component tree.
+Нажмите на отдельные компоненты или директивы в проводнике компонентов, чтобы выбрать их и просмотреть их свойства. Angular DevTools отображает их свойства и метаданные в правой части дерева компонентов.
 
-Navigate in the component tree using the mouse or the following keyboard shortcuts:
+Перемещайтесь по дереву компонентов с помощью мыши или следующих сочетаний клавиш:
 
-| Keyboard shortcut     | Details                            |
-| :-------------------- | :--------------------------------- |
-| Up and down arrows    | Select the previous and next nodes |
-| Left and right arrows | Collapse and expand a node         |
+| Сочетание клавиш | Детали | | :-------------------- | :--------------------------------- |.
 
-To look up a component or directive by name use the search box above the component tree.
-To navigate to the next search match, press `Enter`.
-To navigate to the previous search match, press `Shift + Enter`.
+| Стрелки вверх и вниз | Выберите предыдущий и следующий узлы |
+
+| | Стрелки влево и вправо | Свернуть и развернуть узел |
+
+Чтобы найти компонент или директиву по имени, используйте поле поиска над деревом компонентов. Чтобы перейти к следующему поисковому запросу, нажмите `Enter`.
+
+Чтобы перейти к предыдущему поиску, нажмите `Shift + Enter`.
 
 <div class="lightbox">
 
@@ -89,15 +88,13 @@ To navigate to the previous search match, press `Shift + Enter`.
 
 </div>
 
-### Navigate to the host node
+### Переход к узловому элементу
 
-To go to the host element of a particular component or directive, find it in the component explorer and double-click it.
-Browsers' DevTools opens the Elements tab in Chrome or the Inspector one in Firefox, and selects the associated DOM node.
+Чтобы перейти к узловому элементу определенного компонента или директивы, найдите его в проводнике компонентов и дважды щелкните по нему. DevTools браузера откроет вкладку Elements в Chrome или Inspector в Firefox и выберет связанный узел DOM.
 
-### Navigate to source
+### Перейдите к источнику
 
-For components, Angular DevTools also lets you navigate to the component definition in the source tab.
-After you select a particular component, click the icon at the top-right of the properties view:
+Для компонентов Angular DevTools также позволяет перейти к определению компонента на вкладке источника. После выбора определенного компонента нажмите на значок в правом верхнем углу представления свойств:
 
 <div class="lightbox">
 
@@ -105,12 +102,13 @@ After you select a particular component, click the icon at the top-right of the 
 
 </div>
 
-### Update property value
+### Обновить значение свойства
 
-Like browsers' DevTools, the properties view lets you edit the value of an input, output, or another property.
-Right-click on the property value.
-If edit functionality is available for this value type, you'll see a text input.
-Type the new value and press `Enter`.
+Как и в DevTools браузеров, представление свойств позволяет редактировать значение входного, выходного или другого свойства. Щелкните правой кнопкой мыши на значении свойства.
+
+Если для данного типа значения доступна функция редактирования, появится текстовый ввод.
+
+Введите новое значение и нажмите `Enter`.
 
 <div class="lightbox">
 
@@ -118,10 +116,9 @@ Type the new value and press `Enter`.
 
 </div>
 
-### Access selected component or directive in console
+### Доступ к выбранному компоненту или директиве в консоли
 
-As a shortcut in the console, Angular DevTools provides you access to instances of the recently selected components or directives.
-Type `$ng0` to get a reference to the instance of the currently selected component or directive, and type `$ng1` for the previously selected instance.
+В качестве ярлыка в консоли Angular DevTools предоставляет доступ к экземплярам недавно выбранных компонентов или директив. Введите `$ng0`, чтобы получить ссылку на экземпляр текущего выбранного компонента или директивы, и `$ng1` для ранее выбранного экземпляра.
 
 <div class="lightbox">
 
@@ -129,11 +126,11 @@ Type `$ng0` to get a reference to the instance of the currently selected compone
 
 </div>
 
-### Select a directive or component
+### Выберите директиву или компонент
 
-Similar to browsers' DevTools, you can inspect the page to select a particular component or directive.
-Click the **_Inspect element_** icon in the top left corner within Angular DevTools and hover over a DOM element on the page.
-The extension recognizes the associated directives and/or components and lets you select the corresponding element in the Component tree.
+Подобно DevTools браузеров, вы можете осмотреть страницу, чтобы выбрать определенный компонент или директиву. Нажмите на значок **_Inspect element_** в верхнем левом углу в Angular DevTools и наведите курсор на элемент DOM на странице.
+
+Расширение распознает связанные директивы и/или компоненты и позволит вам выбрать соответствующий элемент в дереве компонентов.
 
 <div class="lightbox">
 
@@ -143,9 +140,9 @@ The extension recognizes the associated directives and/or components and lets yo
 
 <a id="profiler"></a>
 
-## Profile your application
+## Профиль вашего приложения
 
-The **Profiler** tab lets you preview the execution of Angular's change detection.
+Вкладка **Profiler** позволяет вам предварительно просмотреть выполнение обнаружения изменений в Angular.
 
 <div class="lightbox">
 
@@ -153,18 +150,15 @@ The **Profiler** tab lets you preview the execution of Angular's change detectio
 
 </div>
 
-The Profiler lets you start profiling or import an existing profile.
-To start profiling your application, hover over the circle in the top-left corner within the **Profiler** tab and click **Start recording**.
+Профилировщик позволяет начать профилирование или импортировать существующий профиль. Чтобы начать профилирование приложения, наведите курсор на круг в левом верхнем углу вкладки **Профилировщик** и нажмите **Начать запись**.
 
-During profiling, Angular DevTools captures execution events, such as change detection and lifecycle hook execution.
-To finish recording, click the circle again to **Stop recording**.
+Во время профилирования Angular DevTools фиксирует события выполнения, такие как обнаружение изменений и выполнение крючков жизненного цикла. Чтобы закончить запись, снова нажмите на круг, чтобы **Остановить запись**.
 
-You can also import an existing recording.
-Read more about this feature in the [Import recording](#) section.
+Вы также можете импортировать существующую запись. Подробнее об этой возможности читайте в разделе [Импорт записи](#).
 
-### Understand your application's execution
+### Понимание выполнения вашего приложения
 
-In the following screenshot, find the default view of the Profiler after you complete recording.
+На следующем снимке экрана показан стандартный вид профайлера после завершения записи.
 
 <div class="lightbox">
 
@@ -172,9 +166,8 @@ In the following screenshot, find the default view of the Profiler after you com
 
 </div>
 
-Near the top of the view you can see a sequence of bars, each one of them symbolizing change detection cycles in your app.
-The taller a bar is, the longer your application has spent in this cycle.
-When you select a bar, DevTools renders a bar chart with all the components and directives that it captured during this cycle.
+В верхней части представления вы можете увидеть последовательность полос, каждая из которых символизирует циклы обнаружения изменений в вашем приложении. Чем выше столбик, тем дольше ваше приложение находилось в этом цикле.
+Когда вы выбираете столбик, DevTools отображает гистограмму со всеми компонентами и директивами, которые он зафиксировал во время этого цикла.
 
 <div class="lightbox">
 
@@ -182,14 +175,13 @@ When you select a bar, DevTools renders a bar chart with all the components and 
 
 </div>
 
-Earlier on the change detection timeline, you can find how much time Angular spent in this cycle.
-Angular DevTools attempts to estimate the frame drop at this point to indicate when the execution of your application might impact the user experience.
+Ранее на временной шкале обнаружения изменений вы можете узнать, сколько времени Angular провел в этом цикле. Angular DevTools пытается оценить падение кадров в этот момент, чтобы указать, когда выполнение вашего приложения может повлиять на пользовательский опыт.
 
-Angular DevTools also indicates what triggered the change detection \(that is, the change detection's source\).
+Angular DevTools также указывает, что вызвало обнаружение изменений\(то есть, источник\).
 
-### Understand component execution
+### Понимание выполнения компонентов
 
-When you click on a bar, you'll find a detailed view about how much time your application spent in the particular directive or component:
+Когда вы нажимаете на панель, вы получаете подробное представление о том, сколько времени ваше приложение провело в конкретной директиве или компоненте:
 
 <div class="lightbox">
 
@@ -197,10 +189,9 @@ When you click on a bar, you'll find a detailed view about how much time your ap
 
 </div>
 
-Figure shows the total time spent by NgforOf directive and which method was called in it.
-It also shows the parent hierarchy of the directive selected.
+На рисунке показано общее время, затраченное директивой NgforOf, и какой метод был вызван в ней. Здесь также показана родительская иерархия выбранной директивы.
 
-### Hierarchical views
+### Иерархические представления
 
 <div class="lightbox">
 
@@ -208,22 +199,19 @@ It also shows the parent hierarchy of the directive selected.
 
 </div>
 
-You can also preview the change detection execution in a flame graph-like view.
-Each tile in the graph represents an element on the screen at a specific position in the render tree.
+Вы также можете предварительно просмотреть выполнение обнаружения изменений в виде пламенного графа. Каждая плитка в графе представляет элемент на экране в определенной позиции в дереве рендеринга.
 
-For example, if during one change detection cycle at a specific position in the component tree you had `ComponentA`, this component was removed and in its place Angular rendered `ComponentB`, you'll see both components at the same tile.
+Например, если во время одного цикла обнаружения изменений в определенной позиции дерева компонентов у вас был `ComponentA`, этот компонент был удален, а на его место Angular отобразил `ComponentB`, вы увидите оба компонента на одной плитке.
 
-Each tile is colored depending on how much time Angular spent there.
-DevTools determines the intensity of the color by the time spent relative to the tile where we've spent the most time in change detection.
+Каждый тайл окрашивается в зависимости от того, сколько времени Angular провел там. DevTools определяет интенсивность цвета по времени, проведенному относительно плитки, на которой мы провели больше всего времени при обнаружении изменений.
 
-When you click on a certain tile, you'll see details about it in the panel on the right.
-Double-clicking the tile zooms it in so you can preview the nested children.
+Когда вы нажимаете на определенную плитку, вы увидите подробную информацию о ней на панели справа. Двойной щелчок по плитке увеличивает ее, чтобы можно было просмотреть вложенные дочерние элементы.
 
-### Debug OnPush
+### Отладка OnPush
 
-To preview the components in which Angular did change detection, select the **Change detection** checkbox at the top, above the flame graph.
+Чтобы просмотреть компоненты, в которых Angular выполнил обнаружение изменений, установите флажок **Обнаружение изменений** вверху, над графиком пламени.
 
-This view colors all the tiles in which Angular performed change detection in green, and the rest in gray:
+В этом представлении все плитки, в которых Angular выполнил обнаружение изменений, окрашены в зеленый цвет, а остальные - в серый:
 
 <div class="lightbox">
 
@@ -231,10 +219,9 @@ This view colors all the tiles in which Angular performed change detection in gr
 
 </div>
 
-### Import recording
+### Импорт записи
 
-Click the **Save Profile** button at the top-left of a recorded profiling session to export it as a JSON file and save it to the disk.
-Then, import the file in the initial view of the profiler by clicking the **Choose file** input:
+Нажмите кнопку **Сохранить профиль** в левом верхнем углу записанного сеанса профилирования, чтобы экспортировать его в файл JSON и сохранить на диске. Затем импортируйте файл в начальном представлении профилировщика, нажав на вход **Выбрать файл**:
 
 <div class="lightbox">
 

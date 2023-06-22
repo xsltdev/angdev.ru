@@ -1,73 +1,77 @@
-# Lesson 5 - Add an input parameter to the component
+# Урок 5 - Добавление входного параметра в компонент
 
-This tutorial lesson demonstrates how to create a component `@Input()`, use it to pass data to a component for customization.
+Этот обучающий урок демонстрирует, как создать компонент `@Input()`, использовать его для передачи данных компоненту для настройки.
 
-**Time required:** expect to spend about 10 minutes to complete this lesson.
+**Затраты времени:** ожидайте, что на выполнение этого урока вы потратите около 10 минут.
 
-## Before you start
+## Перед началом
 
-This lesson starts with the code from the previous lesson, so you can:
+Этот урок начинается с кода из предыдущего урока, поэтому вы можете:
 
--   Use the code that you created in Lesson 4 in your integrated development environment (IDE).
--   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-04"></live-example> from Lesson 4 where you can:
-    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
-    -   Use the _download example_ and open it in your IDE.
+-   Использовать код, созданный в Уроке 4, в своей интегрированной среде разработки (IDE).
 
-If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
+-   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-04"></live-example> из Урока 4, где вы можете:
 
-If you have any trouble during this lesson, you can review the completed code for this lesson, in the <live-example></live-example> for this lesson.
+    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-## After you finish
+    -   Использовать _download пример_ и открыть его в вашей IDE.
 
--   Your app's `HousingLocationComponent` template has a `HousingLocation` property to receive input.
+Если вы не просмотрели введение, посетите [Введение в Angular tutorial](tutorial/first-app), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-## Conceptual preview of Inputs
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
 
-[Inputs](api/core/Input) allow components to share data. The direction of the data sharing is from parent component to child component.
+## После завершения
 
-To receive data from a parent component, a child component must mark a class property with the `@Input()` decorator. This decorator can be used in components and directives.
+-   Шаблон `HousingLocationComponent` вашего приложения имеет свойство `HousingLocation` для получения входных данных.
 
-For a more in depth explanation, please refer to the [Sharing data between child and parent directives and components](guide/inputs-outputs) guide.
+## Концептуальный предварительный просмотр Inputs
 
-In this lesson, you'll define `@Input()` properties in the `HousingLocationComponent` component which will enable you to customize the data displayed in the component.
+[Inputs](api/core/Input) позволяют компонентам обмениваться данными. Направление обмена данными - от родительского компонента к дочернему.
 
-## Lesson steps
+Чтобы получить данные от родительского компонента, дочерний компонент должен пометить свойство класса декоратором `@Input()`. Этот декоратор можно использовать в компонентах и директивах.
 
-Perform these steps on the app code in your IDE.
+Для более подробного объяснения, пожалуйста, обратитесь к руководству [Sharing data between child and parent directives and components](guide/inputs-outputs).
 
-### Step 1 - Import the Input decorator
+В этом уроке вы определите свойства `@Input()` в компоненте `HousingLocationComponent`, которые позволят вам настроить данные, отображаемые в компоненте.
 
-This step imports the `Input` decorator into the class.
+## Шаги урока
 
-In the code editor:
+Выполните эти шаги над кодом приложения в вашей IDE.
 
-1.  Navigate to `src/app/housing-location/housing-location.component.ts`
-1.  Update the file imports to include `Input` and `HousingLocation`:
+### Шаг 1 - Импортируйте декоратор Input
 
-    <code-example header="Import HousingLocationComponent and Input in src/app/housing-location/housing-location.component.ts" path="first-app-lesson-05/src/app/housing-location/housing-location.component.ts" region="add-imports"></code-example>
+Этот шаг импортирует декоратор `Input` в класс.
 
-### Step 2 - Add the Input property
+В редакторе кода:
 
-1.  In the same file, add a property called `housingLocation` of type `HousingLocation` to the `HousingLocationComponent` class. Add an `!` after the property name and prefix it with the `@Input()` decorator:
+1.  Перейдите в `src/app/housing-location/housing-location.component.ts`.
 
-    <code-example header="Import HousingLocationComponent and Input in src/app/housing-location/housing-location.component.ts" path="first-app-lesson-05/src/app/housing-location/housing-location.component.ts" region="add-housing-location-property"></code-example>
+1.  Обновите импорты файла, чтобы включить `Input` и `HousingLocation`:
 
-    You have to add the `!` because the input is expecting the value to be passed. In this case, there is no default value. In our example application case we know that the value will be passed in - this is by design. The exclamation point is called the non-null assertion operator and it tells the TypeScript compiler that the value of this property won't be null or undefined.
+    <code-example header="Import HousingLocationComponent and Input in src/app/housing-location/housing-location.component.ts" path="first-app-lesson-05/src/app/housing-location/housing-location.component.ts" region="add-imports"></code-example>.
 
-1.  Save your changes and confirm the app does not have any errors.
+### Шаг 2 - Добавление свойства Input
 
-1.  Correct any errors before you continue to the next step.
+1.  В том же файле добавьте свойство `housingLocation` типа `HousingLocation` в класс `HousingLocationComponent`. Добавьте `!` после имени свойства и префикс с декоратором `@Input()`:
 
-## Lesson review
+    <code-example header="Import HousingLocationComponent and Input in src/app/housing-location/housing-location.component.ts" path="first-app-lesson-05/src/app/housing-location/housing-location.component.ts" region="add-housing-location-property"></code-example>.
 
-In this lesson, you created a new property decorated with the `@Input()` decorator. You also used the non-null assertion operator to notify the compiler that the value of the new property won't be `null` or `undefined`.
+    Вы должны добавить `!`, потому что вход ожидает передачу значения. В данном случае значение по умолчанию отсутствует. В нашем примере приложения мы знаем, что значение будет передано - так задумано. Восклицательный знак называется оператором утверждения non-null и сообщает компилятору TypeScript, что значение этого свойства не будет равно null или undefined.
 
-If you are having any trouble with this lesson, you can review the completed code for it in the <live-example></live-example>.
+1.  Сохраните изменения и подтвердите, что в приложении нет ошибок.
 
-## Next steps
+1.  Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
--   [Lesson 6 - Add a property binding to an component’s template](tutorial/first-app/first-app-lesson-06)
+## Обзор урока
 
-## For more information about the topics covered in this lesson, visit:
+В этом уроке вы создали новое свойство, оформленное с помощью декоратора `@Input()`. Вы также использовали оператор утверждения non-null, чтобы сообщить компилятору, что значение нового свойства не будет `null` или `undefined`.
 
--   [Sharing data between child and parent directives and components](guide/inputs-outputs)
+Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код для него в <live-example></live-example>.
+
+## Следующие шаги
+
+-   [Урок 6 - Добавление привязки свойства к шаблону компонента](tutorial/first-app/first-app-lesson-06)
+
+## Для получения дополнительной информации о темах, рассмотренных в этом уроке, посетите:
+
+-   [Обмен данными между дочерними и родительскими директивами и компонентами](guide/inputs-outputs)

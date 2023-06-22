@@ -1,109 +1,114 @@
-# Introduction to Angular tutorial - the First Angular app
+# Введение в Angular - первое приложение Angular
 
-This tutorial consists of lessons that introduce the Angular concepts you need to know to start coding in Angular.
+Этот учебник состоит из уроков, в которых представлены концепции Angular, которые необходимо знать, чтобы начать кодировать в Angular.
 
-If you're just starting out with Angular, completing the lessons in sequence provides the best learning experience, because each lesson builds on the previous lessons.
-After you're familiar with Angular, you can come back into any lesson for a refresher.
+Если вы только начинаете изучать Angular, то последовательное прохождение уроков обеспечит наилучший опыт обучения, поскольку каждый урок основывается на предыдущих. После того как вы освоите Angular, вы сможете вернуться к любому уроку для повторного изучения.
 
-If you're more experienced, the lessons in this tutorial can be completed individually.
-You can do as many or as few as you would like and you can do them in any order.
+Если вы более опытны, уроки этого руководства можно проходить по отдельности. Вы можете сделать столько или столько, сколько захотите, и выполнять их в любом порядке.
 
-## Before you start
+## Прежде чем начать
 
-For the best experience with this tutorial, review these requirements to make sure you have what you need to be successful.
+Для получения наилучшего опыта работы с этим учебником ознакомьтесь с этими требованиями, чтобы убедиться, что у вас есть все необходимое для успешной работы.
 
 <!-- markdownLint-disable MD001 -->
 
-### Your experience
+### Ваш опыт
 
-The lessons in this tutorial assume that you have done the following:
+Уроки в этом учебнике предполагают, что вы сделали следующее:
 
-1.  **Created an HTML web page by editing the HTML directly.**
-    This tutorial makes references to HTML elements and the Document Object Model (DOM). If these terms are not familiar, review HTML programming before you start this tutorial.
-1.  **Programmed web site content in JavaScript.**
-    This tutorial has many examples of TypeScript programming, which is based on JavaScript. TypeScript-specific feature are explained, but familiarity with JavaScript programming is necessary to understand the lessons in this tutorial.
-1.  **Read Cascading Style Sheet (CSS) content and understand how selectors are used.**
-    This tutorial does not require any CSS coding, but if these terms are not familiar, review CSS and selectors before you start this tutorial.
-1.  **Used command-line instructions to perform tasks on your computer.**
-    Angular uses the Angular CLI to perform many tasks. This tutorial provides the commands to use and assumes that you know how to open the command line tool or terminal interface in which to use them. If you aren't sure how to use a command line tool or terminal interface, review that before starting this tutorial.
+1.  **Создали веб-страницу HTML, отредактировав непосредственно HTML.**.
 
-### Your equipment
+    В этом учебнике упоминаются элементы HTML и объектная модель документа (DOM). Если эти термины вам не знакомы, изучите программирование HTML до начала работы над этим учебником.
 
-These lessons can be completed by using a local installation of the Angular tools or by using StackBlitz in a web browser. Local Angular development can be completed on Windows, MacOS or Linux based systems.
+1.  **Программирование содержимого веб-сайта на JavaScript.**
 
-Working on your own computer has the advantage of being able to save your work locally for future reference. Working in StackBlitz allows you to work through the lessons without loading any software on your own computer.
+    В этом учебнике много примеров программирования на TypeScript, который основан на JavaScript. Объясняются специфические особенности TypeScript, но для понимания уроков этого учебника необходимо знакомство с программированием на JavaScript.
 
-## Conceptual preview of your first Angular app
+1.  **Прочитайте содержание Каскадной таблицы стилей (CSS) и поймите, как используются селекторы**.
 
-The lessons in this tutorial create a simple Angular app that lists houses for rent and show the details of individual houses.
-This app uses features that are common to many Angular apps.
+    Этот учебник не требует кодирования CSS, но если эти термины вам незнакомы, ознакомьтесь с CSS и селекторами до начала работы над этим учебником.
+
+1.  **Используйте инструкции командной строки для выполнения задач на компьютере.**.
+
+    Для выполнения многих задач в Angular используется командная строка Angular CLI. В этом руководстве приведены команды, которые необходимо использовать, и предполагается, что вы знаете, как открыть инструмент командной строки или интерфейс терминала, в котором их использовать. Если вы не знаете, как использовать инструмент командной строки или терминальный интерфейс, ознакомьтесь с ними перед началом этого урока.
+
+### Ваше оборудование
+
+Эти уроки можно выполнить, используя локальную установку инструментов Angular или используя StackBlitz в веб-браузере. Локальная разработка Angular может быть выполнена на системах на базе Windows, MacOS или Linux.
+
+Преимущество работы на собственном компьютере заключается в том, что вы можете сохранять свою работу локально для дальнейшего использования. Работа в StackBlitz позволяет проходить уроки, не загружая никаких программ на свой компьютер.
+
+## Концептуальный предварительный просмотр вашего первого приложения Angular
+
+В уроках этого руководства создается простое приложение Angular, в котором перечисляются дома, сдаваемые в аренду, и показываются детали отдельных домов. В этом приложении используются функции, характерные для многих приложений Angular.
 
 <section class="lightbox">
-  <img alt="Output of heroes dashboard" src="generated/images/guide/faa/homes-app-landing-page.png">
+   <img alt="Output of heroes dashboard" src="generated/images/guide/faa/homes-app-landing-page.png">
 </section>
 
-## Development environment
+## Среда разработки
 
-If you plan to complete this tutorial on your local computer, you must install the required software.
-If you have already installed some of the required software, you must verify that it is the correct version.
+Если вы планируете выполнить этот учебник на своем локальном компьютере, вам необходимо установить необходимое программное обеспечение. Если вы уже установили некоторые из необходимых программ, необходимо проверить, что они имеют правильную версию.
 
-Perform these steps in a command-line tool on the computer you want to use for this tutorial.
+Выполните эти шаги в инструменте командной строки на компьютере, который вы хотите использовать для этого учебника.
 
 <section class="alert is-important">
 
-**IMPORTANT:**
-If you plan to use StackBlitz to do the lessons, you can proceed to the first lesson.
-You don't need to install any software.
+** ВАЖНО:** Если вы планируете использовать StackBlitz для выполнения уроков, вы можете перейти к первому уроку.
+Вам не нужно устанавливать никакое программное обеспечение.
 
 </section>
 
-### Step 1 - Identify the version of `node.js` that Angular requires
+### Шаг 1 - Определите версию `node.js`, которую требует Angular
 
 <section class="alert is-important">
 
-**IMPORTANT:**
-This step is only required if you have a version of node installed, otherwise, proceed to step 2 below.
+** ВАЖНО:** Этот шаг необходим только в том случае, если у вас установлена версия node, в противном случае перейдите к шагу 2 ниже.
 
 </section>
 
-Angular requires an active LTS or maintenance LTS version of Node. Let's confirm your version of `node.js`. For information about specific version requirements, see the engines property in the [package.json file](https://unpkg.com/browse/@angular/core@15.1.5/package.json).
+Для Angular требуется активная LTS или поддерживаемая LTS версия Node. Давайте подтвердим вашу версию `node.js`. Информацию о требованиях к конкретной версии смотрите в свойстве engines в файле [package.json](https://unpkg.com/browse/@angular/core@15.1.5/package.json).
 
-From a **Terminal** window:
+Из окна **Terminal**:
 
-1. Run the following command: `node --version`
-1. Confirm that the version number displayed meets the requirements.
+1. Выполните следующую команду: `node --version`.
 
-### Step 2 - Install the correct version of `node.js` for Angular
+1. Убедитесь, что отображаемый номер версии соответствует требованиям.
 
-If you do not have a version of `node.js` installed, please follow the [directions for installation on nodejs.org](https://nodejs.org/en/download/)
+### Шаг 2 - Установите правильную версию `node.js` для Angular
 
-### Step 3 - Install the latest version of Angular
+Если у вас не установлена версия `node.js`, следуйте [указаниям по установке на nodejs.org](https://nodejs.org/en/download/)
 
-With `node.js` and `npm` installed, the next step is to install the [Angular CLI](/cli) which provides tooling for effective Angular development.
+### Шаг 3 - Установите последнюю версию Angular
 
-From a **Terminal** window:
+Когда `node.js` и `npm` установлены, следующим шагом будет установка [Angular CLI](/cli), который предоставляет инструменты для эффективной разработки Angular.
 
-1. Run the following command: `npm install -g @angular/cli`
-1. Once the installation completes, the terminal window will display details of the Angular CLI version installed on your local computer.
+Из окна **Terminal**:
 
-### Step 4 - Install integrated development environment (IDE)
+1. Выполните следующую команду: `npm install -g @angular/cli`.
 
-You are free to use any tool you prefer to build apps with Angular. We recommend the following:
+1. После завершения установки в окне терминала появится информация о версии Angular CLI, установленной на вашем локальном компьютере.
+
+### Шаг 4 - Установка интегрированной среды разработки (IDE)
+
+Вы можете использовать любой инструмент для создания приложений с Angular. Мы рекомендуем следующее:
 
 1. [Visual Studio Code](https://code.visualstudio.com/)
-2. As an optional, but recommended step you can further improve your developer experience by installing the [Angular Language Service](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template)
 
-## Lesson review
+2. В качестве необязательного, но рекомендуемого шага вы можете дополнительно улучшить свой опыт разработчика, установив [Angular Language Service](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template)
 
-In this lesson, you learned about the app that you build in this tutorial and prepared your local computer to develop Angular apps.
+## Обзор урока
 
-## Next steps
+В этом уроке вы узнали о приложении, которое вы создадите в этом учебнике, и подготовили свой локальный компьютер к разработке приложений Angular.
 
--   [First Angular app lesson 1 - Hello world](tutorial/first-app/first-app-lesson-01)
+## Следующие шаги
 
-## More information
+-   [Первое приложение Angular урок 1 - Hello world](tutorial/first-app/first-app-lesson-01)
 
-For more information about the topics covered in this lesson, visit:
+## Дополнительная информация
 
--   [What is Angular](/guide/what-is-angular)
+Для получения дополнительной информации по темам, рассмотренным в этом уроке, посетите:
+
+-   [Что такое Angular](/guide/what-is-angular)
+
 -   [Angular CLI Reference](/cli)

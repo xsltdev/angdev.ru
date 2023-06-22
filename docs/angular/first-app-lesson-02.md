@@ -1,59 +1,65 @@
-# First Angular app lesson 2 - Create Home component
+# Первое приложение Angular урок 2 - Создание компонента Home
 
-This tutorial lesson demonstrates how to create a new [component](/guide/component-overview) for your Angular app.
+Этот урок демонстрирует, как создать новый [компонент](/guide/component-overview) для вашего приложения Angular.
 
-**Time required:** expect to spend about 10 minutes to complete this lesson.
+**Затраты времени:** ожидайте, что на выполнение этого урока вы потратите около 10 минут.
 
-## Before you start
+## Перед началом
 
-This lesson starts with the code from the previous lesson, so you can:
+Этот урок начинается с кода из предыдущего урока, поэтому вы можете:
 
--   Use the code that you created in Lesson 1 in your integrated development environment (IDE).
--   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-01"></live-example> from Lesson 1 where you can:
-    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
-    -   Use the _download example_ and open it in your IDE.
+-   Использовать код, который вы создали в Уроке 1, в своей интегрированной среде разработки (IDE).
 
-If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
+-   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-01"></live-example> из Урока 1, где вы можете:
 
-If you have any trouble during this lesson, you can review the completed code for this lesson, in the <live-example></live-example> for this lesson.
+    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-## After you finish
+    -   Использовать _download пример_ и открыть его в вашей IDE.
 
--   Your app has a new component: `HomeComponent`.
+Если вы не просмотрели введение, посетите [Введение в Angular tutorial](tutorial/first-app), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-## Conceptual preview of Angular components
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
 
-Angular apps are built around components, which are Angular's building blocks.
-Components contain the code, HTML layout, and CSS style information that provide the function and appearance of an element in the app.
-In Angular, components can contain other components. An app's functions and appearance can divided and partitioned into components.
+## После завершения
 
-In [Lesson 1](tutorial/first-app/first-app-lesson-01), you updated the `AppComponent`, whose function is to contain all the other components.
-In this lesson, you create a `HomeComponent` to display the home page of the app.
-In later lessons, you create more components to provide more features to the app.
+-   В вашем приложении появился новый компонент: `HomeComponent`.
 
-In Angular, components have metadata that define its properties.
-When you create your `HomeComponent`, you use these properties:
+## Концептуальный обзор компонентов Angular
 
--   `selector`: to describe how Angular refers to the component in templates.
--   `standalone`: to describe whether the component requires a `ngModule`.
--   `imports`: to describe the component's dependencies.
--   `template`: to describe the component's HTML markup and layout.
--   `styleUrls`: to list the URLs of the CSS files that the component users in an array.
+Приложения Angular строятся на основе компонентов, которые являются строительными блоками Angular. Компоненты содержат код, HTML-макет и информацию о стилях CSS, которые обеспечивают функционирование и внешний вид элемента в приложении.
 
-Components have other [properties](/api/core/Component), but these are the ones used by `HomeComponent`.
+В Angular компоненты могут содержать другие компоненты. Функции и внешний вид приложения могут быть разделены и разбиты на компоненты.
 
-## Lesson steps
+В [Уроке 1](tutorial/first-app/first-app-lesson-01) вы обновили `AppComponent`, функция которого - содержать все остальные компоненты. В этом уроке вы создадите компонент `HomeComponent` для отображения главной страницы приложения.
 
-Perform these steps on the app code in your IDE.
+В последующих уроках вы создадите больше компонентов для обеспечения дополнительных возможностей приложения.
 
-### Step 1 - Create the `HomeComponent`
+В Angular компоненты имеют метаданные, которые определяют их свойства. Когда вы создаете свой `HomeComponent`, вы используете эти свойства:
 
-In this step, you create a new component for your app.
+-   `selector`: для описания того, как Angular обращается к компоненту в шаблонах.
+-   `standalone`: чтобы описать, требует ли компонент `ngModule`.
 
-In the **Terminal** pane of your IDE:
+-   `imports`: для описания зависимостей компонента.
 
-1.  In your project directory, navigate to the `first-app` directory.
-1.  Run this command to create a new `HomeComponent`
+-   `template`: для описания HTML-разметки и макета компонента.
+
+-   `styleUrls`: перечисление URL файлов CSS, которые использует компонент, в виде массива.
+
+Компоненты имеют и другие [свойства](/api/core/Component), но эти используются `HomeComponent`.
+
+## Шаги урока
+
+Выполните эти шаги над кодом приложения в вашей IDE.
+
+### Шаг 1 - Создание `HomeComponent`.
+
+В этом шаге вы создаете новый компонент для вашего приложения.
+
+В панели **Terminal** вашей IDE:
+
+1.  В каталоге проекта перейдите в каталог `first-app`.
+
+1.  Выполните эту команду для создания нового `HomeComponent`.
 
     <code-example format="shell" language="shell">
 
@@ -61,7 +67,7 @@ In the **Terminal** pane of your IDE:
 
     </code-example>
 
-1.  Run this command to build and serve your app.
+1.  Выполните эту команду, чтобы собрать и обслужить ваше приложение.
 
     <code-example format="shell" language="shell">
 
@@ -69,84 +75,95 @@ In the **Terminal** pane of your IDE:
 
     </code-example>
 
-1.  Open a browser and navigate to `http://localhost:4200` to find the application.
-1.  Confirm that the app builds without error.
+1.  Откройте браузер и перейдите по адресу `http://localhost:4200`, чтобы найти приложение.
 
-    _Note: It should render the same as it did in the previous lesson because even though you added a new component, you haven't included it in any of the app's templates, yet._
+1.  Убедитесь, что приложение создается без ошибок.
 
-1.  Leave `ng serve` running as you complete the next steps.
+    Примечание: оно должно отображаться так же, как и в предыдущем уроке, потому что, хотя вы и добавили новый компонент, вы еще не включили его ни в один из шаблонов приложения.
 
-### Step 2 - Add the new component to your app's layout
+1.  Оставьте `ng serve` запущенным, пока вы выполняете следующие шаги.
 
-In this step, you add the new component, `HomeComponent` to your app's root component, `AppComponent`, so that it displays in your app's layout.
+### Шаг 2 - Добавьте новый компонент в макет вашего приложения.
 
-In the **Edit** pane of your IDE:
+В этом шаге вы добавите новый компонент `HomeComponent` к корневому компоненту вашего приложения `AppComponent`, чтобы он отображался в макете вашего приложения.
 
-1.  Open `app.component.ts` in the editor.
-1.  In `app.component.ts`, import `HomeComponent` by adding this line to the file level imports.
+В панели **Редактирование** вашей IDE:
 
-    <code-example header="Import HomeComponent in src/app/app.component.ts" path="first-app-lesson-02/src/app/app.component.ts" region="import-home"></code-example>
+1.  Откройте `app.component.ts` в редакторе.
+1.  В `app.component.ts` импортируйте `HomeComponent`, добавив эту строку в импорт на уровне файла.
 
-1.  In `app.component.ts`, in `@Component`, update the `imports` array property and add `HomeComponent`.
+    <code-example header="Import HomeComponent in src/app/app.component.ts" path="first-app-lesson-02/src/app/app.component.ts" region="import-home"></code-example>.
 
-    <code-example header="Replace in src/app/app.component.ts" path="first-app-lesson-02/src/app/app.component.ts" region="app-metadata-imports"></code-example>
+1.  В `app.component.ts`, в `@Component`, обновите свойство массива `imports` и добавьте `HomeComponent`.
 
-1.  In `app.component.ts`, in `@Component`, update the `template` property to include the following HTML code.
+    <code-example header="Replace in src/app/app.component.ts" path="first-app-lesson-02/src/app/app/app.component.ts" region="app-metadata-imports"></code-example>.
 
-    <code-example header="Replace in src/app/app.component.ts" path="first-app-lesson-02/src/app/app.component.ts" region="app-metadata-template"></code-example>
+1.  В `app.component.ts`, в `@Component`, обновите свойство `template`, чтобы включить следующий HTML код.
 
-1.  Save your changes to `app.component.ts`.
-1.  If `ng serve` is running, the app should update.
-    If `ng serve` is not running, start it again.
-    _Hello world_ in your app should change to _home works!_ from the `HomeComponent`.
-1.  Check the running app in the browser and confirm that the app has been updated.
+    <code-example header="Replace in src/app/app.component.ts" path="first-app-lesson-02/src/app/app/app.component.ts" region="app-metadata-template"></code-example>.
 
-<section class="lightbox">
-<img alt="browser frame of page displaying the text 'home works!'" src="generated/images/guide/faa/homes-app-lesson-02-step-2.png">
-</section>
+1.  Сохраните изменения в `app.component.ts`.
 
-### Step 3 - Add features to `HomeComponent`
+1.  Если `ng serve` запущен, приложение должно обновиться.
 
-In this step you add features to `HomeComponent`.
+    Если `ng serve` не запущен, запустите его снова.
 
-In the previous step, you added the default `HomeComponent` to your app's template so its default HTML appeared in the app.
-In this step, you add a search filter and button that is used in a later lesson.
-For now, that's all that `HomeComponent` has.
-Note that, this step just adds the search elements to the layout without any function, yet.
+    _Hello world_ в вашем приложении должно измениться на _home works!_ из `HomeComponent`.
 
-In the **Edit** pane of your IDE:
-
-1.  In the `first-app` directory, open `home.component.ts` in the editor.
-1.  In `home.component.ts`, in `@Component`, update the `template` property with this code.
-
-    <code-example header="Replace in src/app/home/home.component.ts" path="first-app-lesson-02/src/app/home/home.component.ts" region="home-template"></code-example>
-
-1.  Next, open `home.component.css` in the editor and update the content with these styles.
-
-    <code-example header="Replace in src/app/home/home.component.css" path="first-app-lesson-02/src/app/home/home.component.css"></code-example>
-
-1.  Confirm that the app builds without error.
-    You should find the filter query box and button in your app and they should be styled.
-    Correct any errors before you continue to the next step.
+1.  Проверьте запущенное приложение в браузере и убедитесь, что оно было обновлено.
 
 <section class="lightbox">
-<img alt="browser frame of homes-app displaying logo, filter text input box and search button" src="generated/images/guide/faa/homes-app-lesson-02-step-3.png">
+ <img alt="browser frame of page displaying the text 'home works!'" src="generated/images/guide/faa/homes-app-lesson-02-step-2.png">
 </section>
 
-## Lesson review
+### Шаг 3 - Добавление функций в `Домашний компонент`.
 
-In this lesson, you created a new component for your app and gave it a filter edit control and button.
+В этом шаге вы добавите функции в `HomeComponent`.
 
-If you are having any trouble with this lesson, you can review the completed code for it in the <live-example></live-example>.
+В предыдущем шаге вы добавили стандартный `HomeComponent` в шаблон вашего приложения, чтобы его HTML по умолчанию появился в приложении. В этом шаге вы добавите фильтр поиска и кнопку, которая будет использоваться в одном из последующих уроков.
 
-## Next steps
+На данный момент это все, что есть у `HomeComponent`.
 
--   [First Angular app lesson 3 - Create the application’s HousingLocation component](tutorial/first-app/first-app-lesson-03)
+Обратите внимание, что этот шаг просто добавляет элементы поиска в макет без какой-либо функции.
 
-## More information
+В панели **Edit** вашей IDE:
 
-For more information about the topics covered in this lesson, visit:
+1.  В директории `first-app` откройте в редакторе файл `home.component.ts`.
+
+1.  В `home.component.ts`, в `@Component`, обновите свойство `template` этим кодом.
+
+    <code-example header="Replace in src/app/home/home/home.component.ts" path="first-app-lesson-02/src/app/home/home.component.ts" region="home-template"></code-example>.
+
+1.  Далее откройте `home.component.css` в редакторе и обновите содержимое с помощью этих стилей.
+
+    <code-example header="Replace in src/app/home/home/home.component.css" path="first-app-lesson-02/src/app/happ/home/home.component.css"></code-example>.
+
+1.  Убедитесь, что приложение собирается без ошибок.
+
+    Вы должны найти поле запроса фильтра и кнопку в вашем приложении, и они должны быть оформлены.
+
+    Исправьте все ошибки, прежде чем переходить к следующему шагу.
+
+<section class="lightbox">
+ <img alt="browser frame of homes-app displaying logo, filter text input box and search button" src="generated/images/guide/faa/homes-app-lesson-02-step-3.png">
+</section>
+
+## Обзор урока
+
+В этом уроке вы создали новый компонент для своего приложения и наделили его элементом управления редактирования фильтра и кнопкой.
+
+Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код для него в <live-example></live-example>.
+
+## Следующие шаги
+
+-   [Первое Angular приложение урок 3 - Создание компонента HousingLocation приложения](tutorial/first-app/first-app-lesson-03)
+
+## Дополнительная информация
+
+Для получения дополнительной информации по темам, рассмотренным в этом уроке, посетите:
 
 -   [`ng generate component`](cli/generate#component-command)
--   [`Component` reference](api/core/Component)
--   [Angular components overview](guide/component-overview)
+
+-   [`Ссылка на компонент`](api/core/Component)
+
+-   [Обзор компонентов Angular](guide/component-overview)

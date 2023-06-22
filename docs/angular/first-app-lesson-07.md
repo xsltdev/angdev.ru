@@ -1,80 +1,91 @@
-# Lesson 7 - Add an interpolation to a component’s template
+# Урок 7 - Добавление интерполяции в шаблон компонента
 
-This tutorial lesson demonstrates how to add interpolation to Angular templates in order to display dynamic data in a template.
+Этот обучающий урок демонстрирует, как добавить интерполяцию в шаблоны Angular для отображения динамических данных в шаблоне.
 
-**Time required:** expect to spend about 10 minutes to complete this lesson.
+**Затраты времени:** ожидайте, что на выполнение этого урока вы потратите около 10 минут.
 
-## Before you start
+## Перед началом
 
-This lesson starts with the code from the previous lesson, so you can:
+Этот урок начинается с кода из предыдущего урока, поэтому вы можете:
 
--   Use the code that you created in Lesson 6 in your integrated development environment (IDE).
--   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-06"></live-example> from Lesson 6 where you can:
-    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
-    -   Use the _download example_ and open it in your IDE.
+-   Использовать код, созданный в Уроке 6, в своей интегрированной среде разработки (IDE).
 
-If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
+-   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-06"></live-example> из Урока 6, где вы можете:
 
-If you have any trouble during this lesson, you can review the completed code for this lesson, in the <live-example></live-example> for this lesson.
+    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-## After you finish
+    -   Использовать _download пример_ и открыть его в вашей IDE.
 
--   Your app will display interpolated values in the `HousingLocationComponent` template.
--   Your app will render a housing location data to the browser.
+Если вы не просмотрели введение, посетите [Введение в Angular tutorial](tutorial/first-app), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-## Conceptual preview of interpolation
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
 
-In lesson 6, you added data binding to the template to enable developers to pass data from the `HomeComponent` to the `HousingLocationComponent`. The next step is to display values (properties and `Input` values) in a template. In order to accomplish this task you have to use interpolation.
+## После завершения
 
-The [Angular template syntax](guide/template-syntax) supports mixing static template content with dynamic values and expressions.
+-   Ваше приложение будет отображать интерполированные значения в шаблоне `HousingLocationComponent`.
 
-Using the `{{ expression }}` in Angular templates, you can render values from properties, `Inputs` and valid JavaScript expressions.
+-   Ваше приложение будет отображать данные о местоположении жилья в браузере.
 
-For a more in depth explanation, please refer to the [Displaying values with interpolation](guide/interpolation) guide.
+## Концептуальный предварительный просмотр интерполяции
 
-## Lesson steps
+В уроке 6 вы добавили привязку данных к шаблону, чтобы разработчики могли передавать данные из `HomeComponent` в `HousingLocationComponent`. Следующим шагом будет отображение значений (свойств и `Input` значений) в шаблоне. Для выполнения этой задачи необходимо использовать интерполяцию.
 
-Perform these steps on the app code in your IDE.
+Синтаксис [Angular template syntax](guide/template-syntax) поддерживает смешивание статического содержимого шаблона с динамическими значениями и выражениями.
 
-### Step 1 - Update `HousingLocationComponent` template to include interpolated values
+Используя `{{выражение }}` в шаблонах Angular, вы можете выводить значения из свойств, `Inputs` и действительных выражений JavaScript.
 
-This step adds new HTML structure and interpolated values in the `HousingLocationComponent` template.
+Для более подробного объяснения, пожалуйста, обратитесь к руководству [Отображение значений с интерполяцией](guide/interpolation).
 
-In the code editor:
+## Шаги урока
 
-1.  Navigate to `src/app/housing-location/housing-location.component.ts`
-1.  In the template property of the `@Component` decorator, replace the existing HTML markup with the following code:
+Выполните эти шаги в коде приложения в вашей IDE.
 
-    <code-example header="Update HousingLocationComponent template" path="first-app-lesson-07/src/app/housing-location/housing-location.component.ts" region="add-listing-details"></code-example>
+### Шаг 1 - Обновление шаблона `HousingLocationComponent` для включения интерполированных значений
 
-    In this updated template code you have used property binding to bind the `housingLocation.photo` to the `src` attribute. The `alt` attribute uses interpolation to give more context to the alt text of the image.
+Этот шаг добавляет новую HTML структуру и интерполированные значения в шаблон `HousingLocationComponent`.
 
-    You use interpolation to include the values for name, city and state of the `housingLocation` property.
+В редакторе кода:
 
-### Step 2 - Confirm the changes render in the browser
+1.  Перейдите в `src/app/housing-location/housing-location.component.ts`.
 
-1.  Save all changes.
-1.  Open the browser can confirm that the app renders the photo, city and state sample data.
+1.  В свойстве template декоратора `@Component` замените существующую HTML-разметку следующим кодом:
+
+    <code-example header="Update HousingLocationComponent template" path="first-app-lesson-07/src/app/housing-location/housing-location.component.ts" region="add-listing-details"></code-example>.
+
+    В этом обновленном коде шаблона вы использовали связывание свойств для привязки `housingLocation.photo` к атрибуту `src`. Атрибут `alt` использует интерполяцию для придания большего контекста alt-тексту изображения.
+
+    Вы используете интерполяцию для включения значений имени, города и штата в свойство `housingLocation`.
+
+### Шаг 2 - Подтвердите отображение изменений в браузере
+
+1.  Сохраните все изменения.
+
+1.  Откройте браузер, чтобы подтвердить, что приложение отображает данные образца фотографии, города и штата.
+
     <section class="lightbox">
-    <img alt="browser frame of homes-app displaying logo, filter text input box, search button and the same housing location UI card" src="generated/images/guide/faa/homes-app-lesson-07-step-2.png">
+
+    <img alt="рамка браузера приложения homes-app, отображающая логотип, поле ввода текста фильтра, кнопку поиска и UI-карту местоположения жилья" src="generated/images/guide/faa/homes-app-lesson-07-step-2.png">
+
     </section>
 
-## Lesson review
+## Обзор урока
 
-In this lesson, you added a new HTML structure and used Angular template syntax to render values in the `HousingLocation` template. Now, you have two important skills:
+В этом уроке вы добавили новую HTML-структуру и использовали синтаксис шаблонов Angular для рендеринга значений в шаблоне `HousingLocation`. Теперь у вас есть два важных навыка:
 
--   passing data to components
--   Interpolating values into a template
+-   передача данных компонентам
 
-With these skills, your app can now share data and display dynamic values in the browser. Great work so far.
+-   интерполяция значений в шаблон
 
-If you are having any trouble with this lesson, you can review the completed code for it in the <live-example></live-example>.
+С помощью этих навыков ваше приложение теперь может обмениваться данными и отображать динамические значения в браузере. Отличная работа.
 
-## Next steps
+Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код для него в <live-example></live-example>.
 
--   [Lesson 8 - Use \*ngFor to list objects in component](tutorial/first-app/first-app-lesson-08)
+## Следующие шаги
 
-## For more information about the topics covered in this lesson, visit:
+-   [Урок 8 - Использование \*ngFor для вывода списка объектов в компоненте](tutorial/first-app/first-app-lesson-08)
 
--   [Displaying values with interpolation](/guide/interpolation)
--   [Template syntax](guide/template-syntax)
+## Для получения дополнительной информации о темах, рассмотренных в этом уроке, посетите:
+
+-   [Отображение значений с интерполяцией](/guide/interpolation)
+
+-   [Синтаксис шаблонов](/guide/template-syntax)

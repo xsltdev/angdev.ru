@@ -1,122 +1,134 @@
-# First Angular app lesson 4 - Creating an interface
+# Первое приложение Angular урок 4 - Создание интерфейса
 
-This tutorial lesson demonstrates how to create an interface and include it in a component of your app.
+Этот урок демонстрирует, как создать интерфейс и включить его в компонент вашего приложения.
 
-**Time required:** expect to spend about 10 minutes to complete this lesson.
+**Затраты времени:** ожидайте, что на выполнение этого урока вы потратите около 10 минут.
 
-## Before you start
+## Перед началом
 
-This lesson starts with the code from the previous lesson, so you can:
+Этот урок начинается с кода из предыдущего урока, поэтому вы можете:
 
--   Use the code that you created in Lesson 3 in your integrated development environment (IDE).
--   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-03"></live-example> from Lesson 3 where you can:
-    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
-    -   Use the _download example_ and open it in your IDE.
+-   Использовать код, созданный в Уроке 3, в своей интегрированной среде разработки (IDE).
 
-If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
+-   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-03"></live-example> из Урока 3, где вы можете:
 
-If you have any trouble during this lesson, you can review the completed code for this lesson, in the <live-example></live-example> for this lesson.
+    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-## After you finish
+    -   Использовать _download пример_ и открыть его в вашей IDE.
 
--   Your app has a new interface that it can use as a data type.
--   Your app has an instance of the new interface with sample data.
+Если вы не просмотрели введение, посетите [Введение в Angular tutorial](tutorial/first-app), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-## Conceptual preview of interfaces
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
 
-[Interfaces](https://www.typescriptlang.org/docs/handbook/interfaces.html) are custom data types for your app.
+## После завершения
 
-Angular uses TypeScript to take advantage of working in a strongly typed programming environment.
-Strong type checking reduces the likelihood of one element in your app sending incorrectly formatted data to another.
-Such type-mismatch errors are caught by the TypeScript compiler and many such errors can also be caught in your IDE.
+-   Ваше приложение имеет новый интерфейс, который оно может использовать в качестве типа данных.
 
-In this lesson, you'll create an interface to define properties that represent data about a single housing location.
+-   В вашем приложении есть экземпляр нового интерфейса с образцом данных.
 
-## Lesson steps
+## Концептуальный обзор интерфейсов
 
-Perform these steps on the app code in your IDE.
+[Интерфейсы](https://www.typescriptlang.org/docs/handbook/interfaces.html) - это пользовательские типы данных для вашего приложения.
 
-### Step 1 - Create a new Angular interface
+Angular использует TypeScript, чтобы воспользоваться преимуществами работы в сильно типизированной среде программирования. Сильная проверка типов снижает вероятность того, что один элемент вашего приложения отправит другому неправильно отформатированные данные.
 
-This step creates a new interface in your app.
+Такие ошибки несоответствия типов отлавливаются компилятором TypeScript, и многие такие ошибки также могут быть отловлены в вашей IDE.
 
-In the **Terminal** pane of your IDE:
+В этом уроке вы создадите интерфейс для определения свойств, представляющих данные о местоположении одного жилья.
 
-1.  In your project directory, navigate to the `first-app` directory.
-1.  In the `first-app` directory, run this command to create the new interface.
+## Шаги урока
+
+Выполните эти шаги над кодом приложения в вашей IDE.
+
+### Шаг 1 - Создайте новый интерфейс Angular.
+
+Этот шаг создает новый интерфейс в вашем приложении.
+
+В панели **Терминал** вашей IDE:
+
+1.  В каталоге проекта перейдите в каталог `first-app`.
+
+1.  В директории `first-app` выполните эту команду для создания нового интерфейса.
 
     <code-example format="shell" language="shell">
 
     ng generate interface housinglocation
 
-    </code-example>
+    </code-example
 
-1.  Run `ng serve` to build the app and serve it to `http://localhost:4200`.
-1.  In a browser, open `http://localhost:4200` to see your app.
-1.  Confirm that the app builds without error.
-    Correct any errors before you continue to the next step.
+1.  Запустите `ng serve`, чтобы создать приложение и передать его по адресу `http://localhost:4200`.
 
-### Step 2 - Add properties to the new interface
+1.  В браузере откройте `http://localhost:4200`, чтобы увидеть ваше приложение.
 
-This step adds the properties to the interface that your app needs to represent a housing location.
+1.  Убедитесь, что приложение создается без ошибок.
 
-1.  In the **Terminal** pane of your IDE, start the `ng serve` command, if it isn't already running, to build the app and serve it to `http://localhost:4200`.
-1.  In the **Edit** pane of your IDE, open the `src/app/housinglocation.ts` file.
-1.  In `housinglocation.ts`, replace the default content with the following code to make your new interface to match this example.
+    Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
-    <code-example header="Update src/app/housinglocation.ts to match this code" path="first-app-lesson-04/src/app/housinglocation.ts"></code-example>
+### Шаг 2 - Добавление свойств в новый интерфейс
 
-1.  Save your changes and confirm the app does not display any errors. Correct any errors before you continue to the next step.
+Этот шаг добавляет свойства в интерфейс, которые необходимы вашему приложению для представления местоположения жилья.
 
-At this point, you've defined an interface that represents data about a housing location including an id, name, and location information.
+1.  В панели **Терминал** вашей IDE запустите команду `ng serve`, если она еще не запущена, чтобы создать приложение и передать его по адресу `http://localhost:4200`.
 
-### Step 3 - Create a test house for your app
+1.  В панели **Edit** вашей IDE откройте файл `src/app/housinglocation.ts`.
 
-You have an interface, but you aren't using it yet.
+1.  В `housinglocation.ts` замените содержимое по умолчанию на следующий код, чтобы ваш новый интерфейс соответствовал этому примеру.
 
-In this step, you create an instance of the interface and assign some sample data to it.
-You won't see this sample data appear in your app yet.
-There are a few more lessons to complete before that happens.
+    <code-example header="Update src/app/housinglocation.ts to match this code" path="first-app-lesson-04/src/app/housinglocation.ts"></code-example>.
 
-1.  In the **Terminal** pane of your IDE, run the `ng serve` command, if it isn't already running, to build the app and serve your app to `http://localhost:4200`.
-1.  In the **Edit** pane of your IDE, open `src/app/home/home.component.ts`.
-1.  In `src/app/home/home.component.ts`, add this import statement after the existing `import` statements so that `HomeComponent` can use the new interface.
+1.  Сохраните изменения и убедитесь, что приложение не выдает никаких ошибок. Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
-    <code-example header="Import HomeComponent in src/app/home/home.component.ts" path="first-app-lesson-04/src/app/home/home.component.ts" region="housing-location-import"></code-example>
+На данном этапе вы определили интерфейс, который представляет данные о местоположении жилья, включая идентификатор, имя и информацию о местоположении.
 
-1.  In `src/app/home/home.component.ts`, replace the empty `export class HomeComponent {}` definition with this code to create a single instance of the new interface in the component.
+### Шаг 3 - Создание тестового дома для вашего приложения
 
-    <code-example header="Add sample data to src/app/home/home.component.ts" path="first-app-lesson-04/src/app/home/home.component.ts" region="only-house"></code-example>
+У вас есть интерфейс, но вы еще не используете его.
 
-1.  Confirm that your `home.component.ts` file matches like this example.
+На этом шаге вы создаете экземпляр интерфейса и присваиваете ему некоторые образцы данных. Вы еще не увидите, как эти данные появятся в вашем приложении.
 
-    <code-example header="src/app/home/home.component.ts" path="first-app-lesson-04/src/app/home/home.component.ts"></code-example>
+Для этого нужно пройти еще несколько уроков.
 
-    By adding the `housingLocation` property of type `HousingLocation` to the `HomeComponent` class, we're able to confirm that the data matches the description of the interface. If the data didn't satisfy the description of the if the IDE has enough information to give us helpful errors.
+1.  В панели **Terminal** вашей IDE запустите команду `ng serve`, если она еще не запущена, чтобы создать приложение и обслужить ваше приложение по адресу `http://localhost:4200`.
+1.  В панели **Edit** вашей IDE откройте `src/app/home/home.component.ts`.
 
-1.  Save your changes and confirm the app does not have any errors. Open the browser and confirm that your application still displays the message "housing-location works!"
+1.  В `src/app/home/home/home.component.ts` добавьте этот оператор import после существующих операторов `import`, чтобы `HomeComponent` мог использовать новый интерфейс.
+
+    <code-example header="Import HomeComponent in src/app/home/home/home.component.ts" path="first-app-lesson-04/src/app/happ/home/home.component.ts" region="housing-location-import"></code-example>.
+
+1.  В `src/app/home/home/home.component.ts` замените пустое определение `export class HomeComponent {}` на этот код, чтобы создать один экземпляр нового интерфейса в компоненте.
+
+    <code-example header="Add sample data to src/app/home/home/home.component.ts" path="first-app-lesson-04/src/app/happ/home/home.component.ts" region="only-house"></code-example>.
+
+1.  Убедитесь, что ваш файл `home.component.ts` соответствует этому примеру.
+
+    <code-example header="src/app/home/home/home.component.ts" path="first-app-lesson-04/src/app/home/home.component.ts"></code-example>.
+
+    Добавив свойство `housingLocation` типа `HousingLocation` в класс `HomeComponent`, мы можем подтвердить, что данные соответствуют описанию интерфейса. Если данные не удовлетворяют описанию, IDE имеет достаточно информации, чтобы выдать нам полезные ошибки.
+
+1.  Сохраните изменения и подтвердите, что в приложении нет ошибок. Откройте браузер и убедитесь, что ваше приложение по-прежнему отображает сообщение "housing-location works!".
 
     <section class="lightbox">
-    <img alt="browser frame of homes-app displaying logo, filter text input box and search button and the message 'housing-location works!'" src="generated/images/guide/faa/homes-app-lesson-03-step-2.png">
+
+    <img alt="рамка браузера приложения homes-app, отображающая логотип, поле ввода текста фильтра, кнопку поиска и сообщение "housing-location works!"" src="generated/images/guide/faa/homes-app-lesson-03-step-2.png">
+
     </section>
 
-1.  Correct any errors before you continue to the next step.
+1.  Исправьте все ошибки, прежде чем перейти к следующему шагу.
 
-## Lesson review
+## Обзор урока
 
-In this lesson, you created an interface that created a new data type for your app.
-This new data type makes it possible for you to specify where `HousingLocation` data is required.
-This new data type also makes it possible for your IDE and the TypeScript compiler can ensure that `HousingLocation` data is used where it's required.
+В этом уроке вы создали интерфейс, который создал новый тип данных для вашего приложения. Этот новый тип данных позволяет вам указать, где требуются данные `HousingLocation`.
+Этот новый тип данных также позволяет вашей IDE и компилятору TypeScript гарантировать, что данные `HousingLocation` используются там, где это необходимо.
 
-If you are having any trouble with this lesson, you can review the completed code for it in the <live-example></live-example>.
+Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код для него в <live-example></live-example>.
 
-## Next steps
+## Следующие шаги
 
--   [Lesson 5 - Add an input parameter to the component](tutorial/first-app/first-app-lesson-05)
+-   [Урок 5 - Добавление входного параметра в компонент](tutorial/first-app/first-app-lesson-05)
 
-## More information
+## Дополнительная информация
 
-For more information about the topics covered in this lesson, visit:
+Для получения дополнительной информации о темах, рассмотренных в этом уроке, посетите:
 
 <!-- vale Angular.Google_WordListSuggestions = NO -->
 

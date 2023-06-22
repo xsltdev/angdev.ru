@@ -1,80 +1,91 @@
-# Lesson 8 - Use \*ngFor to list objects in component
+# Урок 8 - Использование \*ngFor для вывода списка объектов в компоненте
 
-This tutorial lesson demonstrates how to use `ngFor` directive in Angular templates in order to display dynamically repeat data data in a template.
+Этот обучающий урок демонстрирует, как использовать директиву `ngFor` в шаблонах Angular для отображения динамически повторяющихся данных в шаблоне.
 
-**Time required:** expect to spend about 10 minutes to complete this lesson.
+**Затраты времени:** ожидайте, что на выполнение этого урока вы потратите около 10 минут.
 
-## Before you start
+## Перед началом
 
-This lesson starts with the code from the previous lesson, so you can:
+Этот урок начинается с кода из предыдущего урока, поэтому вы можете:
 
--   Use the code that you created in Lesson 7 in your integrated development environment (IDE).
--   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-07"></live-example> from Lesson 7 where you can:
-    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
-    -   Use the _download example_ and open it in your IDE.
+-   Использовать код, созданный в уроке 7, в своей интегрированной среде разработки (IDE).
 
-If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
+-   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-07"></live-example> из Урока 7, где вы можете:
 
-If you have any trouble during this lesson, you can review the completed code for this lesson, in the <live-example></live-example> for this lesson.
+    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-## After you finish
+    -   Использовать _download пример_ и открыть его в вашей IDE.
 
--   You will have added a data set to the app
--   Your app will display a list of elements from the new data set using `ngFor`
+Если вы не просмотрели введение, посетите [Введение в Angular tutorial](tutorial/first-app), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-## Conceptual preview of ngFor
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
 
-In Angular, `ngFor` is a specific type of [directive](guide/built-in-directives) used to dynamically repeat data in a template. In plain JavaScript you would use a for loop - ngFor provides similar functionality for Angular templates. We use [Angular template syntax](guide/template-syntax) to specify the details for the directive.
+## После завершения
 
-You can utilize `ngFor` to iterate over arrays and even asynchronous values. In this lesson, you'll add a new array of data to iterate over.
+-   Вы добавите набор данных в приложение.
 
-For a more in depth explanation, please refer to the [Built-in directives](guide/built-in-directives#ngFor) guide.
+-   Ваше приложение будет отображать список элементов из нового набора данных с помощью `ngFor`.
 
-## Lesson steps
+## Концептуальный обзор ngFor
 
-Perform these steps on the app code in your IDE.
+В Angular `ngFor` - это особый тип [директив] (guide/built-in-directives), используемый для динамического повторения данных в шаблоне. В обычном JavaScript вы бы использовали цикл for - ngFor обеспечивает аналогичную функциональность для шаблонов Angular. Мы используем [Angular template syntax](guide/template-syntax) для указания деталей директивы.
 
-### Step 1 - Add housing data to the `HomeComponent`
+Вы можете использовать `ngFor` для итерации по массивам и даже асинхронным значениям. В этом уроке вы добавите новый массив данных для итерации.
 
-In the `HomeComponent` there is only a single housing location. In this step, you will add an array of `HousingLocation` entries.
+Для более подробного объяснения, пожалуйста, обратитесь к руководству [Built-in directives](guide/built-in-directives#ngFor).
 
-1.  In `src/app/home/home.component.ts`, remove the `housingLocation` property from the `HomeComponent` class.
-1.  update the `HomeComponent` class to have a property called `housingLocationList`. Update your code to match the following code:
-    <code-example header="Add housingLocationList property" path="first-app-lesson-08/src/app/home/home.component.ts" region="housing-list-entries"></code-example>
+## Шаги урока
 
-    Note: Do not remove the `@Component` decorator, you will update that code in an upcoming step.
+Выполните эти шаги над кодом приложения в вашей IDE.
 
-### Step 2 - Update the `HomeComponent` template to use `ngFor`
+### Шаг 1 - Добавьте данные о жилье в `HomeComponent`.
 
-Now the app has a dataset that you can use to display the entries in the browser using the `ngFor` directive.
+В `HomeComponent` есть только одно местоположение жилья. В этом шаге вы добавите массив записей `HousingLocation`.
 
-1.  Update the `<app-housing-location>` tag in the template code to this:
-    <code-example header="Add ngFor to HomeComponent template" path="first-app-lesson-08/src/app/home/home.component.ts" region="add-ngFor"></code-example>
+1.  В `src/app/home/home/home.component.ts` удалите свойство `housingLocation` из класса `HomeComponent`.
 
-    Note, the code `[housingLocation] = "housingLocation"` the `housingLocation` value now refers to the variable used in the `ngFor` directive. Before this change, it refered to the property on the `HomeComponent` class.
+1.  Обновите класс `HomeComponent`, чтобы он имел свойство `housingLocationList`. Обновите свой код, чтобы он соответствовал следующему коду:
 
-1.  Save all changes.
+    <code-example header="Add housingLocationList property" path="first-app-lesson-08/src/app/home/home.component.ts" region="housing-list-entries"></code-example>.
 
-1.  Refresh the browser and confirm that the app now renders a grid of housing locations.
+    Примечание: Не удаляйте декоратор `@Component`, вы обновите этот код в следующем шаге.
+
+### Шаг 2 - Обновление шаблона `HomeComponent` для использования `ngFor`.
+
+Теперь у приложения есть набор данных, который можно использовать для отображения записей в браузере с помощью директивы `ngFor`.
+
+1.  Обновите тег `<app-house-location>` в коде шаблона следующим образом:
+
+    <code-example header="Add ngFor to HomeComponent template" path="first-app-lesson-08/src/app/home/home.component.ts" region="add-ngFor"></code-example>.
+
+    Обратите внимание, в коде `[housingLocation] = "housingLocation"` значение `housingLocation` теперь относится к переменной, используемой в директиве `ngFor`. До этого изменения оно ссылалось на свойство класса `HomeComponent`.
+
+1.  Сохраните все изменения.
+
+1.  Обновите браузер и убедитесь, что приложение теперь отображает сетку расположения жилья.
 
     <section class="lightbox">
-    <img alt="browser frame of homes-app displaying logo, filter text input box, search button and a grid of housing location cards" src="generated/images/guide/faa/homes-app-lesson-08-step-2.png">
+
+    <img alt="рамка браузера приложения homes-app, отображающая логотип, поле ввода текста фильтра, кнопку поиска и сетку карточек расположения жилья" src="generated/images/guide/faa/homes-app-lesson-08-step-2.png">
+
     </section>
 
-## Lesson review
+## Обзор урока
 
-In this lesson, you used the `ngFor` directive to repeat data dynamically in Angular templates. You also added a new array of data to be used in the Angular app. The application now dynamically renders a list of housing locations in the browser.
+В этом уроке вы использовали директиву `ngFor` для динамического повторения данных в шаблонах Angular. Вы также добавили новый массив данных для использования в приложении Angular. Теперь приложение динамически отображает список мест расположения жилья в браузере.
 
-The app is taking shape, great job.
+Приложение обретает форму, отличная работа.
 
-If you are having any trouble with this lesson, you can review the completed code for it in the <live-example></live-example>.
+Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код для него в <live-example></live-example>.
 
-## Next steps
+## Следующие шаги
 
--   [Lesson 9 - Add a service to the application](tutorial/first-app/first-app-lesson-09)
+-   [Урок 9 - Добавление сервиса в приложение](tutorial/first-app/first-app-lesson-09)
 
-## For more information about the topics covered in this lesson, visit:
+## Для получения дополнительной информации о темах, рассмотренных в этом уроке, посетите:
 
 -   [Structural Directives](/guide/structural-directives)
+
 -   [ngFor guide](/guide/built-in-directives#ngFor)
+
 -   [ngFor](/api/common/NgFor)

@@ -1,68 +1,75 @@
-# Lesson 6 - Add a property binding to a component’s template
+# Урок 6 - Добавление привязки свойств к шаблону компонента
 
-This tutorial lesson demonstrates how to add property binding to a template and use it to pass dynamic data to components.
+Этот урок демонстрирует, как добавить привязку свойств к шаблону и использовать ее для передачи динамических данных компонентам.
 
-**Time required:** expect to spend about 5 minutes to complete this lesson.
+**Затраты времени:** на выполнение этого урока вы потратите около 5 минут.
 
-## Before you start
+## Перед началом
 
-This lesson starts with the code from the previous lesson, so you can:
+Этот урок начинается с кода из предыдущего урока, поэтому вы можете:
 
--   Use the code that you created in Lesson 5 in your integrated development environment (IDE).
--   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-05"></live-example> from Lesson 5 where you can:
-    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
-    -   Use the _download example_ and open it in your IDE.
+-   Использовать код, созданный в Уроке 5, в своей интегрированной среде разработки (IDE).
 
-If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
+-   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-05"></live-example> из Урока 5, где вы можете:
 
-If you have any trouble during this lesson, you can review the completed code for this lesson, in the <live-example></live-example> for this lesson.
+    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-## After you finish
+    -   Использовать _download пример_ и открыть его в вашей IDE.
 
--   Your app has data bindings in the `HomeComponent` template.
--   Your app sends data from the `HomeComponent` to the `HousingLocationComponent`.
+Если вы не просмотрели введение, посетите [Введение в Angular tutorial](tutorial/first-app), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-## Conceptual preview of Inputs
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
 
-In lesson 5, you added `@Input` decorators to properties in the `HousingLocationComponent` allow the component to receive data. In this lesson, you'll continue the process of sharing data from the parent component to the child component by binding data to those properties in the template. There are several forms of data binding in Angular, in this lesson you'll use property binding.
+## После завершения
 
-Property binding enables you to connect a variable to an `Input` in an Angular template. The data is then dynamically bound to the `Input`.
+-   Ваше приложение имеет привязки данных в шаблоне `HomeComponent`.
 
-For a more in depth explanation, please refer to the [Property binding](guide/property-binding) guide.
+-   Ваше приложение отправляет данные из `HomeComponent` в `HousingLocationComponent`.
 
-## Lesson steps
+## Концептуальный просмотр входов
 
-Perform these steps on the app code in your IDE.
+В уроке 5 вы добавили декораторы `@Input` к свойствам компонента `HousingLocationComponent`, чтобы компонент мог получать данные. В этом уроке вы продолжите процесс обмена данными от родительского компонента к дочернему компоненту путем привязки данных к этим свойствам в шаблоне. В Angular существует несколько форм привязки данных, в этом уроке вы будете использовать привязку свойств.
 
-### Step 1 - Update <app-housing-location> tag in the `HomeComponent` template
+Привязка свойств позволяет вам подключить переменную к `Input` в шаблоне Angular. Затем данные динамически привязываются к `Input`.
 
-This step adds property binding to the `<app-housing-location>` tag.
+Для более подробного объяснения, пожалуйста, обратитесь к руководству [Property binding](guide/property-binding).
 
-In the code editor:
+## Шаги урока
 
-1.  Navigate to `src/app/home/home.component.ts`
-1.  In the template property of the `@Component` decorator, update the code to match the code below:
-    <code-example header="Add housingLocation property binding" path="first-app-lesson-06/src/app/home/home.component.ts" region="add-property-binding"></code-example>
+Выполните эти шаги над кодом приложения в вашей IDE.
 
-    When adding a property binding to a component tag, we use the `[attribute] = "value"` syntax to notify Angular that the assigned value should be treated as a property from the component class and not a string value.
+### Шаг 1 - Обновление тега <app-housing-location> в шаблоне `HomeComponent`.
 
-    The value on the right handside is the name of the property from the `HomeComponent`.
+Этот шаг добавляет привязку свойств к тегу `<app-housing-location>`.
 
-### Step 2 - Confirm the code still works
+В редакторе кода:
 
-1.  Save your changes and confirm the app does not have any errors.
-1.  Correct any errors before you continue to the next step.
+1.  Перейдите в `src/app/home/home/home.component.ts`.
 
-## Lesson review
+1.  В свойстве template декоратора `@Component` обновите код, чтобы он соответствовал приведенному ниже:
 
-In this lesson, you added a new property binding and passed in a reference to a class property. Now, the `HousingLocationComponent` has access to data that it can use to customize the component's display.
+    <code-example header="Add housingLocation property binding" path="first-app-lesson-06/src/app/home/home.component.ts" region="add-property-binding"></code-example>.
 
-If you are having any trouble with this lesson, you can review the completed code for it in the <live-example></live-example>.
+    При добавлении привязки свойства к тегу компонента мы используем синтаксис `[attribute] = "value"`, чтобы сообщить Angular, что назначенное значение должно рассматриваться как свойство класса компонента, а не как строковое значение.
 
-## Next steps
+    Значение справа - это имя свойства из `HomeComponent`.
 
--   [Lesson 7 - Add an interpolation to a component’s template](tutorial/first-app/first-app-lesson-07)
+### Шаг 2 - Подтвердите, что код по-прежнему работает
 
-## For more information about the topics covered in this lesson, visit:
+1.  Сохраните изменения и убедитесь, что в приложении нет ошибок.
 
--   [Property binding](guide/property-binding)
+1.  Исправьте все ошибки, прежде чем переходить к следующему шагу.
+
+## Обзор урока
+
+В этом уроке вы добавили новую привязку свойства и передали ссылку на свойство класса. Теперь `HousingLocationComponent` имеет доступ к данным, которые он может использовать для настройки отображения компонента.
+
+Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код для него в <live-example></live-example>.
+
+## Следующие шаги
+
+-   [Урок 7 - Добавление интерполяции в шаблон компонента](tutorial/first-app/first-app-lesson-07)
+
+## Для получения дополнительной информации о темах, рассмотренных в этом уроке, посетите:
+
+-   [Связывание свойств](guide/property-binding)

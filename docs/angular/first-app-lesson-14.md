@@ -1,33 +1,36 @@
-# Lesson 14 - Add HTTP communication to your app
+# Урок 14 - Добавьте HTTP-коммуникацию в ваше приложение
 
-This tutorial demonstrates how to integrate HTTP and an API into your app.
+Этот урок демонстрирует, как интегрировать HTTP и API в ваше приложение.
 
-Up until this point your app has read data from a static array in an Angular service. The next step is to use a JSON server that your app will communicate with over HTTP. The HTTP request will simulate the experience of working with data from a server.
+До этого момента ваше приложение считывало данные из статического массива в сервисе Angular. Следующим шагом будет использование сервера JSON, с которым ваше приложение будет взаимодействовать по HTTP. HTTP-запрос будет имитировать работу с данными с сервера.
 
-**Time required:** expect to spend about 20 minutes to complete this lesson.
+**Затраты времени:** ожидайте, что на выполнение этого урока вы потратите около 20 минут.
 
-## Before you start
+## Перед началом
 
-This lesson starts with the code from the previous lesson, so you can:
+Этот урок начинается с кода из предыдущего урока, поэтому вы можете:
 
--   Use the code that you created in Lesson 13 in your integrated development environment (IDE).
--   Start with the code example from the previous lesson. Choose the <live-example name="first-app-lesson-13"></live-example> from Lesson 13 where you can:
-    -   Use the _live example_ in StackBlitz, where the StackBlitz interface is your IDE.
-    -   Use the _download example_ and open it in your IDE.
+-   Использовать код, созданный в Уроке 13, в своей интегрированной среде разработки (IDE).
 
-If you haven't reviewed the introduction, visit the [Introduction to Angular tutorial](tutorial/first-app) to make sure you have everything you need to complete this lesson.
+-   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-13"></live-example> из Урока 13, где вы можете:
 
-## After you finish
+    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
--   Your app will use data from a JSON server
+    -   Использовать _download пример_ и открыть его в вашей IDE.
 
-## Lesson steps
+Если вы не просмотрели введение, посетите учебник [Введение в Angular](tutorial/first-app), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-Perform these steps in the terminal on your local computer.
+## После завершения
 
-### Step 1 - Configure the JSON server
+-   Ваше приложение будет использовать данные с сервера JSON.
 
-JSON Server is an open source tool used to create mock REST APIs. You'll use it to serve the housing location data that is currently stored in the housing service.
+## Шаги урока
+
+Выполните эти шаги в терминале на вашем локальном компьютере.
+
+### Шаг 1 - Настройка сервера JSON
+
+JSON Server - это инструмент с открытым исходным кодом, используемый для создания имитационных REST API. Вы будете использовать его для обслуживания данных о местоположении жилья, которые в настоящее время хранятся в службе жилья.
 
 1.  Install `json-server` from npm by using the following command.
     <code-example language="bash" format="bash">
@@ -154,59 +157,62 @@ JSON Server is an open source tool used to create mock REST APIs. You'll use it 
 
 1.  In your web browser, navigate to the `http://localhost:3000/locations` and confirm that the response includes the data stored in `db.json`.
 
-If you have any trouble with your configuration, you can find more details in the [official documentation](https://www.npmjs.com/package/json-server).
+Если у вас возникли проблемы с конфигурацией, вы можете найти более подробную информацию в [официальной документации](https://www.npmjs.com/package/json-server).
 
-### Step 2 - Update service to use web server instead of local array
+### Шаг 2 - Обновление сервиса для использования веб-сервера вместо локального массива
 
-The data source has been configured, the next step is to update your web app to connect to it use the data.
+Источник данных настроен, следующим шагом будет обновление веб-приложения для подключения к нему и использования данных.
 
-1.  In `src/app/housing.service.ts`, make the following changes:
+1.  В `src/app/housing.service.ts` внесите следующие изменения:
 
-    1.  Update the code to remove `housingLocationList` property and the array containing the data.
+    1.  Обновите код, чтобы удалить свойство `housingLocationList` и массив, содержащий данные.
 
-    1.  Add a string property called and set the value to `'http://localhost:3000/locations'`
+    1.  Добавьте строковое свойство с именем и установите значение `'http://localhost:3000/locations'`.
 
         <code-example anguage="javascript" format="javascript">
+
         url = 'http://localhost:3000/locations';
+
         </code-example>
 
-        This code will result in errors in the rest of the file because it depends on the `housingLocationList` property. We're going to update the service methods next.
+        Этот код приведет к ошибкам в остальной части файла, поскольку он зависит от свойства `housingLocationList`. Далее мы обновим методы сервиса.
 
-    1.  Update the `getAllHousingLocations` function to make a call to the web server you configured.
+    1.  Обновите функцию `getAllHousingLocations`, чтобы она выполняла вызов веб-сервера, который вы настроили.
 
-        <code-example header="" path="first-app-lesson-14/src/app/housing.service.ts" region="update-getAllHousingLocations"></code-example>
+        <code-example header="" path="first-app-lesson-14/src/app/housing.service.ts" region="update-getAllHousingLocations"></code-example>.
 
-        The code now uses asynchronous code to make a `get` request over `HTTP`. Notice, for this example, the code uses fetch. For more advanced use cases consider using `HttpClient` provided by Angular.
+        Теперь код использует асинхронный код для выполнения `get` запроса через `HTTP`. Обратите внимание, что для этого примера в коде используется fetch. Для более продвинутых случаев использования рассмотрим использование `HttpClient`, предоставляемого Angular.
 
-    1.  Update the `getHousingLocationsById` function to make a call to the web server you configured.
+    1.  Обновите функцию `getHousingLocationsById`, чтобы сделать вызов к веб-серверу, который вы настроили.
 
-        <code-example header="" path="first-app-lesson-14/src/app/housing.service.ts" region="update-getHousingLocationById"></code-example>
+        <code-example header="" path="first-app-lesson-14/src/app/housing.service.ts" region="update-getHousingLocationById"></code-example>.
 
-    1.  Once all the updates are complete, your updated service will match the following code.
+    1.  Когда все обновления будут завершены, ваш обновленный сервис будет соответствовать следующему коду.
 
-        <code-example header="Final version of housing.service.ts" path="first-app-lesson-14/src/app/housing.service.ts"></code-example>
+        <code-example header="Final version of housing.service.ts" path="first-app-lesson-14/src/app/housing.service.ts"></code-example>.
 
-### Step 3 - Update the components to use asynchronous calls to the housing service
+### Шаг 3 - Обновление компонентов для использования асинхронных вызовов службы жилья
 
-The server is now reading data from the `HTTP` request but the components that rely on the service now have errors because they were programmed to use the synchronous version of the service.
+Сервер теперь читает данные из запроса `HTTP`, но компоненты, которые полагаются на службу, теперь имеют ошибки, потому что они были запрограммированы на использование синхронной версии службы.
 
-1.  In `src/app/home/home.component.ts`, update the constructor to use the new asynchronous version of the `getAllHousingLocations` method.
+1.  В `src/app/home/home.component.ts` обновите конструктор, чтобы использовать новую асинхронную версию метода `getAllHousingLocations`.
 
     <code-example header="" path="first-app-lesson-14/src/app/home/home.component.ts" region="update-home-component-constructor"></code-example>
 
-1.  In `src/app/details/details.component.ts`, update the constructor to use the new asynchronous version of the `getHousingLocationById` method.
+1.  В `src/app/details/details.component.ts` обновите конструктор, чтобы использовать новую асинхронную версию метода `getHousingLocationById`.
 
-    <code-example header="" path="first-app-lesson-14/src/app/details/details.component.ts" region="update-details-component-constructor"></code-example>
+    <code-example header="" path="first-app-lesson-14/src/app/details/details.component.ts" region="update-details-component-constructor"></code-example>.
 
-1.  Save your code.
+1.  Сохраните свой код.
 
-1.  Open the application in the browser and confirm that it runs without any errors.
+1.  Откройте приложение в браузере и убедитесь, что оно работает без ошибок.
 
-## Lesson review
+## Обзор урока
 
-In this lesson, you updated your app to:
+В этом уроке вы обновили свое приложение, чтобы:
 
--   use a local web server (`json-server`)
--   use asynchronous service methods to retrieve data.
+-   использовать локальный веб-сервер (`json-server`)
 
-Congratulations! You've successfully completed this tutorial and are ready to continue your journey with building even more complex Angular Apps. If you would like to learn more, please consider completing some of Angular's other developer [tutorials](tutorial) and [guides](/guide/developer-guide-overview).
+-   использовать асинхронные методы сервиса для получения данных.
+
+Поздравляем! Вы успешно завершили этот урок и готовы продолжить свое путешествие по созданию еще более сложных приложений Angular Apps. Если вы хотите узнать больше, пожалуйста, рассмотрите другие [учебники](tutorial) и [руководства](/guide/developer-guide-overview) по Angular для разработчиков.

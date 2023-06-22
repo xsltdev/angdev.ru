@@ -1,377 +1,364 @@
-# Validating form input
+# Проверка вводимых данных
 
-You can improve overall data quality by validating user input for accuracy and completeness.
-This page shows how to validate user input from the UI and display useful validation messages, in both reactive and template-driven forms.
+Вы можете улучшить общее качество данных, проверяя вводимые пользователем данные на точность и полноту. На этой странице показано, как проверять пользовательский ввод из пользовательского интерфейса и отображать полезные сообщения о проверке как в реактивных формах, так и в формах, управляемых шаблонами.
 
-## Prerequisites
+## Предварительные условия
 
-Before reading about form validation, you should have a basic understanding of the following.
+Прежде чем читать о валидации форм, вы должны иметь базовое представление о следующем.
 
--   [TypeScript](https://www.typescriptlang.org/ 'The TypeScript language') and HTML5 programming
--   Fundamental concepts of [Angular application design](guide/architecture 'Introduction to Angular application-design concepts')
--   The [two types of forms that Angular supports](guide/forms-overview 'Introduction to Angular forms')
--   Basics of either [Template-driven Forms](guide/forms 'Template-driven forms guide') or [Reactive Forms](guide/reactive-forms 'Reactive forms guide')
+-   [TypeScript](https://www.typescriptlang.org/ 'The TypeScript language') и программирование на HTML5.
+
+-   Фундаментальные концепции [дизайна приложений Angular](руководство/архитектура 'Введение в концепции дизайна приложений Angular')
+
+-   [два типа форм, которые поддерживает Angular](guide/forms-overview 'Введение в формы Angular')
+
+-   Основы [Template-driven Forms](guide/forms 'Руководство по шаблоноориентированным формам') или [Reactive Forms](guide/reactive-forms 'Руководство по реактивным формам')
 
 <div class="alert is-helpful">
 
-Get the complete example code for the reactive and template-driven forms used here to illustrate form validation.
-Run the <live-example></live-example>.
+Получите полный код примера для реактивных и управляемых шаблонами форм, используемых здесь для иллюстрации валидации формы. Запустите <live-example></live-example>.
 
 </div>
 
 <a id="template-driven-validation"></a>
 
-## Validating input in template-driven forms
+## Валидация ввода в формах, управляемых шаблонами
 
-To add validation to a template-driven form, you add the same validation attributes as you would with [native HTML form validation](https://developer.mozilla.org/docs/Web/Guide/HTML/HTML5/Constraint_validation).
-Angular uses directives to match these attributes with validator functions in the framework.
+Чтобы добавить валидацию в форму, управляемую шаблоном, вы добавляете те же атрибуты валидации, что и в [native HTML form validation](https://developer.mozilla.org/docs/Web/Guide/HTML/HTML5/Constraint_validation). Angular использует директивы для согласования этих атрибутов с функциями валидатора во фреймворке.
 
-Every time the value of a form control changes, Angular runs validation and generates either a list of validation errors that results in an `INVALID` status, or null, which results in a VALID status.
+Каждый раз, когда значение элемента управления формы изменяется, Angular выполняет валидацию и генерирует либо список ошибок валидации, что приводит к статусу `INVALID`, либо null, что приводит к статусу VALID.
 
-You can then inspect the control's state by exporting `ngModel` to a local template variable.
-The following example exports `NgModel` into a variable called `name`:
+Затем вы можете проверить состояние элемента управления, экспортировав `ngModel` в локальную переменную шаблона. Следующий пример экспортирует `NgModel` в переменную с именем `name`:
 
 <code-example header="template/hero-form-template.component.html (name)" path="form-validation/src/app/template/hero-form-template.component.html" region="name-with-error-msg"></code-example>
 
 Notice the following features illustrated by the example.
 
 -   The `<input>` element carries the HTML validation attributes: `required` and `minlength`.
+
     It also carries a custom validator directive, `forbiddenName`.
+
     For more information, see the [Custom validators](#custom-validators) section.
 
 -   `#name="ngModel"` exports `NgModel` into a local variable called `name`.
+
     `NgModel` mirrors many of the properties of its underlying `FormControl` instance, so you can use this in the template to check for control states such as `valid` and `dirty`.
+
     For a full list of control properties, see the [AbstractControl](api/forms/AbstractControl) API reference.
 
     -   The `*ngIf` on the `<div>` element reveals a set of nested message `divs` but only if the `name` is invalid and the control is either `dirty` or `touched`.
 
     -   Each nested `<div>` can present a custom message for one of the possible validation errors.
+
         There are messages for `required`, `minlength`, and `forbiddenName`.
 
 <a id="dirty-or-touched"></a>
 
 <div class="alert is-helpful">
 
-To prevent the validator from displaying errors before the user has a chance to edit the form, you should check for either the `dirty` or `touched` states in a control.
+Чтобы валидатор не выводил ошибки до того, как у пользователя появится возможность редактировать форму, необходимо проверить наличие у элемента управления состояния `dirty` или `touched`.
 
--   When the user changes the value in the watched field, the control is marked as "dirty"
--   When the user blurs the form control element, the control is marked as "touched"
+-   Когда пользователь изменяет значение в наблюдаемом поле, элемент управления помечается как "грязный".
+
+-   Когда пользователь размывает элемент управления формы, элемент управления помечается как "тронутый".
 
 </div>
 
 <a id="reactive-form-validation"></a>
 
-## Validating input in reactive forms
+## Проверка ввода в реактивных формах
 
-In a reactive form, the source of truth is the component class.
-Instead of adding validators through attributes in the template, you add validator functions directly to the form control model in the component class.
-Angular then calls these functions whenever the value of the control changes.
+В реактивной форме источником истины является класс компонента. Вместо того чтобы добавлять валидаторы через атрибуты в шаблоне, вы добавляете функции валидатора непосредственно в модель элемента управления формы в классе компонента.
 
-### Validator functions
+Затем Angular вызывает эти функции при каждом изменении значения элемента управления.
 
-Validator functions can be either synchronous or asynchronous.
+### Функции валидатора
 
-| Validator type   | Details                                                                                                                                                                                                                 |
-| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sync validators  | Synchronous functions that take a control instance and immediately return either a set of validation errors or `null`. Pass these in as the second argument when you instantiate a `FormControl`.                       |
-| Async validators | Asynchronous functions that take a control instance and return a Promise or Observable that later emits a set of validation errors or `null`. Pass these in as the third argument when you instantiate a `FormControl`. |
+Функции валидатора могут быть как синхронными, так и асинхронными.
 
-For performance reasons, Angular only runs async validators if all sync validators pass.
-Each must complete before errors are set.
+| Тип валидатора | Подробности | | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |.
 
-### Built-in validator functions
+Синхронные валидаторы | Sync validators | Синхронные функции, которые принимают экземпляр элемента управления и немедленно возвращают либо набор ошибок валидации, либо `null`. Передайте их в качестве второго аргумента при инстанцировании `FormControl`. |
 
-You can choose to [write your own validator functions](#custom-validators), or you can use some of Angular's built-in validators.
+| Асинхронные валидаторы | Асинхронные функции, которые принимают экземпляр элемента управления и возвращают Promise или Observable, которые позже выдают набор ошибок валидации или `null`. Передайте их в качестве третьего аргумента при инстанцировании `FormControl`. |
 
-The same built-in validators that are available as attributes in template-driven forms, such as `required` and `minlength`, are all available to use as functions from the `Validators` class.
-For a full list of built-in validators, see the [Validators](api/forms/Validators) API reference.
+По соображениям производительности, Angular запускает асинхронные валидаторы только в том случае, если все синхронные валидаторы прошли. Каждый из них должен завершиться до появления ошибок.
 
-To update the hero form to be a reactive form, use some of the same
-built-in validators &mdash;this time, in function form, as in the following example.
+### Встроенные функции валидатора
+
+Вы можете выбрать [написать свои собственные функции валидатора] (#custom-validators) или использовать некоторые встроенные валидаторы Angular.
+
+Те же встроенные валидаторы, которые доступны как атрибуты в формах, управляемых шаблонами, такие как `required` и `minlength`, доступны для использования в качестве функций класса `Validators`. Полный список встроенных валидаторов приведен в справочнике API [Validators](api/forms/Validators).
+
+Чтобы обновить форму героя и сделать ее реактивной, используйте некоторые из тех же встроенных валидаторов &mdash; на этот раз в форме функции, как в следующем примере.
 
 <a id="reactive-component-class"></a>
 
-<code-example header="reactive/hero-form-reactive.component.ts (validator functions)" path="form-validation/src/app/reactive/hero-form-reactive.component.1.ts" region="form-group"></code-example>
+<code-example header="reactive/hero-form-reactive.component.ts (функции валидатора)" path="form-validation/src/app/reactive/hero-form-reactive.component.1.ts" region="form-group"></code-example>.
 
-In this example, the `name` control sets up two built-in validators &mdash;`Validators.required` and `Validators.minLength(4)`&mdash; and one custom validator, `forbiddenNameValidator`.
-\(For more details see [custom validators](#custom-validators).\)
+В этом примере элемент управления `name` устанавливает два встроенных валидатора &mdash;`Validators.required` и `Validators.minLength(4)`&mdash; и один пользовательский валидатор, `forbiddenNameValidator`. \(Подробнее смотрите [пользовательские валидаторы](#custom-validators).\)
 
-All of these validators are synchronous, so they are passed as the second argument.
-Notice that you can support multiple validators by passing the functions in as an array.
+Все эти валидаторы являются синхронными, поэтому они передаются в качестве второго аргумента. Обратите внимание, что вы можете поддерживать несколько валидаторов, передавая функции в виде массива.
 
-This example also adds a few getter methods.
-In a reactive form, you can always access any form control through the `get` method on its parent group, but sometimes it's useful to define getters as shorthand for the template.
+Этот пример также добавляет несколько методов getter. В реактивной форме вы всегда можете получить доступ к любому элементу управления формы через метод `get` его родительской группы, но иногда полезно определить геттеры как сокращение шаблона.
 
-If you look at the template for the `name` input again, it is fairly similar to the template-driven example.
+Если вы снова посмотрите на шаблон для ввода `name`, то он довольно похож на пример с шаблоном.
 
-<code-example header="reactive/hero-form-reactive.component.html (name with error msg)" path="form-validation/src/app/reactive/hero-form-reactive.component.html" region="name-with-error-msg"></code-example>
+<code-example header="reactive/hero-form-reactive.component.html (name with error msg)" path="form-validation/src/app/reactive/hero-form-reactive.component.html" region="name-with-error-msg"></code-example>.
 
-This form differs from the template-driven version in that it no longer exports any directives.
-Instead, it uses the `name` getter defined in the component class.
+Эта форма отличается от версии, основанной на шаблонах, тем, что она больше не экспортирует никаких директив. Вместо этого она использует геттер `name`, определенный в классе компонента.
 
-Notice that the `required` attribute is still present in the template.
-Although it's not necessary for validation, it should be retained to for accessibility purposes.
+Обратите внимание, что атрибут `required` все еще присутствует в шаблоне. Хотя он не нужен для валидации, его следует сохранить в целях доступности.
 
 <a id="custom-validators"></a>
 
-## Defining custom validators
+## Определение пользовательских валидаторов
 
-The built-in validators don't always match the exact use case of your application, so you sometimes need to create a custom validator.
+Встроенные валидаторы не всегда соответствуют конкретному случаю использования вашего приложения, поэтому иногда необходимо создать пользовательский валидатор.
 
-Consider the `forbiddenNameValidator` function from previous [reactive-form examples](#reactive-component-class).
-Here's what the definition of that function looks like.
+Рассмотрим функцию `forbiddenNameValidator` из предыдущих примеров [reactive-form](#reactive-component-class). Вот как выглядит определение этой функции.
 
-<code-example header="shared/forbidden-name.directive.ts (forbiddenNameValidator)" path="form-validation/src/app/shared/forbidden-name.directive.ts" region="custom-validator"></code-example>
+<code-example header="shared/forbidden-name.directive.ts (forbiddenNameValidator)" path="form-validation/src/app/shared/forbidden-name.directive.ts" region="custom-validator"></code-example>.
 
-The function is a factory that takes a regular expression to detect a _specific_ forbidden name and returns a validator function.
+Функция представляет собой фабрику, которая принимает регулярное выражение для определения _конкретного_ запрещенного имени и возвращает функцию валидатора.
 
-In this sample, the forbidden name is "bob", so the validator rejects any hero name containing "bob".
-Elsewhere it could reject "alice" or any name that the configuring regular expression matches.
+В данном примере запрещенным именем является "bob", поэтому валидатор отклоняет любое имя героя, содержащее "bob". В других местах он может отклонить "alice" или любое имя, которому соответствует конфигурирующее регулярное выражение.
 
-The `forbiddenNameValidator` factory returns the configured validator function.
-That function takes an Angular control object and returns _either_ null if the control value is valid _or_ a validation error object.
-The validation error object typically has a property whose name is the validation key, `'forbiddenName'`, and whose value is an arbitrary dictionary of values that you could insert into an error message, `{name}`.
+Фабрика `forbiddenNameValidator` возвращает настроенную функцию валидатора. Эта функция принимает объект управления Angular и возвращает либо null, если значение элемента управления действительно, либо объект ошибки валидации.
 
-Custom async validators are similar to sync validators, but they must instead return a Promise or observable that later emits null or a validation error object.
-In the case of an observable, the observable must complete, at which point the form uses the last value emitted for validation.
+Объект ошибки валидации обычно имеет свойство, имя которого - ключ валидации, `'forbiddenName'`, а значение - произвольный словарь значений, которые можно вставить в сообщение об ошибке, `{name}`.
+
+Пользовательские валидаторы async похожи на валидаторы sync, но вместо этого они должны возвращать Promise или наблюдаемую, которая позже выдает null или объект ошибки валидации. В случае с наблюдаемой, она должна завершиться, после чего форма использует последнее выданное значение для валидации.
 
 <a id="adding-to-reactive-forms"></a>
 
-### Adding custom validators to reactive forms
+### Добавление пользовательских валидаторов в реактивные формы
 
-In reactive forms, add a custom validator by passing the function directly to the `FormControl`.
+В реактивные формы можно добавить пользовательский валидатор, передав функцию непосредственно в `FormControl`.
 
-<code-example header="reactive/hero-form-reactive.component.ts (validator functions)" path="form-validation/src/app/reactive/hero-form-reactive.component.1.ts" region="custom-validator"></code-example>
+<code-example header="reactive/hero-form-reactive.component.ts (функции валидатора)" path="form-validation/src/app/reactive/hero-form-reactive.component.1.ts" region="custom-validator"></code-example>.
 
 <a id="adding-to-template-driven-forms"></a>
 
-### Adding custom validators to template-driven forms
+### Добавление пользовательских валидаторов в формы, управляемые шаблонами
 
-In template-driven forms, add a directive to the template, where the directive wraps the validator function.
-For example, the corresponding `ForbiddenValidatorDirective` serves as a wrapper around the `forbiddenNameValidator`.
+В формах, управляемых шаблонами, добавьте директиву в шаблон, где директива обертывает функцию валидатора. Например, соответствующая директива `ForbiddenValidatorDirective` служит оберткой для `forbiddenNameValidator`.
 
-Angular recognizes the directive's role in the validation process because the directive registers itself with the `NG_VALIDATORS` provider, as shown in the following example.
-`NG_VALIDATORS` is a predefined provider with an extensible collection of validators.
+Angular распознает роль директивы в процессе валидации, поскольку директива регистрирует себя с провайдером `NG_VALIDATORS`, как показано в следующем примере. `NG_VALIDATORS` - это предопределенный провайдер с расширяемой коллекцией валидаторов.
 
-<code-example header="shared/forbidden-name.directive.ts (providers)" path="form-validation/src/app/shared/forbidden-name.directive.ts" region="directive-providers"></code-example>
+<code-example header="shared/forbidden-name.directive.ts (providers)" path="form-validation/src/app/shared/forbidden-name.directive.ts" region="directive-providers"></code-example>.
 
-The directive class then implements the `Validator` interface, so that it can easily integrate with Angular forms.
-Here is the rest of the directive to help you get an idea of how it all comes together.
+Затем класс директивы реализует интерфейс `Validator`, чтобы его можно было легко интегрировать с формами Angular. Ниже приведена остальная часть директивы, чтобы вы могли получить представление о том, как все это работает.
 
-<code-example header="shared/forbidden-name.directive.ts (directive)" path="form-validation/src/app/shared/forbidden-name.directive.ts" region="directive"></code-example>
+<code-example header="shared/forbidden-name.directive.ts (directive)" path="form-validation/src/app/shared/forbidden-name.directive.ts" region="directive"></code-example>.
 
-Once the `ForbiddenValidatorDirective` is ready, you can add its selector, `appForbiddenName`, to any input element to activate it.
-For example:
+Когда `ForbiddenValidatorDirective` готова, вы можете добавить ее селектор, `appForbiddenName`, к любому элементу ввода, чтобы активировать его. Например:
 
-<code-example header="template/hero-form-template.component.html (forbidden-name-input)" path="form-validation/src/app/template/hero-form-template.component.html" region="name-input"></code-example>
+<code-example header="template/hero-form-template.component.html (forbidden-name-input)" path="form-validation/src/app/template/hero-form-template.component.html" region="name-input"></code-example>.
 
 <div class="alert is-helpful">
 
-Notice that the custom validation directive is instantiated with `useExisting` rather than `useClass`.
-The registered validator must be _this instance_ of the `ForbiddenValidatorDirective` &mdash;the instance in the form with its `forbiddenName` property bound to "bob".
+Обратите внимание, что пользовательская директива валидации инстанцируется с помощью `useExisting`, а не `useClass`. Зарегистрированный валидатор должен быть _этим экземпляром_ директивы `ForbiddenValidatorDirective` &mdash; экземпляром в форме с его свойством `forbiddenName`, привязанным к "bob".
 
-If you were to replace `useExisting` with `useClass`, then you'd be registering a new class instance, one that doesn't have a `forbiddenName`.
+Если вы замените `useExisting` на `useClass`, то вы зарегистрируете новый экземпляр класса, у которого нет `forbiddenName`.
 
 </div>
 
-## Control status CSS classes
+## CSS-классы состояния элемента управления
 
-Angular automatically mirrors many control properties onto the form control element as CSS classes.
-Use these classes to style form control elements according to the state of the form.
-The following classes are currently supported.
+Angular автоматически отображает многие свойства элементов управления на элемент управления формы в виде классов CSS. Используйте эти классы для стилизации элементов управления формой в зависимости от состояния формы.
+
+В настоящее время поддерживаются следующие классы.
 
 -   `.ng-valid`
+
 -   `.ng-invalid`
+
 -   `.ng-pending`
+
 -   `.ng-pristine`
+
 -   `.ng-dirty`
+
 -   `.ng-untouched`
+
 -   `.ng-touched`
--   `.ng-submitted` \(enclosing form element only\)
 
-In the following example, the hero form uses the `.ng-valid` and `.ng-invalid` classes to
-set the color of each form control's border.
+-   `.ng-submitted` \(заключающий элемент формы только\)
 
-<code-example header="forms.css (status classes)" path="form-validation/src/assets/forms.css"></code-example>
+В следующем примере форма героя использует классы `.ng-valid` и `.ng-invalid` для установки цвета границы каждого элемента формы.
 
-## Cross-field validation
+<code-example header="forms.css (классы состояния)" path="form-validation/src/assets/forms.css"></code-example>.
 
-A cross-field validator is a [custom validator](#custom-validators 'Read about custom validators') that compares the values of different fields in a form and accepts or rejects them in combination.
-For example, you might have a form that offers mutually incompatible options, so that if the user can choose A or B, but not both.
-Some field values might also depend on others; a user might be allowed to choose B only if A is also chosen.
+## Валидация перекрестных полей
 
-The following cross validation examples show how to do the following:
+Межполевой валидатор - это [пользовательский валидатор] (#custom-validators 'Читайте о пользовательских валидаторах'), который сравнивает значения различных полей в форме и принимает или отвергает их в комбинации. Например, у вас может быть форма, предлагающая взаимно несовместимые варианты, так что пользователь может выбрать A или B, но не оба.
 
--   Validate reactive or template-based form input based on the values of two sibling controls,
--   Show a descriptive error message after the user interacted with the form and the validation failed.
+Значения одних полей могут зависеть от других; пользователю может быть разрешено выбрать B только в том случае, если он также выбрал A.
 
-The examples use cross-validation to ensure that heroes do not reveal their true identities by filling out the Hero Form.
-The validators do this by checking that the hero names and alter egos do not match.
+Следующие примеры перекрестной валидации показывают, как сделать следующее:
 
-### Adding cross-validation to reactive forms
+-   Валидировать реактивный или основанный на шаблоне ввод формы на основе значений двух родственных элементов управления,
 
-The form has the following structure:
+-   показать описательное сообщение об ошибке после того, как пользователь взаимодействовал с формой и проверка не прошла.
+
+В примерах используется перекрестная валидация, чтобы убедиться, что герои не раскрывают свою истинную личность, заполняя форму героя. Валидаторы проверяют, что имена героев и их альтер-эго не совпадают.
+
+### Добавление перекрестной проверки в реактивные формы
+
+Форма имеет следующую структуру:
 
 <code-example format="javascript" language="javascript">
 
-const heroForm = new FormGroup({
-'name': new FormControl(),
+const heroForm = new FormGroup({ 'name': new FormControl(),
 'alterEgo': new FormControl(),
+
 'power': new FormControl()
+
 });
 
 </code-example>
 
-Notice that the `name` and `alterEgo` are sibling controls.
-To evaluate both controls in a single custom validator, you must perform the validation in a common ancestor control: the `FormGroup`.
-You query the `FormGroup` for its child controls so that you can compare their values.
+Обратите внимание, что элементы управления `name` и `alterEgo` являются родственными элементами управления. Чтобы оценить оба элемента управления в одном пользовательском валидаторе, вы должны выполнить проверку в общем элементе управления-предке: `FormGroup`.
+Вы запрашиваете `FormGroup` для его дочерних элементов управления, чтобы сравнить их значения.
 
-To add a validator to the `FormGroup`, pass the new validator in as the second argument on creation.
+Чтобы добавить валидатор в `FormGroup`, передайте новый валидатор в качестве второго аргумента при создании.
 
 <code-example format="javascript" language="javascript">
 
-const heroForm = new FormGroup({
-'name': new FormControl(),
+const heroForm = new FormGroup({ 'name': new FormControl(),
 'alterEgo': new FormControl(),
+
 'power': new FormControl()
-}, { validators: identityRevealedValidator });
+
+}, { валидаторы: identityRevealedValidator });
 
 </code-example>
 
-The validator code is as follows.
+Код валидатора выглядит следующим образом.
 
-<code-example header="shared/identity-revealed.directive.ts" path="form-validation/src/app/shared/identity-revealed.directive.ts" region="cross-validation-validator"></code-example>
+<code-example header="shared/identity-revealed.directive.ts" path="form-validation/src/app/shared/identity-revealed.directive.ts" region="cross-validation-validator"></code-example>.
 
-The `identity` validator implements the `ValidatorFn` interface.
-It takes an Angular control object as an argument and returns either null if the form is valid, or `ValidationErrors` otherwise.
+Валидатор `identity` реализует интерфейс `ValidatorFn`. Он принимает в качестве аргумента объект элемента управления Angular и возвращает либо null, если форма валидна, либо `ValidationErrors` в противном случае.
 
-The validator retrieves the child controls by calling the `FormGroup`'s [get](api/forms/AbstractControl#get) method, then compares the values of the `name` and `alterEgo` controls.
+Валидатор получает дочерние элементы управления, вызывая метод `FormGroup` [get](api/forms/AbstractControl#get), затем сравнивает значения элементов управления `name` и `alterEgo`.
 
-If the values do not match, the hero's identity remains secret, both are valid, and the validator returns null.
-If they do match, the hero's identity is revealed and the validator must mark the form as invalid by returning an error object.
+Если значения не совпадают, личность героя остается тайной, оба элемента являются действительными, и валидатор возвращает null. Если они совпадают, личность героя раскрывается, и валидатор должен пометить форму как недействительную, вернув объект ошибки.
 
-To provide better user experience, the template shows an appropriate error message when the form is invalid.
+Для улучшения пользовательского опыта шаблон показывает соответствующее сообщение об ошибке, если форма недействительна.
 
-<code-example header="reactive/hero-form-template.component.html" path="form-validation/src/app/reactive/hero-form-reactive.component.html" region="cross-validation-error-message"></code-example>
+<code-example header="reactive/hero-form-template.component.html" path="form-validation/src/app/reactive/hero-form-reactive.component.html" region="cross-validation-error-message"></code-example>.
 
-This `*ngIf` displays the error if the `FormGroup` has the cross validation error returned by the `identityRevealed` validator, but only if the user finished [interacting with the form](#dirty-or-touched).
+Этот `*ngIf` выводит ошибку, если `FormGroup` имеет ошибку кросс-валидации, возвращенную валидатором `identityRevealed`, но только если пользователь закончил [взаимодействие с формой](#dirty-or-touched).
 
-### Adding cross-validation to template-driven forms
+### Добавление перекрестной валидации в формы, управляемые шаблонами
 
-For a template-driven form, you must create a directive to wrap the validator function.
-You provide that directive as the validator using the [`NG_VALIDATORS` token](#adding-to-template-driven-forms 'Read about providing validators'), as shown in the following example.
+Для формы, управляемой шаблоном, вы должны создать директиву для обертывания функции валидатора. Вы предоставляете эту директиву в качестве валидатора, используя токен [`NG_VALIDATORS`](#adding-to-template-driven-forms 'Читайте о предоставлении валидаторов'), как показано в следующем примере.
 
-<code-example header="shared/identity-revealed.directive.ts" path="form-validation/src/app/shared/identity-revealed.directive.ts" region="cross-validation-directive"></code-example>
+<code-example header="shared/identity-revealed.directive.ts" path="form-validation/src/app/shared/identity-revealed.directive.ts" region="cross-validation-directive"></code-example>.
 
-You must add the new directive to the HTML template.
-Because the validator must be registered at the highest level in the form, the following template puts the directive on the `form` tag.
+Вы должны добавить новую директиву в HTML-шаблон. Поскольку валидатор должен быть зарегистрирован на самом высоком уровне в форме, следующий шаблон помещает директиву в тег `form`.
 
-<code-example header="template/hero-form-template.component.html" path="form-validation/src/app/template/hero-form-template.component.html" region="cross-validation-register-validator"></code-example>
+<code-example header="template/hero-form-template.component.html" path="form-validation/src/app/template/hero-form-template.component.html" region="cross-validation-register-validator"></code-example>.
 
-To provide better user experience, an appropriate error message appears when the form is invalid.
+Для повышения удобства пользователей при недействительности формы появляется соответствующее сообщение об ошибке.
 
-<code-example header="template/hero-form-template.component.html" path="form-validation/src/app/template/hero-form-template.component.html" region="cross-validation-error-message"></code-example>
+<code-example header="template/hero-form-template.component.html" path="form-validation/src/app/template/hero-form-template.component.html" region="cross-validation-error-message"></code-example>.
 
-This is the same in both template-driven and reactive forms.
+Это одинаково как для форм, управляемых шаблонами, так и для реактивных форм.
 
-## Creating asynchronous validators
+## Создание асинхронных валидаторов
 
-Asynchronous validators implement the `AsyncValidatorFn` and `AsyncValidator` interfaces.
-These are very similar to their synchronous counterparts, with the following differences.
+Асинхронные валидаторы реализуют интерфейсы `AsyncValidatorFn` и `AsyncValidator`. Они очень похожи на свои синхронные аналоги, со следующими отличиями.
 
--   The `validate()` functions must return a Promise or an observable,
--   The observable returned must be finite, meaning it must complete at some point.
-    To convert an infinite observable into a finite one, pipe the observable through a filtering operator such as `first`, `last`, `take`, or `takeUntil`.
+-   Функции `validate()` должны возвращать Promise или наблюдаемую,
 
-Asynchronous validation happens after the synchronous validation, and is performed only if the synchronous validation is successful.
-This check lets forms avoid potentially expensive async validation processes \(such as an HTTP request\) if the more basic validation methods have already found invalid input.
+-   Возвращаемая наблюдаемая должна быть конечной, то есть она должна завершиться в какой-то момент.
 
-After asynchronous validation begins, the form control enters a `pending` state.
-Inspect the control's `pending` property and use it to give visual feedback about the ongoing validation operation.
+    Чтобы преобразовать бесконечную наблюдаемую в конечную, пропустите наблюдаемую через оператор фильтрации, такой как `first`, `last`, `take` или `takeUntil`.
 
-A common UI pattern is to show a spinner while the async validation is being performed.
-The following example shows how to achieve this in a template-driven form.
+Асинхронная проверка происходит после синхронной проверки и выполняется только в случае успешной синхронной проверки. Эта проверка позволяет формам избежать потенциально дорогостоящих процессов асинхронной валидации\(таких как HTTP запрос\), если более простые методы валидации уже обнаружили недопустимый ввод.
+
+После начала асинхронной проверки элемент управления формой переходит в состояние `отложена`. Проверьте свойство `pending` элемента управления и используйте его для визуальной обратной связи о текущей операции проверки.
+
+Распространенным шаблоном пользовательского интерфейса является отображение спиннера во время выполнения асинхронной валидации. В следующем примере показано, как этого добиться в форме, управляемой шаблоном.
 
 <code-example format="html" language="html">
 
-&lt;input [(ngModel)]="name" #model="ngModel" appSomeAsyncValidator&gt;
-&lt;app-spinner \*ngIf="model.pending"&gt;&lt;/app-spinner&gt;
+&lt;input [(ngModel)]="name" #model="ngModel" appSomeAsyncValidator&gt; &lt;app-spinner \*ngIf="model.pending"&gt;&lt;/app-spinner&gt;
 
 </code-example>
 
-### Implementing a custom async validator
+### Реализация пользовательского асинхронного валидатора
 
-In the following example, an async validator ensures that heroes pick an alter ego that is not already taken.
-New heroes are constantly enlisting and old heroes are leaving the service, so the list of available alter egos cannot be retrieved ahead of time.
-To validate the potential alter ego entry, the validator must initiate an asynchronous operation to consult a central database of all currently enlisted heroes.
+В следующем примере асинхронный валидатор гарантирует, что герои выберут альтер-эго, которое еще не занято. Новые герои постоянно поступают на службу, а старые покидают ее, поэтому список доступных альтер-эго невозможно получить заранее.
 
-The following code creates the validator class, `UniqueAlterEgoValidator`, which implements the `AsyncValidator` interface.
+Для проверки потенциального альтер-эго валидатор должен инициировать асинхронную операцию, чтобы обратиться к центральной базе данных всех ныне зачисленных героев.
 
-<code-example path="form-validation/src/app/shared/alter-ego.directive.ts" region="async-validator"></code-example>
+Следующий код создает класс валидатора, `UniqueAlterEgoValidator`, который реализует интерфейс `AsyncValidator`.
 
-The constructor injects the `HeroesService`, which defines the following interface.
+<code-example path="form-validation/src/app/shared/alter-ego.directive.ts" region="async-validator"></code-example>.
+
+Конструктор инжектирует `HeroesService`, который определяет следующий интерфейс.
 
 <code-example format="typescript" language="typescript">
 
-interface HeroesService {
-isAlterEgoTaken: (alterEgo: string) =&gt; Observable&lt;boolean&gt;;
+interface HeroesService { isAlterEgoTaken: (alterEgo: string) =&gt; Observable&lt;boolean&gt;;
 }
 
 </code-example>
 
-In a real world application, the `HeroesService` would be responsible for making an HTTP request to the hero database to check if the alter ego is available.
-From the validator's point of view, the actual implementation of the service is not important, so the example can just code against the `HeroesService` interface.
+В реальном приложении `HeroesService` будет отвечать за выполнение HTTP-запроса к базе данных героев, чтобы проверить, доступен ли альтер-эго. С точки зрения валидатора, фактическая реализация сервиса не важна, поэтому в примере можно просто написать код на основе интерфейса `HeroesService`.
 
-As the validation begins, the `UniqueAlterEgoValidator` delegates to the `HeroesService` `isAlterEgoTaken()` method with the current control value.
-At this point the control is marked as `pending` and remains in this state until the observable chain returned from the `validate()` method completes.
+Когда начинается проверка, `UniqueAlterEgoValidator` делегирует методу `HeroesService` `isAlterEgoTaken()` текущее значение элемента управления. В этот момент элемент управления помечается как `pending` и остается в этом состоянии до тех пор, пока не завершится цепочка наблюдаемых, возвращенная из метода `validate()`.
 
-The `isAlterEgoTaken()` method dispatches an HTTP request that checks if the alter ego is available, and returns `Observable<boolean>` as the result.
-The `validate()` method pipes the response through the `map` operator and transforms it into a validation result.
+Метод `isAlterEgoTaken()` отправляет HTTP-запрос, который проверяет, доступен ли альтер-эго, и возвращает `Observable<boolean>` в качестве результата. Метод `validate()` передает ответ через оператор `map` и преобразует его в результат проверки.
 
-The method then, like any validator, returns `null` if the form is valid, and `ValidationErrors` if it is not.
-This validator handles any potential errors with the `catchError` operator.
-In this case, the validator treats the `isAlterEgoTaken()` error as a successful validation, because failure to make a validation request does not necessarily mean that the alter ego is invalid.
-You could handle the error differently and return the `ValidationError` object instead.
+Затем метод, как и любой другой валидатор, возвращает `null`, если форма действительна, и `ValidationErrors`, если нет. Этот валидатор обрабатывает любые потенциальные ошибки с помощью оператора `catchError`.
 
-After some time passes, the observable chain completes and the asynchronous validation is done.
-The `pending` flag is set to `false`, and the form validity is updated.
+В данном случае валидатор рассматривает ошибку `isAlterEgoTaken()` как успешную валидацию, потому что неспособность выполнить запрос валидации не обязательно означает, что альтер-эго недействительно.
 
-### Adding async validators to reactive forms
+Вы можете обработать ошибку по-другому и вернуть вместо нее объект `ValidationError`.
 
-To use an async validator in reactive forms, begin by injecting the validator into the constructor of the component class.
+По истечении некоторого времени цепочка наблюдаемых завершается, и асинхронная валидация завершается. Флаг `pending` устанавливается в `false`, а валидность формы обновляется.
 
-<code-example path="form-validation/src/app/reactive/hero-form-reactive.component.2.ts" region="async-validator-inject"></code-example>
+### Добавление асинхронных валидаторов в реактивные формы
 
-Then, pass the validator function directly to the `FormControl` to apply it.
+Чтобы использовать асинхронный валидатор в реактивных формах, начните с инъекции валидатора в конструктор класса компонента.
 
-In the following example, the `validate` function of `UniqueAlterEgoValidator` is applied to `alterEgoControl` by passing it to the control's `asyncValidators` option and binding it to the instance of `UniqueAlterEgoValidator` that was injected into `HeroFormReactiveComponent`.
-The value of `asyncValidators` can be either a single async validator function, or an array of functions.
-To learn more about `FormControl` options, see the [AbstractControlOptions](api/forms/AbstractControlOptions) API reference.
+<code-example path="form-validation/src/app/reactive/hero-form-reactive.component.2.ts" region="async-validator-inject"></code-example>.
 
-<code-example path="form-validation/src/app/reactive/hero-form-reactive.component.2.ts" region="async-validator-usage"></code-example>
+Затем передайте функцию валидатора непосредственно в `FormControl`, чтобы применить ее.
 
-### Adding async validators to template-driven forms
+В следующем примере функция `validate` функции `UniqueAlterEgoValidator` применяется к `alterEgoControl` путем передачи ей опции `asyncValidators` элемента управления и привязки ее к экземпляру `UniqueAlterEgoValidator`, который был инжектирован в `HeroFormReactiveComponent`. Значение `asyncValidators` может быть либо одной функцией асинхронного валидатора, либо массивом функций.
 
-To use an async validator in template-driven forms, create a new directive and register the `NG_ASYNC_VALIDATORS` provider on it.
+Чтобы узнать больше об опциях `FormControl`, смотрите API-справочник [AbstractControlOptions](api/forms/AbstractControlOptions).
 
-In the example below, the directive injects the `UniqueAlterEgoValidator` class that contains the actual validation logic and invokes it in the `validate` function, triggered by Angular when validation should happen.
+<code-example path="form-validation/src/app/reactive/hero-form-reactive.component.2.ts" region="async-validator-usage"></code-example>.
 
-<code-example path="form-validation/src/app/shared/alter-ego.directive.ts" region="async-validator-directive"></code-example>
+### Добавление асинхронных валидаторов в формы, управляемые шаблонами
 
-Then, as with synchronous validators, add the directive's selector to an input to activate it.
+Чтобы использовать асинхронный валидатор в формах, управляемых шаблонами, создайте новую директиву и зарегистрируйте на ней провайдер `NG_ASYNC_VALIDATORS`.
 
-<code-example header="template/hero-form-template.component.html (unique-alter-ego-input)" path="form-validation/src/app/template/hero-form-template.component.html" region="alterEgo-input"></code-example>
+В примере ниже директива инжектирует класс `UniqueAlterEgoValidator`, содержащий логику валидации, и вызывает его в функции `validate`, запускаемой Angular, когда валидация должна произойти.
 
-### Optimizing performance of async validators
+<code-example path="form-validation/src/app/shared/alter-ego.directive.ts" region="async-validator-directive"></code-example>.
 
-By default, all validators run after every form value change.
-With synchronous validators, this does not normally have a noticeable impact on application performance.
-Async validators, however, commonly perform some kind of HTTP request to validate the control.
-Dispatching an HTTP request after every keystroke could put a strain on the backend API, and should be avoided if possible.
+Затем, как и в случае с синхронными валидаторами, добавьте селектор директивы к входу, чтобы активировать ее.
 
-You can delay updating the form validity by changing the `updateOn` property from `change` \(default\) to `submit` or `blur`.
+<code-example header="template/hero-form-template.component.html (unique-alter-ego-input)" path="form-validation/src/app/template/hero-form-template.component.html" region="alterEgo-input"></code-example>.
 
-With template-driven forms, set the property in the template.
+### Оптимизация производительности асинхронных валидаторов
+
+По умолчанию все валидаторы запускаются после каждого изменения значения формы. В случае синхронных валидаторов это обычно не оказывает заметного влияния на производительность приложения.
+
+Асинхронные валидаторы, однако, обычно выполняют какой-либо HTTP-запрос для проверки элемента управления.
+
+Отправка HTTP-запроса после каждого нажатия клавиши может создать нагрузку на API бэкенда, и по возможности ее следует избегать.
+
+Вы можете отложить обновление валидности формы, изменив свойство `updateOn` с `change` \(default\) на `ubmit` или `blur`.
+
+Для форм, управляемых шаблонами, установите это свойство в шаблоне.
 
 <code-example format="html" language="html">
 
@@ -379,7 +366,7 @@ With template-driven forms, set the property in the template.
 
 </code-example>
 
-With reactive forms, set the property in the `FormControl` instance.
+В реактивных формах установите свойство в экземпляре `FormControl`.
 
 <code-example format="typescript" language="typescript">
 
@@ -387,11 +374,11 @@ new FormControl('', {updateOn: 'blur'});
 
 </code-example>
 
-## Interaction with native HTML form validation
+## Взаимодействие с собственной валидацией HTML-формы
 
-By default, Angular disables [native HTML form validation](https://developer.mozilla.org/docs/Web/Guide/HTML/Constraint_validation) by adding the `novalidate` attribute on the enclosing `<form>` and uses directives to match these attributes with validator functions in the framework.
-If you want to use native validation **in combination** with Angular-based validation, you can re-enable it with the `ngNativeValidate` directive.
-See the [API docs](api/forms/NgForm#native-dom-validation-ui) for details.
+По умолчанию Angular отключает [родную валидацию HTML-формы](https://developer.mozilla.org/docs/Web/Guide/HTML/Constraint_validation), добавляя атрибут `novalidate` на вложенную `<form>`, и использует директивы для согласования этих атрибутов с функциями валидатора во фреймворке. Если вы хотите использовать родную валидацию **в сочетании** с валидацией на основе Angular, вы можете снова включить ее с помощью директивы `ngNativeValidate`.
+
+Подробности смотрите в [API docs](api/forms/NgForm#native-dom-validation-ui).
 
 <!-- links -->
 
