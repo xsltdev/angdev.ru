@@ -1,12 +1,8 @@
 # DevTools Overview
 
-Angular DevTools is a browser extension that provides debugging and profiling capabilities for Angular applications. Angular DevTools supports Angular v12 and later when compiled with the [optimization configuration option](guide/workspace-config#optimization-configuration) disabled (<code>{optimization:false}</code>).
-
-<div class="video-container">
+Angular DevTools is a browser extension that provides debugging and profiling capabilities for Angular applications. Angular DevTools supports Angular v12 and later when compiled with the [optimization configuration option](guide/workspace-config#optimization-configuration) disabled (`{optimization:false}`).
 
 <iframe allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/bavWOHZM6zE"></iframe>
-
-</div>
 
 Angular DevTools можно найти в [Chrome Web Store](https://chrome.google.com/webstore/detail/angular-developer-tools/ienfalfjdbdpebioblfackkekamfmbnh) и в [Firefox Addons](https://addons.mozilla.org/en-GB/firefox/addon/angular-devtools/).
 

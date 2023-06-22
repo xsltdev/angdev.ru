@@ -268,60 +268,61 @@ ng build my-lib --watch
 
 <div class="alert is-important">
 
-The CLI `build` command uses a different builder and invokes a different build tool for libraries than it does for applications.
+Команда CLI `build` использует другой билдер и вызывает другой инструмент сборки для библиотек, чем для приложений.
 
--   The build system for applications, `@angular-devkit/build-angular`, is based on `webpack`, and is included in all new Angular CLI projects
--   The build system for libraries is based on `ng-packagr`.
-    It is only added to your dependencies when you add a library using `ng generate library my-lib`.
+-   Система сборки для приложений, `@angular-devkit/build-angular`, основана на `webpack` и включается во все новые проекты Angular CLI.
+-   Система сборки для библиотек основана на `ng-packagr`.
+    Она добавляется в ваши зависимости только тогда, когда вы добавляете библиотеку с помощью `ng generate library my-lib`.
 
-The two build systems support different things, and even where they support the same things, they do those things differently. This means that the TypeScript source can result in different JavaScript code in a built library than it would in a built application.
+Эти две системы сборки поддерживают разные вещи, и даже там, где они поддерживают одни и те же вещи, они делают это по-разному. Это означает, что источник TypeScript может привести к другому JavaScript-коду в собранной библиотеке, чем в собранном приложении.
 
-For this reason, an application that depends on a library should only use TypeScript path mappings that point to the _built library_. TypeScript path mappings should _not_ point to the library source `.ts` files.
+По этой причине приложение, зависящее от библиотеки, должно использовать только сопоставления путей TypeScript, указывающие на _собранную библиотеку_. Сопоставления путей TypeScript не должны указывать на исходные файлы библиотеки `.ts`.
 
 </div>
 
 <a id="ivy-libraries"></a>
 
-## Publishing libraries
+## Публикация библиотек
 
-There are two distribution formats to use when publishing a library:
+Существует два формата распространения, которые можно использовать при публикации библиотеки:
 
-| Distribution formats | Details | | :-------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Partial-Ivy \(recommended\) | Contains portable code that can be consumed by Ivy applications built with any version of Angular from v12 onwards. |
-| Full-Ivy | Contains private Angular Ivy instructions, which are not guaranteed to work across different versions of Angular. This format requires that the library and application are built with the _exact_ same version of Angular. This format is useful for environments where all library and application code is built directly from source. |
+| Distribution formats        | Details                                                                                                                                                                                                                                                                                                                 |
+| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Partial-Ivy \(recommended\) | Содержит переносимый код, который может быть использован приложениями Ivy, созданными с помощью любой версии Angular, начиная с v12.                                                                                                                                                                                    |
+| Full-Ivy                    | Содержит частные инструкции Angular Ivy, которые не гарантируют работу в разных версиях Angular. Этот формат требует, чтобы библиотека и приложение были собраны с _точно_ одинаковой версией Angular. Этот формат полезен в средах, где весь код библиотеки и приложения собирается непосредственно из исходного кода. |
 
-For publishing to npm use the partial-Ivy format as it is stable between patch versions of Angular.
+Для публикации в npm используйте формат partial-Ivy, так как он стабилен между версиями Angular.
 
-Avoid compiling libraries with full-Ivy code if you are publishing to npm because the generated Ivy instructions are not part of Angular's public API, and so might change between patch versions.
+Избегайте компиляции библиотек с полным кодом Ivy при публикации в npm, поскольку генерируемые инструкции Ivy не являются частью публичного API Angular и могут меняться между версиями патчей.
 
-## Ensuring library version compatibility
+## Обеспечение совместимости версий библиотек
 
-The Angular version used to build an application should always be the same or greater than the Angular versions used to build any of its dependent libraries. For example, if you had a library using Angular version 13, the application that depends on that library should use Angular version 13 or later.
-Angular does not support using an earlier version for the application.
+Версия Angular, используемая для создания приложения, всегда должна быть такой же или выше, чем версии Angular, используемые для создания любой из зависимых библиотек. Например, если у вас есть библиотека, использующая Angular версии 13, приложение, которое зависит от этой библиотеки, должно использовать Angular версии 13 или более поздней.
+Angular не поддерживает использование более ранней версии для приложения.
 
-If you intend to publish your library to npm, compile with partial-Ivy code by setting `"compilationMode": "partial"` in `tsconfig.prod.json`. This partial format is stable between different versions of Angular, so is safe to publish to npm.
-Code with this format is processed during the application build using the same version of the Angular compiler, ensuring that the application and all of its libraries use a single version of Angular.
+Если вы собираетесь опубликовать свою библиотеку на npm, скомпилируйте код с частичным плюсом, установив `"compilationMode": "partial"` в `tsconfig.prod.json`. Этот частичный формат стабилен между различными версиями Angular, поэтому его безопасно публиковать в npm.
+Код с таким форматом обрабатывается во время сборки приложения с помощью одной и той же версии компилятора Angular, что гарантирует, что приложение и все его библиотеки используют одну версию Angular.
 
-Avoid compiling libraries with full-Ivy code if you are publishing to npm because the generated Ivy instructions are not part of Angular's public API, and so might change between patch versions.
+Избегайте компиляции библиотек с полным кодом Ivy при публикации в npm, поскольку генерируемые инструкции Ivy не являются частью публичного API Angular и могут меняться между версиями патчей.
 
-If you've never published a package in npm before, you must create a user account. Read more in [Publishing npm Packages](https://docs.npmjs.com/getting-started/publishing-npm-packages).
+Если вы никогда раньше не публиковали пакет в npm, вам необходимо создать учетную запись пользователя. Подробнее читайте в [Публикация пакетов npm](https://docs.npmjs.com/getting-started/publishing-npm-packages).
 
-## Consuming partial-Ivy code outside the Angular CLI
+## Потребление частичного кода Ivy вне Angular CLI
 
-An application installs many Angular libraries from npm into its `node_modules` directory. However, the code in these libraries cannot be bundled directly along with the built application as it is not fully compiled.
-To finish compilation, use the Angular linker.
+Приложение устанавливает множество библиотек Angular из npm в каталог `node_modules`. Однако код из этих библиотек не может быть подключен непосредственно к собранному приложению, так как он не полностью скомпилирован.
+Чтобы завершить компиляцию, используйте компоновщик Angular.
 
-For applications that don't use the Angular CLI, the linker is available as a [Babel](https://babeljs.io) plugin. The plugin is to be imported from `@angular/compiler-cli/linker/babel`.
+Для приложений, не использующих Angular CLI, компоновщик доступен в виде плагина [Babel](https://babeljs.io). Плагин должен быть импортирован из `@angular/compiler-cli/linker/babel`.
 
-The Angular linker Babel plugin supports build caching, meaning that libraries only need to be processed by the linker a single time, regardless of other npm operations.
+Плагин Babel для компоновщика Angular поддерживает кэширование сборки, что означает, что библиотеки должны обрабатываться компоновщиком только один раз, независимо от других операций npm.
 
-Example of integrating the plugin into a custom [Webpack](https://webpack.js.org) build by registering the linker as a [Babel](https://babeljs.io) plugin using [babel-loader](https://webpack.js.org/loaders/babel-loader/#options).
+Пример интеграции плагина в пользовательскую сборку [Webpack](https://webpack.js.org) путем регистрации компоновщика как плагина [Babel](https://babeljs.io) с помощью [babel-loader](https://webpack.js.org/loaders/babel-loader/#options).
 
 <code-example header="webpack.config.mjs" path="angular-linker-plugin/webpack.config.mjs" region="webpack-config"></code-example>
 
 <div class="alert is-helpful">
 
-The Angular CLI integrates the linker plugin automatically, so if consumers of your library are using the CLI, they can install Ivy-native libraries from npm without any additional configuration.
+Angular CLI интегрирует плагин компоновщика автоматически, поэтому если потребители вашей библиотеки используют CLI, они могут установить библиотеки Ivy-native из npm без дополнительной настройки.
 
 </div>
 

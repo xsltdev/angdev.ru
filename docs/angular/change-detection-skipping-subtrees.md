@@ -1,22 +1,22 @@
-# Skipping component subtrees
+# Пропуск поддеревьев компонентов
 
-JavaScript, by default, uses mutable data structures that you can reference from multiple different components. Angular runs change detection over your entire component tree to make sure that the most up-to-date state of your data structures is reflected in the DOM.
+JavaScript по умолчанию использует изменяемые структуры данных, на которые можно ссылаться из нескольких различных компонентов. Angular выполняет обнаружение изменений во всем дереве компонентов, чтобы убедиться, что самое актуальное состояние структур данных отражается в DOM.
 
-Change detection is sufficiently fast for most applications. However, when an application has an especially large component tree, running change detection across the whole application can cause performance issues. You can address this by configuring change detection to only run on a subset of the component tree.
+Обнаружение изменений происходит достаточно быстро для большинства приложений. Однако, когда приложение имеет особенно большое дерево компонентов, запуск обнаружения изменений по всему приложению может вызвать проблемы с производительностью. Вы можете решить эту проблему, настроив обнаружение изменений только на подмножество дерева компонентов.
 
-If you are confident that a part of the application is not affected by a state change, you can use [OnPush](/api/core/ChangeDetectionStrategy) to skip change detection in an entire component subtree.
+Если вы уверены, что часть приложения не затронута изменением состояния, вы можете использовать [OnPush](/api/core/ChangeDetectionStrategy), чтобы пропустить обнаружение изменений во всем поддереве компонентов.
 
-## Using `OnPush`
+## Использование `OnPush`
 
-OnPush change detection instructs Angular to run change detection for a component subtree **only** when:
+Обнаружение изменений OnPush предписывает Angular запускать обнаружение изменений для поддерева компонентов **только** когда:
 
--   The root component of the subtree receives new inputs as the result of a template binding. Angular compares the current and past value of the input with `==`
--   Angular handles an event _(for example using event binding, output binding, or `@HostListener` )_ in the subtree's root component or any of its children whether they are using OnPush change detection or not.
+-   Корневой компонент поддерева получает новые входные данные в результате привязки шаблона. Angular сравнивает текущее и прошлое значение входа с `==`.
 
-You can set the change detection strategy of a component to `OnPush` in the `@Component` decorator:
+-   Angular обрабатывает событие _(например, используя привязку событий, привязку вывода или `@HostListener` )_ в корневом компоненте поддерева или любом из его дочерних компонентов, независимо от того, используют они обнаружение изменений OnPush или нет.
 
-```ts
-import {
+Вы можете установить стратегию обнаружения изменений компонента на `OnPush` в декораторе `@Component`:
+
+```ts import {
     ChangeDetectionStrategy,
     Component,
 } from '@angular/core';
@@ -26,53 +26,50 @@ import {
 export class MyComponent {}
 ```
 
-## Common change detection scenarios
+## Общие сценарии обнаружения изменений
 
-This section examines several common change detection scenarios to illustrate Angular's behavior.
+В этом разделе рассматриваются несколько распространенных сценариев обнаружения изменений, чтобы проиллюстрировать поведение Angular.
 
-## An event is handled by a component with default change detection
+## Событие обрабатывается компонентом с обнаружением изменений по умолчанию
 
-If Angular handles an event within a component without `OnPush` strategy, the framework executes change detection on the entire component tree. Angular will skip descendant component subtrees with roots using `OnPush`, which have not received new inputs.
+Если Angular обрабатывает событие в компоненте без стратегии `OnPush`, фреймворк выполняет обнаружение изменений для всего дерева компонентов. Angular пропустит нисходящие поддеревья компонентов с корнями, использующими `OnPush`, которые не получили новых входов.
 
-As an example, if we set the change detection strategy of `MainComponent` to `OnPush` and the user interacts with a component outside the subtree with root `MainComponent`, Angular will check all the green components from the diagram below (`AppComponent`, `HeaderComponent`, `SearchComponent`, `ButtonComponent`) unless `MainComponent` receives new inputs:
+Например, если мы установим стратегию обнаружения изменений для `MainComponent` в `OnPush` и пользователь будет взаимодействовать с компонентом вне поддерева с корнем `MainComponent`, Angular проверит все зеленые компоненты из диаграммы ниже (`AppComponent`, `HeaderComponent`, `SearchComponent`, `ButtonComponent`), если `MainComponent` не получит новых входов:
 
-<div class="lightbox">
-  <img alt="Change detection propagation from non-OnPush component" src="generated/images/guide/change-detection/event-trigger.svg">
+<div class="lightbox">   <img alt="Change detection propagation from non-OnPush component" src="generated/images/guide/change-detection/event-trigger.svg">
 </div>
 
-## An event is handled by a component with OnPush
+## Событие обрабатывается компонентом со стратегией OnPush
 
-If Angular handles an event within a component with OnPush strategy, the framework will execute change detection within the entire component tree. Angular will ignore component subtrees with roots using OnPush, which have not received new inputs and are outside the component which handled the event.
+Если Angular обрабатывает событие внутри компонента со стратегией OnPush, фреймворк будет выполнять обнаружение изменений во всем дереве компонентов. Angular будет игнорировать поддеревья компонентов с корнями, использующими OnPush, которые не получили новых входов и находятся вне компонента, обработавшего событие.
 
-As an example, if Angular handles an event within `MainComponent`, the framework will run change detection in the entire component tree. Angular will ignore the subtree with root `LoginComponent` because it has `OnPush` and the event happened outside of its scope.
+Например, если Angular обработает событие в `MainComponent`, фреймворк выполнит обнаружение изменений во всем дереве компонентов. Angular проигнорирует поддерево с корнем `LoginComponent`, потому что у него есть `OnPush` и событие произошло вне его области действия.
 
-<div class="lightbox">
-  <img alt="Change detection propagation from OnPush component" src="generated/images/guide/change-detection/on-push-trigger.svg">
+<div class="lightbox">   <img alt="Change detection propagation from OnPush component" src="generated/images/guide/change-detection/on-push-trigger.svg">
 </div>
 
-## An event is handled by a descendant of a component with OnPush
+## Событие обрабатывается потомком компонента с OnPush
 
-If Angular handles an event in a component with OnPush, the framework will execute change detection in the entire component tree, including the component’s ancestors.
+Если Angular обрабатывает событие в компоненте с помощью OnPush, фреймворк будет выполнять обнаружение изменений во всем дереве компонентов, включая предков компонента.
 
-As an example, in the diagram below, Angular handles an event in `LoginComponent` which uses OnPush. Angular will invoke change detection in the entire component subtree including `MainComponent` (`LoginComponent`’s parent), even though `MainComponent` has `OnPush` as well. Angular checks `MainComponent` as well because `LoginComponent` is part of its view.
+В качестве примера, на диаграмме ниже Angular обрабатывает событие в `LoginComponent`, которое использует OnPush. Angular вызовет обнаружение изменений во всем поддереве компонентов, включая `MainComponent` (родитель `LoginComponent`), даже если `MainComponent` также имеет `OnPush`. Angular также проверяет `MainComponent`, поскольку `LoginComponent` является частью его представления.
 
-<div class="lightbox">
-  <img alt="Change detection propagation from nested OnPush component" src="generated/images/guide/change-detection/leaf-trigger.svg">
+<div class="lightbox">   <img alt="Change detection propagation from nested OnPush component" src="generated/images/guide/change-detection/leaf-trigger.svg">
 </div>
 
-## New inputs to component with OnPush
+## Новые входы в компонент с помощью OnPush
 
-Angular will run change detection within a child component with `OnPush` when setting an input property as result of a template binding.
+Angular будет выполнять обнаружение изменений в дочернем компоненте с `OnPush` при установке свойства input в результате привязки шаблона.
 
-For example, in the diagram below, `AppComponent` passes a new input to `MainComponent`, which has `OnPush`. Angular will run change detection in `MainComponent` but will not run change detection in `LoginComponent`, which also has `OnPush`, unless it receives new inputs as well.
+Например, на диаграмме ниже `AppComponent` передает новый вход в `MainComponent`, который имеет `OnPush`. Angular запустит обнаружение изменений в `MainComponent`, но не запустит обнаружение изменений в `LoginComponent`, который также имеет `OnPush`, пока не получит новые входные данные.
 
-<div class="lightbox">
-  <img alt="Change detection propagation with OnPush component that receives new inputs" src="generated/images/guide/change-detection/on-push-input.svg">
+<div class="lightbox">   <img alt="Change detection propagation with OnPush component that receives new inputs" src="generated/images/guide/change-detection/on-push-input.svg">
 </div>
 
-## Edge cases
+## Краевые случаи
 
--   **Modifying input properties in TypeScript code**. When you use an API like `@ViewChild` or `@ContentChild` to get a reference to a component in TypeScript and manually modify an `@Input` property, Angular will not automatically run change detection for OnPush components. If you need Angular to run change detection, you can inject `ChangeDetectorRef` in your component and call `changeDetectorRef.markForCheck()` to tell Angular to schedule a change detection.
--   **Modifying object references**. In case an input receives a mutable object as value and you modify the object but preserve the reference, Angular will not invoke change detection. That’s the expected behavior because the previous and the current value of the input point to the same reference.
+-   **Модификация свойств ввода в коде TypeScript**. Когда вы используете API, например `@ViewChild` или `@ContentChild`, чтобы получить ссылку на компонент в TypeScript и вручную изменяете свойство `@Input`, Angular не будет автоматически запускать обнаружение изменений для компонентов OnPush. Если вам необходимо, чтобы Angular выполнял обнаружение изменений, вы можете внедрить `ChangeDetectorRef` в свой компонент и вызвать `changeDetectorRef.markForCheck()`, чтобы указать Angular запланировать обнаружение изменений.
+
+-   **Модификация ссылок на объекты**. Если вход получает в качестве значения изменяемый объект, а вы изменяете объект, но сохраняете ссылку, Angular не будет вызывать обнаружение изменений. Это ожидаемое поведение, потому что предыдущее и текущее значение входа указывают на одну и ту же ссылку.
 
 :date: 4.05.2022

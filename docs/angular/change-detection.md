@@ -1,12 +1,12 @@
-# Angular change detection and runtime optimization
+# Обнаружение изменений в Angular и оптимизация времени выполнения
 
-**Change detection** is the process through which Angular checks to see whether your application state has changed, and if any DOM needs to be updated. At a high level, Angular walks your components from top to bottom, looking for changes. Angular runs its change detection mechanism periodically so that changes to the data model are reflected in an application’s view. Change detection can be triggered either manually or through an asynchronous event (for example, a user interaction or an XMLHttpRequest completion).
+**Определение изменений** - это процесс, с помощью которого Angular проверяет, изменилось ли состояние вашего приложения и нужно ли обновить DOM. На высоком уровне Angular обходит ваши компоненты сверху донизу в поисках изменений. Angular периодически запускает механизм обнаружения изменений, чтобы изменения в модели данных отражались в представлении приложения. Обнаружение изменений может быть запущено вручную или через асинхронное событие (например, взаимодействие с пользователем или завершение `XMLHttpRequest`).
 
-Change detection is highly optimized and performant, but it can still cause slowdowns if the application runs it too frequently.
+Обнаружение изменений отличается высокой оптимизацией и производительностью, но все же может вызывать замедления, если приложение запускает его слишком часто.
 
-In this guide, you’ll learn how to control and optimize the change detection mechanism by skipping parts of your application and running change detection only when necessary.
+В этом руководстве вы узнаете, как контролировать и оптимизировать механизм обнаружения изменений, пропуская части приложения и запуская обнаружение изменений только при необходимости.
 
-Watch this video if you prefer to learn more about performance optimizations in a media format:
+Посмотрите это видео, если вы хотите узнать больше об оптимизации производительности в медиаформате:
 
 <div class="video-container">
 
