@@ -1,22 +1,20 @@
-# Angular compiler options
+# Параметры компилятора Angular
 
-When you use [ahead-of-time compilation (AOT)](guide/aot-compiler), you can control how your application is compiled by specifying _template_ compiler options in the [TypeScript configuration file](guide/typescript-configuration).
+Когда вы используете [опережающую компиляцию (AOT)](guide/aot-compiler), вы можете контролировать компиляцию вашего приложения, указывая _шаблонные_ опции компилятора в [конфигурационном файле TypeScript](guide/typescript-configuration).
 
-The template options object, `angularCompilerOptions`, is a sibling to the `compilerOptions` object that supplies standard options to the TypeScript compiler.
+Объект опций шаблона, `angularCompilerOptions`, является родственным объекту `compilerOptions`, который предоставляет стандартные опции компилятору TypeScript.
 
 <code-example header="tsconfig.json" path="angular-compiler-options/tsconfig.json" region="angular-compiler-options"></code-example>
 
 <a id="tsconfig-extends"></a>
 
-## Configuration inheritance with extends
+## Наследование конфигурации с помощью extends
 
-Like the TypeScript compiler, the Angular AOT compiler also supports `extends` in the `angularCompilerOptions` section of the TypeScript configuration file.
-The `extends` property is at the top level, parallel to `compilerOptions` and `angularCompilerOptions`.
+Как и компилятор TypeScript, компилятор Angular AOT также поддерживает `extends` в секции `angularCompilerOptions` конфигурационного файла TypeScript. Свойство `extends` находится на верхнем уровне, параллельно `compilerOptions` и `angularCompilerOptions`.
 
-A TypeScript configuration can inherit settings from another file using the `extends` property.
-The configuration options from the base file are loaded first, then overridden by those in the inheriting configuration file.
+Конфигурация TypeScript может наследовать параметры из другого файла с помощью свойства `extends`. Сначала загружаются параметры конфигурации из базового файла, а затем переопределяются параметрами из наследуемого файла конфигурации.
 
-For example:
+Например:
 
 <code-example header="tsconfig.app.json" path="angular-compiler-options/tsconfig.app.json" region="angular-compiler-options-app"></code-example>
 
@@ -28,217 +26,203 @@ The following options are available for configuring the AOT template compiler.
 
 ### `annotationsAs`
 
-Modifies how Angular-specific annotations are emitted to improve tree-shaking.
-Non-Angular annotations are not affected.
+Modifies how Angular-specific annotations are emitted to improve tree-shaking. Non-Angular annotations are not affected.
+
 One of `static fields` or `decorators`. The default value is `static fields`.
 
 -   By default, the compiler replaces decorators with a static field in the class, which allows advanced tree-shakers like [Closure compiler](https://github.com/google/closure-compiler) to remove unused classes
+
 -   The `decorators` value leaves the decorators in place, which makes compilation faster.
+
     TypeScript emits calls to the `__decorate` helper.
+
     Use `--emitDecoratorMetadata` for runtime reflection.
 
-    <div class="alert is-helpful">
+      <div class="alert is-helpful">
 
     **NOTE**: <br />
+
     That the resulting code cannot tree-shake properly.
 
-    </div>
+      </div>
 
 ### `annotateForClosureCompiler`
 
 <!-- vale Angular.Angular_Spelling = NO -->
 
-When `true`, use [Tsickle](https://github.com/angular/tsickle) to annotate the emitted JavaScript with [JSDoc](https://jsdoc.app) comments needed by the [Closure Compiler](https://github.com/google/closure-compiler).
-Default is `false`.
+Если `true`, используйте [Tsickle](https://github.com/angular/tsickle) для аннотирования выдаваемого JavaScript комментариями [JSDoc](https://jsdoc.app), необходимыми [Closure Compiler](https://github.com/google/closure-compiler). По умолчанию `false`.
 
 <!-- vale Angular.Angular_Spelling = YES -->
 
 ### `compilationMode`
 
-Specifies the compilation mode to use.
-The following modes are available:
+Определяет режим компиляции, который будет использоваться. Доступны следующие режимы:
 
-| Modes       | Details                                                                                             |
-| :---------- | :-------------------------------------------------------------------------------------------------- |
-| `'full'`    | Generates fully AOT-compiled code according to the version of Angular that is currently being used. |
-| `'partial'` | Generates code in a stable, but intermediate form suitable for a published library.                 |
+| Режимы | Подробности | | :---------- | :-------------------------------------------------------------------------------------------------- |.
 
-The default value is `'full'`.
+| `'full'` | Генерирует полностью AOT-компилированный код в соответствии с версией Angular, которая используется в данный момент. |
 
-### `disableExpressionLowering`
+| `'partial'` | Генерирует код в стабильной, но промежуточной форме, подходящей для опубликованной библиотеки. |
 
-When `true`, the default, transforms code that is or could be used in an annotation, to allow it to be imported from template factory modules.
-See [metadata rewriting](guide/aot-compiler#metadata-rewriting) for more information.
+Значение по умолчанию - `'full'`.
 
-When `false`, disables this rewriting, requiring the rewriting to be done manually.
+### `disableExpressionLowering`.
 
-### `disableTypeScriptVersionCheck`
+При значении `true`, установленном по умолчанию, преобразует код, который используется или может быть использован в аннотации, чтобы его можно было импортировать из модулей фабрики шаблонов. Более подробную информацию смотрите в [Переписывание метаданных](guide/aot-compiler#metadata-rewriting).
 
-When `true`, the compiler does not look at the TypeScript version and does not report an error when an unsupported version of TypeScript is used.
-Not recommended, as unsupported versions of TypeScript might have undefined behavior.
-Default is `false`.
+При `false` отключает эту перезапись, требуя, чтобы перезапись выполнялась вручную.
 
-### `enableI18nLegacyMessageIdFormat`
+### `disableTypeScriptVersionCheck`.
 
-Instructs the Angular template compiler to create legacy ids for messages that are tagged in templates by the `i18n` attribute.
-See [Mark text for translations][aioguidei18ncommonpreparemarktextincomponenttemplate] for more information about marking messages for localization.
+Если `true`, компилятор не смотрит на версию TypeScript и не сообщает об ошибке, если используется неподдерживаемая версия TypeScript. Не рекомендуется, так как неподдерживаемые версии TypeScript могут иметь неопределенное поведение.
 
-Set this option to `false` unless your project relies upon translations that were created earlier using legacy IDs.
-Default is `true`.
+По умолчанию `false`.
 
-The pre-Ivy message extraction tooling created a variety of legacy formats for extracted message IDs.
-These message formats have some issues, such as whitespace handling and reliance upon information inside the original HTML of a template.
+### `enableI18nLegacyMessageIdFormat`.
 
-The new message format is more resilient to whitespace changes, is the same across all translation file formats, and can be created directly from calls to `$localize`.
-This allows `$localize` messages in application code to use the same ID as identical `i18n` messages in component templates.
+Указывает компилятору шаблонов Angular создавать унаследованные идентификаторы для сообщений, помеченных в шаблонах атрибутом `i18n`. Дополнительную информацию о маркировке сообщений для локализации смотрите в [Mark text for translations][aioguidei18ncommonpreparemarktextincomponenttemplate].
 
-### `enableResourceInlining`
+Установите значение `false`, если ваш проект не опирается на переводы, созданные ранее с использованием устаревших идентификаторов. По умолчанию установлено значение `true`.
 
-When `true`, replaces the `templateUrl` and `styleUrls` properties in all `@Component` decorators with inline content in the `template` and `styles` properties.
+Инструментарий извлечения сообщений до Ivy создавал различные устаревшие форматы для извлеченных идентификаторов сообщений. Эти форматы сообщений имеют некоторые проблемы, такие как обработка пробельных символов и зависимость от информации, содержащейся в исходном HTML шаблона.
 
-When enabled, the `.js` output of `ngc` does not include any lazy-loaded template or style URLs.
+Новый формат сообщений более устойчив к изменениям пробельных символов, одинаков для всех форматов файлов перевода и может быть создан непосредственно из вызовов `$localize`. Это позволяет сообщениям `$localize` в коде приложения использовать тот же ID, что и идентичные сообщения `i18n` в шаблонах компонентов.
 
-For library projects created with the Angular CLI, the development configuration default is `true`.
+### `enableResourceInlining`.
+
+Если `true`, заменяет свойства `templateUrl` и `styleUrls` во всех декораторах `@Component` на встроенное содержимое в свойствах `template` и `styles`.
+
+Если эта функция включена, вывод `ngc` в `.js` не включает в себя URL-адреса лениво загруженных шаблонов или стилей.
+
+Для библиотечных проектов, созданных с помощью Angular CLI, конфигурация разработки по умолчанию имеет значение `true`.
 
 <a id="enablelegacytemplate"></a>
 
-### `enableLegacyTemplate`
+### `enableLegacyTemplate`.
 
-When `true`, enables the deprecated `<template>` element in place of `<ng-template>`.
-Default is `false`.
-Might be required by some third-party Angular libraries.
+При `true` включает устаревший элемент `<template>` вместо `<ng-template>`. По умолчанию `false`.
 
-### `flatModuleId`
+Может требоваться некоторыми сторонними библиотеками Angular.
 
-The module ID to use for importing a flat module \(when `flatModuleOutFile` is `true`\).
-References created by the template compiler use this module name when importing symbols from the flat module.
-Ignored if `flatModuleOutFile` is `false`.
+### `flatModuleId`.
 
-### `flatModuleOutFile`
+ID модуля для импорта плоского модуля\\(когда `flatModuleOutFile` имеет значение `true`\). Ссылки, созданные компилятором шаблонов, используют это имя модуля при импорте символов из плоского модуля.
 
-When `true`, generates a flat module index of the given filename and the corresponding flat module metadata.
-Use to create flat modules that are packaged similarly to `@angular/core` and `@angular/common`.
-When this option is used, the `package.json` for the library should refer to the created flat module index instead of the library index file.
+Игнорируется, если `flatModuleOutFile` равно `false`.
 
-Produces only one `.metadata.json` file, which contains all the metadata necessary for symbols exported from the library index.
-In the created `.ngfactory.js` files, the flat module index is used to import symbols. Symbols that include both the public API from the library index as well as shrouded internal symbols.
+### `flatModuleOutFile`.
 
-By default the `.ts` file supplied in the `files` field is assumed to be the library index.
-If more than one `.ts` file is specified, `libraryIndex` is used to select the file to use.
-If more than one `.ts` file is supplied without a `libraryIndex`, an error is produced.
+Если `true`, генерирует индекс плоского модуля по заданному имени файла и соответствующие метаданные плоского модуля. Используется для создания плоских модулей, которые упаковываются аналогично `@angular/core` и `@angular/common`.
 
-A flat module index `.d.ts` and `.js` is created with the given `flatModuleOutFile` name in the same location as the library index `.d.ts` file.
+Когда эта опция используется, `package.json` для библиотеки должен ссылаться на созданный индекс плоского модуля вместо индексного файла библиотеки.
 
-For example, if a library uses the `public_api.ts` file as the library index of the module, the `tsconfig.json` `files` field would be `["public_api.ts"]`.
-The `flatModuleOutFile` option could then be set, for example, to `"index.js"`, which produces `index.d.ts` and `index.metadata.json` files.
-The `module` field of the library's `package.json` would be `"index.js"` and the `typings` field would be `"index.d.ts"`.
+Создает только один файл `.metadata.json`, который содержит все метаданные, необходимые для символов, экспортируемых из индекса библиотеки. В созданных файлах `.ngfactory.js` для импорта символов используется индекс плоского модуля. Символы включают как публичные API из индекса библиотеки, так и закрытые внутренние символы.
 
-### `fullTemplateTypeCheck`
+По умолчанию за индекс библиотеки принимается файл `.ts`, указанный в поле `files`. Если указано более одного `.ts` файла, `libraryIndex` используется для выбора используемого файла.
 
-When `true`, the recommended value, enables the [binding expression validation](guide/aot-compiler#binding-expression-validation) phase of the template compiler. This phase uses TypeScript to verify binding expressions.
-For more information, see [Template type checking](guide/template-typecheck).
+Если указано более одного файла `.ts` без индекса `libraryIndex`, будет выдана ошибка.
 
-Default is `false`, but when you use the Angular CLI command `ng new --strict`, it is set to `true` in the new project's configuration.
+Создается индекс плоского модуля `.d.ts` и `.js` с заданным именем `flatModuleOutFile` в том же месте, что и файл индекса библиотеки `.d.ts`.
+
+Например, если библиотека использует файл `public_api.ts` в качестве библиотечного индекса модуля, поле `tsconfig.json` `files` будет `["public_api.ts"]`. Опция `flatModuleOutFile` может быть установлена, например, в `"index.js"`, что создаст файлы `index.d.ts` и `index.metadata.json`.
+Поле `module` в `package.json` библиотеки будет `"index.js"`, а поле `typings` будет `"index.d.ts"`.
+
+### `fullTemplateTypeCheck`.
+
+При рекомендуемом значении `true` включается фаза [binding expression validation](guide/aot-compiler#binding-expression-validation) компилятора шаблонов. Эта фаза использует TypeScript для проверки выражений связывания. Для получения дополнительной информации смотрите [Проверка типов шаблонов](guide/template-typecheck).
+
+По умолчанию `false`, но при использовании команды Angular CLI `ng new --strict` в конфигурации нового проекта устанавливается значение `true`.
 
 <div class="alert is-important">
 
-The `fullTemplateTypeCheck` option has been deprecated in Angular 13 in favor of the `strictTemplates` family of compiler options.
+Опция `fullTemplateTypeCheck` была упразднена в Angular 13 в пользу семейства опций компилятора `strictTemplates`.
 
 </div>
 
-### `generateCodeForLibraries`
+### `generateCodeForLibraries`.
 
-When `true`, creates factory files \(`.ngfactory.js` and `.ngstyle.js`\) for `.d.ts` files with a corresponding `.metadata.json` file. The default value is `true`.
+При `true` создает фабричные файлы\(`.ngfactory.js` и `.ngstyle.js`\) для файлов `.d.ts` с соответствующим файлом `.metadata.json`. Значение по умолчанию - `true`.
 
-When `false`, factory files are created only for `.ts` files.
-Do this when using factory summaries.
+При значении `false` фабричные файлы создаются только для файлов `.ts`. Сделайте это при использовании фабричных сводок.
 
-### `preserveWhitespaces`
+### `preserveWhitespaces`.
 
-When `false`, the default, removes blank text nodes from compiled templates, which results in smaller emitted template factory modules.
-Set to `true` to preserve blank text nodes.
+По умолчанию, когда `false`, удаляет пустые текстовые узлы из скомпилированных шаблонов, что приводит к меньшим размерам фабричных модулей шаблонов. Установите значение `true`, чтобы сохранить пустые текстовые узлы.
 
 <div class="alert is-helpful">
 
-When using hydration, it is recommended that you use `preserveWhitespaces: false`, which is the default value. If you choose to enable preserving whitespaces by adding `preserveWhitespaces: true` to your tsconfig, it is possible you may encounter issues with hydration. This is not yet a fully supported configuration. Ensure this is also consistently set between the server and client tsconfig files. See the [hydration guide](guide/hydration#preserve-whitespaces) for more details.
+При использовании гидратации рекомендуется использовать `preserveWhitespaces: false`, что является значением по умолчанию. Если вы решите включить сохранение пробельных символов, добавив `preserveWhitespaces: true` в tsconfig, возможно, вы столкнетесь с проблемами при работе с hydration. Эта конфигурация еще не полностью поддерживается. Убедитесь, что это значение также последовательно установлено в файлах tsconfig сервера и клиента. Более подробную информацию смотрите в руководстве [hydration guide](guide/hydration#preserve-whitespaces).
 
 </div>
 
-### `skipMetadataEmit`
+### `skipMetadataEmit`.
 
-When `true`, does not produce `.metadata.json` files.
-Default is `false`.
+Когда `true`, не создает файлы `.metadata.json`. По умолчанию `false`.
 
-The `.metadata.json` files contain information needed by the template compiler from a `.ts` file that is not included in the `.d.ts` file produced by the TypeScript compiler.
-This information includes, for example, the content of annotations, such as a component's template, which TypeScript emits to the `.js` file but not to the `.d.ts` file.
+Файлы `.metadata.json` содержат информацию, необходимую компилятору шаблонов из файла `.ts`, которая не включена в файл `.d.ts`, создаваемый компилятором TypeScript. Эта информация включает, например, содержание аннотаций, таких как шаблон компонента, которые TypeScript передает в файл `.js`, но не в файл `.d.ts`.
 
-You can set to `true` when using factory summaries, because the factory summaries include a copy of the information that is in the `.metadata.json` file.
+Можно установить значение `true` при использовании фабричных аннотаций, поскольку фабричные аннотации включают копию информации, содержащейся в файле `.metadata.json`.
 
-Set to `true` if you are using TypeScript's `--outFile` option, because the metadata files are not valid for this style of TypeScript output.
-The Angular community does not recommend using `--outFile` with Angular.
-Use a bundler, such as [webpack](https://webpack.js.org), instead.
+Установите значение `true`, если вы используете опцию TypeScript `--outFile`, потому что файлы метаданных не действительны для этого стиля вывода TypeScript. Сообщество Angular не рекомендует использовать `--outFile` в Angular.
 
-### `skipTemplateCodegen`
+Вместо этого используйте бандлер, например [webpack](https://webpack.js.org).
 
-When `true`, does not emit `.ngfactory.js` and `.ngstyle.js` files.
-This turns off most of the template compiler and disables the reporting of template diagnostics.
+### `skipTemplateCodegen`.
 
-Can be used to instruct the template compiler to produce `.metadata.json` files for distribution with an `npm` package. This avoids the production of `.ngfactory.js` and `.ngstyle.js` files that cannot be distributed to `npm`.
+При значении `true` не создает файлы `.ngfactory.js` и `.ngstyle.js`. Это отключает большую часть компилятора шаблонов и отключает отчет о диагностике шаблонов.
 
-For library projects created with the Angular CLI, the development configuration default is `true`.
+Может использоваться для указания компилятору шаблонов создавать файлы `.metadata.json` для распространения с пакетом `npm`. Это позволяет избежать создания файлов `.ngfactory.js` и `.ngstyle.js`, которые не могут быть распространены в `npm`.
 
-### `strictMetadataEmit`
+Для библиотечных проектов, созданных с помощью Angular CLI, конфигурация разработки по умолчанию имеет значение `true`.
 
-When `true`, reports an error to the `.metadata.json` file if `"skipMetadataEmit"` is `false`.
-Default is `false`.
-Use only when `"skipMetadataEmit"` is `false` and `"skipTemplateCodegen"` is `true`.
+### `strictMetadataEmit`.
 
-This option is intended to verify the `.metadata.json` files emitted for bundling with an `npm` package.
-The validation is strict and can emit errors for metadata that would never produce an error when used by the template compiler.
-You can choose to suppress the error emitted by this option for an exported symbol by including `@dynamic` in the comment documenting the symbol.
+При значении `true` сообщает об ошибке в файл `.metadata.json`, если `"skipMetadataEmit"` имеет значение `false`. По умолчанию `false`.
 
-It is valid for `.metadata.json` files to contain errors.
-The template compiler reports these errors if the metadata is used to determine the contents of an annotation.
-The metadata collector cannot predict the symbols that are designed for use in an annotation. It preemptively includes error nodes in the metadata for the exported symbols.
-The template compiler can then use the error nodes to report an error if these symbols are used.
+Используется только тогда, когда `"skipMetadataEmit"` равно `false` и `"skipTemplateCodegen"` равно `true`.
 
-If the client of a library intends to use a symbol in an annotation, the template compiler does not normally report this. It gets reported after the client actually uses the symbol.
-This option allows detection of these errors during the build phase of the library and is used, for example, in producing Angular libraries themselves.
+Эта опция предназначена для проверки файлов `.metadata.json`, создаваемых для комплектации с пакетом `npm`. Проверка строгая и может выдать ошибку для метаданных, которые никогда не выдадут ошибку при использовании компилятором шаблонов.
+Вы можете подавить ошибку, выдаваемую этой опцией для экспортируемого символа, включив `@dynamic` в комментарий, документирующий символ.
 
-For library projects created with the Angular CLI, the development configuration default is `true`.
+Для файлов `.metadata.json` допустимо наличие ошибок. Компилятор шаблонов сообщает об этих ошибках, если метаданные используются для определения содержимого аннотации.
 
-### `strictInjectionParameters`
+Сборщик метаданных не может предсказать символы, предназначенные для использования в аннотации. Он упреждающе включает узлы ошибок в метаданные для экспортируемых символов.
 
-When `true`, reports an error for a supplied parameter whose injection type cannot be determined.
-When `false`, constructor parameters of classes marked with `@Injectable` whose type cannot be resolved produce a warning.
-The recommended value is `true`, but the default value is `false`.
+Затем компилятор шаблонов может использовать узлы ошибок, чтобы сообщить об ошибке, если эти символы используются.
 
-When you use the Angular CLI command `ng new --strict`, it is set to `true` in the created project's configuration.
+Если клиент библиотеки намерен использовать символ в аннотации, компилятор шаблонов обычно не сообщает об этом. Об этом сообщается после того, как клиент действительно использует символ. Эта опция позволяет обнаружить эти ошибки на этапе сборки библиотеки и используется, например, при создании самих библиотек Angular.
 
-### `strictTemplates`
+Для проектов библиотек, созданных с помощью Angular CLI, конфигурация разработки по умолчанию имеет значение `true`.
 
-When `true`, enables [strict template type checking](guide/template-typecheck#strict-mode).
+### `strictInjectionParameters`.
 
-The strictness flags that this option enables allow you to turn on and off specific types of strict template type checking.
-See [troubleshooting template errors](guide/template-typecheck#troubleshooting-template-errors).
+При `true` сообщает об ошибке для параметра, тип инъекции которого не может быть определен. При `false`, параметры конструктора классов, помеченных `@Injectable`, тип которых не может быть определен, выдают предупреждение.
 
-When you use the Angular CLI command `ng new --strict`, it is set to `true` in the new project's configuration.
+Рекомендуемое значение - `true`, по умолчанию - `false`.
 
-### `trace`
+Когда вы используете команду Angular CLI `ng new --strict`, в конфигурации созданного проекта устанавливается значение `true`.
 
-When `true`, prints extra information while compiling templates.
-Default is `false`.
+### `strictTemplates`.
+
+При `true` включает [строгую проверку типов шаблонов] (guide/template-typecheck#strict-mode).
+
+Флаги строгости, которые включает эта опция, позволяют включать и выключать определенные типы строгой проверки типов шаблонов. Смотрите [устранение ошибок шаблонов](guide/template-typecheck#troubleshooting-template-errors).
+
+Когда вы используете команду Angular CLI `ng new --strict`, в конфигурации нового проекта устанавливается значение `true`.
+
+### `trace`.
+
+Когда `true`, выводит дополнительную информацию при компиляции шаблонов. По умолчанию `false`.
 
 <a id="cli-options"></a>
 
-## Command line options
+## Опции командной строки
 
-Most of the time you interact with the Angular Compiler indirectly using Angular CLI. When debugging certain issues, you might find it useful to invoke the Angular Compiler directly.
-You can use the `ngc` command provided by the `@angular/compiler-cli` npm package to call the compiler from the command line.
+В большинстве случаев вы взаимодействуете с Angular Compiler косвенно, используя Angular CLI. При отладке некоторых проблем вам может показаться полезным вызвать Angular Compiler напрямую. Вы можете использовать команду `ngc` из пакета `@angular/compiler-cli` npm для вызова компилятора из командной строки.
 
-The `ngc` command is just a wrapper around TypeScript's `tsc` compiler command and is primarily configured via the `tsconfig.json` configuration options documented in [the previous sections](#angular-compiler-options).
+Команда `ngc` - это просто обертка вокруг команды компилятора TypeScript `tsc` и настраивается в основном с помощью опций конфигурации `tsconfig.json`, документированных в [предыдущих разделах] (#angular-compiler-options).
 
-Besides the configuration file, you can also use [`tsc` command line options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to configure `ngc`.
+Помимо конфигурационного файла, для настройки `ngc` можно использовать [опции командной строки `tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
 
 <!-- links -->
 

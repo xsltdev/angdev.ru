@@ -1,43 +1,39 @@
-# Accessibility in Angular
+# Доступность в Angular
 
-The web is used by a wide variety of people, including those who have visual or motor impairments.
-A variety of assistive technologies are available that make it much easier for these groups to interact with web-based software applications.
-Also, designing an application to be more accessible generally improves the user experience for all users.
+Интернетом пользуются самые разные люди, в том числе те, кто страдает нарушениями зрения или двигательных функций. Существует множество вспомогательных технологий, которые значительно облегчают этим группам людей взаимодействие с веб-приложениями.
 
-For an in-depth introduction to issues and techniques for designing accessible applications, see the [Accessibility](https://developers.google.com/web/fundamentals/accessibility/#what_is_accessibility) section of the Google's [Web Fundamentals](https://developers.google.com/web/fundamentals).
+Кроме того, разработка приложения для обеспечения его доступности в целом улучшает пользовательский опыт для всех пользователей.
 
-This page discusses best practices for designing Angular applications that work well for all users, including those who rely on assistive technologies.
+Подробный обзор вопросов и методов разработки доступных приложений см. в разделе [Accessibility](https://developers.google.com/web/fundamentals/accessibility/#what_is_accessibility) раздела [Web Fundamentals](https://developers.google.com/web/fundamentals) Google.
+
+На этой странице обсуждаются лучшие практики проектирования приложений Angular, которые хорошо работают для всех пользователей, включая тех, кто использует вспомогательные технологии.
 
 <div class="alert is-helpful">
 
-For the sample application that this page describes, see the <live-example></live-example>.
+Пример приложения, которое описывается на этой странице, см. в <live-example></live-example>.
 
 </div>
 
-## Accessibility attributes
+## Атрибуты доступности
 
-Building accessible web experience often involves setting [Accessible Rich Internet Applications \(ARIA\) attributes](https://developers.google.com/web/fundamentals/accessibility/semantics-aria) to provide semantic meaning where it might otherwise be missing.
-Use [attribute binding](guide/attribute-binding) template syntax to control the values of accessibility-related attributes.
+Создание доступного веб-опыта часто включает установку [Accessible Rich Internet Applications \(ARIA\) attributes](https://developers.google.com/web/fundamentals/accessibility/semantics-aria) для обеспечения семантического смысла там, где он может отсутствовать. Используйте синтаксис шаблона [привязка атрибутов](guide/attribute-binding) для управления значениями атрибутов, связанных с доступностью.
 
-When binding to ARIA attributes in Angular, you must use the `attr.` prefix. The ARIA specification depends specifically on HTML attributes rather than properties of DOM elements.
+При привязке к атрибутам ARIA в Angular вы должны использовать префикс `attr.`. Спецификация ARIA зависит именно от атрибутов HTML, а не от свойств элементов DOM.
 
 <code-example format="html" language="html">
 
-&lt;!-- Use attr. when binding to an ARIA attribute --&gt;
-&lt;button [attr.aria-label]="myActionLabel"&gt;&hellip;&lt;/button&gt;
+&lt;!-- Используйте attr. при привязке к ARIA-атрибуту --&gt; &lt;button [attr.aria-label]="myActionLabel"&gt;&hellip;&lt;/button&gt;
 
 </code-example>
 
 <div class="alert is-helpful">
 
-**NOTE** <br />
-This syntax is only necessary for attribute _bindings_.
-Static ARIA attributes require no extra syntax.
+**NOTE** <br /> Этот синтаксис необходим только для _привязок_ атрибутов.
+Статические атрибуты ARIA не требуют дополнительного синтаксиса.
 
 <code-example format="html" language="html">
 
-&lt;!-- Static ARIA attributes require no extra syntax --&gt;
-&lt;button aria-label="Save document"&gt;&hellip;&lt;/button&gt;
+&lt;!-- Статические атрибуты ARIA не требуют дополнительного синтаксиса --&gt; &lt;button aria-label="Сохранить документ"&gt;&hellip;&lt;/button&gt;
 
 </code-example>
 
@@ -45,42 +41,42 @@ Static ARIA attributes require no extra syntax.
 
 <div class="alert is-helpful">
 
-By convention, HTML attributes use lowercase names \(`tabindex`\), while properties use camelCase names \(`tabIndex`\).
+По соглашению, атрибуты HTML используют имена в нижнем регистре \(`tabindex`\), в то время как свойства используют имена в camelCase \(`tabIndex`\).
 
-See the [Binding syntax](guide/binding-syntax#html-attribute-vs-dom-property) guide for more background on the difference between attributes and properties.
+Подробнее о разнице между атрибутами и свойствами см. в руководстве [Binding syntax](guide/binding-syntax#html-attribute-vs-dom-property).
 
 </div>
 
 ## Angular UI components
 
-The [Angular Material](https://material.angular.io) library, which is maintained by the Angular team, is a suite of reusable UI components that aims to be fully accessible.
-The [Component Development Kit (CDK)](https://material.angular.io/cdk/categories) includes the `a11y` package that provides tools to support various areas of accessibility.
+The [Angular Material](https://material.angular.io) library, which is maintained by the Angular team, is a suite of reusable UI components that aims to be fully accessible. The [Component Development Kit (CDK)](https://material.angular.io/cdk/categories) includes the `a11y` package that provides tools to support various areas of accessibility.
+
 For example:
 
 -   `LiveAnnouncer` is used to announce messages for screen-reader users using an `aria-live` region.
+
     See the W3C documentation for more information on [aria-live regions](https://www.w3.org/WAI/PF/aria-1.1/states_and_properties#aria-live).
 
 -   The `cdkTrapFocus` directive traps Tab-key focus within an element.
+
     Use it to create accessible experience for components such as modal dialogs, where focus must be constrained.
 
 For full details of these and other tools, see the [Angular CDK accessibility overview](https://material.angular.io/cdk/a11y/overview).
 
 ### Augmenting native elements
 
-Native HTML elements capture several standard interaction patterns that are important to accessibility.
-When authoring Angular components, you should re-use these native elements directly when possible, rather than re-implementing well-supported behaviors.
+Native HTML elements capture several standard interaction patterns that are important to accessibility. When authoring Angular components, you should re-use these native elements directly when possible, rather than re-implementing well-supported behaviors.
 
-For example, instead of creating a custom element for a new variety of button, create a component that uses an attribute selector with a native `<button>` element.
-This most commonly applies to `<button>` and `<a>`, but can be used with many other types of element.
+For example, instead of creating a custom element for a new variety of button, create a component that uses an attribute selector with a native `<button>` element. Чаще всего это относится к `<button>` и `<a>`, но может быть использовано и со многими другими типами элементов.
 
-You can see examples of this pattern in Angular Material:
-[`MatButton`](https://github.com/angular/components/blob/50d3f29b6dc717b512dbd0234ce76f4ab7e9762a/src/material/button/button.ts#L67-L69), [`MatTabNav`](https://github.com/angular/components/blob/50d3f29b6dc717b512dbd0234ce76f4ab7e9762a/src/material/tabs/tab-nav-bar/tab-nav-bar.ts#L139), and [`MatTable`](https://github.com/angular/components/blob/50d3f29b6dc717b512dbd0234ce76f4ab7e9762a/src/material/table/table.ts#L22).
+Вы можете увидеть примеры этого паттерна в Angular Material: [`MatButton`](https://github.com/angular/components/blob/50d3f29b6dc717b512dbd0234ce76f4ab7e9762a/src/material/button/button.ts#L67-L69), [`MatTabNav`](https://github.com/angular/components/blob/50d3f29b6dc717b512dbd0234ce76f4ab7e9762a/src/material/tabs/tab-nav-bar/tab-nav-bar.ts#L139), и [`MatTable`](https://github.com/angular/components/blob/50d3f29b6dc717b512dbd0234ce76f4ab7e9762a/src/material/table/table.ts#L22).
 
 ### Using containers for native elements
 
-Sometimes using the appropriate native element requires a container element.
-For example, the native `<input>` element cannot have children, so any custom text entry components need to wrap an `<input>` with extra elements.
+Sometimes using the appropriate native element requires a container element. For example, the native `<input>` element cannot have children, so any custom text entry components need to wrap an `<input>` with extra elements.
+
 By just including `<input>` in your custom component's template, it's impossible for your component's users to set arbitrary properties and attributes to the `<input>` element.
+
 Instead, create a container component that uses content projection to include the native control in the component's API.
 
 You can see [`MatFormField`](https://material.angular.io/components/form-field/overview) as an example of this pattern.
@@ -90,6 +86,7 @@ You can see [`MatFormField`](https://material.angular.io/components/form-field/o
 The following example shows how to make a progress bar accessible by using host binding to control accessibility-related attributes.
 
 -   The component defines an accessibility-enabled element with both the standard HTML attribute `role`, and ARIA attributes.
+
     The ARIA attribute `aria-valuenow` is bound to the user's input.
 
     <code-example header="src/app/progress-bar.component.ts" path="accessibility/src/app/progress-bar.component.ts" region="progressbar-component"></code-example>
@@ -98,46 +95,45 @@ The following example shows how to make a progress bar accessible by using host 
 
     <code-example header="src/app/app.component.html" path="accessibility/src/app/app.component.html" region="template"></code-example>
 
-## Routing
+## Маршрутизация
 
-### Focus management after navigation
+### Управление фокусом после навигации
 
-Tracking and controlling [focus](https://developers.google.com/web/fundamentals/accessibility/focus) in a UI is an important consideration in designing for accessibility.
-When using Angular routing, you should decide where page focus goes upon navigation.
+Отслеживание и управление [focus](https://developers.google.com/web/fundamentals/accessibility/focus) в пользовательском интерфейсе является важным моментом при проектировании доступности. При использовании маршрутизации Angular вы должны решить, куда перейдет фокус страницы после навигации.
 
-To avoid relying solely on visual cues, you need to make sure your routing code updates focus after page navigation.
-Use the `NavigationEnd` event from the `Router` service to know when to update focus.
+Чтобы не полагаться исключительно на визуальные подсказки, необходимо убедиться, что код маршрутизации обновляет фокус после навигации страницы. Используйте событие `NavigationEnd` из службы `Router`, чтобы знать, когда нужно обновить фокус.
 
-The following example shows how to find and focus the main content header in the DOM after navigation.
+Следующий пример показывает, как найти и сфокусировать заголовок основного содержимого в DOM после навигации.
 
 <code-example format="typescript" language="typescript">
 
-router.events.pipe(filter(e =&gt; e instanceof NavigationEnd)).subscribe(() =&gt; {
-const mainHeader = document.querySelector('&num;main-content-header')
+router.events.pipe(filter(e =&gt; e instanceof NavigationEnd)).subscribe(() =&gt; { const mainHeader = document.querySelector('&num;main-content-header')
 if (mainHeader) {
+
 mainHeader.focus();
+
 }
+
 });
 
 </code-example>
 
-In a real application, the element that receives focus depends on your specific application structure and layout.
-The focused element should put users in a position to immediately move into the main content that has just been routed into view.
-You should avoid situations where focus returns to the `body` element after a route change.
+В реальном приложении элемент, на котором фокусируется внимание, зависит от конкретной структуры и расположения приложения. Сфокусированный элемент должен располагать пользователя к немедленному переходу к основному содержимому, которое только что было направлено в поле зрения.
+Вы должны избегать ситуаций, когда фокус возвращается к элементу `body` после изменения маршрута.
 
-### Active links identification
+### Идентификация активных ссылок
 
-CSS classes applied to active `RouterLink` elements, such as `RouterLinkActive`, provide a visual cue to identify the active link.
-Unfortunately, a visual cue doesn't help blind or visually impaired users.
-Applying the `aria-current` attribute to the element can help identify the active link.
-For more information, see [Mozilla Developer Network \(MDN\) aria-current](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current)).
+CSS-классы, применяемые к активным элементам `RouterLink`, такие как `RouterLinkActive`, обеспечивают визуальную подсказку для идентификации активной ссылки. К сожалению, визуальная подсказка не помогает слепым или слабовидящим пользователям.
 
-The `RouterLinkActive` directive provides the `ariaCurrentWhenActive` input which sets the `aria-current` to a specified value when the link becomes active.
+Применение атрибута `aria-current` к элементу может помочь определить активную ссылку.
 
-The following example shows how to apply the `active-page` class to active links as well as setting their `aria-current` attribute to `"page"` when they are active:
+Для получения дополнительной информации смотрите [Mozilla Developer Network \(MDN\) aria-current](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current)).
 
-```html
-<nav>
+Директива `RouterLinkActive` предоставляет вход `ariaCurrentWhenActive`, который устанавливает `aria-current` в указанное значение, когда ссылка становится активной.
+
+Следующий пример показывает, как применить класс `active-page` к активным ссылкам, а также установить их атрибут `aria-current` в значение `"page"`, когда они становятся активными:
+
+```html <nav>
     <a
         routerLink="home"
         routerLinkActive="active-page"
@@ -164,26 +160,34 @@ The following example shows how to apply the `active-page` class to active links
 
 <!-- vale Angular.Angular_Spelling = NO -->
 
-## More information
+## Дополнительная информация
 
 -   [Accessibility - Google Web Fundamentals](https://developers.google.com/web/fundamentals/accessibility)
--   [ARIA specification and authoring practices](https://www.w3.org/TR/wai-aria)
+
+-   [Спецификация ARIA и практика разработки](https://www.w3.org/TR/wai-aria)
+
 -   [Material Design - Accessibility](https://material.io/design/usability/accessibility.html)
+
 -   [Smashing Magazine](https://www.smashingmagazine.com/search/?q=accessibility)
+
 -   [Inclusive Components](https://inclusive-components.design)
+
 -   [Accessibility Resources and Code Examples](https://dequeuniversity.com/resources)
+
 -   [W3C - Web Accessibility Initiative](https://www.w3.org/WAI/people-use-web)
+
 -   [Rob Dodson A11ycasts](https://www.youtube.com/watch?v=HtTyRajRuyY)
--   [Angular ESLint](https://github.com/angular-eslint/angular-eslint#functionality) provides linting rules that can help you make sure your code meets accessibility standards.
+
+-   [Angular ESLint](https://github.com/angular-eslint/angular-eslint#functionality) предоставляет правила линтинга, которые помогут вам убедиться, что ваш код соответствует стандартам доступности.
 
 <!-- vale Angular.Angular_Spelling = YES -->
 
-Books
+Книги
 
 <!-- vale Angular.Google_Quotes = NO -->
 
--   "A Web for Everyone: Designing Accessible User Experiences," Sarah Horton and Whitney Quesenbery
--   "Inclusive Design Patterns," Heydon Pickering
+-   "Веб для всех: Проектирование доступного пользовательского опыта", Сара Хортон и Уитни Кесенбери
+-   "Паттерны инклюзивного дизайна", Хейдон Пикеринг
 
 <!-- vale Angular.Google_Quotes = YES -->
 

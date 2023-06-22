@@ -1,18 +1,18 @@
-# Understanding binding
+# Понимание привязки
 
-In an Angular template, a binding creates a live connection between a part of the UI created from a template (a DOM element, directive, or component) and the model (the component instance to which the template belongs). This connection can be used to synchronize the view with the model, to notify the model when an event or user action takes place in the view, or both. Angular's [Change Detection](guide/change-detection) algorithm is responsible for keeping the view and the model in sync.
+В шаблоне Angular привязка создает живую связь между частью пользовательского интерфейса, созданной на основе шаблона (элементом DOM, директивой или компонентом), и моделью (экземпляром компонента, к которому принадлежит шаблон). Эта связь может использоваться для синхронизации представления с моделью, для уведомления модели, когда в представлении происходит событие или действие пользователя, или и то, и другое. Алгоритм Angular [Change Detection](guide/change-detection) отвечает за синхронизацию представления и модели.
 
-Examples of binding include:
+Примеры привязки включают:
 
--   text interpolations
+-   интерполяции текста
 
--   property binding
+-   привязка свойств
 
--   event binding
+-   привязка событий
 
--   two-way binding
+-   двустороннее связывание
 
-Bindings always have two parts: a _target_ which will receive the bound value, and a _template expression_ which produces a value from the model.
+Связывание всегда состоит из двух частей: _цель_, которая будет получать связанное значение, и _шаблонное выражение_, которое производит значение из модели.
 
 ## Syntax
 

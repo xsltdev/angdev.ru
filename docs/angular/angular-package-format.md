@@ -1,35 +1,30 @@
-# Angular package format
+# Формат пакетов Angular
 
-This document describes the Angular Package Format \(APF\).
-APF is an Angular specific specification for the structure and format of npm packages that is used by all first-party Angular packages \(`@angular/core`, `@angular/material`, etc.\) and most third-party Angular libraries.
+Этот документ описывает формат пакетов Angular \(APF\). APF - это специфическая для Angular спецификация структуры и формата пакетов npm, которая используется всеми сторонними пакетами Angular \(`@angular/core`, `@angular/material` и т.д.\) и большинством сторонних библиотек Angular.
 
-APF enables a package to work seamlessly under most common scenarios that use Angular.
-Packages that use APF are compatible with the tooling offered by the Angular team as well as wider JavaScript ecosystem.
-It is recommended that third-party library developers follow the same npm package format.
+APF позволяет пакету бесперебойно работать в большинстве распространенных сценариев, использующих Angular. Пакеты, использующие APF, совместимы с инструментарием, предлагаемым командой Angular, а также с более широкой экосистемой JavaScript.
+
+Разработчикам сторонних библиотек рекомендуется придерживаться того же формата пакетов npm.
 
 <div class="alert is-helpful">
 
-APF is versioned along with the rest of Angular, and every major version improves the package format.
-You can find the versions of the specification prior to v13 in this [google doc](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview).
+APF версионируется вместе с остальной частью Angular, и в каждой основной версии улучшается формат пакета. Вы можете найти версии спецификации до v13 в этом [google doc](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview).
 
 </div>
 
-## Why specify a package format?
+## Зачем указывать формат пакета?
 
-In today's JavaScript landscape, developers consume packages in many different ways, using many different toolchains \(Webpack, rollup, esbuild, etc.\).
-These tools may understand and require different inputs - some tools may be able to process the latest ES language version, while others may benefit from directly consuming an older ES version.
+В современном JavaScript ландшафте разработчики используют пакеты различными способами, используя множество различных инструментальных цепочек \(Webpack, rollup, esbuild и т.д.\). Эти инструменты могут понимать и требовать различные входные данные - некоторые инструменты могут обрабатывать последнюю версию языка ES, в то время как другие могут выиграть от прямого потребления более старой версии ES.
 
-The Angular distribution format supports all of the commonly used development tools and workflows, and adds emphasis on optimizations that result either in smaller application payload size or faster development iteration cycle \(build time\).
+Формат дистрибутива Angular поддерживает все широко используемые инструменты разработки и рабочие процессы, а также делает упор на оптимизацию, которая приводит либо к уменьшению размера полезной нагрузки приложения, либо к ускорению цикла итераций разработки\(build time\).
 
-Developers can rely on Angular CLI and [ng-packagr](https://github.com/ng-packagr/ng-packagr) \(a build tool Angular CLI uses\) to produce packages in the Angular package format.
-See the [Creating Libraries](guide/creating-libraries) guide for more details.
+Разработчики могут полагаться на Angular CLI и [ng-packagr](https://github.com/ng-packagr/ng-packagr)\(инструмент сборки, который использует Angular CLI\) для создания пакетов в формате Angular package. Подробнее см. в руководстве [Creating Libraries](guide/creating-libraries).
 
-## File layout
+## Расположение файлов
 
-The following example shows a simplified version of the `@angular/core` package's file layout, with an explanation for each file in the package.
+В следующем примере показана упрощенная версия схемы расположения файлов пакета `@angular/core` с пояснениями для каждого файла в пакете.
 
-<div class='filetree'>
-    <div class='file'>
+<div class='filetree'>     <div class='file'>
       node_modules/@angular/core
     </div>
     <div class='children'>
@@ -87,361 +82,384 @@ The following example shows a simplified version of the `@angular/core` package'
     </div>
 </div>
 
-This table describes the file layout under `node_modules/@angular/core` annotated to describe the purpose of files and directories:
+Эта таблица описывает расположение файлов в `node_modules/@angular/core` с аннотациями, описывающими назначение файлов и каталогов:
 
-| Files                                                                                                                                                     | Purpose                                                                                                                                                                                                        |
-| :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `README.md`                                                                                                                                               | Package README, used by npmjs web UI.                                                                                                                                                                          |
-| `package.json`                                                                                                                                            | Primary `package.json`, describing the package itself as well as all available entrypoints and code formats. This file contains the "exports" mapping used by runtimes and tools to perform module resolution. |
-| `index.d.ts`                                                                                                                                              | Bundled `.d.ts` for the primary entrypoint `@angular/core`.                                                                                                                                                    |
-| `esm2022/` <br /> &nbsp;&nbsp;─ `core.mjs` <br /> &nbsp;&nbsp;─ `index.mjs` <br /> &nbsp;&nbsp;─ `public_api.mjs`                                         | Tree of `@angular/core` sources in unflattened ES2022 format.                                                                                                                                                  |
-| `esm2022/testing/`                                                                                                                                        | Tree of the `@angular/core/testing` entrypoint in unflattened ES2022 format.                                                                                                                                   |
-| `fesm2022/` <br /> &nbsp;&nbsp;─ `core.mjs` <br /> &nbsp;&nbsp;─ `core.mjs.map` <br /> &nbsp;&nbsp;─ `testing.mjs` <br /> &nbsp;&nbsp;─ `testing.mjs.map` | Code for all entrypoints in flattened \(FESM\) ES2022 format, along with source maps.                                                                                                                          |
-| `testing/`                                                                                                                                                | Directory representing the "testing" entrypoint.                                                                                                                                                               |
-| `testing/index.d.ts`                                                                                                                                      | Bundled `.d.ts` for the `@angular/core/testing` entrypoint.                                                                                                                                                    |
+| Files | Purpose | | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `README.md` | Package README, used by npmjs web UI. |
+| `package.json` | Primary `package.json`, describing the package itself as well as all available entrypoints and code formats. This file contains the "exports" mapping used by runtimes and tools to perform module resolution. |
+| `index.d.ts` | Bundled `.d.ts` for the primary entrypoint `@angular/core`. |
+| `esm2022/` <br /> &nbsp;&nbsp;─ `core.mjs` <br /> &nbsp;&nbsp;─ `index.mjs` <br /> &nbsp;&nbsp;─ `public_api.mjs` | Tree of `@angular/core` sources in unflattened ES2022 format. |
+| `esm2022/testing/` | Tree of the `@angular/core/testing` entrypoint in unflattened ES2022 format. |
+| `fesm2022/` <br /> &nbsp;&nbsp;─ `core.mjs` <br /> &nbsp;&nbsp;─ `core.mjs.map` <br /> &nbsp;&nbsp;─ `testing.mjs` <br /> &nbsp;&nbsp;─ `testing.mjs.map` | Code for all entrypoints in flattened \(FESM\) ES2022 format, along with source maps. |
+| `testing/` | Directory representing the "testing" entrypoint. |
+| `testing/index.d.ts` | Bundled `.d.ts` for the `@angular/core/testing` entrypoint. |
 
-## `package.json`
+## `package.json`.
 
-The primary `package.json` contains important package metadata, including the following:
+Основной `package.json` содержит важные метаданные пакета, включая следующие:
 
--   It [declares](#esm-declaration) the package to be in EcmaScript Module \(ESM\) format
--   It contains an [`"exports"` field](#exports) which defines the available source code formats of all entrypoints
--   It contains [keys](#legacy-resolution-keys) which define the available source code formats of the primary `@angular/core` entrypoint, for tools which do not understand `"exports"`.
-    These keys are considered deprecated, and could be removed as the support for `"exports"` rolls out across the ecosystem.
+-   Он [декларирует](#esm-declaration) пакет в формате EcmaScript Module \(ESM\).
 
--   It declares whether the package contains [side effects](#side-effects)
+-   Он содержит поле [`экспорт`](#exports), которое определяет доступные форматы исходного кода всех точек входа
 
-### ESM declaration
+-   Содержит [ключи](#legacy-resolution-keys), которые определяют доступные форматы исходного кода основной точки входа `@angular/core`, для инструментов, которые не понимают `"exports"`.
 
-The top-level `package.json` contains the key:
+    Эти ключи считаются устаревшими и могут быть удалены по мере расширения поддержки `"exports"` в экосистеме.
+
+-   Объявляет, содержит ли пакет [побочные эффекты](#side-effects)
+
+### ESM декларация
+
+Ключ содержится в файле верхнего уровня `package.json`:
 
 <code-example language="javascript">
 
-{
-"type": "module"
+{ "type": "module"
 }
 
 </code-example>
 
-This informs resolvers that code within the package is using EcmaScript Modules as opposed to CommonJS modules.
+Это сообщает разрешителям, что код в пакете использует модули EcmaScript, а не модули CommonJS.
 
-### `"exports"`
+### `"exports"`.
 
-The `"exports"` field has the following structure:
+Поле `"exports"` имеет следующую структуру:
 
 <code-example language="javascript">
 
-"exports": {
-"./schematics/_": {
+"exports": { "./schematics/_": {
 "default": "./schematics/_.js"
+
 },
+
 "./package.json": {
+
 "default": "./package.json"
+
 },
+
 ".": {
+
 "types": "./core.d.ts",
+
 "esm": "./esm2022/core.mjs",
+
 "esm2022": "./esm2022/core.mjs",
+
 "default": "./fesm2022/core.mjs"
+
 },
+
 "./testing": {
+
 "types": "./testing/testing.d.ts",
+
 "esm": "./esm2022/testing/testing.mjs",
+
 "esm2022": "./esm2022/testing/testing.mjs",
+
 "default": "./fesm2022/testing.mjs"
+
 }
+
 }
 
 </code-example>
 
-Of primary interest are the `"."` and the `"./testing"` keys, which define the available code formats for the `@angular/core` primary entrypoint and the `@angular/core/testing` secondary entrypoint, respectively.
-For each entrypoint, the available formats are:
+Основной интерес представляют ключи `"."` и `"./testing"`, которые определяют доступные форматы кода для первичной точки входа `@angular/core` и вторичной точки входа `@angular/core/testing` соответственно. Для каждой точки входа доступны следующие форматы:
 
-| Formats                   | Details                                                                                                                                                                           |
-| :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Typings \(`.d.ts` files\) | `.d.ts` files are used by TypeScript when depending on a given package.                                                                                                           |
-| `es2022`                  | ES2022 code flattened into a single source file.                                                                                                                                  |
-| `esm2022`                 | ES2022 code in unflattened source files \(this format is included for experimentation - see [this discussion of defaults](#note-about-the-defaults-in-packagejson) for details\). |
-| `default`                 | ES2022 code flattened into a single source.                                                                                                                                       |
+| Форматы | Детали | | :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |.
 
-Tooling that is aware of these keys may preferentially select a desirable code format from `"exports"`.
+| Типизация \(`.d.ts` файлы\) | `.d.ts` файлы используются TypeScript, когда зависят от данного пакета. |
 
-Libraries may want to expose additional static files which are not captured by the exports of the JavaScript-based entry-points such as Sass mixins or pre-compiled CSS.
+| | `es2022` | Код ES2022 сжат в один исходный файл. |
 
-For more information, see [Managing assets in a library](guide/creating-libraries#managing-assets-in-a-library).
+| | `esm2022` | Код ES2022 в нерасплющенных исходных файлах\(этот формат включен для экспериментов - подробности\ смотрите в [этом обсуждении дефолтов](#note-about-the-defaults-in-packagejson). |
 
-### Legacy resolution keys
+| `default` | Код ES2022, сплющенный в один исходник. |
 
-In addition to `"exports"`, the top-level `package.json` also defines legacy module resolution keys for resolvers that don't support `"exports"`.
-For `@angular/core` these are:
+Инструментарий, знающий эти ключи, может предпочтительно выбирать желаемый формат кода из `экспорта`.
+
+Библиотеки могут захотеть раскрыть дополнительные статические файлы, которые не попадают в экспорт точек входа на основе JavaScript, такие как Sass mixins или предварительно скомпилированный CSS.
+
+Для получения дополнительной информации смотрите [Управление активами в библиотеке] (guide/creating-libraries#managing-assets-in-a-library).
+
+### Устаревшие ключи разрешения
+
+В дополнение к `"exports"`, в файле верхнего уровня `package.json` также определяются ключи разрешения устаревших модулей для распознавателей, которые не поддерживают `"exports"`. Для `@angular/core` это:
 
 <code-example language="javascript">
 
-{
-"module": "./fesm2022/core.mjs",
+{ "module": "./fesm2022/core.mjs",
 "typings": "./core.d.ts",
+
 }
 
 </code-example>
 
-As shown in the preceding code snippet, a module resolver can use these keys to load a specific code format.
+Как показано в предыдущем фрагменте кода, модуль resolver может использовать эти ключи для загрузки определенного формата кода.
 
-### Side effects
+### Побочные эффекты
 
-The last function of `package.json` is to declare whether the package has [side effects](#sideeffects-flag).
+Последняя функция `package.json` - это объявление о том, имеет ли пакет [побочные эффекты] (#sideeffects-flag).
 
 <code-example language="javascript">
 
-{
-"sideEffects": false
+{ "sideEffects": false
 }
 
 </code-example>
 
-Most Angular packages should not depend on top-level side effects, and thus should include this declaration.
+Большинство пакетов Angular не должны зависеть от побочных эффектов верхнего уровня и поэтому должны включать это объявление.
 
-## Entrypoints and code splitting
+## Точки входа и разделение кода
 
-Packages in the Angular Package Format contain one primary entrypoint and zero or more secondary entrypoints \(for example, `@angular/common/http`\).
-Entrypoints serve several functions.
+Пакеты в формате пакетов Angular содержат одну первичную точку входа и ноль или более вторичных точек входа\(например, `@angular/common/http`\). Точки входа выполняют несколько функций.
 
-1.  They define the module specifiers from which users import code \(for example, `@angular/core` and `@angular/core/testing`\).
+1.  Они определяют спецификаторы модулей, из которых пользователи импортируют код \(например, `@angular/core` и `@angular/core/testing`\).
 
-    Users typically perceive these entrypoints as distinct groups of symbols, with different purposes or capability.
+    Пользователи обычно воспринимают эти точки входа как отдельные группы символов, с разными целями или возможностями.
 
-    Specific entrypoints might only be used for special purposes, such as testing.
-    Such APIs can be separated out from the primary entrypoint to reduce the chance of them being used accidentally or incorrectly.
+    Конкретные точки входа могут использоваться только для особых целей, например, для тестирования.
 
-1.  They define the granularity at which code can be lazily loaded.
+    Такие API можно отделить от основной точки входа, чтобы уменьшить вероятность их случайного или неправильного использования.
 
-    Many modern build tools are only capable of "code splitting" \(aka lazy loading\) at the ES Module level.
-    The Angular Package Format uses primarily a single "flat" ES Module per entry point. This means that most build tooling is not able to split code with a single entry point into multiple output chunks.
+1.  Они определяют гранулярность, с которой код может быть лениво загружен.
 
-The general rule for APF packages is to use entrypoints for the smallest sets of logically connected code possible.
-For example, the Angular Material package publishes each logical component or set of components as a separate entrypoint - one for Button, one for Tabs, etc.
-This allows each Material component to be lazily loaded separately, if desired.
+    Многие современные инструменты сборки способны "разделять код"\(aka lazy loading\) только на уровне ES-модуля.
 
-Not all libraries require such granularity.
-Most libraries with a single logical purpose should be published as a single entrypoint.
-`@angular/core` for example uses a single entrypoint for the runtime, because the Angular runtime is generally used as a single entity.
+    Формат пакетов Angular Package Format использует в основном один "плоский" ES-модуль для каждой точки входа. Это означает, что большинство инструментов сборки не способны разделить код с одной точкой входа на несколько выходных фрагментов.
 
-### Resolution of secondary entry points
+Общее правило для пакетов APF - использовать точки входа для минимально возможных наборов логически связанного кода. Например, пакет Angular Material публикует каждый логический компонент или набор компонентов как отдельную точку входа - одну для кнопки, одну для вкладок и т. д.
 
-Secondary entrypoints can be resolved via the `"exports"` field of the `package.json` for the package.
+Это позволяет при желании лениво загружать каждый компонент Material отдельно.
+
+Не все библиотеки требуют такой детализации. Большинство библиотек с единой логической целью должны публиковаться как одна точка входа.
+
+Например, `@angular/core` использует одну точку входа для среды выполнения, потому что среда выполнения Angular обычно используется как единое целое.
+
+### Разрешение вторичных точек входа
+
+Вторичные точки входа могут быть разрешены через поле `"exports"` в файле `package.json` для пакета.
 
 ## README.md
 
-The README file in the Markdown format that is used to display description of a package on npm and GitHub.
+Файл README в формате Markdown, который используется для отображения описания пакета на npm и GitHub.
 
-Example README content of &commat;angular/core package:
+Пример содержимого README пакета &commat;angular/core:
 
 <code-example language="html">
 
-Angular
-&equals;&equals;&equals;&equals;&equals;&equals;&equals;
+Angular &equals;&equals;&equals;&equals;&equals;&equals;&equals;&equals;&equals;
 
-The sources for this package are in the main [Angular](https://github.com/angular/angular) repo.Please file issues and pull requests against that repo.
+Исходники этого пакета находятся в основном репозитории [Angular](https://github.com/angular/angular). Пожалуйста, подавайте проблемы и запросы на исправление в этот репозиторий.
 
-License: MIT
+Лицензия: MIT
 
 </code-example>
 
-## Partial compilation
+## Частичная компиляция
 
-Libraries in the Angular Package Format must be published in "partial compilation" mode.
-This is a compilation mode for `ngc` which produces compiled Angular code that is not tied to a specific Angular runtime version, in contrast to the full compilation used for applications, where the Angular compiler and runtime versions must match exactly.
+Библиотеки в формате пакетов Angular должны публиковаться в режиме "частичной компиляции". Это режим компиляции для `ngc`, который производит скомпилированный код Angular, не привязанный к конкретной версии среды выполнения Angular, в отличие от полной компиляции, используемой для приложений, где версии компилятора и среды выполнения Angular должны точно совпадать.
 
-To partially compile Angular code, use the `compilationMode` flag in the `angularCompilerOptions` property of your `tsconfig.json`:
+Для частичной компиляции кода Angular используйте флаг `compilationMode` в свойстве `angularCompilerOptions` вашего `tsconfig.json`:
 
 <code-example language="javascript">
 
-{
-&hellip;
+{ &hellip;
 "angularCompilerOptions": {
+
 "compilationMode": "partial",
+
 }
+
 }
 
 </code-example>
 
-Partially compiled library code is then converted to fully compiled code during the application build process by the Angular CLI.
+Частично скомпилированный код библиотеки затем преобразуется в полностью скомпилированный код в процессе сборки приложения с помощью Angular CLI.
 
-If your build pipeline does not use the Angular CLI then refer to the [Consuming partial ivy code outside the Angular CLI](guide/creating-libraries#consuming-partial-ivy-code-outside-the-angular-cli) guide.
+Если ваш конвейер сборки не использует Angular CLI, обратитесь к руководству [Consuming partial ivy code outside the Angular CLI](guide/creating-libraries#consuming-partial-ivy-code-outside-the-angular-cli).
 
-## Optimizations
+## Оптимизации
 
-### Flattening of ES modules
+### Сплющивание модулей ES
 
-The Angular Package Format specifies that code be published in "flattened" ES module format.
-This significantly reduces the build time of Angular applications as well as download and parse time of the final application bundle.
-Please check out the excellent post ["The cost of small modules"](https://nolanlawson.com/2016/08/15/the-cost-of-small-modules) by Nolan Lawson.
+Формат пакетов Angular Package Format предписывает публиковать код в "сплющенном" формате ES-модулей. Это значительно сокращает время сборки приложений Angular, а также время загрузки и разбора конечного пакета приложения.
 
-The Angular compiler can generate index ES module files. Tools like Rollup can use these files to generate flattened modules in a _Flattened ES Module_ (FESM) file format.
+Пожалуйста, ознакомьтесь с отличным постом ["The cost of small modules"](https://nolanlawson.com/2016/08/15/the-cost-of-small-modules) Нолана Лоусона.
 
-FESM is a file format created by flattening all ES Modules accessible from an entrypoint into a single ES Module.
-It's formed by following all imports from a package and copying that code into a single file while preserving all public ES exports and removing all private imports.
+Компилятор Angular может генерировать файлы модулей index ES. Такие инструменты, как Rollup, могут использовать эти файлы для создания уплощенных модулей в формате _Flattened ES Module_ (FESM).
 
-The abbreviated name, FESM, pronounced _phe-som_, can be followed by a number such as FESM2020.
-The number refers to the language level of the JavaScript inside the module.
-Accordingly a FESM2022 file would be ESM+ES2022 and include import/export statements and ES2022 source code.
+FESM - это формат файла, созданный путем сглаживания всех ES-модулей, доступных из точки входа, в один ES-модуль. Он формируется путем следования всем импортам из пакета и копирования этого кода в один файл с сохранением всех публичных экспортов ES и удалением всех частных импортов.
 
-To generate a flattened ES Module index file, use the following configuration options in your tsconfig.json file:
+За сокращенным названием FESM, произносимым как _phe-som_, может следовать номер, например FESM2020. Номер относится к уровню языка JavaScript внутри модуля.
+
+Соответственно, файл FESM2022 будет иметь формат ESM+ES2022 и включать заявления импорта/экспорта и исходный код ES2022.
+
+Чтобы сгенерировать уплощенный индексный файл модуля ES, используйте следующие параметры конфигурации в файле tsconfig.json:
 
 <code-example language="javascript">
 
-{
-"compilerOptions": {
+{ "compilerOptions": {
 &hellip;
+
 "module": "esnext",
+
 "target": "es2022",
+
 &hellip;
+
 },
+
 "angularCompilerOptions": {
+
 &hellip;
+
 "flatModuleOutFile": "my-ui-lib.js",
+
 "flatModuleId": "my-ui-lib"
+
 }
+
 }
 
 </code-example>
 
-Once the index file \(for example, `my-ui-lib.js`\) is generated by ngc, bundlers and optimizers like Rollup can be used to produce the flattened ESM file.
+Как только индексный файл \(например, `my-ui-lib.js`\) сгенерирован ngc, можно использовать бандлеры и оптимизаторы, такие как Rollup, для создания сглаженного ESM файла.
 
-#### Note about the defaults in package.json
+#### Примечание о значениях по умолчанию в package.json.
 
-As of webpack v4, the flattening of ES modules optimization should not be necessary for webpack users. It should be possible to get better code-splitting without flattening of modules in webpack.
-In practice, size regressions can still be seen when using unflattened modules as input for webpack v4.
-This is why `module` and `es2022` package.json entries still point to FESM files.
-This issue is being investigated. It is expected to switch the `module` and `es2022` package.json entry points to unflattened files after the size regression issue is resolved.
-The APF currently includes unflattened ESM2022 code for the purpose of validating such a future change.
+Начиная с webpack v4, оптимизация сплющивания ES-модулей не должна быть необходима пользователям webpack. Должно быть возможно получить лучшее разделение кода без сплющивания модулей в webpack. На практике регрессия размеров все еще может наблюдаться при использовании не уплощенных модулей в качестве входных данных для webpack v4.
 
-### "sideEffects" flag
+Вот почему записи `module` и `es2022` package.json по-прежнему указывают на файлы FESM.
 
-By default, EcmaScript Modules are side-effectful: importing from a module ensures that any code at the top level of that module should run.
-This is often undesirable, as most side-effectful code in typical modules is not truly side-effectful, but instead only affects specific symbols.
-If those symbols are not imported and used, it's often desirable to remove them in an optimization process known as tree-shaking, and the side-effectful code can prevent this.
+В настоящее время этот вопрос изучается. Ожидается, что после устранения проблемы регрессии размера, точки входа `module` и `es2022` package.json будут переключены на нерасплющенные файлы.
 
-Build tools such as Webpack support a flag which allows packages to declare that they do not depend on side-effectful code at the top level of their modules, giving the tools more freedom to tree-shake code from the package.
-The end result of these optimizations should be smaller bundle size and better code distribution in bundle chunks after code-splitting.
-This optimization can break your code if it contains non-local side-effects - this is however not common in Angular applications and it's usually a sign of bad design.
-The recommendation is for all packages to claim the side-effect free status by setting the `sideEffects` property to `false`, and that developers follow the [Angular Style Guide](/guide/styleguide) which naturally results in code without non-local side-effects.
+В настоящее время в APF включен неплющенный код ESM2022 для проверки такого будущего изменения.
 
-More info: [webpack docs on side effects](https://github.com/webpack/webpack/tree/master/examples/side-effects)
+### флаг "sideEffects"
 
-### ES2022 language level
+По умолчанию модули EcmaScript имеют побочные эффекты: импорт из модуля гарантирует, что любой код на верхнем уровне этого модуля будет выполняться. Это часто нежелательно, поскольку большинство побочных эффектов в типичных модулях не являются действительно побочными, а затрагивают только определенные символы.
 
-ES2022 Language level is now the default language level that is consumed by Angular CLI and other tooling.
-The Angular CLI down-levels the bundle to a language level that is supported by all targeted browsers at application build time.
+Если эти символы не импортируются и не используются, их часто желательно удалить в процессе оптимизации, известном как "встряхивание дерева", а код с побочными эффектами может помешать этому.
 
-### d.ts bundling / type definition flattening
+Инструменты сборки, такие как Webpack, поддерживают флаг, который позволяет пакетам объявлять, что они не зависят от побочного кода на верхнем уровне своих модулей, что дает инструментам больше свободы для древовидного расщепления кода из пакета. Конечным результатом этих оптимизаций должен стать меньший размер пакета и лучшее распределение кода по частям пакета после разбиения кода.
+Эта оптимизация может сломать ваш код, если он содержит нелокальные побочные эффекты - однако это не часто встречается в приложениях Angular и обычно является признаком плохого дизайна.
 
-As of APF v8 it is now preferred to run [API Extractor](https://api-extractor.com), to bundle TypeScript definitions so that the entire API appears in a single file.
+Рекомендуется, чтобы все пакеты претендовали на статус свободных от побочных эффектов, устанавливая свойство `sideEffects` в `false`, и чтобы разработчики следовали [Angular Style Guide](/guide/styleguide), что естественным образом приводит к коду без нелокальных побочных эффектов.
 
-In prior APF versions each entry point would have a `src` directory next to the .d.ts entry point and this directory contained individual d.ts files matching the structure of the original source code.
-While this distribution format is still allowed and supported, it is highly discouraged because it confuses tools like IDEs that then offer incorrect autocompletion, and allows users to depend on deep-import paths which are typically not considered to be public API of a library or a package.
+Дополнительная информация: [webpack docs on side effects](https://github.com/webpack/webpack/tree/master/examples/side-effects)
+
+### Языковой уровень ES2022
+
+Языковой уровень ES2022 теперь является языковым уровнем по умолчанию, который используется Angular CLI и другими инструментами. Angular CLI понижает уровень пакета до уровня языка, который поддерживается всеми целевыми браузерами во время сборки приложения.
+
+### d.ts bundling / сглаживание определений типов
+
+Начиная с APF v8, теперь предпочтительно запускать [API Extractor](https://api-extractor.com) для пакетирования определений TypeScript так, чтобы весь API был представлен в одном файле.
+
+В предыдущих версиях APF каждая точка входа имела каталог `src` рядом с точкой входа .d.ts, и этот каталог содержал отдельные файлы d.ts, соответствующие структуре исходного кода. Хотя этот формат распространения все еще разрешен и поддерживается, он крайне не рекомендуется, поскольку сбивает с толку такие инструменты, как IDE, которые затем предлагают неправильное автозаполнение, и позволяет пользователям зависеть от путей глубокого импорта, которые обычно не считаются публичным API библиотеки или пакета.
 
 ### Tslib
 
-As of APF v10, it is recommended to add tslib as a direct dependency of your primary entry-point.
-This is because the tslib version is tied to the TypeScript version used to compile your library.
+Начиная с APF v10, рекомендуется добавлять tslib в качестве прямой зависимости от вашей основной точки входа. Это связано с тем, что версия tslib привязана к версии TypeScript, используемой для компиляции вашей библиотеки.
 
-## Examples
+## Примеры
 
 -   [@angular/core package](https://unpkg.com/browse/@angular/core@13.0.0-rc.0)
+
 -   [@angular/material package](https://unpkg.com/browse/@angular/material@13.0.0-rc.0)
 
-## Definition of terms
+## Определение терминов
 
-The following terms are used throughout this document intentionally.
-In this section are the definitions of all of them to provide additional clarity.
+Следующие термины используются во всем этом документе намеренно. В этом разделе приведены определения всех этих терминов для обеспечения дополнительной ясности.
 
-#### Package
+#### Пакет
 
-The smallest set of files that are published to NPM and installed together, for example `@angular/core`.
-This package includes a manifest called package.json, compiled source code, typescript definition files, source maps, metadata, etc.
-The package is installed with `npm install @angular/core`.
+Наименьший набор файлов, которые публикуются в NPM и устанавливаются вместе, например `@angular/core`. Пакет включает манифест под названием package.json, скомпилированный исходный код, файлы определения typescript, карты исходников, метаданные и т.д.
 
-#### Symbol
+Пакет устанавливается с помощью `npm install @angular/core`.
 
-A class, function, constant, or variable contained in a module and optionally made visible to the external world via a module export.
+#### Символ
 
-#### Module
+Класс, функция, константа или переменная, содержащаяся в модуле и по желанию видимая внешнему миру через экспорт модуля.
 
-Short for ECMAScript Modules.
-A file containing statements that import and export symbols.
-This is identical to the definition of modules in the ECMAScript spec.
+#### Модуль
+
+Сокращение от ECMAScript Modules. Файл, содержащий операторы, которые импортируют и экспортируют символы.
+
+Это идентично определению модулей в спецификации ECMAScript.
 
 #### ESM
 
-Short for ECMAScript Modules \(see above\).
+Сокращение от ECMAScript Modules \(см. выше\).
 
 #### FESM
 
-Short for Flattened ES Modules and consists of a file format created by flattening all ES Modules accessible from an entry point into a single ES Module.
+Сокращение от Flattened ES Modules и представляет собой формат файла, созданный путем сглаживания всех ES-модулей, доступных из точки входа, в один ES-модуль.
 
-#### Module ID
+#### Идентификатор модуля
 
-The identifier of a module used in the import statements \(for example, `@angular/core`\).
-The ID often maps directly to a path on the filesystem, but this is not always the case due to various module resolution strategies.
+Идентификатор модуля, используемый в операторах импорта \(например, `@angular/core`\). Часто идентификатор напрямую связан с путем в файловой системе, но это не всегда так из-за различных стратегий разрешения модулей.
 
-#### Module specifier
+#### Спецификатор модуля
 
-A module identifier \(see above\).
+Идентификатор модуля \(см. выше\).
 
-#### Module resolution strategy
+#### Стратегия разрешения модулей
 
-Algorithm used to convert Module IDs to paths on the filesystem.
-Node.js has one that is well specified and widely used, TypeScript supports several module resolution strategies, [Closure Compiler](https://developers.google.com/closure/compiler) has yet another strategy.
+Алгоритм, используемый для преобразования идентификаторов модулей в пути в файловой системе. В Node.js есть один, который хорошо специфицирован и широко используется, TypeScript поддерживает несколько стратегий разрешения модулей, [Closure Compiler](https://developers.google.com/closure/compiler) имеет еще одну стратегию.
 
-#### Module format
+#### Формат модуля
 
-Specification of the module syntax that covers at minimum the syntax for the importing and exporting from a file.
-Common module formats are CommonJS \(CJS, typically used for Node.js applications\) or ECMAScript Modules \(ESM\).
-The module format indicates only the packaging of the individual modules, but not the JavaScript language features used to make up the module content.
-Because of this, the Angular team often uses the language level specifier as a suffix to the module format, \(for example, ESM+ES2022 specifies that the module is in ESM format and contains ES2022 code\).
+Спецификация синтаксиса модуля, которая охватывает, как минимум, синтаксис для импорта и экспорта из файла. Общими форматами модулей являются CommonJS \(CJS, обычно используется для приложений Node.js\) или ECMAScript Modules \(ESM\).
 
-#### Bundle
+Формат модуля указывает только на упаковку отдельных модулей, но не на особенности языка JavaScript, используемые для создания содержимого модуля.
 
-An artifact in the form of a single JS file, produced by a build tool \(for example, [Webpack](https://webpack.js.org) or [Rollup](https://rollupjs.org)\) that contains symbols originating in one or more modules.
-Bundles are a browser-specific workaround that reduce network strain that would be caused if browsers were to start downloading hundreds if not tens of thousands of files.
-Node.js typically doesn't use bundles.
-Common bundle formats are UMD and System.register.
+В связи с этим команда Angular часто использует спецификатор уровня языка в качестве суффикса к формату модуля, \(например, ESM+ES2022 указывает, что модуль имеет формат ESM и содержит код ES2022\).
 
-#### Language level
+#### Пакет
 
-The language of the code \(ES2022\).
-Independent of the module format.
+Артефакт в виде одного JS файла, созданный инструментом сборки \(например, [Webpack](https://webpack.js.org) или [Rollup](https://rollupjs.org)\), который содержит символы из одного или нескольких модулей. Пакеты - это специфическое для браузера обходное решение, снижающее нагрузку на сеть, которая была бы вызвана, если бы браузеры начали загружать сотни, а то и десятки тысяч файлов.
 
-#### Entry point
+Node.js обычно не использует пакеты.
 
-A module intended to be imported by the user.
-It is referenced by a unique module ID and exports the public API referenced by that module ID.
-An example is `@angular/core` or `@angular/core/testing`.
-Both entry points exist in the `@angular/core` package, but they export different symbols.
-A package can have many entry points.
+Распространенными форматами пакетов являются UMD и System.register.
 
-#### Deep import
+#### Языковой уровень
 
-A process of retrieving symbols from modules that are not Entry Points.
-These module IDs are usually considered to be private APIs that can change over the lifetime of the project or while the bundle for the given package is being created.
+Язык кода \(ES2022\). Не зависит от формата модуля.
 
-#### Top-Level import
+#### Точка входа
 
-An import coming from an entry point.
-The available top-level imports are what define the public API and are exposed in "&commat;angular/name" modules, such as `@angular/core` or `@angular/common`.
+Модуль, предназначенный для импорта пользователем. На него ссылается уникальный идентификатор модуля, и он экспортирует публичный API, на который ссылается этот идентификатор модуля.
 
-#### Tree-shaking
+Примером может служить `@angular/core` или `@angular/core/testing`.
 
-The process of identifying and removing code not used by an application - also known as dead code elimination.
-This is a global optimization performed at the application level using tools like [Rollup](https://rollupjs.org), [Closure Compiler](https://developers.google.com/closure/compiler), or [Terser](https://github.com/terser/terser).
+Обе точки входа существуют в пакете `@angular/core`, но они экспортируют разные символы.
 
-#### AOT compiler
+Пакет может иметь много точек входа.
 
-The Ahead of Time Compiler for Angular.
+#### Глубокий импорт
 
-#### Flattened type definitions
+Процесс извлечения символов из модулей, которые не являются точками входа. Эти идентификаторы модулей обычно рассматриваются как частные API, которые могут меняться в течение жизни проекта или в процессе создания пакета для данного пакета.
 
-The bundled TypeScript definitions generated from [API Extractor](https://api-extractor.com).
+#### Импорт верхнего уровня
+
+Импорт, исходящий из точки входа. Доступные импорты верхнего уровня определяют публичный API и раскрываются в модулях "&commat;angular/name", таких как `@angular/core` или `@angular/common`.
+
+#### Древовидная встряска
+
+Процесс выявления и удаления кода, не используемого приложением - также известный как устранение мертвого кода. Это глобальная оптимизация, выполняемая на уровне приложения с помощью таких инструментов, как [Rollup](https://rollupjs.org), [Closure Compiler](https://developers.google.com/closure/compiler) или [Terser](https://github.com/terser/terser).
+
+#### AOT-компилятор
+
+Компилятор Ahead of Time для Angular.
+
+#### Плоские определения типов
+
+Пакетные определения TypeScript, созданные с помощью [API Extractor](https://api-extractor.com).
 
 <!-- links -->
 
