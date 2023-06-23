@@ -1,149 +1,156 @@
-# Communicating with backend services using HTTP
+# Общение с внутренними службами с помощью HTTP
 
-Most front-end applications need to communicate with a server over the HTTP protocol, to download or upload data and access other back-end services.
-Angular provides a client HTTP API for Angular applications, the `HttpClient` service class in `@angular/common/http`.
+Большинству внешних приложений необходимо взаимодействовать с сервером по протоколу HTTP для загрузки или выгрузки данных и доступа к другим внутренним сервисам. Angular предоставляет клиентский HTTP API для приложений Angular, класс сервиса `HttpClient` в `@angular/common/http`.
 
-The HTTP client service offers the following major features.
+Клиентская служба HTTP предлагает следующие основные возможности.
 
--   The ability to request [typed response objects](#typed-response)
--   Streamlined [error handling](#error-handling)
--   [Testability](#testing-requests) features
--   Request and response [interception](#intercepting-requests-and-responses)
+-   Возможность запрашивать [типизированные объекты ответа](#typed-response)
 
-## Prerequisites
+-   Оптимизированная [обработка ошибок](#error-handling)
 
-Before working with the `HttpClientModule`, you should have a basic understanding of the following:
+-   Особенности [тестируемости](#testing-requests)
 
--   TypeScript programming
--   Usage of the HTTP protocol
--   Angular application-design fundamentals, as described in [Angular Concepts](guide/architecture)
--   Observable techniques and operators.
-    See the [Observables](guide/observables) guide.
+-   Перехват [запросов и ответов](#intercepting-requests-and-responses)
 
-## Setup for server communication
+## Предварительные условия
 
-Before you can use `HttpClient`, you need to import the Angular `HttpClientModule`.
-Most apps do so in the root `AppModule`.
+Перед работой с `HttpClientModule`, вы должны иметь базовое понимание следующего:
 
-<code-example header="app/app.module.ts (excerpt)" path="http/src/app/app.module.ts" region="sketch"></code-example>
+-   программирование на TypeScript
 
-You can then inject the `HttpClient` service as a dependency of an application class, as shown in the following `ConfigService` example.
+-   Использование протокола HTTP
 
-<code-example header="app/config/config.service.ts (excerpt)" path="http/src/app/config/config.service.ts" region="proto"></code-example>
+-   Основы проектирования приложений Angular, как описано в [Angular Concepts](руководство/архитектура)
 
-The `HttpClient` service makes use of [observables](guide/glossary#observable 'Observable definition') for all transactions.
-You must import the RxJS observable and operator symbols that appear in the example snippets.
-These `ConfigService` imports are typical.
+-   Техники и операторы наблюдаемых.
 
-<code-example header="app/config/config.service.ts (RxJS imports)" path="http/src/app/config/config.service.ts" region="rxjs-imports"></code-example>
+    См. руководство [Observables](guide/observables).
+
+## Настройка для взаимодействия с сервером
+
+Прежде чем использовать `HttpClient`, вам необходимо импортировать модуль Angular `HttpClientModule`. Большинство приложений делают это в корневом `AppModule`.
+
+<code-example header="app/app.module.ts (excerpt)" path="http/src/app/app.module.ts" region="sketch"></code-example>.
+
+Затем вы можете внедрить сервис `HttpClient` в качестве зависимости класса приложения, как показано в следующем примере `ConfigService`.
+
+<code-example header="app/config/config.service.ts (excerpt)" path="http/src/app/config/config.service.ts" region="proto"></code-example>.
+
+Сервис `HttpClient` использует [observables](guide/glossary#observable 'Observable definition') для всех транзакций. Вы должны импортировать символы RxJS observable и операторов, которые появляются в фрагментах примера.
+
+Эти импорты `ConfigService` являются типичными.
+
+<code-example header="app/config/config.service.ts (RxJS imports)" path="http/src/app/config/config.service.ts" region="rxjs-imports"></code-example>.
 
 <div class="alert is-helpful">
 
-You can run the <live-example></live-example> that accompanies this guide.
+Вы можете запустить <live-example></live-example>, который сопровождает данное руководство.
 
-The sample app does not require a data server.
-It relies on the [Angular _in-memory-web-api_](https://github.com/angular/angular/tree/main/packages/misc/angular-in-memory-web-api), which replaces the _HttpClient_ module's `HttpBackend`.
-The replacement service simulates the behavior of a REST-like backend.
+Пример приложения не требует сервера данных. Он полагается на [Angular _in-memory-web-api_](https://github.com/angular/angular/tree/main/packages/misc/angular-in-memory-web-api), который заменяет `HttpBackend` модуля _HttpClient_.
 
-Look at the `AppModule` _imports_ to see how it is configured.
+Заменяющий сервис имитирует поведение REST-подобного бэкенда.
+
+Посмотрите на _импорты_ модуля `AppModule`, чтобы увидеть, как он настроен.
 
 </div>
 
-## Requesting data from a server
+## Запрос данных с сервера
 
-Use the [`HttpClient.get()`](api/common/http/HttpClient#get) method to fetch data from a server.
-The asynchronous method sends an HTTP request, and returns an Observable that emits the requested data when the response is received.
-The return type varies based on the `observe` and `responseType` values that you pass to the call.
+Используйте метод [`HttpClient.get()`](api/common/http/HttpClient#get) для получения данных с сервера. Асинхронный метод посылает HTTP-запрос и возвращает Observable, который выдает запрошенные данные при получении ответа.
 
-The `get()` method takes two arguments; the endpoint URL from which to fetch, and an _options_ object that is used to configure the request.
+Тип возвращаемых данных зависит от значений `observe` и `responseType`, которые вы передаете в вызов.
+
+Метод `get()` принимает два аргумента: URL конечной точки, с которой нужно получить данные, и объект _options_, который используется для настройки запроса.
 
 <code-example format="typescript" language="typescript">
 
-options: {
-headers?: HttpHeaders &verbar; {[header: string]: string &verbar; string[]},
+options: { headers?: HttpHeaders &verbar; {[header: string]: string &verbar; string[]},
 observe?: 'body' &verbar; 'events' &verbar; 'response',
-params?: HttpParams&verbar;{[param: string]: string &verbar; number &verbar; boolean &verbar; ReadonlyArray&lt;string &verbar; number &verbar; boolean&gt;},
+
+params? HttpParams&verbar;{[param: string]: string &verbar; number &verbar; boolean &verbar; ReadonlyArray&lt;string &verbar; number &verbar; boolean&gt;},
+
 reportProgress?: boolean,
+
 responseType?: 'arraybuffer'&verbar;'blob'&verbar;'json'&verbar;'text',
+
 withCredentials?: boolean,
+
 }
 
 </code-example>
 
-Important options include the _observe_ and _responseType_ properties.
+Важные параметры включают свойства _observe_ и _responseType_.
 
--   The _observe_ option specifies how much of the response to return
--   The _responseType_ option specifies the format in which to return data
+-   Параметр _observe_ определяет, какую часть ответа возвращать.
+
+-   Параметр _responseType_ определяет формат, в котором следует возвращать данные
 
 <div class="alert is-helpful">
 
-Use the `options` object to configure various other aspects of an outgoing request.
-In [Adding headers](#adding-headers), for example, the service set the default headers using the `headers` option property.
+Используйте объект `options` для настройки различных других аспектов исходящего запроса. Например, в [Adding headers](#adding-headers) сервис устанавливает заголовки по умолчанию, используя свойство `headers`.
 
-Use the `params` property to configure a request with [HTTP URL parameters](#url-params), and the `reportProgress` option to [listen for progress events](#report-progress) when transferring large amounts of data.
+Используйте свойство `params` для настройки запроса с [HTTP URL параметрами](#url-params), а опцию `reportProgress` для [прослушивания событий прогресса](#report-progress) при передаче больших объемов данных.
 
 </div>
 
-Applications often request JSON data from a server.
-In the `ConfigService` example, the app needs a configuration file on the server, `config.json`, that specifies resource URLs.
+Приложения часто запрашивают JSON-данные с сервера. В примере `ConfigService` приложению нужен файл конфигурации на сервере, `config.json`, в котором указаны URL-адреса ресурсов.
 
-<code-example header="assets/config.json" path="http/src/assets/config.json"></code-example>
+<code-example header="assets/config.json" path="http/src/assets/config.json"></code-example>.
 
-To fetch this kind of data, the `get()` call needs the following options: `{observe: 'body', responseType: 'json'}`.
-These are the default values for those options, so the following examples do not pass the options object.
-Later sections show some of the additional option possibilities.
+Чтобы получить такие данные, вызов `get()` должен содержать следующие параметры: `{observe: 'body', responseType: 'json'}`. Это значения по умолчанию для этих опций, поэтому в следующих примерах объект options не передается.
+
+В последующих разделах показаны некоторые дополнительные возможности опций.
 
 <a id="config-service"></a>
 
-The example conforms to the best practices for creating scalable solutions by defining a re-usable [injectable service](guide/glossary#service 'service definition') to perform the data-handling functionality.
-In addition to fetching data, the service can post-process the data, add error handling, and add retry logic.
+Пример соответствует лучшим практикам создания масштабируемых решений путем определения повторно используемого [injectable service](guide/glossary#service 'service definition') для выполнения функциональности обработки данных. В дополнение к получению данных, сервис может пост-обрабатывать данные, добавлять обработку ошибок и логику повторных попыток.
 
-The `ConfigService` fetches this file using the `HttpClient.get()` method.
+Сервис `ConfigService` получает этот файл с помощью метода `HttpClient.get()`.
 
-<code-example header="app/config/config.service.ts (getConfig v.1)" path="http/src/app/config/config.service.ts" region="getConfig_1"></code-example>
+<code-example header="app/config/config.service.ts (getConfig v.1)" path="http/src/app/config/config.service.ts" region="getConfig_1"></code-example>.
 
-The `ConfigComponent` injects the `ConfigService` and calls the `getConfig` service method.
+Компонент `ConfigComponent` инжектирует `ConfigService` и вызывает метод сервиса `getConfig`.
 
-Because the service method returns an `Observable` of configuration data, the component _subscribes_ to the method's return value.
-The subscription callback performs minimal post-processing.
-It copies the data fields into the component's `config` object, which is data-bound in the component template for display.
+Поскольку метод сервиса возвращает `Observable` данных конфигурации, компонент _подписывается_ на возвращаемое значение метода. Обратный вызов подписки выполняет минимальную постобработку.
+
+Он копирует поля данных в объект `config` компонента, который привязывается к данным в шаблоне компонента для отображения.
 
 <code-example header="app/config/config.component.ts (showConfig v.1)" path="http/src/app/config/config.component.ts" region="v1"></code-example>
 
 <a id="always-subscribe"></a>
 
-### Starting the request
+### Начало запроса
 
-For all `HttpClient` methods, the method doesn't begin its HTTP request until you call `subscribe()` on the observable the method returns.
+Для всех методов `HttpClient` метод не начинает свой HTTP-запрос, пока вы не вызовете `subscribe()` на наблюдаемой, которую возвращает метод.
 
-This is true for _all_ `HttpClient` _methods_.
+Это верно для _всех_ `HttpClient` _методов_.
 
 <div class="alert is-helpful">
 
-You should always unsubscribe from an observable when a component is destroyed.
+Вы всегда должны отписываться от наблюдаемого компонента, когда компонент уничтожается.
 
 </div>
 
-All observables returned from `HttpClient` methods are _cold_ by design.
-Execution of the HTTP request is _deferred_, letting you extend the observable with additional operations such as `tap` and `catchError` before anything actually happens.
+Все наблюдаемые, возвращаемые из методов `HttpClient`, по своей конструкции являются _холодными_. Выполнение HTTP-запроса _отложено_, что позволяет вам расширить наблюдаемую таблицу дополнительными операциями, такими как `tap` и `catchError`, прежде чем что-то произойдет.
 
-Calling `subscribe()` triggers execution of the observable and causes `HttpClient` to compose and send the HTTP request to the server.
+Вызов `subscribe()` запускает выполнение наблюдаемой таблицы и заставляет `HttpClient` составить и отправить HTTP-запрос на сервер.
 
-Think of these observables as _blueprints_ for actual HTTP requests.
+Рассматривайте эти наблюдаемые как _синие отпечатки_ для реальных HTTP-запросов.
 
 <div class="alert is-helpful">
 
-In fact, each `subscribe()` initiates a separate, independent execution of the observable.
-Subscribing twice results in two HTTP requests.
+Фактически, каждая `subscribe()` инициирует отдельное, независимое выполнение наблюдаемой. Подписка дважды приводит к двум HTTP-запросам.
 
 <code-example format="javascript" language="javascript">
 
-const req = http.get&lt;Heroes&gt;('/api/heroes');
-// 0 requests made - .subscribe() not called.
+const req = http.get&lt;Heroes&gt;('/api/heroes'); // Сделано 0 запросов - .subscribe() не вызывается.
 req.subscribe();
-// 1 request made.
+
+// Выполнен 1 запрос.
+
 req.subscribe();
-// 2 requests made.
+
+// 2 запроса сделано.
 
 </code-example>
 
@@ -151,47 +158,42 @@ req.subscribe();
 
 <a id="typed-response"></a>
 
-### Requesting a typed response
+### Запрос типизированного ответа
 
-Structure your `HttpClient` request to declare the type of the response object, to make consuming the output easier and more obvious.
-Specifying the response type acts as a type assertion at compile time.
+Структурируйте ваш запрос `HttpClient`, чтобы объявить тип объекта ответа, чтобы сделать потребление вывода более простым и очевидным. Указание типа ответа действует как утверждение типа во время компиляции.
 
 <div class="alert is-important">
 
-Specifying the response type is a declaration to TypeScript that it should treat your response as being of the given type.
-This is a build-time check and doesn't guarantee that the server actually responds with an object of this type.
-It is up to the server to ensure that the type specified by the server API is returned.
+Указание типа ответа - это заявление TypeScript о том, что он должен рассматривать ваш ответ как объект данного типа. Это проверка во время сборки и не гарантирует, что сервер действительно ответит объектом данного типа.
+Сервер должен убедиться, что в ответ будет получен тип, указанный API сервера.
 
 </div>
 
-To specify the response object type, first define an interface with the required properties.
-Use an interface rather than a class, because the response is a plain object that cannot be automatically converted to an instance of a class.
+Чтобы задать тип объекта ответа, сначала определите интерфейс с необходимыми свойствами. Используйте интерфейс, а не класс, потому что ответ - это обычный объект, который не может быть автоматически преобразован в экземпляр класса.
 
-<code-example path="http/src/app/config/config.service.ts" region="config-interface"></code-example>
+<code-example path="http/src/app/config/config.service.ts" region="config-interface"></code-example>.
 
-Next, specify that interface as the `HttpClient.get()` call's type parameter in the service.
+Затем укажите этот интерфейс в качестве параметра типа вызова `HttpClient.get()` в сервисе.
 
 <code-example header="app/config/config.service.ts (getConfig v.2)" path="http/src/app/config/config.service.ts" region="getConfig_2"></code-example>
 
 <div class="alert is-helpful">
 
-When you pass an interface as a type parameter to the `HttpClient.get()` method, use the [RxJS `map` operator](guide/rx-library#operators) to transform the response data as needed by the UI.
-You can then pass the transformed data to the [async pipe](api/common/AsyncPipe).
+Когда вы передаете интерфейс в качестве параметра типа в метод `HttpClient.get()`, используйте оператор [RxJS `map`](guide/rx-library#operators) для преобразования данных ответа в соответствии с требованиями пользовательского интерфейса. Затем вы можете передать преобразованные данные в [async pipe](api/common/AsyncPipe).
 
 </div>
 
-The callback in the updated component method receives a typed data object, which is easier and safer to consume:
+Обратный вызов в методе обновленного компонента получает типизированный объект данных, который проще и безопаснее потреблять:
 
-<code-example header="app/config/config.component.ts (showConfig v.2)" path="http/src/app/config/config.component.ts" region="v2"></code-example>
+<code-example header="app/config/config.component.ts (showConfig v.2)" path="http/src/app/config/config.component.ts" region="v2"></code-example>.
 
-To access properties that are defined in an interface, you must explicitly convert the plain object you get from the JSON to the required response type.
-For example, the following `subscribe` callback receives `data` as an Object, and then type-casts it in order to access the properties.
+Чтобы получить доступ к свойствам, определенным в интерфейсе, вы должны явно преобразовать простой объект, полученный из JSON, в требуемый тип ответа. Например, следующий обратный вызов `subscribe` получает `data` как Object, а затем преобразует его в тип, чтобы получить доступ к свойствам.
 
 <code-example format="typescript" language="typescript">
 
-.subscribe(data =&gt; this.config = {
-heroesUrl: (data as any).heroesUrl,
+.subscribe(data =&gt; this.config = { heroesUrl: (data as any).heroesUrl,
 textfile: (data as any).textfile,
+
 });
 
 </code-example>
@@ -202,261 +204,251 @@ textfile: (data as any).textfile,
 
 <header><code>observe</code> and <code>response</code> types</header>
 
-The types of the `observe` and `response` options are _string unions_, rather than plain strings.
+Типы опций `observe` и `response` являются _строковыми союзами_, а не обычными строками.
 
 <code-example format="typescript" language="typescript">
 
-options: {
-&hellip;
+опции: { &hellip;
 observe?: 'body' &verbar; 'events' &verbar; 'response',
+
 &hellip;
-responseType?: 'arraybuffer'&verbar;'blob'&verbar;'json'&verbar;'text',
+
+responseType?: 'arraybuffer'&verbar; 'blob'&verbar; 'json'&verbar; 'text',
+
 &hellip;
+
 }
 
 </code-example>
 
-This can cause confusion.
-For example:
+Это может привести к путанице. Например:
 
 <code-example format="typescript" language="typescript">
 
-// this works
-client.get('/foo', {responseType: 'text'})
+// это работает client.get('/foo', {responseType: 'text'})
 
-// but this does NOT work
-const options = {
+// но это НЕ работает const options = {
+
 responseType: 'text',
+
 };
+
 client.get('/foo', options)
 
 </code-example>
 
-In the second case, TypeScript infers the type of `options` to be `{responseType: string}`.
-The type is too wide to pass to `HttpClient.get` which is expecting the type of `responseType` to be one of the _specific_ strings.
-`HttpClient` is typed explicitly this way so that the compiler can report the correct return type based on the options you provided.
+Во втором случае TypeScript определяет тип `options` как `{responseType: string}`. Этот тип слишком широк, чтобы передать его в `HttpClient.get`, который ожидает, что тип `responseType` будет одной из _специфических_ строк.
+`HttpClient` явно типизирован таким образом, чтобы компилятор мог сообщить правильный возвращаемый тип на основе предоставленных вами опций.
 
-Use `as const` to let TypeScript know that you really do mean to use a constant string type:
+Используйте `as const`, чтобы дать понять TypeScript, что вы действительно хотите использовать постоянный тип строки:
 
 <code-example format="typescript" language="typescript">
 
-const options = {
-responseType: 'text' as const,
+const options = { responseType: 'text' as const,
 };
+
 client.get('/foo', options);
 
 </code-example>
 
 </div>
 
-### Reading the full response
+### Чтение полного ответа
 
-In the previous example, the call to `HttpClient.get()` did not specify any options.
-By default, it returned the JSON data contained in the response body.
+В предыдущем примере вызов `HttpClient.get()` не указывал никаких опций. По умолчанию он возвращает данные в формате JSON, содержащиеся в теле ответа.
 
-You might need more information about the transaction than is contained in the response body.
-Sometimes servers return special headers or status codes to indicate certain conditions that are important to the application workflow.
+Вам может понадобиться больше информации о транзакции, чем содержится в теле ответа. Иногда серверы возвращают специальные заголовки или коды состояния для указания определенных условий, важных для рабочего процесса приложения.
 
-Tell `HttpClient` that you want the full response with the `observe` option of the `get()` method:
+Сообщите `HttpClient`, что вам нужен полный ответ с помощью опции `observe` метода `get()`:
 
-<code-example path="http/src/app/config/config.service.ts" region="getConfigResponse"></code-example>
+<code-example path="http/src/app/config/config.service.ts" region="getConfigResponse"></code-example>.
 
-Now `HttpClient.get()` returns an `Observable` of type `HttpResponse` rather than just the JSON data contained in the body.
+Теперь `HttpClient.get()` возвращает `Observable` типа `HttpResponse`, а не просто JSON данные, содержащиеся в теле.
 
-The component's `showConfigResponse()` method displays the response headers as well as the configuration:
+Метод компонента `showConfigResponse()` отображает заголовки ответа, а также конфигурацию:
 
-<code-example header="app/config/config.component.ts (showConfigResponse)" path="http/src/app/config/config.component.ts" region="showConfigResponse"></code-example>
+<code-example header="app/config/config.component.ts (showConfigResponse)" path="http/src/app/config/config.component.ts" region="showConfigResponse"></code-example>.
 
-As you can see, the response object has a `body` property of the correct type.
+Как вы можете видеть, объект ответа имеет свойство `body` правильного типа.
 
-### Making a JSONP request
+### Создание JSONP-запроса
 
-Apps can use the `HttpClient` to make [JSONP](https://en.wikipedia.org/wiki/JSONP) requests across domains when a server doesn't support [CORS protocol](https://developer.mozilla.org/docs/Web/HTTP/CORS).
+Приложения могут использовать `HttpClient` для выполнения [JSONP](https://en.wikipedia.org/wiki/JSONP) запросов через домены, когда сервер не поддерживает [CORS протокол](https://developer.mozilla.org/docs/Web/HTTP/CORS).
 
-Angular JSONP requests return an `Observable`.
-Follow the pattern for subscribing to observables and use the RxJS `map` operator to transform the response before using the [async pipe](api/common/AsyncPipe) to manage the results.
+Запросы Angular JSONP возвращают `Observable`. Следуйте шаблону подписки на наблюдаемые и используйте оператор RxJS `map` для преобразования ответа перед использованием [async pipe](api/common/AsyncPipe) для управления результатами.
 
-In Angular, use JSONP by including `HttpClientJsonpModule` in the `NgModule` imports.
-In the following example, the `searchHeroes()` method uses a JSONP request to query for heroes whose names contain the search term.
+В Angular используйте JSONP, включив `HttpClientJsonpModule` в импорт `NgModule`. В следующем примере метод `searchHeroes()` использует JSONP-запрос для поиска героев, имена которых содержат поисковый запрос.
 
 <code-example format="typescript" language="typescript">
 
-/_ GET heroes whose name contains search term _/
-searchHeroes(term: string): Observable {
+/_ GET героев, чье имя содержит поисковый запрос _/ searchHeroes(term: string): Наблюдаемый {
 term = term.trim();
 
-const heroesURL = `&dollar;{this.heroesURL}?&dollar;{term}`;
-return this.http.jsonp(heroesUrl, 'callback').pipe(
-catchError(this.handleError('searchHeroes', [])) // then handle the error
+const heroesURL = `&dollar;{this.heroesURL}?&dollar;{term}`; return this.http.jsonp(heroesUrl, 'callback').pipe(
+
+catchError(this.handleError('searchHeroes', [])) // затем обработать ошибку
+
 );
+
 }
 
 </code-example>
 
-This request passes the `heroesURL` as the first parameter and the callback function name as the second parameter.
-The response is wrapped in the callback function, which takes the observables returned by the JSONP method and pipes them through to the error handler.
+Этот запрос передает `heroesURL` в качестве первого параметра и имя функции обратного вызова в качестве второго параметра. Ответ заворачивается в функцию обратного вызова, которая принимает наблюдаемые данные, возвращенные методом JSONP, и передает их в обработчик ошибок.
 
-### Requesting non-JSON data
+### Запрос данных не в формате JSON
 
-Not all APIs return JSON data.
-In this next example, a `DownloaderService` method reads a text file from the server and logs the file contents, before returning those contents to the caller as an `Observable<string>`.
+Не все API возвращают данные в формате JSON. В следующем примере метод `DownloaderService` считывает текстовый файл с сервера и регистрирует содержимое файла, а затем возвращает его вызывающей стороне в виде `Observable<string>`.
 
-<code-example header="app/downloader/downloader.service.ts (getTextFile)" linenums="false" path="http/src/app/downloader/downloader.service.ts" region="getTextFile"></code-example>
+<code-example header="app/downloader/downloader.service.ts (getTextFile)" linenums="false" path="http/src/app/downloader/downloader.service.ts" region="getTextFile"></code-example>.
 
-`HttpClient.get()` returns a string rather than the default JSON because of the `responseType` option.
+`HttpClient.get()` возвращает строку, а не JSON по умолчанию из-за опции `responseType`.
 
-The RxJS `tap` operator lets the code inspect both success and error values passing through the observable without disturbing them.
+Оператор RxJS `tap` позволяет коду проверять значения успехов и ошибок, проходящие через наблюдаемую, не нарушая их.
 
-A `download()` method in the `DownloaderComponent` initiates the request by subscribing to the service method.
+Метод `download()` в `DownloaderComponent` инициирует запрос, подписываясь на метод сервиса.
 
 <code-example header="app/downloader/downloader.component.ts (download)" linenums="false" path="http/src/app/downloader/downloader.component.ts" region="download"></code-example>
 
 <a id="error-handling"></a>
 
-## Handling request errors
+## Обработка ошибок запроса
 
-If the request fails on the server, `HttpClient` returns an _error_ object instead of a successful response.
+Если запрос не проходит на сервере, `HttpClient` возвращает объект _error_ вместо успешного ответа.
 
-The same service that performs your server transactions should also perform error inspection, interpretation, and resolution.
+Тот же сервис, который выполняет ваши серверные транзакции, должен также выполнять проверку, интерпретацию и разрешение ошибок.
 
-When an error occurs, you can obtain details of what failed in order to inform your user.
-In some cases, you might also automatically [retry the request](#retry).
+При возникновении ошибки вы можете получить подробную информацию о том, что именно не удалось сделать, чтобы сообщить об этом пользователю. В некоторых случаях вы также можете автоматически [повторить запрос](#retry).
 
 <a id="error-details"></a>
 
-### Getting error details
+### Получение подробной информации об ошибке
 
-An app should give the user useful feedback when data access fails.
-A raw error object is not particularly useful as feedback.
-In addition to detecting that an error has occurred, you need to get error details and use those details to compose a user-friendly response.
+Приложение должно предоставлять пользователю полезную обратную связь при неудачном доступе к данным. Необработанный объект ошибки не особенно полезен в качестве обратной связи.
 
-Two types of errors can occur.
+В дополнение к обнаружению того, что произошла ошибка, вам необходимо получить подробности ошибки и использовать их для составления удобного для пользователя ответа.
 
--   The server backend might reject the request, returning an HTTP response with a status code such as 404 or 500.
-    These are error _responses_.
+Ошибки могут быть двух типов.
 
--   Something could go wrong on the client-side such as a network error that prevents the request from completing successfully or an exception thrown in an RxJS operator.
-    These errors have `status` set to `0` and the `error` property contains a `ProgressEvent` object, whose `type` might provide further information.
+-   Бэкэнд сервера может отклонить запрос, вернув HTTP-ответ с кодом состояния 404 или 500.
 
-`HttpClient` captures both kinds of errors in its `HttpErrorResponse`.
-Inspect that response to identify the error's cause.
+    Это _ответы об ошибках_.
 
-The following example defines an error handler in the previously defined [ConfigService](#config-service 'ConfigService defined').
+-   Что-то может пойти не так на стороне клиента, например, сетевая ошибка, которая не позволяет успешно завершить запрос, или исключение, брошенное в операторе RxJS.
 
-<code-example header="app/config/config.service.ts (handleError)" path="http/src/app/config/config.service.ts" region="handleError"></code-example>
+    У этих ошибок `status` установлен в `0`, а свойство `error` содержит объект `ProgressEvent`, чей `type` может предоставить дополнительную информацию.
 
-The handler returns an RxJS `ErrorObservable` with a user-friendly error message.
-The following code updates the `getConfig()` method, using a [pipe](guide/pipes 'Pipes guide') to send all observables returned by the `HttpClient.get()` call to the error handler.
+`HttpClient` фиксирует оба вида ошибок в своем `HttpErrorResponse`. Проанализируйте этот ответ, чтобы определить причину ошибки.
 
-<code-example header="app/config/config.service.ts (getConfig v.3 with error handler)" path="http/src/app/config/config.service.ts" region="getConfig_3"></code-example>
+Следующий пример определяет обработчик ошибок в ранее определенном [ConfigService](#config-service 'ConfigService defined').
+
+<code-example header="app/config/config.service.ts (handleError)" path="http/src/app/config/config.service.ts" region="handleError"></code-example>.
+
+Обработчик возвращает RxJS `ErrorObservable` с удобным для пользователя сообщением об ошибке. Следующий код обновляет метод `getConfig()`, используя [pipe](guide/pipes 'Pipes guide') для отправки всех наблюдаемых, возвращенных вызовом `HttpClient.get()` в обработчик ошибок.
+
+<code-example header="app/config/config.service.ts (getConfig v.3 с обработчиком ошибок)" path="http/src/app/config/config.service.ts" region="getConfig_3"></code-example>
 
 <a id="retry"></a>
 
-### Retrying a failed request
+### Повторная попытка неудачного запроса
 
-Sometimes the error is transient and goes away automatically if you try again.
-For example, network interruptions are common in mobile scenarios, and trying again can produce a successful result.
+Иногда ошибка носит временный характер и исчезает автоматически при повторной попытке. Например, в мобильных сценариях часто случаются перебои в работе сети, и повторная попытка может привести к успешному результату.
 
-The [RxJS library](guide/rx-library) offers several _retry_ operators.
-For example, the `retry()` operator automatically re-subscribes to a failed `Observable` a specified number of times.
-_Re-subscribing_ to the result of an `HttpClient` method call has the effect of reissuing the HTTP request.
+Библиотека [RxJS](guide/rx-library) предлагает несколько операторов _retry_. Например, оператор `retry()` автоматически повторно подписывается на неудачный `Observable` заданное количество раз.
 
-The following example shows how to pipe a failed request to the `retry()` operator before passing it to the error handler.
+Переподписка\_ на результат вызова метода `HttpClient` имеет эффект повторной выдачи HTTP-запроса.
+
+В следующем примере показано, как передать неудачный запрос оператору `retry()` перед передачей его в обработчик ошибок.
 
 <code-example header="app/config/config.service.ts (getConfig with retry)" path="http/src/app/config/config.service.ts" region="getConfig"></code-example>
 
-## Sending data to a server
+## Отправка данных на сервер
 
-In addition to fetching data from a server, `HttpClient` supports other HTTP methods such as PUT, POST, and DELETE, which you can use to modify the remote data.
+Помимо получения данных с сервера, `HttpClient` поддерживает другие методы HTTP, такие как PUT, POST и DELETE, которые вы можете использовать для изменения удаленных данных.
 
-The sample app for this guide includes an abridged version of the "Tour of Heroes" example that fetches heroes and enables users to add, delete, and update them.
-The following sections show examples of the data-update methods from the sample's `HeroesService`.
+Пример приложения для данного руководства включает сокращенную версию примера "Тур по героям", который извлекает героев и позволяет пользователям добавлять, удалять и обновлять их. В следующих разделах приведены примеры методов обновления данных из `HeroesService` примера.
 
-### Making a POST request
+### Выполнение POST-запроса
 
-Apps often send data to a server with a POST request when submitting a form.
-In the following example, the `HeroesService` makes an HTTP POST request when adding a hero to the database.
+Приложения часто отправляют данные на сервер с помощью POST-запроса при отправке формы. В следующем примере `HeroesService` делает HTTP POST-запрос при добавлении героя в базу данных.
 
-<code-example header="app/heroes/heroes.service.ts (addHero)" path="http/src/app/heroes/heroes.service.ts" region="addHero"></code-example>
+<code-example header="app/heroes/heroes.service.ts (addHero)" path="http/src/app/heroes/heroes.service.ts" region="addHero"></code-example>.
 
-The `HttpClient.post()` method is similar to `get()` in that it has a type parameter, which you can use to specify that you expect the server to return data of a given type.
-The method takes a resource URL and two additional parameters:
+Метод `HttpClient.post()` похож на `get()` тем, что у него есть параметр type, который вы можете использовать для указания того, что вы ожидаете от сервера возврата данных заданного типа. Метод принимает URL ресурса и два дополнительных параметра:
 
-| Parameter | Details                                                                                               |
-| :-------- | :---------------------------------------------------------------------------------------------------- |
-| body      | The data to POST in the body of the request.                                                          |
-| options   | An object containing method options which, in this case, [specify required headers](#adding-headers). |
+| Parameter | Details | | :-------- | :---------------------------------------------------------------------------------------------------- |.
 
-The example catches errors as [described above](#error-details).
+| body | Данные для POST в теле запроса. |
 
-The `HeroesComponent` initiates the actual POST operation by subscribing to the `Observable` returned by this service method.
+| | options | Объект, содержащий параметры метода, которые, в данном случае, [указывают необходимые заголовки](#adding-headers). |
 
-<code-example header="app/heroes/heroes.component.ts (addHero)" path="http/src/app/heroes/heroes.component.ts" region="add-hero-subscribe"></code-example>
+В примере отлавливаются ошибки, как [описано выше](#error-details).
 
-When the server responds successfully with the newly added hero, the component adds that hero to the displayed `heroes` list.
+Компонент `HeroesComponent` инициирует фактическую операцию POST, подписываясь на `Observable`, возвращаемую этим методом обслуживания.
 
-### Making a DELETE request
+<code-example header="app/heroes/heroes.component.ts (addHero)" path="http/src/app/heroes/heroes.component.ts" region="add-hero-subscribe"></code-example>.
 
-This application deletes a hero with the `HttpClient.delete` method by passing the hero's ID in the request URL.
+Когда сервер успешно отвечает с новым добавленным героем, компонент добавляет этого героя в отображаемый список `героев`.
 
-<code-example header="app/heroes/heroes.service.ts (deleteHero)" path="http/src/app/heroes/heroes.service.ts" region="deleteHero"></code-example>
+### Выполнение запроса DELETE
 
-The `HeroesComponent` initiates the actual DELETE operation by subscribing to the `Observable` returned by this service method.
+Это приложение удаляет героя с помощью метода `HttpClient.delete`, передавая ID героя в URL запроса.
 
-<code-example header="app/heroes/heroes.component.ts (deleteHero)" path="http/src/app/heroes/heroes.component.ts" region="delete-hero-subscribe"></code-example>
+<code-example header="app/heroes/heroes.service.ts (deleteHero)" path="http/src/app/heroes/heroes.service.ts" region="deleteHero"></code-example>.
 
-The component isn't expecting a result from the delete operation, so it subscribes without a callback.
-Even though you are not using the result, you still have to subscribe.
-Calling the `subscribe()` method _executes_ the observable, which is what initiates the DELETE request.
+Компонент `HeroesComponent` инициирует фактическую операцию DELETE, подписываясь на `Observable`, возвращаемую этим методом службы.
+
+<code-example header="app/heroes/heroes.component.ts (deleteHero)" path="http/src/app/heroes/heroes.component.ts" region="delete-hero-subscribe"></code-example>.
+
+Компонент не ожидает результата от операции удаления, поэтому он подписывается без обратного вызова. Даже если вы не используете результат, вы все равно должны подписаться.
+
+Вызов метода `subscribe()` _исполняет_ наблюдаемую, что и инициирует запрос DELETE.
 
 <div class="alert is-important">
 
-You must call `subscribe()` or nothing happens.
-Just calling `HeroesService.deleteHero()` does not initiate the DELETE request.
+Вы должны вызвать `subscribe()`, иначе ничего не произойдет. Просто вызов `HeroesService.deleteHero()` не инициирует запрос DELETE.
 
 </div>
 
-<code-example path="http/src/app/heroes/heroes.component.ts" region="delete-hero-no-subscribe"></code-example>
+<code-example path="http/src/app/heroes/heroes.component.ts" region="delete-hero-no-subscribe"></code-example>.
 
-### Making a PUT request
+### Выполнение PUT-запроса
 
-An app can send PUT requests using the HTTP client service.
-The following `HeroesService` example, like the POST example, replaces a resource with updated data.
+Приложение может отправлять PUT-запросы, используя клиентскую службу HTTP. Следующий пример `HeroesService`, как и пример POST, заменяет ресурс обновленными данными.
 
-<code-example header="app/heroes/heroes.service.ts (updateHero)" path="http/src/app/heroes/heroes.service.ts" region="updateHero"></code-example>
+<code-example header="app/heroes/heroes.service.ts (updateHero)" path="http/src/app/heroes/heroes.service.ts" region="updateHero"></code-example>.
 
-As for any of the HTTP methods that return an observable, the caller, `HeroesComponent.update()` [must `subscribe()`](#always-subscribe 'Why you must always subscribe.') to the observable returned from the `HttpClient.put()` in order to initiate the request.
+Как и для любого из HTTP методов, которые возвращают наблюдаемую, вызывающий `HeroesComponent.update()` [должен `subscribe()`](#always-subscribe 'Почему вы всегда должны подписываться.') на наблюдаемую, возвращенную из `HttpClient.put()` для того, чтобы инициировать запрос.
 
-### Adding and updating headers
+### Добавление и обновление заголовков
 
-Many servers require extra headers for save operations.
-For example, a server might require an authorization token, or "Content-Type" header to explicitly declare the MIME type of the request body.
+Многие серверы требуют дополнительных заголовков для операций сохранения. Например, сервер может потребовать токен авторизации или заголовок "Content-Type" для явного объявления MIME-типа тела запроса.
 
-##### Adding headers
+##### Добавление заголовков
 
-The `HeroesService` defines such headers in an `httpOptions` object that are passed to every `HttpClient` save method.
+Служба `HeroesService` определяет такие заголовки в объекте `httpOptions`, который передается каждому методу сохранения `HttpClient`.
 
 <code-example header="app/heroes/heroes.service.ts (httpOptions)" path="http/src/app/heroes/heroes.service.ts" region="http-options"></code-example>
 
-##### Updating headers
+##### Обновление заголовков
 
-You can't directly modify the existing headers within the previous options
-object because instances of the `HttpHeaders` class are immutable.
-Use the `set()` method instead, to return a clone of the current instance with the new changes applied.
+Вы не можете напрямую изменить существующие заголовки внутри предыдущего объекта options, поскольку экземпляры класса `HttpHeaders` неизменяемы.
 
-The following example shows how, when an old token expires, you can update the authorization header before making the next request.
+Вместо этого используйте метод `set()`, чтобы вернуть клон текущего экземпляра с новыми изменениями.
 
-<code-example linenums="false" path="http/src/app/heroes/heroes.service.ts" region="update-headers"></code-example>
+В следующем примере показано, как при истечении срока действия старого токена можно обновить заголовок авторизации перед выполнением следующего запроса.
+
+<code-example linenums="false" path="http/src/app/heroes/heroes.service.ts" region="update-headers"></code-example>.
 
 <a id="url-params"></a>
 
-## Configuring HTTP URL parameters
+## Настройка параметров URL HTTP
 
-Use the `HttpParams` class with the `params` request option to add URL query strings in your `HttpRequest`.
+Используйте класс `HttpParams` с параметром запроса `params` для добавления строк запроса URL в ваш `HttpRequest`.
 
-The following example, the `searchHeroes()` method queries for heroes whose names contain the search term.
+В следующем примере метод `searchHeroes()` запрашивает героев, имена которых содержат поисковый запрос.
 
-Start by importing `HttpParams` class.
+Начните с импорта класса `HttpParams`.
 
 <code-example hideCopy language="typescript">
 
@@ -464,15 +456,13 @@ import {HttpParams} from "&commat;angular/common/http";
 
 </code-example>
 
-<code-example linenums="false" path="http/src/app/heroes/heroes.service.ts" region="searchHeroes"></code-example>
+<code-example linenums="false" path="http/src/app/heroes/heroes.service.ts" region="searchHeroes"></code-example>.
 
-If there is a search term, the code constructs an options object with an HTML URL-encoded search parameter.
-If the term is "cat", for example, the GET request URL would be `api/heroes?name=cat`.
+Если есть поисковый запрос, код создает объект options с параметром поиска в HTML URL-кодировке. Например, если термин "cat", то URL GET-запроса будет `api/heroes?name=cat`.
 
-The `HttpParams` object is immutable.
-If you need to update the options, save the returned value of the `.set()` method.
+Объект `HttpParams` является неизменяемым. Если вам нужно обновить параметры, сохраните возвращаемое значение метода `.set()`.
 
-You can also create HTTP parameters directly from a query string by using the `fromString` variable:
+Вы также можете создавать параметры HTTP непосредственно из строки запроса, используя переменную `fromString`:
 
 <code-example hideCopy language="typescript">
 
@@ -482,98 +472,92 @@ const params = new HttpParams({fromString: 'name=foo'});
 
 <a id="intercepting-requests-and-responses"></a>
 
-## Intercepting requests and responses
+## Перехват запросов и ответов
 
-With interception, you declare _interceptors_ that inspect and transform HTTP requests from your application to a server.
-The same interceptors can also inspect and transform a server's responses on their way back to the application.
-Multiple interceptors form a _forward-and-backward_ chain of request/response handlers.
+При перехвате вы объявляете _перехватчики_, которые проверяют и преобразуют HTTP-запросы от вашего приложения к серверу. Эти же перехватчики могут проверять и преобразовывать ответы сервера на обратном пути к приложению.
 
-Interceptors can perform a variety of _implicit_ tasks, from authentication to logging, in a routine, standard way, for every HTTP request/response.
+Несколько перехватчиков образуют _прямую и обратную_ цепочку обработчиков запросов/ответов.
 
-Without interception, developers would have to implement these tasks _explicitly_ for each `HttpClient` method call.
+Перехватчики могут выполнять различные _неявные_ задачи, от аутентификации до протоколирования, обычным, стандартным способом для каждого запроса/ответа HTTP.
 
-### Write an interceptor
+Без перехвата разработчикам пришлось бы реализовывать эти задачи _явно_ для каждого вызова метода `HttpClient`.
 
-To implement an interceptor, declare a class that implements the `intercept()` method of the `HttpInterceptor` interface.
+### Написать перехватчик
 
-Here is a do-nothing `noop` interceptor that passes the request through without touching it:
+Для реализации перехватчика объявите класс, который реализует метод `intercept()` интерфейса `HttpInterceptor`.
+
+Вот перехватчик `noop`, который пропускает запрос через себя, не трогая его:
 
 <code-example header="app/http-interceptors/noop-interceptor.ts" path="http/src/app/http-interceptors/noop-interceptor.ts"></code-example>
 
-The `intercept` method transforms a request into an `Observable` that eventually returns the HTTP response.
-In this sense, each interceptor is fully capable of handling the request entirely by itself.
+Метод `intercept` преобразует запрос в `Observable`, который в итоге возвращает HTTP-ответ. В этом смысле каждый перехватчик способен обрабатывать запрос полностью самостоятельно.
 
-Most interceptors inspect the request on the way in and forward the potentially altered request to the `handle()` method of the `next` object which implements the [`HttpHandler`](api/common/http/HttpHandler) interface.
+Большинство перехватчиков проверяют запрос на входе и передают потенциально измененный запрос в метод `handle()` объекта `next`, который реализует интерфейс [`HttpHandler`](api/common/http/HttpHandler).
 
 <code-example format="javascript" language="javascript">
 
-export abstract class HttpHandler {
-abstract handle(req: HttpRequest&lt;any&gt;): Observable&lt;HttpEvent&lt;any&gt;&gt;;
+export abstract class HttpHandler { abstract handle(req: HttpRequest&lt;any&gt;): Observable&lt;HttpEvent&lt;any&gt;&gt;;
 }
 
 </code-example>
 
-Like `intercept()`, the `handle()` method transforms an HTTP request into an `Observable` of [`HttpEvents`](#interceptor-events) which ultimately include the server's response.
-The `intercept()` method could inspect that observable and alter it before returning it to the caller.
+Как и `intercept()`, метод `handle()` преобразует HTTP-запрос в `Observable` из [`HttpEvents`](#interceptor-events), которые в конечном итоге включают ответ сервера. Метод `intercept()` может проверить эту наблюдаемую и изменить ее, прежде чем вернуть ее вызывающей стороне.
 
-This `no-op` interceptor calls `next.handle()` with the original request and returns the observable without doing a thing.
+Этот `no-op` перехватчик вызывает `next.handle()` с исходным запросом и возвращает наблюдаемую, ничего не делая.
 
-### The `next` object
+### Объект `next`
 
-The `next` object represents the next interceptor in the chain of interceptors.
-The final `next` in the chain is the `HttpClient` backend handler that sends the request to the server and receives the server's response.
+Объект `next` представляет следующий перехватчик в цепочке перехватчиков. Последний `next` в цепочке - это обработчик бэкенда `HttpClient`, который посылает запрос на сервер и получает ответ сервера.
 
-Most interceptors call `next.handle()` so that the request flows through to the next interceptor and, eventually, the backend handler.
-An interceptor _could_ skip calling `next.handle()`, short-circuit the chain, and [return its own `Observable`](#caching) with an artificial server response.
+Большинство перехватчиков вызывают `next.handle()`, чтобы запрос перешел к следующему перехватчику и, в конечном счете, к внутреннему обработчику. Перехватчик _может_ пропустить вызов `next.handle()`, замкнуть цепочку и [вернуть свою собственную `Observable`](#caching) с искусственным ответом сервера.
 
-This is a common middleware pattern found in frameworks such as Express.js.
+Это распространенный паттерн промежуточного ПО, встречающийся в таких фреймворках, как Express.js.
 
-### Provide the interceptor
+### Предоставить перехватчик
 
-The `NoopInterceptor` is a service managed by Angular's [dependency injection (DI)](guide/dependency-injection) system.
-Like other services, you must provide the interceptor class before the app can use it.
+Перехватчик `NoopInterceptor` - это сервис, управляемый системой [dependency injection (DI)](guide/dependency-injection) Angular. Как и другие сервисы, вы должны предоставить класс перехватчика, прежде чем приложение сможет его использовать.
 
-Because interceptors are optional dependencies of the `HttpClient` service, you must provide them in the same injector or a parent of the injector that provides `HttpClient`.
-Interceptors provided _after_ DI creates the `HttpClient` are ignored.
+Поскольку перехватчики являются необязательными зависимостями сервиса `HttpClient`, вы должны предоставлять их в том же инжекторе или в родительском инжекторе, который предоставляет `HttpClient`. Перехватчики, предоставленные _после_ того, как DI создаст `HttpClient`, игнорируются.
 
-This app provides `HttpClient` in the app's root injector, as a side effect of importing the `HttpClientModule` in `AppModule`.
-You should provide interceptors in `AppModule` as well.
+Это приложение предоставляет `HttpClient` в корневом инжекторе приложения, как побочный эффект импорта `HttpClientModule` в `AppModule`. Вы также должны предоставить перехватчики в `AppModule`.
 
-After importing the `HTTP_INTERCEPTORS` injection token from `@angular/common/http`, write the `NoopInterceptor` provider like this:
+После импорта инжекторного маркера `HTTP_INTERCEPTORS` из `@angular/common/http`, напишите провайдер `NoopInterceptor` следующим образом:
 
-<code-example path="http/src/app/http-interceptors/index.ts" region="noop-provider"></code-example>
+<code-example path="http/src/app/http-interceptors/index.ts" region="noop-provider"></code-example>.
 
-Notice the `multi: true` option.
-This required setting tells Angular that `HTTP_INTERCEPTORS` is a token for a _multiprovider_ that injects an array of values, rather than a single value.
+Обратите внимание на опцию `multi: true`. Этот обязательный параметр сообщает Angular, что `HTTP_INTERCEPTORS` является маркером для _мультипровайдера_, который вводит массив значений, а не одно значение.
 
-You _could_ add this provider directly to the providers array of the `AppModule`.
-However, it's rather verbose and there's a good chance that you'll create more interceptors and provide them in the same way.
-You must also pay [close attention to the order](#interceptor-order) in which you provide these interceptors.
+Вы _могли бы_ добавить этот провайдер непосредственно в массив провайдеров `AppModule`. Однако это довольно многословно, и велика вероятность, что вы создадите больше перехватчиков и предоставите их таким же образом.
 
-Consider creating a "barrel" file that gathers all the interceptor providers into an `httpInterceptorProviders` array, starting with this first one, the `NoopInterceptor`.
+Вы также должны обратить [пристальное внимание на порядок](#interceptor-order), в котором вы предоставляете эти перехватчики.
 
-<code-example header="app/http-interceptors/index.ts" path="http/src/app/http-interceptors/index.ts" region="interceptor-providers"></code-example>
+Подумайте о создании "бочкового" файла, который собирает все провайдеры перехватчиков в массив `httpInterceptorProviders`, начиная с этого первого, `NoopInterceptor`.
 
-Then import and add it to the `AppModule` `providers array` like this:
+<code-example header="app/http-interceptors/index.ts" path="http/src/app/http-interceptors/index.ts" region="interceptor-providers"></code-example>.
 
-<code-example header="app/app.module.ts (interceptor providers)" path="http/src/app/app.module.ts" region="interceptor-providers"></code-example>
+Затем импортируйте и добавьте его в `AppModule` `providers array` следующим образом:
 
-As you create new interceptors, add them to the `httpInterceptorProviders` array and you won't have to revisit the `AppModule`.
+<code-example header="app/app.module.ts (interceptor providers)" path="http/src/app/app.module.ts" region="interceptor-providers"></code-example>.
+
+По мере создания новых перехватчиков, добавляйте их в массив `httpInterceptorProviders`, и вам не придется снова обращаться к `AppModule`.
 
 <div class="alert is-helpful">
 
-There are many more interceptors in the complete sample code.
+В полном коде примера перехватчиков гораздо больше.
 
 </div>
 
-### Interceptor order
+### Порядок перехватчиков
 
-Angular applies interceptors in the order that you provide them.
-For example, consider a situation in which you want to handle the authentication of your HTTP requests and log them before sending them to a server.
-To accomplish this task, you could provide an `AuthInterceptor` service and then a `LoggingInterceptor` service.
-Outgoing requests would flow from the `AuthInterceptor` to the `LoggingInterceptor`.
-Responses from these requests would flow in the other direction, from `LoggingInterceptor` back to `AuthInterceptor`.
-The following is a visual representation of the process:
+Angular применяет перехватчики в том порядке, в котором вы их предоставляете. Например, рассмотрим ситуацию, в которой вы хотите обрабатывать аутентификацию ваших HTTP-запросов и записывать их в журнал перед отправкой на сервер.
+
+Для выполнения этой задачи вы можете предоставить службу `AuthInterceptor`, а затем службу `LoggingInterceptor`.
+
+Исходящие запросы будут поступать от `AuthInterceptor` к `LoggingInterceptor`.
+
+Ответы на эти запросы будут поступать в обратном направлении, от `LoggingInterceptor` обратно к `AuthInterceptor`.
+
+Ниже представлено визуальное представление этого процесса:
 
 <div class="lightbox">
 
@@ -583,172 +567,172 @@ The following is a visual representation of the process:
 
 <div class="alert is-helpful">
 
-The last interceptor in the process is always the `HttpBackend` that handles communication with the server.
+Последним перехватчиком в процессе всегда является `HttpBackend`, который обрабатывает связь с сервером.
 
 </div>
 
-You cannot change the order or remove interceptors later.
-If you need to enable and disable an interceptor dynamically, you'll have to build that capability into the interceptor itself.
+Вы не сможете изменить порядок или удалить перехватчики позже. Если вам нужно включать и отключать перехватчик динамически, вам придется встроить эту возможность в сам перехватчик.
 
 <a id="interceptor-events"></a>
 
-### Handling interceptor events
+### Обработка событий перехватчика
 
-Most `HttpClient` methods return observables of `HttpResponse<any>`.
-The `HttpResponse` class itself is actually an event, whose type is `HttpEventType.Response`.
-A single HTTP request can, however, generate multiple events of other types, including upload and download progress events.
-The methods `HttpInterceptor.intercept()` and `HttpHandler.handle()` return observables of `HttpEvent<any>`.
+Большинство методов `HttpClient` возвращают наблюдаемые `HttpResponse<any>`. Сам класс `HttpResponse` фактически является событием, тип которого `HttpEventType.Response`.
 
-Many interceptors are only concerned with the outgoing request and return the event stream from `next.handle()` without modifying it.
-Some interceptors, however, need to examine and modify the response from `next.handle()`; these operations can see all of these events in the stream.
+Однако один HTTP-запрос может генерировать несколько событий других типов, включая события о ходе загрузки и выгрузки.
+
+Методы `HttpInterceptor.intercept()` и `HttpHandler.handle()` возвращают наблюдаемые `HttpEvent<any>`.
+
+Многие перехватчики занимаются только исходящим запросом и возвращают поток событий из `next.handle()`, не изменяя его. Некоторые перехватчики, однако, должны изучить и модифицировать ответ от `next.handle()`; эти операции могут видеть все эти события в потоке.
 
 <a id="immutability"></a>
 
-Although interceptors are capable of modifying requests and responses, the `HttpRequest` and `HttpResponse` instance properties are `readonly`, rendering them largely immutable.
-They are immutable for a good reason:
-An app might retry a request several times before it succeeds, which means that the interceptor chain can re-process the same request multiple times.
-If an interceptor could modify the original request object, the re-tried operation would start from the modified request rather than the original.
-Immutability ensures that interceptors see the same request for each try.
+Хотя перехватчики способны изменять запросы и ответы, свойства экземпляров `HttpRequest` и `HttpResponse` являются `readonly`, что делает их в значительной степени неизменяемыми. Они неизменяемы по веской причине:
+
+Приложение может повторять запрос несколько раз, прежде чем он увенчается успехом, что означает, что цепочка перехватчиков может обрабатывать один и тот же запрос несколько раз.
+
+Если перехватчик может изменить исходный объект запроса, то повторная операция будет начинаться с измененного запроса, а не с исходного.
+
+Неизменность гарантирует, что перехватчики видят один и тот же запрос при каждой попытке.
 
 <div class="alert is-helpful">
 
-Your interceptor should return every event without modification unless it has a compelling reason to do otherwise.
+Ваш перехватчик должен возвращать каждое событие без изменений, если только у него нет веских причин поступать иначе.
 
 </div>
 
-TypeScript prevents you from setting `HttpRequest` read-only properties.
+TypeScript не позволяет устанавливать свойства `HttpRequest` только для чтения.
 
 <code-example format="javascript" language="javascript">
 
-// Typescript disallows the following assignment because req.url is readonly
-req.url = req.url.replace('http://', 'https://');
+// Typescript запрещает следующее присвоение, поскольку req.url доступен только для чтения req.url = req.url.replace('http://', 'https://');
 
 </code-example>
 
-If you must alter a request, clone it first and modify the clone before passing it to `next.handle()`.
-You can clone and modify the request in a single step, as shown in the following example.
+Если вам необходимо изменить запрос, сначала клонируйте его и измените клон перед передачей его в `next.handle()`. Вы можете клонировать и изменить запрос за один шаг, как показано в следующем примере.
 
-<code-example header="app/http-interceptors/ensure-https-interceptor.ts (excerpt)" path="http/src/app/http-interceptors/ensure-https-interceptor.ts" region="excerpt"></code-example>
+<code-example header="app/http-interceptors/ensure-https-interceptor.ts (excerpt)" path="http/src/app/http-interceptors/ensure-https-interceptor.ts" region="excerpt"></code-example>.
 
-The `clone()` method's hash argument lets you mutate specific properties of the request while copying the others.
+Хэш-аргумент метода `clone()` позволяет вам изменять определенные свойства запроса, копируя остальные.
 
-#### Modifying a request body
+#### Изменение тела запроса
 
-The `readonly` assignment guard can't prevent deep updates and, in particular, it can't prevent you from modifying a property of a request body object.
+Защита присваивания `readonly` не может предотвратить глубокие обновления и, в частности, не может помешать вам изменить свойство объекта тела запроса.
 
 <code-example format="javascript" language="javascript">
 
-req.body.name = req.body.name.trim(); // bad idea!
+req.body.name = req.body.name.trim(); // плохая идея!
 
 </code-example>
 
-If you must modify the request body, follow these steps.
+Если вам необходимо изменить тело запроса, выполните следующие действия.
 
-1.  Copy the body and make your change in the copy.
-1.  Clone the request object, using its `clone()` method.
-1.  Replace the clone's body with the modified copy.
+1.  Скопируйте тело запроса и внесите изменения в копию.
+
+1.  Клонируйте объект запроса, используя его метод `clone()`.
+
+1.  Замените тело клона измененной копией.
 
 <code-example header="app/http-interceptors/trim-name-interceptor.ts (excerpt)" path="http/src/app/http-interceptors/trim-name-interceptor.ts" region="excerpt"></code-example>
 
-#### Clearing the request body in a clone
+#### Очистка тела запроса в клоне
 
-Sometimes you need to clear the request body rather than replace it.
-To do this, set the cloned request body to `null`.
+Иногда требуется очистить тело запроса, а не заменить его. Для этого установите для клонированного тела запроса значение `null`.
 
 <div class="alert is-helpful">
 
-**TIP**: <br />
-If you set the cloned request body to `undefined`, Angular assumes you intend to leave the body as is.
+**TIP**: <br /> If you set the cloned request body to `undefined`, Angular assumes you intend to leave the body as is.
 
 </div>
 
 <code-example format="javascript" language="javascript">
 
-newReq = req.clone({ &hellip; }); // body not mentioned =&gt; preserve original body
-newReq = req.clone({ body: undefined }); // preserve original body
-newReq = req.clone({ body: null }); // clear the body
+newReq = req.clone({ &hellip; }); // тело не упоминается =&gt; сохраняем исходное тело newReq = req.clone({ body: undefined }); // сохраняем исходное тело
+newReq = req.clone({ body: null }); // очистить тело
 
 </code-example>
 
-## Http interceptor use-cases
+## Примеры использования Http-перехватчиков
 
-Following are a number of common uses for interceptors.
+Ниже перечислены несколько распространенных случаев использования перехватчиков.
 
-### Setting default headers
+### Установка заголовков по умолчанию
 
-Apps often use an interceptor to set default headers on outgoing requests.
+Приложения часто используют перехватчик для установки заголовков по умолчанию в исходящих запросах.
 
-The sample app has an `AuthService` that produces an authorization token.
-Here is its `AuthInterceptor` that injects that service to get the token and adds an authorization header with that token to every outgoing request:
+В примере приложения есть `AuthService`, который производит токен авторизации. Вот его `AuthInterceptor`, который инжектирует этот сервис для получения токена и добавляет заголовок авторизации с этим токеном к каждому исходящему запросу:
 
-<code-example header="app/http-interceptors/auth-interceptor.ts" path="http/src/app/http-interceptors/auth-interceptor.ts"></code-example>
+<code-example header="app/http-interceptors/auth-interceptor.ts" path="http/src/app/http-interceptors/auth-interceptor.ts"></code-example>.
 
-The practice of cloning a request to set new headers is so common that there's a `setHeaders` shortcut for it:
+Практика клонирования запроса для установки новых заголовков настолько распространена, что для этого существует ярлык `setHeaders`:
 
-<code-example path="http/src/app/http-interceptors/auth-interceptor.ts" region="set-header-shortcut"></code-example>
+<code-example path="http/src/app/http-interceptors/auth-interceptor.ts" region="set-header-shortcut"></code-example>.
 
-An interceptor that alters headers can be used for a number of different operations, including:
+Перехватчик, изменяющий заголовки, может быть использован для ряда различных операций, включая:
 
--   Authentication/authorization
--   Caching behavior; for example, `If-Modified-Since`
--   XSRF protection
+-   Аутентификация/авторизация
 
-### Logging request and response pairs
+-   Поведение кэширования; например, `If-Modified-Since`.
 
-Because interceptors can process the request and response _together_, they can perform tasks such as timing and logging an entire HTTP operation.
+-   XSRF защита
 
-Consider the following `LoggingInterceptor`, which captures the time of the request,
-the time of the response, and logs the outcome with the elapsed time
-with the injected `MessageService`.
+### Протоколирование пар запроса и ответа
+
+Поскольку перехватчики могут обрабатывать запрос и ответ _вместе_, они могут выполнять такие задачи, как определение времени и протоколирование всей операции HTTP.
+
+Рассмотрим следующий `LoggingInterceptor`, который фиксирует время запроса, время ответа и записывает результат в журнал с указанием прошедшего времени
+
+с внедренным `MessageService`.
 
 <code-example header="app/http-interceptors/logging-interceptor.ts)" path="http/src/app/http-interceptors/logging-interceptor.ts" region="excerpt"></code-example>
 
-The RxJS `tap` operator captures whether the request succeeded or failed.
-The RxJS `finalize` operator is called when the response observable either returns an error or completes and reports the outcome to the `MessageService`.
+Оператор RxJS `tap` фиксирует, был ли запрос успешным или неудачным. Оператор RxJS `finalize` вызывается, когда наблюдаемый ответ либо возвращает ошибку, либо завершается и сообщает о результате в `MessageService`.
 
-Neither `tap` nor `finalize` touch the values of the observable stream returned to the caller.
+Ни `tap`, ни `finalize` не затрагивают значения потока наблюдаемых, возвращаемых вызывающей стороне.
 
 <a id="custom-json-parser"></a>
 
-### Custom JSON parsing
+### Пользовательский парсинг JSON
 
-Interceptors can be used to replace the built-in JSON parsing with a custom implementation.
+Перехватчики могут быть использованы для замены встроенного парсинга JSON на пользовательскую реализацию.
 
-The `CustomJsonInterceptor` in the following example demonstrates how to achieve this.
-If the intercepted request expects a `'json'` response, the `responseType` is changed to `'text'` to disable the built-in JSON parsing.
-Then the response is parsed via the injected `JsonParser`.
+Перехватчик `CustomJsonInterceptor` в следующем примере демонстрирует, как этого добиться. Если перехватываемый запрос ожидает ответ в формате `'json'', то `responseType'' изменяется на `'text'', чтобы отключить встроенный парсинг JSON.
 
-<code-example header="app/http-interceptors/custom-json-interceptor.ts" path="http/src/app/http-interceptors/custom-json-interceptor.ts" region="custom-json-interceptor"></code-example>
+Затем ответ разбирается с помощью внедренного `JsonParser`.
 
-You can then implement your own custom `JsonParser`.
-Here is a custom JsonParser that has a special date reviver.
+<code-example header="app/http-interceptors/custom-json-interceptor.ts" path="http/src/app/http-interceptors/custom-json-interceptor.ts" region="custom-json-interceptor"></code-example>.
 
-<code-example header="app/http-interceptors/custom-json-interceptor.ts" path="http/src/app/http-interceptors/custom-json-interceptor.ts" region="custom-json-parser"></code-example>
+Затем вы можете реализовать свой собственный пользовательский `JsonParser`. Вот пользовательский JsonParser, который имеет специальное средство восстановления даты.
 
-You provide the `CustomParser` along with the `CustomJsonInterceptor`.
+<code-example header="app/http-interceptors/custom-json-interceptor.ts" path="http/src/app/http-interceptors/custom-json-interceptor.ts" region="custom-json-parser"></code-example>.
+
+Вы предоставляете `CustomParser` вместе с `CustomJsonInterceptor`.
 
 <code-example header="app/http-interceptors/index.ts" path="http/src/app/http-interceptors/index.ts" region="custom-json-interceptor"></code-example>
 
 <a id="caching"></a>
 
-### Caching requests
+### Кэширование запросов
 
-Interceptors can handle requests by themselves, without forwarding to `next.handle()`.
+Перехватчики могут обрабатывать запросы самостоятельно, без переадресации на `next.handle()`.
 
-For example, you might decide to cache certain requests and responses to improve performance.
-You can delegate caching to an interceptor without disturbing your existing data services.
+Например, вы можете решить кэшировать определенные запросы и ответы для повышения производительности. Вы можете делегировать кэширование перехватчику, не нарушая работу существующих служб данных.
 
-The `CachingInterceptor` in the following example demonstrates this approach.
+Перехватчик `CachingInterceptor` в следующем примере демонстрирует этот подход.
 
-<code-example header="app/http-interceptors/caching-interceptor.ts)" path="http/src/app/http-interceptors/caching-interceptor.ts" region="v1"></code-example>
+<code-example header="app/http-interceptors/caching-interceptor.ts)" path="http/src/app/http-interceptors/caching-interceptor.ts" region="v1"></code-example>.
 
--   The `isCacheable()` function determines if the request is cacheable.
-    In this sample, only GET requests to the package search API are cacheable.
+-   Функция `isCacheable()` определяет, является ли запрос кэшируемым.
 
--   If the request is not cacheable, the interceptor forwards the request to the next handler in the chain
--   If a cacheable request is found in the cache, the interceptor returns an `of()` _observable_ with the cached response, by-passing the `next` handler and all other interceptors downstream
--   If a cacheable request is not in cache, the code calls `sendRequest()`.
-    This function forwards the request to `next.handle()` which ultimately calls the server and returns the server's response.
+    В данном примере кэшируемыми являются только GET-запросы к API поиска пакетов.
+
+-   Если запрос не является кэшируемым, перехватчик пересылает запрос следующему обработчику в цепочке.
+
+-   Если кэшируемый запрос найден в кэше, перехватчик возвращает `of()` _observable_ с кэшированным ответом, минуя обработчик `next` и все остальные перехватчики ниже по течению.
+
+-   Если кэшируемый запрос не находится в кэше, код вызывает `sendRequest()`.
+
+    Эта функция передает запрос в `next.handle()`, который в конечном итоге вызывает сервер и возвращает ответ сервера.
 
 <a id="send-request"></a>
 
@@ -756,296 +740,288 @@ The `CachingInterceptor` in the following example demonstrates this approach.
 
 <div class="alert is-helpful">
 
-Notice how `sendRequest()` intercepts the response on its way back to the application.
-This method pipes the response through the `tap()` operator, whose callback adds the response to the cache.
+Обратите внимание, как `sendRequest()` перехватывает ответ на обратном пути к приложению. Этот метод передает ответ через оператор `tap()`, обратный вызов которого добавляет ответ в кэш.
 
-The original response continues untouched back up through the chain of interceptors to the application caller.
+Исходный ответ продолжает нетронутым возвращаться по цепочке перехватчиков к вызывающему приложению.
 
-Data services, such as `PackageSearchService`, are unaware that some of their `HttpClient` requests actually return cached responses.
+Службы данных, такие как `PackageSearchService`, не знают, что некоторые из их запросов `HttpClient` на самом деле возвращают кэшированные ответы.
 
 </div>
 
 <a id="cache-refresh"></a>
 
-### Using interceptors to request multiple values
+### Использование перехватчиков для запроса нескольких значений
 
-The `HttpClient.get()` method normally returns an observable that emits a single value, either the data or an error.
-An interceptor can change this to an observable that emits [multiple values](guide/observables).
+Метод `HttpClient.get()` обычно возвращает наблюдаемую, которая выдает одно значение, либо данные, либо ошибку. Перехватчик может изменить это на наблюдаемую, которая выдает [несколько значений](guide/observables).
 
-The following revised version of the `CachingInterceptor` optionally returns an observable that immediately emits the cached response, sends the request on to the package search API, and emits again later with the updated search results.
+Следующая измененная версия `CachingInterceptor` по желанию возвращает наблюдаемую, которая немедленно выдает кэшированный ответ, посылает запрос API поиска пакетов и выдает его позже с обновленными результатами поиска.
 
-<code-example path="http/src/app/http-interceptors/caching-interceptor.ts" region="intercept-refresh"></code-example>
+<code-example path="http/src/app/http-interceptors/caching-interceptor.ts" region="intercept-refresh"></code-example>.
 
 <div class="alert is-helpful">
 
-The _cache-then-refresh_ option is triggered by the presence of a custom `x-refresh` header.
+Опция _cache-then-refresh_ срабатывает при наличии пользовательского заголовка `x-refresh`.
 
-A checkbox on the `PackageSearchComponent` toggles a `withRefresh` flag, which is one of the arguments to `PackageSearchService.search()`.
-That `search()` method creates the custom `x-refresh` header and adds it to the request before calling `HttpClient.get()`.
+Флажок на `PackageSearchComponent` устанавливает флаг `withRefresh`, который является одним из аргументов метода `PackageSearchService.search()`. Этот метод `search()` создает пользовательский заголовок `x-refresh` и добавляет его в запрос перед вызовом `HttpClient.get()`.
 
 </div>
 
-The revised `CachingInterceptor` sets up a server request whether there's a cached value or not, using the same `sendRequest()` method described [above](#send-request).
-The `results$` observable makes the request when subscribed.
+Переработанный `CachingInterceptor` устанавливает запрос на сервер независимо от того, есть ли кэшированное значение или нет, используя тот же метод `sendRequest()`, который описан [выше] (#send-request). Наблюдаемая `results$` выполняет запрос при подписке.
 
--   If there's no cached value, the interceptor returns `results$`.
--   If there is a cached value, the code _pipes_ the cached response onto `results$`. This produces a recomposed observable that emits two responses, so subscribers will see a sequence of these two responses:
--   The cached response that's emitted immediately
--   The response from the server, that's emitted later
+-   Если кэшированного значения нет, перехватчик возвращает `results$`.
+
+-   Если кэшированное значение есть, код _переводит_ кэшированный ответ на `results$`. В результате получается перекомпонованная наблюдаемая, которая испускает два ответа, поэтому подписчики будут видеть последовательность этих двух ответов:
+
+-   Кэшированный ответ, который выдается немедленно.
+
+-   Ответ от сервера, который выдается позже.
 
 <a id="report-progress"></a>
 
-## Tracking and showing request progress
+## Отслеживание и отображение хода выполнения запроса
 
-Sometimes applications transfer large amounts of data and those transfers can take a long time.
-File uploads are a typical example.
-You can give the users a better experience by providing feedback on the progress of such transfers.
+Иногда приложения передают большие объемы данных, и такая передача может занять много времени. Загрузка файлов - типичный пример.
 
-To make a request with progress events enabled, create an instance of `HttpRequest` with the `reportProgress` option set true to enable tracking of progress events.
+Вы можете улучшить работу пользователей, предоставив им обратную связь о ходе выполнения таких передач.
 
-<code-example header="app/uploader/uploader.service.ts (upload request)" path="http/src/app/uploader/uploader.service.ts" region="upload-request"></code-example>
+Чтобы сделать запрос с включенными событиями прогресса, создайте экземпляр `HttpRequest` с опцией `reportProgress`, установленной в true, чтобы включить отслеживание событий прогресса.
+
+<code-example header="app/uploader/uploader.service.ts (запрос на загрузку)" path="http/src/app/uploader/uploader.service.ts" region="upload-request"></code-example>.
 
 <div class="alert is-important">
 
-**TIP**: <br />
-Every progress event triggers change detection, so only turn them on if you need to report progress in the UI.
+**TIP**: <br /> Every progress event triggers change detection, so only turn them on if you need to report progress in the UI.
 
 When using [`HttpClient.request()`](api/common/http/HttpClient#request) with an HTTP method, configure the method with [`observe: 'events'`](api/common/http/HttpClient#request) to see all events, including the progress of transfers.
 
 </div>
 
-Next, pass this request object to the `HttpClient.request()` method, which returns an `Observable` of `HttpEvents` \(the same events processed by [interceptors](#interceptor-events)\).
+Затем передайте этот объект запроса методу `HttpClient.request()`, который возвращает `Observable` из `HttpEvents` \ (те же события, обрабатываемые [перехватчиками](#interceptor-events)\).
 
-<code-example header="app/uploader/uploader.service.ts (upload body)" path="http/src/app/uploader/uploader.service.ts" region="upload-body"></code-example>
+<code-example header="app/uploader/uploader.service.ts (upload body)" path="http/src/app/uploader/uploader.service.ts" region="upload-body"></code-example>.
 
-The `getEventMessage` method interprets each type of `HttpEvent` in the event stream.
+Метод `getEventMessage` интерпретирует каждый тип `HttpEvent` в потоке событий.
 
 <code-example header="app/uploader/uploader.service.ts (getEventMessage)" path="http/src/app/uploader/uploader.service.ts" region="getEventMessage"></code-example>
 
 <div class="alert is-helpful">
 
-The sample app for this guide doesn't have a server that accepts uploaded files.
-The `UploadInterceptor` in `app/http-interceptors/upload-interceptor.ts` intercepts and short-circuits upload requests by returning an observable of simulated events.
+В примере приложения для этого руководства нет сервера, принимающего загруженные файлы. Перехватчик `UploadInterceptor` в `app/http-interceptors/upload-interceptor.ts` перехватывает и сокращает запросы на загрузку, возвращая наблюдаемую таблицу симулированных событий.
 
 </div>
 
-## Optimizing server interaction with debouncing
+## Оптимизация взаимодействия с сервером с помощью дебаунсинга
 
-If you need to make an HTTP request in response to user input, it's not efficient to send a request for every keystroke.
-It's better to wait until the user stops typing and then send a request.
-This technique is known as debouncing.
+Если вам нужно сделать HTTP-запрос в ответ на ввод пользователя, неэффективно посылать запрос на каждое нажатие клавиши. Лучше подождать, пока пользователь перестанет набирать текст, а затем отправить запрос.
 
-Consider the following template, which lets a user enter a search term to find a package by name.
-When the user enters a name in a search-box, the `PackageSearchComponent` sends a search request for a package with that name to the package search API.
+Эта техника известна как дебаунсинг.
 
-<code-example header="app/package-search/package-search.component.html (search)" path="http/src/app/package-search/package-search.component.html" region="search"></code-example>
+Рассмотрим следующий шаблон, который позволяет пользователю ввести поисковый запрос, чтобы найти пакет по имени. Когда пользователь вводит имя в поле поиска, `PackageSearchComponent` отправляет запрос на поиск пакета с таким именем в API поиска пакетов.
 
-Here, the `keyup` event binding sends every keystroke to the component's `search()` method.
+<code-example header="app/package-search/package-search.component.html (search)" path="http/src/app/package-search/package-search.component.html" region="search"></code-example>.
+
+Здесь привязка события `keyup` отправляет каждое нажатие клавиши в метод `search()` компонента.
 
 <div class="alert is-helpful">
 
-The type of `$event.target` is only `EventTarget` in the template.
-In the `getValue()` method, the target is cast to an `HTMLInputElement` to let type-safe have access to its `value` property.
+Тип `$event.target` в шаблоне только `EventTarget`. В методе `getValue()` цель приводится к `HTMLInputElement`, чтобы type-safe имел доступ к ее свойству `value`.
 
-<code-example path="http/src/app/package-search/package-search.component.ts" region="getValue"></code-example>
+<code-example path="http/src/app/package-search/package-search.component.ts" region="getValue"></code-example>.
 
 </div>
 
-The following snippet implements debouncing for this input using RxJS operators.
+Следующий фрагмент реализует дебаггинг для этого входа с помощью операторов RxJS.
 
-<code-example header="app/package-search/package-search.component.ts (excerpt)" path="http/src/app/package-search/package-search.component.ts" region="debounce"></code-example>
+<code-example header="app/package-search/package-search.component.ts (excerpt)" path="http/src/app/package-search/package-search.component.ts" region="debounce"></code-example>.
 
-The `searchText$` is the sequence of search-box values coming from the user.
-It's defined as an RxJS `Subject`, which means it is a multicasting `Observable` that can also emit values for itself by calling `next(value)`, as happens in the `search()` method.
+Текст `searchText$` - это последовательность значений поля поиска, поступающих от пользователя. Он определен как RxJS `Subject`, что означает, что это многоадресный `Observable`, который также может выдавать значения для себя, вызывая `next(value)`, как это происходит в методе `search()`.
 
-Rather than forward every `searchText` value directly to the injected `PackageSearchService`, the code in `ngOnInit()` pipes search values through three operators, so that a search value reaches the service only if it's a new value and the user stopped typing.
+Вместо того, чтобы направлять каждое значение `searchText` непосредственно в инжектированный `PackageSearchService`, код в `ngOnInit()` направляет значения поиска через три оператора, так что значение поиска достигает сервиса, только если это новое значение и пользователь остановил ввод.
 
-| RxJS operators           | Details                                                             |
-| :----------------------- | :------------------------------------------------------------------ |
-| `debounceTime(500)`⁠     | Wait for the user to stop typing, which is 1/2 second in this case. |
-| `distinctUntilChanged()` | Wait until the search text changes.                                 |
-| `switchMap()`⁠           | Send the search request to the service.                             |
+| Операторы RxJS | Подробности | | | :----------------------- | :------------------------------------------------------------------ | |
 
-The code sets `packages$` to this re-composed `Observable` of search results.
-The template subscribes to `packages$` with the [AsyncPipe](api/common/AsyncPipe) and displays search results as they arrive.
+| `debounceTime(500)` | Ждать, пока пользователь перестанет набирать текст, что в данном случае составляет 1/2 секунды. |
+
+| `distinctUntilChanged()` | Подождите, пока текст поиска не изменится. |
+
+| | `switchMap()` | Отправляем запрос на поиск в службу. |
+
+Код устанавливает `packages$` в этот перекомпонованный `Observable` результатов поиска. Шаблон подписывается на `packages$` с помощью [AsyncPipe](api/common/AsyncPipe) и отображает результаты поиска по мере их поступления.
 
 <div class="alert is-helpful">
 
-See [Using interceptors to request multiple values](#cache-refresh) for more about the `withRefresh` option.
+Подробнее об опции `withRefresh` смотрите в [Использование перехватчиков для запроса нескольких значений](#cache-refresh).
 
 </div>
 
-### Using the `switchMap()` operator
+### Использование оператора `switchMap()`
 
-The `switchMap()` operator takes a function argument that returns an `Observable`.
-In the example, `PackageSearchService.search` returns an `Observable`, as other data service methods do.
-If a previous search request is still in-flight, such as when the network connection is poor, the operator cancels that request and sends a new one.
+Оператор `switchMap()` принимает аргумент функции, которая возвращает `Observable`. В примере `PackageSearchService.search` возвращает `Observable`, как и другие методы службы данных.
+
+Если предыдущий запрос на поиск все еще находится в полете, например, при плохом сетевом соединении, оператор отменяет этот запрос и посылает новый.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-`switchMap()` returns service responses in their original request order, even if the server returns them out of order.
+**NOTE**: <br /> `switchMap()` returns service responses in their original request order, even if the server returns them out of order.
 
 </div>
 
 <div class="alert is-helpful">
 
-If you think you'll reuse this debouncing logic, consider moving it to a utility function or into the `PackageSearchService` itself.
+Если вы думаете, что будете использовать эту логику дебаггинга повторно, подумайте о том, чтобы перенести ее в служебную функцию или в сам `PackageSearchService`.
 
 </div>
 
-## Security: XSRF protection
+## Безопасность: Защита от XSRF
 
-[Cross-Site Request Forgery (XSRF or CSRF)](https://en.wikipedia.org/wiki/Cross-site_request_forgery) is an attack technique by which the attacker can trick an authenticated user into unknowingly executing actions on your website.
-`HttpClient` supports a [common mechanism](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Cookie-to-header_token) used to prevent XSRF attacks.
-When performing HTTP requests, an interceptor reads a token from a cookie, by default `XSRF-TOKEN`, and sets it as an HTTP header, `X-XSRF-TOKEN`.
-Because only code that runs on your domain could read the cookie, the backend can be certain that the HTTP request came from your client application and not an attacker.
+[Cross-Site Request Forgery (XSRF или CSRF)](https://en.wikipedia.org/wiki/Cross-site_request_forgery) - это техника атаки, с помощью которой злоумышленник может обманом заставить аутентифицированного пользователя неосознанно выполнить действия на вашем сайте. `HttpClient` поддерживает [общий механизм](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Cookie-to-header_token), используемый для предотвращения XSRF-атак.
 
-By default, an interceptor sends this header on all mutating requests \(such as POST\)
-to relative URLs, but not on GET/HEAD requests or on requests with an absolute URL.
+При выполнении HTTP-запросов перехватчик считывает маркер из cookie, по умолчанию `XSRF-TOKEN`, и устанавливает его в качестве HTTP-заголовка `X-XSRF-TOKEN`.
 
-To take advantage of this, your server needs to set a token in a JavaScript readable session cookie called `XSRF-TOKEN` on either the page load or the first GET request.
-On subsequent requests the server can verify that the cookie matches the `X-XSRF-TOKEN` HTTP header, and therefore be sure that only code running on your domain could have sent the request.
-The token must be unique for each user and must be verifiable by the server; this prevents the client from making up its own tokens.
-Set the token to a digest of your site's authentication cookie with a salt for added security.
+Поскольку прочитать cookie может только код, работающий на вашем домене, бэкенд может быть уверен, что HTTP-запрос пришел от вашего клиентского приложения, а не от злоумышленника.
 
-To prevent collisions in environments where multiple Angular apps share the same domain or subdomain, give each application a unique cookie name.
+По умолчанию перехватчик отправляет этот заголовок на все мутирующие запросы\(такие как POST\) к относительным URL, но не на GET/HEAD запросы или на запросы с абсолютным URL.
+
+Чтобы воспользоваться этим преимуществом, ваш сервер должен установить маркер в JavaScript-читаемой сессионной cookie под названием `XSRF-TOKEN` либо при загрузке страницы, либо при первом GET-запросе. При последующих запросах сервер может проверить, что cookie соответствует HTTP-заголовку `X-XSRF-TOKEN`, и таким образом быть уверенным, что запрос мог отправить только код, запущенный на вашем домене.
+
+Токен должен быть уникальным для каждого пользователя и проверяться сервером; это не позволит клиенту придумывать свои собственные токены.
+
+Для повышения безопасности установите в качестве маркера дайджест cookie аутентификации вашего сайта с солью.
+
+Для предотвращения коллизий в средах, где несколько приложений Angular используют один и тот же домен или поддомен, присвойте каждому приложению уникальное имя cookie.
 
 <div class="alert is-important">
 
-_`HttpClient` supports only the client half of the XSRF protection scheme._
-Your backend service must be configured to set the cookie for your page, and to verify that the header is present on all eligible requests.
-Failing to do so renders Angular's default protection ineffective.
+_`HttpClient` поддерживает только клиентскую половину схемы защиты XSRF._ Ваш внутренний сервис должен быть настроен на установку cookie для вашей страницы, а также на проверку наличия заголовка во всех подходящих запросах.
+Если этого не сделать, защита Angular по умолчанию станет неэффективной.
 
 </div>
 
-### Configuring custom cookie/header names
+### Настройка пользовательских имен куки/заголовков
 
-If your backend service uses different names for the XSRF token cookie or header, use `HttpClientXsrfModule.withOptions()` to override the defaults.
+Если ваш внутренний сервис использует другие имена для куки или заголовков токенов XSRF, используйте `HttpClientXsrfModule.withOptions()` для переопределения значений по умолчанию.
 
 <code-example path="http/src/app/app.module.ts" region="xsrf"></code-example>
 
 <a id="testing-requests"></a>
 
-## Testing HTTP requests
+## Тестирование HTTP-запросов
 
-As for any external dependency, you must mock the HTTP backend so your tests can simulate interaction with a remote server.
-The `@angular/common/http/testing` library makes it straightforward to set up such mocking.
+Как и для любой внешней зависимости, вы должны подражать HTTP-бэкенду, чтобы ваши тесты могли имитировать взаимодействие с удаленным сервером. Библиотека `@angular/common/http/testing` позволяет легко настроить такое моделирование.
 
-Angular's HTTP testing library is designed for a pattern of testing in which the app executes code and makes requests first.
-The test then expects that certain requests have or have not been made, performs assertions against those requests, and finally provides responses by "flushing" each expected request.
+Библиотека тестирования HTTP в Angular предназначена для модели тестирования, в которой приложение сначала выполняет код и делает запросы. Затем тест ожидает, что определенные запросы были или не были сделаны, выполняет утверждения против этих запросов и, наконец, предоставляет ответы путем "промывки" каждого ожидаемого запроса.
 
-At the end, tests can verify that the app made no unexpected requests.
+В конце тесты могут проверить, что приложение не делало неожиданных запросов.
 
 <div class="alert is-helpful">
 
-You can run <live-example stackblitz="specs">these sample tests</live-example> in a live coding environment.
+Вы можете запустить <live-example stackblitz="specs">эти примеры тестов</live-example> в живой среде кодирования.
 
-The tests described in this guide are in `src/testing/http-client.spec.ts`.
-There are also tests of an application data service that call `HttpClient` in `src/app/heroes/heroes.service.spec.ts`.
+Тесты, описанные в этом руководстве, находятся в `src/testing/http-client.spec.ts`. Также в `src/app/heroes/heroes.service.spec.ts` находятся тесты сервиса данных приложения, которые вызывают `HttpClient`.
 
 </div>
 
-### Setup for testing
+### Настройка для тестирования
 
-To begin testing calls to `HttpClient`, import the `HttpClientTestingModule` and the mocking controller, `HttpTestingController`, along with the other symbols your tests require.
+Чтобы начать тестирование вызовов `HttpClient`, импортируйте `HttpClientTestingModule` и мокинг-контроллер `HttpTestingController`, а также другие символы, необходимые вашим тестам.
 
-<code-example header="app/testing/http-client.spec.ts (imports)" path="http/src/testing/http-client.spec.ts" region="imports"></code-example>
+<code-example header="app/testing/http-client.spec.ts (imports)" path="http/src/testing/http-client.spec.ts" region="imports"></code-example>.
 
-Then add the `HttpClientTestingModule` to the `TestBed` and continue with the setup of the _service-under-test_.
+Затем добавьте `HttpClientTestingModule` в `TestBed` и продолжите настройку тестируемого сервиса.
 
-<code-example header="app/testing/http-client.spec.ts(setup)" path="http/src/testing/http-client.spec.ts" region="setup"></code-example>
+<code-example header="app/testing/http-client.spec.ts(setup)" path="http/src/testing/http-client.spec.ts" region="setup"></code-example>.
 
-Now requests made in the course of your tests hit the testing backend instead of the normal backend.
+Теперь запросы, сделанные в ходе тестирования, попадают на тестирующий бэкенд вместо обычного бэкенда.
 
-This setup also calls `TestBed.inject()` to inject the `HttpClient` service and the mocking controller so they can be referenced during the tests.
+Эта установка также вызывает `TestBed.inject()` для инъекции сервиса `HttpClient` и контроллера мокинга, чтобы на них можно было ссылаться во время тестирования.
 
-### Expecting and answering requests
+### Ожидание и ответ на запросы
 
-Now you can write a test that expects a GET Request to occur and provides a mock response.
+Теперь вы можете написать тест, который ожидает появления GET-запроса и предоставляет имитационный ответ.
 
-<code-example header="app/testing/http-client.spec.ts (HttpClient.get)" path="http/src/testing/http-client.spec.ts" region="get-test"></code-example>
+<code-example header="app/testing/http-client.spec.ts (HttpClient.get)" path="http/src/testing/http-client.spec.ts" region="get-test"></code-example>.
 
-The last step, verifying that no requests remain outstanding, is common enough for you to move it into an `afterEach()` step:
+Последний шаг, проверяющий, что ни один запрос не остался невыполненным, является достаточно распространенным, чтобы перенести его в шаг `afterEach()`:
 
 <code-example path="http/src/testing/http-client.spec.ts" region="afterEach"></code-example>
 
-#### Custom request expectations
+#### Ожидания пользовательских запросов
 
-If matching by URL isn't sufficient, it's possible to implement your own matching function.
-For example, you could look for an outgoing request that has an authorization header:
+Если сопоставление по URL недостаточно, можно реализовать собственную функцию сопоставления. Например, вы можете искать исходящий запрос, содержащий заголовок авторизации:
 
-<code-example path="http/src/testing/http-client.spec.ts" region="predicate"></code-example>
+<code-example path="http/src/testing/http-client.spec.ts" region="predicate"></code-example>.
 
-As with the previous `expectOne()`, the test fails if 0 or 2+ requests satisfy this predicate.
+Как и в случае с предыдущим `expectOne()`, тест завершается неудачно, если 0 или 2+ запросов удовлетворяют этому предикату.
 
-#### Handling more than one request
+#### Обработка более чем одного запроса
 
-If you need to respond to duplicate requests in your test, use the `match()` API instead of `expectOne()`.
-It takes the same arguments but returns an array of matching requests.
-Once returned, these requests are removed from future matching and you are responsible for flushing and verifying them.
+Если вам нужно ответить на дублирующиеся запросы в вашем тесте, используйте API `match()` вместо `expectOne()`. Он принимает те же аргументы, но возвращает массив совпадающих запросов.
 
-<code-example path="http/src/testing/http-client.spec.ts" region="multi-request"></code-example>
+После возврата эти запросы удаляются из будущего поиска, и вы несете ответственность за их очистку и проверку.
 
-### Testing for errors
+<code-example path="http/src/testing/http-client.spec.ts" region="multi-request"></code-example>.
 
-You should test the app's defenses against HTTP requests that fail.
+### Тестирование на ошибки
 
-Call `request.flush()` with an error message, as seen in the following example.
+Вы должны протестировать защиту приложения от HTTP-запросов, которые не выполняются.
 
-<code-example path="http/src/testing/http-client.spec.ts" region="404"></code-example>
+Вызовите `request.flush()` с сообщением об ошибке, как показано в следующем примере.
 
-Alternatively, call `request.error()` with a `ProgressEvent`.
+<code-example path="http/src/testing/http-client.spec.ts" region="404"></code-example>.
+
+В качестве альтернативы, вызовите `request.error()` с `ProgressEvent`.
 
 <code-example path="http/src/testing/http-client.spec.ts" region="network-error"></code-example>
 
-## Passing metadata to interceptors
+## Передача метаданных перехватчикам
 
-Many interceptors require or benefit from configuration.
-Consider an interceptor that retries failed requests.
-By default, the interceptor might retry a request three times, but you might want to override this retry count for particularly error-prone or sensitive requests.
+Многие перехватчики требуют или получают пользу от конфигурации. Рассмотрим перехватчик, который повторяет неудачные запросы.
 
-`HttpClient` requests contain a _context_ that can carry metadata about the request.
-This context is available for interceptors to read or modify, though it is not transmitted to the backend server when the request is sent.
-This lets applications or other interceptors tag requests with configuration parameters, such as how many times to retry a request.
+По умолчанию перехватчик может повторить запрос три раза, но вы можете захотеть изменить это количество повторных попыток для особенно подверженных ошибкам или чувствительных запросов.
 
-### Creating a context token
+Запросы `HttpClient` содержат _контекст_, который может содержать метаданные о запросе. Этот контекст доступен для перехватчиков для чтения или изменения, хотя он не передается на внутренний сервер при отправке запроса.
 
-Angular stores and retrieves a value in the context using an `HttpContextToken`.
-You can create a context token using the `new` operator, as in the following example:
+Это позволяет приложениям или другим перехватчикам помечать запросы параметрами конфигурации, например, сколько раз повторять запрос.
 
-<code-example header="creating a context token" path="http/src/app/http-interceptors/retry-interceptor.ts" region="context-token"></code-example>
+### Создание контекстного маркера
 
-The lambda function `() => 3` passed during the creation of the `HttpContextToken` serves two purposes:
+Angular хранит и извлекает значение в контексте с помощью `HttpContextToken`. Вы можете создать контекстный токен с помощью оператора `new`, как в следующем примере:
 
-1.  It lets TypeScript infer the type of this token:
-    `HttpContextToken<number>`
-    The request context is type-safe &mdash;reading a token from a request's context returns a value of the appropriate type.
+<code-example header="создание контекстного токена" path="http/src/app/http-interceptors/retry-interceptor.ts" region="context-token"></code-example>.
 
-1.  It sets the default value for the token.
-    This is the value that the request context returns if no other value was set for this token.
-    Using a default value avoids the need to check if a particular value is set.
+Лямбда-функция `() => 3`, переданная во время создания `HttpContextToken`, служит двум целям:
 
-### Setting context values when making a request
+1.  Она позволяет TypeScript определить тип этого токена:
 
-When making a request, you can provide an `HttpContext` instance, in which you have already set the context values.
+    `HttpContextToken<number>`.
+
+    Контекст запроса безопасен для типов &mdash; чтение токена из контекста запроса возвращает значение соответствующего типа.
+
+1.  Он устанавливает значение по умолчанию для токена.
+
+    Это значение, которое возвращает контекст запроса, если для этого маркера не было задано никакого другого значения.
+
+    Использование значения по умолчанию избавляет от необходимости проверять, установлено ли конкретное значение.
+
+### Установка значений контекста при выполнении запроса
+
+При выполнении запроса вы можете предоставить экземпляр `HttpContext`, в котором уже заданы значения контекста.
 
 <code-example header="setting context values" path="http/src/app/http-interceptors/retry-interceptor.ts" region="set-context"></code-example>
 
-### Reading context values in an interceptor
+### Чтение значений контекста в перехватчике
 
-Within an interceptor, you can read the value of a token in a given request's context with `HttpContext.get()`.
-If you have not explicitly set a value for the token, Angular returns the default value specified in the token.
+Внутри перехватчика вы можете прочитать значение токена в контексте данного запроса с помощью `HttpContext.get()`. Если вы явно не задали значение для маркера, Angular возвращает значение по умолчанию, указанное в маркере.
 
-<code-example header="reading context values in an interceptor" path="http/src/app/http-interceptors/retry-interceptor.ts" region="reading-context"></code-example>
+<code-example header="чтение значений контекста в перехватчике" path="http/src/app/http-interceptors/retry-interceptor.ts" region="reading-context"></code-example>.
 
-### Contexts are mutable
+### Контексты являются изменяемыми
 
-Unlike most other aspects of `HttpRequest` instances, the request context is mutable and persists across other immutable transformations of the request.
-This lets interceptors coordinate operations through the context.
-For instance, the `RetryInterceptor` example could use a second context token to track how many errors occur during the execution of a given request:
+В отличие от большинства других аспектов экземпляров `HttpRequest`, контекст запроса является изменяемым и сохраняется при других неизменяемых преобразованиях запроса. Это позволяет перехватчикам координировать операции через контекст.
 
-<code-example header="coordinating operations through the context" path="http/src/app/http-interceptors/retry-interceptor.ts" region="mutable-context"></code-example>
+Например, пример `RetryInterceptor` может использовать второй токен контекста для отслеживания количества ошибок, возникающих во время выполнения данного запроса:
+
+<code-example header="координация операций через контекст" path="http/src/app/http-interceptors/retry-interceptor.ts" region="mutable-context"></code-example>.
 
 <!-- links -->
 

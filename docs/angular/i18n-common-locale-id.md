@@ -1,20 +1,19 @@
-# Refer to locales by ID
+# Обращение к локалям по идентификатору
 
-Angular uses the Unicode _locale identifier_ \(Unicode locale ID\) to find the correct locale data for internationalization of text strings.
+Angular использует идентификатор _локали Unicode_ \(Unicode locale ID\), чтобы найти правильные данные локали для интернационализации текстовых строк.
 
 <div class="callout is-helpful">
 
 <header>Unicode locale ID</header>
 
--   A locale ID conforms to the [Unicode Common Locale Data Repository (CLDR) core specification][unicodecldrdevelopmentcorespecification].
-    For more information about locale IDs, see [Unicode Language and Locale Identifiers][unicodecldrdevelopmentcorespecificationhvgyyng33o798].
+-   Идентификатор локали соответствует [Unicode Common Locale Data Repository (CLDR) core specification][unicodecldrdevelopmentcorespecification].
+    Дополнительную информацию об идентификаторах локалей см. в [Unicode Language and Locale Identifiers][unicodecldrdevelopmentcorespecificationhvgyyng33o798].
 
--   CLDR and Angular use [BCP 47 tags][rfceditorinfobcp47] as the base for the locale ID
+-   CLDR и Angular используют [теги BCP 47][rfceditorinfobcp47] в качестве основы для идентификатора локали
 
 </div>
 
-A locale ID specifies the language, country, and an optional code for further variants or subdivisions.
-A locale ID consists of the language identifier, a hyphen \(`-`\) character, and the locale extension.
+Идентификатор локали определяет язык, страну и необязательный код для дальнейших вариантов или подразделений. Идентификатор локали состоит из идентификатора языка, символа дефиса \(`-`\) и расширения локали.
 
 <code-example>
 
@@ -24,44 +23,47 @@ A locale ID consists of the language identifier, a hyphen \(`-`\) character, and
 
 <div class="alert is-helpful">
 
-To accurately translate your Angular project, you must decide which languages and locales you are targeting for internationalization.
+Чтобы точно перевести ваш проект Angular, вы должны решить, на какие языки и локали вы ориентируетесь для интернационализации.
 
-Many countries share the same language, but differ in usage.
-The differences include grammar, punctuation, formats for currency, decimal numbers, dates, and so on.
+Многие страны используют один и тот же язык, но различаются в его использовании. Различия включают грамматику, пунктуацию, форматы валюты, десятичных чисел, дат и так далее.
 
 </div>
 
-For the examples in this guide, use the following languages and locales.
+Для примеров, приведенных в данном руководстве, используйте следующие языки и локали.
 
-| Language | Locale                   | Unicode locale ID |
-| :------- | :----------------------- | :---------------- |
-| English  | Canada                   | `en-CA`           |
-| English  | United States of America | `en-US`           |
-| French   | Canada                   | `fr-CA`           |
-| French   | France                   | `fr-FR`           |
+| Язык | Локаль | ID локали Unicode | | :------- | :----------------------- | :---------------- | |
 
-The [Angular repository][githubangularangulartreemasterpackagescommonlocales] includes common locales.
+| Английский | Канада | `en-CA` |
+
+| Английский | Соединенные Штаты Америки | `en-US'| |
+
+| Французский | Канада | `fr-CA` | |
+
+| Французский | Франция | `fr-FR'| |
+
+В [репозитории Angular][githubangularangulartreemasterpackagescommonlocales] содержатся общие локали.
 
 <div class="callout is-helpful">
 
-For a list of language codes, see [ISO 639-2][locstandardsiso6392].
+Список кодов языков см. в [ISO 639-2][locstandardsiso6392].
 
 </div>
 
-## Set the source locale ID
+## Установите идентификатор локали источника
 
-Use the Angular CLI to set the source language in which you are writing the component template and code.
+Используйте Angular CLI, чтобы установить язык источника, на котором вы пишете шаблон и код компонента.
 
-By default, Angular uses `en-US` as the source locale of your project.
+По умолчанию Angular использует `en-US` в качестве исходной локали вашего проекта.
 
-To change the source locale of your project for the build, complete the following actions.
+Чтобы изменить локаль источника вашего проекта для сборки, выполните следующие действия.
 
-1.  Open the [`angular.json`][aioguideworkspaceconfig] workspace build configuration file.
-1.  Change the source locale in the `sourceLocale` field.
+1.  Откройте файл конфигурации сборки рабочего пространства [`angular.json`][aioguideworkspaceconfig].
 
-## What's next
+1.  Измените локаль источника в поле `sourceLocale`.
 
--   [Format data based on locale][aioguidei18ncommonformatdatalocale]
+## Что дальше
+
+-   [Форматирование данных на основе локали][aioguidei18ncommonformatdatalocale].
 
 <!-- links -->
 

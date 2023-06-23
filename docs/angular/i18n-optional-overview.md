@@ -1,21 +1,23 @@
-# Optional Internationalization practices
+# Необязательные методы интернационализации
 
-The following optional topics help you manually configure the internationalization settings of your application.
-The optional practices are meant for advanced or custom Angular applications.
+Следующие необязательные темы помогут вам вручную настроить параметры интернационализации вашего приложения. Эти дополнительные практики предназначены для продвинутых или пользовательских приложений Angular.
 
-## Prerequisites
+## Предварительные условия
 
-To prepare your project for translations, you should have a basic understanding of the following subjects.
+Чтобы подготовить ваш проект к переводу, вы должны иметь базовое понимание следующих тем.
 
--   [Templates][aioguideglossarytemplate]
--   [Components][aioguideglossarycomponent]
--   [Angular CLI][aioclimain] [command-line][aioguideglossarycommandlineinterfacecli] tool for managing the Angular development cycle
--   [Extensible Markup Language (XML)][w3xml] used for translation files
+-   [Шаблоны][aioguideglossarytemplate]
 
-## Learn about optional Angular internationalization practices
+-   [Компоненты][aioguideglossarycomponent]
+
+-   [Angular CLI][aioclimain][командная строка][aioguideglossarycommandlineinterfacecli] инструмент для управления циклом разработки Angular
+
+-   [расширяемый язык разметки (XML)][w3xml], используемый для файлов перевода
+
+## Узнайте о дополнительных методах интернационализации Angular
 
 <div class="card-container">
-    <a href="guide/i18n-optional-manual-runtime-locale" class="docs-card" title="Set the runtime locale manually">
+     <a href="guide/i18n-optional-manual-runtime-locale" class="docs-card" title="Set the runtime locale manually">
         <section>Set the runtime locale manually</section>
         <p>Learn how to change the runtime locale for your project</p>
         <p class="card-footer">Set the runtime locale manually</p>

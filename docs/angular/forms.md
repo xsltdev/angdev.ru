@@ -1,70 +1,76 @@
-# Building a template-driven form
+# Построение формы, управляемой шаблоном
 
 <a id="template-driven"></a>
 
-This tutorial shows you how to create a template-driven form. The control elements in the form are bound to data properties that have input validation. The input validation helps maintain data integrity and styling to improve the user experience.
+В этом уроке показано, как создать форму, управляемую шаблоном. Элементы управления в форме связаны со свойствами данных, которые имеют валидацию ввода. Валидация ввода помогает поддерживать целостность данных и стилизацию для улучшения пользовательского опыта.
 
-Template-driven forms use [two-way data binding](guide/architecture-components#data-binding 'Intro to 2-way data binding') to update the data model in the component as changes are made in the template and vice versa.
-
-<div class="alert is-helpful">
-
-Angular supports two design approaches for interactive forms.
-You can build forms by using Angular [template syntax and directives](guide/glossary#template 'Definition of template terms') to write templates with the form-specific directives.
-This tutorial describes the directives and techniques to use when writing templates. You can also use a reactive or model-driven approach to build forms.
-
-Template-driven forms are suitable for small or simple forms, while reactive forms are more scalable and suitable for complex forms.
-For a comparison of the two approaches, see [Introduction to Forms](guide/forms-overview 'Overview of Angular forms.')
-
-</div>
-
-You can build almost any kind of form with an Angular template &mdash;login forms, contact forms, and pretty much any business form.
-You can lay out the controls creatively and bind them to the data in your object model.
-You can specify validation rules and display validation errors, conditionally allow input from specific controls, trigger built-in visual feedback, and much more.
-
-This tutorial shows you how to build a simplified form like the one from the [Tour of Heroes tutorial](tutorial/tour-of-heroes 'Tour of Heroes') to illustrate the techniques.
+Формы, основанные на шаблонах, используют [двустороннее связывание данных] (guide/architecture-components#data-binding 'Intro to 2-way data binding') для обновления модели данных в компоненте по мере внесения изменений в шаблон и наоборот.
 
 <div class="alert is-helpful">
 
-Run or download the example application: <live-example></live-example>.
+Angular поддерживает два подхода к проектированию интерактивных форм. Вы можете создавать формы, используя синтаксис и директивы Angular [template syntax and directives](guide/glossary#template 'Definition of template terms') для написания шаблонов со специфическими для формы директивами.
+В этом руководстве описаны директивы и приемы, которые следует использовать при написании шаблонов. Вы также можете использовать реактивный или модельно-ориентированный подход для создания форм.
+
+Формы на основе шаблонов подходят для небольших или простых форм, в то время как реактивные формы более масштабируемы и подходят для сложных форм. Для сравнения этих двух подходов смотрите [Введение в формы](guide/forms-overview 'Обзор форм Angular').
 
 </div>
 
-## Objectives
+Вы можете создать практически любую форму с помощью шаблона Angular &mdash; формы входа в систему, контактные формы и практически любые бизнес-формы. Вы можете креативно расположить элементы управления и связать их с данными в вашей объектной модели.
+Вы можете задать правила валидации и отображать ошибки валидации, условно разрешать ввод от определенных элементов управления, запускать встроенную визуальную обратную связь и многое другое.
 
-This tutorial teaches you how to do the following:
+В этом учебном пособии показано, как построить упрощенную форму, подобную форме из учебника [Tour of Heroes](tutorial/tour-of-heroes 'Tour of Heroes'), чтобы проиллюстрировать приемы.
 
--   Build an Angular form with a component and template
--   Use `ngModel` to create two-way data bindings for reading and writing input-control values
--   Provide visual feedback using special CSS classes that track the state of the controls
--   Display validation errors to users and conditionally allow input from form controls based on the form status
--   Share information across HTML elements using [template reference variables](guide/template-reference-variables)
+<div class="alert is-helpful">
 
-## Prerequisites
+Запустите или загрузите пример приложения: <live-example></live-example>.
 
-Before going further into template-driven forms, you should have a basic understanding of the following.
+</div>
 
--   [TypeScript](https://www.typescriptlang.org/ 'The TypeScript language') and HTML5 programming
--   Angular application-design fundamentals, as described in [Angular Concepts](guide/architecture 'Introduction to Angular concepts')
--   The basics of [Angular template syntax](guide/template-syntax 'Template syntax guide')
--   The form-design concepts that are presented in [Introduction to Forms](guide/forms-overview 'Overview of Angular forms')
+## Задачи
+
+Этот учебник научит вас делать следующее:
+
+-   Создать форму Angular с помощью компонента и шаблона
+
+-   Использовать `ngModel` для создания двусторонней привязки данных для чтения и записи значений контролов ввода
+
+-   Обеспечить визуальную обратную связь с помощью специальных классов CSS, которые отслеживают состояние элементов управления
+
+-   Отображать ошибки валидации для пользователей и условно разрешать ввод от элементов управления формы в зависимости от состояния формы
+
+-   Обмениваться информацией между элементами HTML с помощью [переменных ссылок шаблона](guide/template-reference-variables)
+
+## Предварительные условия
+
+Прежде чем углубляться в формы, управляемые шаблонами, вы должны иметь базовое представление о следующем.
+
+-   [TypeScript](https://www.typescriptlang.org/ 'The TypeScript language') и программирование на HTML5
+
+-   Основы проектирования приложений Angular, как описано в [Angular Concepts](руководство/архитектура 'Введение в концепции Angular')
+
+-   Основы [синтаксиса шаблонов Angular](guide/template-syntax 'Руководство по синтаксису шаблонов')
+
+-   Концепции дизайна форм, представленные в [Introduction to Forms](guide/forms-overview 'Обзор форм Angular')
 
 <a id="intro"></a>
 
-## Build a template-driven form
+## Построение формы, управляемой шаблоном
 
-Template-driven forms rely on directives defined in the `FormsModule`.
+Шаблонно-ориентированные формы полагаются на директивы, определенные в `FormsModule`.
 
-| Directives     | Details                                                                                                                                                                                                                                                                         |
-| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `NgModel`      | Reconciles value changes in the attached form element with changes in the data model, allowing you to respond to user input with input validation and error handling.                                                                                                           |
-| `NgForm`       | Creates a top-level `FormGroup` instance and binds it to a `<form>` element to track aggregated form value and validation status. As soon as you import `FormsModule`, this directive becomes active by default on all `<form>` tags. You don't need to add a special selector. |
-| `NgModelGroup` | Creates and binds a `FormGroup` instance to a DOM element.                                                                                                                                                                                                                      |
+| Directives | Details | | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
-### The sample application
+| `NgModel` | Согласовывает изменения значений в прикрепленном элементе формы с изменениями в модели данных, позволяя вам реагировать на ввод пользователя с помощью валидации ввода и обработки ошибок. |
 
-The sample form in this guide is used by the _Hero Employment Agency_ to maintain personal information about heroes.
-Every hero needs a job.
-This form helps the agency match the right hero with the right crisis.
+| `NgForm` | Создает экземпляр верхнего уровня `FormGroup` и привязывает его к элементу `<form>` для отслеживания агрегированных значений формы и статуса проверки. Как только вы импортируете `FormsModule`, эта директива становится активной по умолчанию для всех тегов `<form>`. Вам не нужно добавлять специальный селектор. |
+
+| `NgModelGroup` | Создает и привязывает экземпляр `FormGroup` к элементу DOM. |
+
+### Пример приложения
+
+Образец формы в этом руководстве используется _Агентством по трудоустройству героев_ для хранения личной информации о героях. Каждому герою нужна работа.
+
+Эта форма помогает агентству найти подходящего героя и подходящий кризис.
 
 <div class="lightbox">
 
@@ -72,19 +78,20 @@ This form helps the agency match the right hero with the right crisis.
 
 </div>
 
-The form highlights some design features that make it easier to use.
-For instance, the two required fields have a green bar on the left to make them easy to spot.
-These fields have initial values, so the form is valid and the **Submit** button is enabled.
+Форма отличается некоторыми особенностями дизайна, которые облегчают ее использование. Например, два обязательных поля имеют зеленую полосу слева, чтобы их было легко заметить.
+Эти поля имеют начальные значения, поэтому форма действительна и кнопка **Submit** включена.
 
-Working with this form shows you:
+Работа с этой формой покажет вам:
 
--   How to include validation logic
--   How to customize the presentation with standard CSS
--   How to handle error conditions to ensure valid input
+-   Как включить логику валидации
 
-If the user deletes the hero name, for example, the form becomes not valid.
-The application detects the changed status, and displays a validation error in an attention-grabbing style.
-The **Submit** button is not enabled, and the "required" bar to the left of the input control changes from green to red.
+-   Как настроить представление с помощью стандартного CSS
+
+-   Как обрабатывать условия ошибки для обеспечения корректного ввода
+
+Если пользователь, например, удаляет имя героя, форма становится недействительной. Приложение обнаруживает изменение статуса и отображает ошибку валидации в привлекающем внимание стиле.
+
+Кнопка **Submit** не включается, а полоса "требуется" слева от элемента управления вводом меняется с зеленой на красную.
 
 <div class="lightbox">
 
@@ -92,29 +99,41 @@ The **Submit** button is not enabled, and the "required" bar to the left of the 
 
 </div>
 
-### Step overview
+### Обзор шагов
 
-In the course of this tutorial, you bind a sample form to data and handle user input using the following steps.
+В ходе этого урока вы привяжете образец формы к данным и обработаете пользовательский ввод, выполнив следующие шаги.
 
-1.  Build the basic form.
-    -   Define a sample data model
-    -   Include required infrastructure such as the `FormsModule`
-1.  Bind form controls to data properties using the `ngModel` directive and two-way data-binding syntax.
-    -   Examine how `ngModel` reports control states using CSS classes
-    -   Name controls to make them accessible to `ngModel`
-1.  Track input validity and control status using `ngModel`.
-    -   Add custom CSS to provide visual feedback on the status
-    -   Show and hide validation-error messages
-1.  Respond to a native HTML button-click event by adding to the model data.
-1.  Handle form submission using the [`ngSubmit`](api/forms/NgForm#properties) output property of the form.
-    -   Disable the **Submit** button until the form is valid
-    -   After submit, swap out the finished form for different content on the page
+1.  Создайте базовую форму.
+
+    -   Определите образец модели данных.
+
+    -   Включите необходимую инфраструктуру, такую как `FormsModule`.
+
+1.  Привяжите элементы управления формы к свойствам данных, используя директиву `ngModel` и синтаксис двусторонней привязки данных.
+
+    -   Изучите, как `ngModel` сообщает о состоянии элементов управления с помощью классов CSS
+
+    -   Назовите элементы управления, чтобы сделать их доступными для `ngModel`.
+
+1.  Отслеживание валидности ввода и состояния элемента управления с помощью `ngModel`.
+
+    -   Добавьте пользовательский CSS для визуального отображения состояния.
+
+    -   Показывать и скрывать сообщения об ошибках валидации
+
+1.  Реагируйте на событие нажатия кнопки в HTML, добавляя данные в модель.
+
+1.  Обработка отправки формы с помощью выходного свойства [`ngSubmit`](api/forms/NgForm#properties) формы.
+
+    -   Отключите кнопку **Submit**, пока форма не станет валидной.
+
+    -   После отправки поменяйте готовую форму на другой контент на странице
 
 <a id="step1"></a>
 
-## Build the form
+## Постройте форму
 
-You can recreate the sample application from the code provided here, or you can examine or download the <live-example></live-example>.
+Вы можете воссоздать пример приложения из кода, представленного здесь, или изучить или скачать <live-example></live-example>.
 
 1.  The provided sample application creates the `Hero` class which defines the data model reflected in the form.
 
@@ -162,8 +181,7 @@ You can recreate the sample application from the code provided here, or you can 
 
     <code-example header="src/app/hero-form/hero-form.component.html (powers)" path="forms/src/app/hero-form/hero-form.component.html" region="powers"></code-example>
 
-If you run the application right now, you see the list of powers in the selection control.
-The input elements are not yet bound to data values or events, so they are still blank and have no behavior.
+Если вы запустите приложение прямо сейчас, вы увидите список полномочий в элементе управления выбором. Элементы ввода еще не привязаны к значениям данных или событиям, поэтому они все еще пустые и не имеют никакого поведения.
 
 <div class="lightbox">
 
@@ -177,42 +195,45 @@ The input elements are not yet bound to data values or events, so they are still
 
 The next step is to bind the input controls to the corresponding `Hero` properties with two-way data binding, so that they respond to user input by updating the data model, and also respond to programmatic changes in the data by updating the display.
 
-The `ngModel` directive declared in the `FormsModule` lets you bind controls in your template-driven form to properties in your data model.
-When you include the directive using the syntax for two-way data binding, `[(ngModel)]`, Angular can track the value and user interaction of the control and keep the view synced with the model.
+The `ngModel` directive declared in the `FormsModule` lets you bind controls in your template-driven form to properties in your data model. When you include the directive using the syntax for two-way data binding, `[(ngModel)]`, Angular can track the value and user interaction of the control and keep the view synced with the model.
 
 1.  Edit the template file `hero-form.component.html`.
+
 1.  Find the `<input>` tag next to the **Name** label.
+
 1.  Add the `ngModel` directive, using two-way data binding syntax `[(ngModel)]="..."`.
 
-<code-example header="src/app/hero-form/hero-form.component.html (excerpt)" path="forms/src/app/hero-form/hero-form.component.html" region="ngModelName-1"></code-example>
+<code-example header="src/app/hero-form/hero-form.component.html (excerpt)" path="forms/src/app/hero-form/hero-form.component.html" region="ngModelName-1"></code-example>.
 
 <div class="alert is-helpful">
 
-This example has a temporary diagnostic interpolation after each input tag, `{{model.name}}`, to show the current data value of the corresponding property.
-The comment reminds you to remove the diagnostic lines when you have finished observing the two-way data binding at work.
+В этом примере после каждого входного тега `{{model.name}}' имеется временная диагностическая интерполяция, показывающая текущее значение данных соответствующего свойства. Комментарий напоминает вам о необходимости удалить диагностические строки, когда вы закончите наблюдать за работой двусторонней привязки данных.
 
 </div>
 
 <a id="ngForm"></a>
 
-### Access the overall form status
+### Доступ к общему состоянию формы
 
-When you imported the `FormsModule` in your component, Angular automatically created and attached an [NgForm](api/forms/NgForm 'API reference for NgForm') directive to the `<form>` tag in the template (because `NgForm` has the selector `form` that matches `<form>` elements).
+Когда вы импортировали `FormsModule` в свой компонент, Angular автоматически создал и присоединил директиву [NgForm](api/forms/NgForm 'API reference for NgForm') к тегу `<form>` в шаблоне (поскольку `NgForm` имеет селектор `form`, который соответствует элементам `<form>`).
 
-To get access to the `NgForm` and the overall form status, declare a [template reference variable](guide/template-reference-variables).
+Чтобы получить доступ к `NgForm` и общему состоянию формы, объявите переменную [template reference variable](guide/template-reference-variables).
 
-1.  Edit the template file `hero-form.component.html`.
-1.  Update the `<form>` tag with a template reference variable, `#heroForm`, and set its value as follows.
+1.  Отредактируйте файл шаблона `hero-form.component.html`.
 
-    <code-example header="src/app/hero-form/hero-form.component.html (excerpt)" path="forms/src/app/hero-form/hero-form.component.html" region="template-variable"></code-example>
+1.  Обновите тег `<form>` с переменной ссылки шаблона, `#heroForm`, и установите ее значение следующим образом.
 
-    The `heroForm` template variable is now a reference to the `NgForm` directive instance that governs the form as a whole.
+    <code-example header="src/app/hero-form/hero-form.component.html (excerpt)" path="forms/src/app/hero-form/hero-form.component.html" region="template-variable"></code-example>.
 
-1.  Run the app.
-1.  Start typing in the **Name** input box.
+    Переменная шаблона `heroForm` теперь является ссылкой на экземпляр директивы `NgForm`, которая управляет формой в целом.
 
-    As you add and delete characters, you can see them appear and disappear from the data model.
-    For example:
+1.  Запустите приложение.
+
+1.  Начните вводить текст в поле ввода **Имя**.
+
+    По мере добавления и удаления символов вы можете видеть, как они появляются и исчезают из модели данных.
+
+    Например:
 
     <div class="lightbox">
 
@@ -224,15 +245,15 @@ The diagnostic line that shows interpolated values demonstrates that values are 
 
 ### Naming control elements
 
-When you use `[(ngModel)]` on an element, you must define a `name` attribute for that element.
-Angular uses the assigned name to register the element with the `NgForm` directive attached to the parent `<form>` element.
+When you use `[(ngModel)]` on an element, you must define a `name` attribute for that element. Angular uses the assigned name to register the element with the `NgForm` directive attached to the parent `<form>` element.
 
-The example added a `name` attribute to the `<input>` element and set it to "name",
-which makes sense for the hero's name.
+The example added a `name` attribute to the `<input>` element and set it to "name", which makes sense for the hero's name.
+
 Any unique value will do, but using a descriptive name is helpful.
 
 1.  Add similar `[(ngModel)]` bindings and `name` attributes to **Alter Ego** and **Hero Power**.
 1.  You can now remove the diagnostic messages that show interpolated values.
+
 1.  To confirm that two-way data binding works for the entire hero model, add a new text binding with the [`json`](api/common/JsonPipe) pipe at the top to the component's template, which serializes the data to a string.
 
     After these revisions, the form template should look like the following:
@@ -240,7 +261,9 @@ Any unique value will do, but using a descriptive name is helpful.
     <code-example header="src/app/hero-form/hero-form.component.html (excerpt)" path="forms/src/app/hero-form/hero-form.component.html" region="ngModel-2"></code-example>
 
     -   Notice that each `<input>` element has an `id` property.
+
         This is used by the `<label>` element's `for` attribute to match the label to its input control.
+
         This is a [standard HTML feature](https://developer.mozilla.org/docs/Web/HTML/Element/label).
 
     -   Each `<input>` element also has the required `name` property that Angular uses to register the control with the form.
@@ -253,29 +276,29 @@ Any unique value will do, but using a descriptive name is helpful.
 
     </div>
 
-    The diagnostic near the top of the form confirms that all of your changes are reflected in the model.
+    Диагностика в верхней части формы подтверждает, что все ваши изменения отражены в модели.
 
-1.  When you have observed the effects, you can delete the `{{ model | json }}` text binding.
+1.  Когда вы наблюдаете эффект, вы можете удалить текстовую привязку `{{ model | json }}''.
 
-## Track form states
+## Отслеживание состояний формы
 
-Angular applies the `ng-submitted` class to `form` elements after the form has been submitted. This class can be used to change the form's style after it has been submitted.
+Angular применяет класс `ng-submitted` к элементам `form` после того, как форма была отправлена. Этот класс можно использовать для изменения стиля формы после ее отправки.
 
-## Track control states
+## Отслеживание состояний элементов управления
 
-Adding the `NgModel` directive to a control adds class names to the control that describe its state.
-These classes can be used to change a control's style based on its state.
+Добавление директивы `NgModel` к элементу управления добавляет к нему имена классов, которые описывают его состояние. Эти классы можно использовать для изменения стиля элемента управления в зависимости от его состояния.
 
 The following table describes the class names that Angular applies based on the control's state.
 
-| States                           | Class if true | Class if false |
-| :------------------------------- | :------------ | :------------- |
-| The control has been visited.    | `ng-touched`  | `ng-untouched` |
-| The control's value has changed. | `ng-dirty`    | `ng-pristine`  |
-| The control's value is valid.    | `ng-valid`    | `ng-invalid`   |
+| States | Class if true | Class if false | | :------------------------------- | :------------ | :------------- |
 
-Angular also applies the `ng-submitted` class to `form` elements upon submission,
-but not to the controls inside the `form` element.
+| The control has been visited. | `ng-touched` | `ng-untouched` |
+
+| The control's value has changed. | `ng-dirty` | `ng-pristine` |
+
+| The control's value is valid. | `ng-valid` | `ng-invalid` |
+
+Angular also applies the `ng-submitted` class to `form` elements upon submission, but not to the controls inside the `form` element.
 
 You use these CSS classes to define the styles for your control based on its status.
 
@@ -297,25 +320,28 @@ To see how the classes are added and removed by the framework, open the browser'
 1.  Take the following actions on the **Name** `<input>` box, and observe which classes appear.
 
     -   Look but don't touch.
+
         The classes indicate that it is untouched, pristine, and valid.
 
     -   Click inside the name box, then click outside it.
+
         The control has now been visited, and the element has the `ng-touched` class instead of the `ng-untouched` class.
 
     -   Add slashes to the end of the name.
+
         It is now touched and dirty.
 
     -   Erase the name.
+
         This makes the value invalid, so the `ng-invalid` class replaces the `ng-valid` class.
 
-### Create visual feedback for states
+### Создание визуальной обратной связи для состояний
 
-The `ng-valid`/`ng-invalid` pair is particularly interesting, because you want to send a
-strong visual signal when the values are invalid.
-You also want to mark required fields.
+Пара `ng-valid`/`ng-invalid` особенно интересна, потому что вы хотите посылать сильный визуальный сигнал, когда значения недействительны.
 
-You can mark required fields and invalid data at the same time with a colored bar
-on the left of the input box:
+Вы также хотите пометить обязательные поля.
+
+Вы можете отмечать обязательные поля и недействительные данные одновременно с помощью цветной полосы слева от поля ввода:
 
 <div class="lightbox">
 
@@ -323,25 +349,27 @@ on the left of the input box:
 
 </div>
 
-To change the appearance in this way, take the following steps.
+Чтобы изменить внешний вид таким образом, выполните следующие действия.
 
-1.  Add definitions for the `ng-*` CSS classes.
-1.  Add these class definitions to a new `forms.css` file.
-1.  Add the new file to the project as a sibling to `index.html`:
+1.  Добавьте определения для классов CSS `ng-*`.
 
-    <code-example header="src/assets/forms.css" language="css" path="forms/src/assets/forms.css"></code-example>
+1.  Добавьте определения этих классов в новый файл `forms.css`.
 
-1.  In the `index.html` file, update the `<head>` tag to include the new style sheet.
+1.  Добавьте новый файл в проект как дочерний к `index.html`:
 
-    <code-example header="src/index.html (styles)" path="forms/src/index.html" region="styles"></code-example>
+    <code-example header="src/assets/forms.css" language="css" path="forms/src/assets/forms.css"></code-example>.
 
-### Show and hide validation error messages
+1.  В файле `index.html` обновите тег `<head>`, чтобы включить новую таблицу стилей.
 
-The **Name** input box is required and clearing it turns the bar red.
-That indicates that something is wrong, but the user doesn't know what is wrong or what to do about it.
-You can provide a helpful message by checking for and responding to the control's state.
+    <code-example header="src/index.html (styles)" path="forms/src/index.html" region="styles"></code-example>.
 
-When the user deletes the name, the form should look like this:
+### Показывать и скрывать сообщения об ошибках валидации
+
+Поле ввода **Имя** является обязательным, и его очистка делает полосу красной. Это указывает на то, что что-то не так, но пользователь не знает, что именно и что с этим делать.
+
+Вы можете предоставить полезное сообщение, проверяя состояние элемента управления и реагируя на него.
+
+Когда пользователь удаляет имя, форма должна выглядеть следующим образом:
 
 <div class="lightbox">
 
@@ -354,45 +382,48 @@ The **Hero Power** select box is also required, but it doesn't need this kind of
 To define and show an error message when appropriate, take the following steps.
 
 1.  Extend the `<input>` tag with a template reference variable that you can use to access the input box's Angular control from within the template.
+
     In the example, the variable is `#name="ngModel"`.
 
     <div class="alert is-helpful">
 
     The template reference variable \(`#name`\) is set to `"ngModel"` because that is the value of the [`NgModel.exportAs`](api/core/Directive#exportAs) property.
+
     This property tells Angular how to link a reference variable to a directive.
 
     </div>
 
 1.  Add a `<div>` that contains a suitable error message.
+
 1.  Show or hide the error message by binding properties of the `name` control to the message `<div>` element's `hidden` property.
 
     <code-example header="src/app/hero-form/hero-form.component.html (hidden-error-msg)" path="forms/src/app/hero-form/hero-form.component.html" region="hidden-error-msg"></code-example>
 
 1.  Add a conditional error message to the `name` input box, as in the following example.
 
-    <code-example header="src/app/hero-form/hero-form.component.html (excerpt)" path="forms/src/app/hero-form/hero-form.component.html" region="name-with-error-msg"></code-example>
+    <code-example header="src/app/hero-form/hero-form.component.html (excerpt)" path="forms/src/app/hero-form/hero-form.component.html" region="name-with-error-msg"></code-example>.
 
 <div class="callout is-helpful">
 
 <header>Illustrating the "pristine" state</header>
 
-In this example, you hide the message when the control is either valid or _pristine_.
-Pristine means the user hasn't changed the value since it was displayed in this form.
-If you ignore the `pristine` state, you would hide the message only when the value is valid.
-If you arrive in this component with a new, blank hero or an invalid hero, you'll see the error message immediately, before you've done anything.
+В этом примере вы скрываете сообщение, когда элемент управления либо действителен, либо _чист_. Первозданное состояние означает, что пользователь не изменял значение с тех пор, как оно было отображено в этой форме.
+Если игнорировать состояние `pristine`, то сообщение будет скрыто только тогда, когда значение действительно.
 
-You might want the message to display only when the user makes an invalid change.
-Hiding the message while the control is in the `pristine` state achieves that goal.
-You'll see the significance of this choice when you add a new hero to the form in the next step.
+Если вы зайдете в этот компонент с новым, пустым героем или недействительным героем, вы увидите сообщение об ошибке сразу же, еще ничего не сделав.
+
+Возможно, вы захотите, чтобы сообщение отображалось только тогда, когда пользователь внесет недопустимое изменение. Скрытие сообщения, пока элемент управления находится в `чистом` состоянии, достигает этой цели.
+
+Вы увидите значение этого выбора, когда добавите нового героя в форму на следующем шаге.
 
 </div>
 
 ## Add a new hero
 
-This exercise shows how you can respond to a native HTML button-click event by adding to the model data.
-To let form users add a new hero, you will add a **New Hero** button that responds to a click event.
+This exercise shows how you can respond to a native HTML button-click event by adding to the model data. To let form users add a new hero, you will add a **New Hero** button that responds to a click event.
 
 1.  In the template, place a "New Hero" `<button>` element at the bottom of the form.
+
 1.  In the component file, add the hero-creation method to the hero data model.
 
     <code-example header="src/app/hero-form/hero-form.component.ts (New Hero method)" path="forms/src/app/hero-form/hero-form.component.ts" region="new-hero"></code-example>
@@ -404,53 +435,60 @@ To let form users add a new hero, you will add a **New Hero** button that respon
 1.  Run the application again and click the **New Hero** button.
 
     The form clears, and the _required_ bars to the left of the input box are red, indicating invalid `name` and `power` properties.
+
     Notice that the error messages are hidden.
+
     This is because the form is pristine; you haven't changed anything yet.
 
-1.  Enter a name and click **New Hero** again.
+1.  Введите имя и снова нажмите **Новый герой**.
 
-    Now the application displays a `Name is required` error message, because the input box is no longer pristine.
-    The form remembers that you entered a name before clicking **New Hero**.
+    Теперь приложение отображает сообщение об ошибке `Name is required`, поскольку поле ввода больше не является нетронутым.
 
-1.  To restore the pristine state of the form controls, clear all of the flags imperatively by calling the form's `reset()` method after calling the `newHero()` method.
+    Форма помнит, что вы ввели имя перед тем, как нажать **Новый герой**.
 
-    <code-example header="src/app/hero-form/hero-form.component.html (Reset the form)" path="forms/src/app/hero-form/hero-form.component.html" region="new-hero-button-form-reset"></code-example>
+1.  Чтобы восстановить первозданное состояние элементов управления формы, императивно очистите все флаги, вызвав метод формы `reset()` после вызова метода `newHero()`.
 
-    Now clicking **New Hero** resets both the form and its control flags.
+    <code-example header="src/app/hero-form/hero-form.component.html (Сброс формы)" path="forms/src/app/hero-form/hero-form.component.html" region="new-hero-button-form-reset"></code-example>.
+
+    Теперь нажатие **New Hero** сбрасывает и форму, и ее флаги управления.
 
 <div class="alert is-helpful">
 
-See the [User Input](guide/user-input) guide for more information about listening for DOM events with an event binding and updating a corresponding component property.
+См. руководство [User Input](guide/user-input) для получения дополнительной информации о прослушивании событий DOM с привязкой к событию и обновлении соответствующего свойства компонента.
 
 </div>
 
-## Submit the form with `ngSubmit`
+## Отправьте форму с помощью `ngSubmit`.
 
-The user should be able to submit this form after filling it in.
-The **Submit** button at the bottom of the form does nothing on its own, but it does trigger a form-submit event because of its type \(`type="submit"`\).
-To respond to this event, take the following steps.
+Пользователь должен иметь возможность отправить форму после ее заполнения. Кнопка **Submit** в нижней части формы сама по себе ничего не делает, но она вызывает событие отправки формы из-за своего типа \(`type="submit"`\).
 
-1.  Bind the form's [`ngSubmit`](api/forms/NgForm#properties) event property to the hero-form component's `onSubmit()` method.
+Чтобы отреагировать на это событие, выполните следующие действия.
 
-    <code-example header="src/app/hero-form/hero-form.component.html (ngSubmit)" path="forms/src/app/hero-form/hero-form.component.html" region="ngSubmit"></code-example>
+1.  Привяжите свойство события формы [`ngSubmit`](api/forms/NgForm#properties) к методу `onSubmit()` компонента hero-form.
 
-1.  Use the template reference variable, `#heroForm` to access the form that contains the **Submit** button and create an event binding.
-    You will bind the form property that indicates its overall validity to the **Submit** button's `disabled` property.
+    <code-example header="src/app/hero-form/hero-form.component.html (ngSubmit)" path="forms/src/app/hero-form/hero-form.component.html" region="ngSubmit"></code-example>.
 
-    <code-example header="src/app/hero-form/hero-form.component.html (submit-button)" path="forms/src/app/hero-form/hero-form.component.html" region="submit-button"></code-example>
+1.  Используйте переменную ссылки шаблона `#heroForm` для доступа к форме, содержащей кнопку **Submit**, и создайте привязку события.
 
-1.  Run the application.
-    Notice that the button is enabled &mdash;although it doesn't do anything useful yet.
+    Вы свяжете свойство формы, указывающее на ее общую валидность, со свойством `disabled` кнопки **Submit**.
 
-1.  Delete the **Name** value.
-    This violates the "required" rule, so it displays the error message &mdash;and notice that it also disables the **Submit** button.
+    <code-example header="src/app/hero-form/hero-form.component.html (submit-button)" path="forms/src/app/hero-form/hero-form.component.html" region="submit-button"></code-example>.
 
-    You didn't have to explicitly wire the button's enabled state to the form's validity.
-    The `FormsModule` did this automatically when you defined a template reference variable on the enhanced form element, then referred to that variable in the button control.
+1.  Запустите приложение.
 
-### Respond to form submission
+    Обратите внимание, что кнопка включена &mdash; хотя она пока не делает ничего полезного.
 
-To show a response to form submission, you can hide the data entry area and display something else in its place.
+1.  Удалите значение **Name**.
+
+    Это нарушает правило "required", поэтому выводится сообщение об ошибке &mdash; и обратите внимание, что это также отключает кнопку **Submit**.
+
+    Вам не нужно было явно связывать включенное состояние кнопки с действительностью формы.
+
+    Модуль `FormsModule` сделал это автоматически, когда вы определили переменную ссылки шаблона на расширенный элемент формы, а затем сослались на эту переменную в элементе управления кнопкой.
+
+### Ответ на отправку формы
+
+Чтобы показать ответ на отправку формы, вы можете скрыть область ввода данных и отобразить на ее месте что-то другое.
 
 1.  Wrap the entire form in a `<div>` and bind its `hidden` property to the `HeroFormComponent.submitted` property.
 
@@ -470,27 +508,33 @@ To show a response to form submission, you can hide the data entry area and disp
 
     The alternative display includes an _Edit_ button whose click event is bound to an expression that clears the `submitted` flag.
 
-1.  Click the _Edit_ button to switch the display back to the editable form.
+1.  Нажмите кнопку _Редактировать_, чтобы переключить отображение обратно в редактируемую форму.
 
-## Summary
+## Резюме
 
-The Angular form discussed in this page takes advantage of the following
-framework features to provide support for data modification, validation, and more.
+Форма Angular, рассмотренная на этой странице, использует следующие возможности фреймворка для обеспечения поддержки модификации данных, валидации и многого другого.
 
--   An Angular HTML form template
--   A form component class with a `@Component` decorator
--   Handling form submission by binding to the `NgForm.ngSubmit` event property
--   Template-reference variables such as `#heroForm` and `#name`
--   `[(ngModel)]` syntax for two-way data binding
--   The use of `name` attributes for validation and form-element change tracking
--   The reference variable's `valid` property on input controls indicates whether a control is valid or should show error messages
--   Controlling the **Submit** button's enabled state by binding to `NgForm` validity
--   Custom CSS classes that provide visual feedback to users about controls that are not valid
+-   Шаблон формы Angular HTML
+-   Класс компонента формы с декоратором `@Component`.
 
-Here's the code for the final version of the application:
+-   Обработка отправки формы путем привязки к свойству события `NgForm.ngSubmit`.
+
+-   Переменные, связанные с шаблоном, такие как `#heroForm` и `#name`.
+
+-   Синтаксис `[(ngModel)]` для двустороннего связывания данных
+
+-   Использование атрибутов `name` для валидации и отслеживания изменений элементов формы
+
+-   Свойство переменной ссылки `valid` для элементов управления вводом указывает, является ли элемент управления действительным или должен показывать сообщения об ошибках
+
+-   Управление включенным состоянием кнопки **Submit** путем привязки к валидности `NgForm`.
+
+-   Пользовательские CSS классы, которые обеспечивают визуальную обратную связь для пользователей о недействительных элементах управления.
+
+Вот код для финальной версии приложения:
 
 <code-tabs>
-    <code-pane header="hero-form/hero-form.component.ts" path="forms/src/app/hero-form/hero-form.component.ts" region="final"></code-pane>
+     <code-pane header="hero-form/hero-form.component.ts" path="forms/src/app/hero-form/hero-form.component.ts" region="final"></code-pane>
     <code-pane header="hero-form/hero-form.component.html" path="forms/src/app/hero-form/hero-form.component.html" region="final"></code-pane>
     <code-pane header="hero.ts" path="forms/src/app/hero.ts"></code-pane>
     <code-pane header="app.module.ts" path="forms/src/app/app.module.ts"></code-pane>

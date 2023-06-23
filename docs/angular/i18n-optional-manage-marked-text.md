@@ -1,32 +1,34 @@
-# Manage marked text with custom IDs
+# Управление маркированным текстом с пользовательскими идентификаторами
 
-The Angular extractor generates a file with a translation unit entry each of the following instances.
+Экстрактор Angular генерирует файл с записью единицы перевода в каждом из следующих случаев.
 
--   Each `i18n` attribute in a component template
--   Each [`$localize`][aioapilocalizeinitlocalize] tagged message string in component code
+-   Каждый атрибут `i18n` в шаблоне компонента
 
-As described in [How meanings control text extraction and merges][aioguidei18ncommonpreparehowmeaningscontroltextextractionandmerges], Angular assigns each translation unit a unique ID.
+-   Каждая [`$localize`][aioapilocalizeinitlocalize] помеченная строка сообщения в коде компонента.
 
-The following example displays translation units with unique IDs.
+Как описано в [How meanings control text extraction and merges][aioguidei18ncommonpreparehowmeaningscontroltextextractionandmerges], Angular присваивает каждой единице перевода уникальный идентификатор.
 
-<code-example header="messages.fr.xlf.html" path="i18n/doc-files/messages.fr.xlf.html" region="generated-id"></code-example>
+В следующем примере отображаются единицы перевода с уникальными идентификаторами.
 
-When you change the translatable text, the extractor generates a new ID for that translation unit.
-In most cases, changes in the source text also require a change to the translation.
-Therefore, using a new ID keeps the text change in sync with translations.
+<code-example header="messages.fr.xlf.html" path="i18n/doc-files/messages.fr.xlf.html" region="generated-id"></code-example>.
 
-However, some translation systems require a specific form or syntax for the ID.
-To address the requirement, use a custom ID to mark text.
-Most developers don't need to use a custom ID.
-If you want to use a unique syntax to convey additional metadata, use a custom ID.
-Additional metadata may include the library, component, or area of the application in which the text appears.
+Когда вы изменяете переводимый текст, экстрактор генерирует новый идентификатор для этой единицы перевода. В большинстве случаев изменения в исходном тексте требуют изменений и в переводе.
 
-To specify a custom ID in the `i18n` attribute or [`$localize`][aioapilocalizeinitlocalize] tagged message string, use the `@@` prefix.
-The following example defines the `introductionHeader` custom ID in a heading element.
+Поэтому использование нового идентификатора позволяет синхронизировать изменение текста с переводом.
 
-<code-example header="app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-solo-id"></code-example>
+Однако некоторые системы перевода требуют особой формы или синтаксиса для идентификатора. Чтобы удовлетворить это требование, используйте пользовательский идентификатор для маркировки текста.
 
-The following example defines the `introductionHeader` custom ID for a variable.
+Большинству разработчиков нет необходимости использовать пользовательский идентификатор.
+
+Если вы хотите использовать уникальный синтаксис для передачи дополнительных метаданных, используйте пользовательский идентификатор.
+
+Дополнительные метаданные могут включать библиотеку, компонент или область приложения, в которой появляется текст.
+
+Чтобы указать пользовательский ID в атрибуте `i18n` или [`$localize`][aioapilocalizeinitlocalize] тегированной строки сообщения, используйте префикс `@@`. Следующий пример определяет пользовательский идентификатор `introductionHeader` в элементе заголовка.
+
+<code-example header="app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-solo-id"></code-example>.
+
+Следующий пример определяет пользовательский идентификатор `introductionHeader` для переменной.
 
 <!--todo: replace with code example -->
 
@@ -36,37 +38,37 @@ variableText1 = \$localize `:&commat;&commat;introductionHeader:Hello i18n!`;
 
 </code-example>
 
-When you specify a custom ID, the extractor generates a translation unit with the custom ID.
+Когда вы указываете пользовательский идентификатор, экстрактор генерирует единицу перевода с пользовательским идентификатором.
 
-<code-example header="messages.fr.xlf.html" path="i18n/doc-files/messages.fr.xlf.html" region="custom-id"></code-example>
+<code-example header="messages.fr.xlf.html" path="i18n/doc-files/messages.fr.xlf.html" region="custom-id"></code-example>.
 
-If you change the text, the extractor does not change the ID.
-As a result, you don't have to take the extra step to update the translation.
-The drawback of using custom IDs is that if you change the text, your translation may be out-of-sync with the newly changed source text.
+Если вы измените текст, экстрактор не изменит идентификатор. В результате вам не придется делать дополнительный шаг для обновления перевода.
 
-#### Use a custom ID with a description
+Недостатком использования пользовательских идентификаторов является то, что при изменении текста перевод может не синхронизироваться с новым измененным исходным текстом.
 
-Use a custom ID in combination with a description and a meaning to further help the translator.
+#### Использование пользовательского идентификатора с описанием
 
-The following example includes a description, followed by the custom ID.
+Используйте пользовательский идентификатор в сочетании с описанием и значением, чтобы еще больше помочь переводчику.
 
-<code-example header="app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-id"></code-example>
+Следующий пример включает описание, за которым следует пользовательский идентификатор.
 
-The following example defines the `introductionHeader` custom ID and description for a variable.
+<code-example header="app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-id"></code-example>.
+
+Следующий пример определяет пользовательский идентификатор `introductionHeader` и описание для переменной.
 
 <!--todo: replace with code example -->
 
 <code-example format="typescript" language="typescript">
 
-variableText2 = \$localize `:An introduction header for this sample&commat;&commat;introductionHeader:Hello i18n!`;
+variableText2 = \$localize `:Вводный заголовок для этого образца&commat;&commat;introductionHeader:Hello i18n!`;
 
 </code-example>
 
-The following example adds a meaning.
+В следующем примере добавляется значение.
 
-<code-example header="app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-meaning-and-id"></code-example>
+<code-example header="app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-meaning-and-id"></code-example>.
 
-The following example defines the `introductionHeader` custom ID for a variable.
+Следующий пример определяет пользовательский идентификатор `introductionHeader` для переменной.
 
 <!--todo: replace with code example -->
 
@@ -76,20 +78,19 @@ variableText3 = \$localize `:site header|An introduction header for this sample&
 
 </code-example>
 
-#### Define unique custom IDs
+#### Определите уникальные пользовательские идентификаторы
 
-Be sure to define custom IDs that are unique.
-If you use the same ID for two different text elements, the extraction tool extracts only the first one, and Angular uses the translation in place of both original text elements.
+Обязательно задавайте уникальные пользовательские идентификаторы. Если вы используете один и тот же идентификатор для двух разных текстовых элементов, инструмент извлечения извлечет только первый, а Angular использует перевод вместо обоих исходных текстовых элементов.
 
-For example, in the following code snippet the same `myId` custom ID is defined for two different text elements.
+Например, в следующем фрагменте кода один и тот же пользовательский идентификатор `myId` определен для двух разных текстовых элементов.
 
-<code-example header="app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-duplicate-custom-id"></code-example>
+<code-example header="app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-duplicate-custom-id"></code-example>.
 
-The following displays the translation in French.
+Ниже показан перевод на французский язык.
 
-<code-example header="src/locale/messages.fr.xlf" path="i18n/doc-files/messages.fr.xlf.html" region="i18n-duplicate-custom-id"></code-example>
+<code-example header="src/locale/messages.fr.xlf" path="i18n/doc-files/messages.fr.xlf.html" region="i18n-duplicate-custom-id"></code-example>.
 
-Both elements now use the same translation \(`Bonjour`\), because both were defined with the same custom ID.
+Оба элемента теперь используют один и тот же перевод \(`Bonjour`\), потому что оба были определены с одним и тем же пользовательским идентификатором.
 
 <code-example path="i18n/doc-files/rendered-output.html"></code-example>
 

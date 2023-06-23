@@ -1,39 +1,45 @@
-# Common Internationalization tasks
+# Общие задачи интернационализации
 
-Use the following Angular tasks to internationalize your project.
+Используйте следующие задачи Angular для интернационализации вашего проекта.
 
--   Use built-in pipes to display dates, numbers, percentages, and currencies in a local format.
--   Mark text in component templates for translation.
--   Mark plural forms of expressions for translation.
--   Mark alternate text for translation.
+-   Используйте встроенные трубы для отображения дат, чисел, процентов и валют в местном формате.
 
-After you prepare your project for an international audience, use the [Angular CLI][aioclimain] to localize your project.
-Complete the following tasks to localize your project.
+-   Пометить текст в шаблонах компонентов для перевода.
 
--   Use the CLI to extract marked text to a _source language_ file.
--   Make a copy of the _source language_ file for each language, and send all of _translation_ files to a translator or service.
--   Use the CLI to merge the finished translation files when you build your project for one or more locales.
+-   Пометить множественные формы выражений для перевода.
+
+-   Пометить альтернативный текст для перевода.
+
+После подготовки проекта для международной аудитории используйте [Angular CLI][aioclimain] для локализации проекта. Выполните следующие задачи для локализации проекта.
+
+-   С помощью CLI извлеките отмеченный текст в файл _исходного языка_.
+
+-   Сделайте копию файла _исходного языка_ для каждого языка и отправьте все файлы _перевода_ переводчику или службе.
+
+-   Используйте CLI для объединения готовых файлов перевода при сборке проекта для одной или нескольких локалей.
 
 <div class="alert is-helpful">
 
-Create an adaptable user interface for all of your target locales that takes into consideration the differences in spacing for different languages.
-For more details, see [How to approach internationalization][thinkwithgooglemarketfinderintlenusguidehowtoapproachi18noverview].
+Создайте адаптируемый пользовательский интерфейс для всех целевых локализаций, учитывающий различия в интервалах для разных языков. Более подробную информацию см. в разделе [Как подойти к интернационализации][thinkwithgooglemarketfinderintlenusguidehowtoapproachi18noverview].
 
 </div>
 
-## Prerequisites
+## Предварительные условия
 
-To prepare your project for translations, you should have a basic understanding of the following subjects.
+Чтобы подготовить ваш проект к переводу, вы должны иметь базовое представление о следующих темах.
 
--   [Templates][aioguideglossarytemplate]
--   [Components][aioguideglossarycomponent]
--   [Angular CLI][aioclimain] [command-line][aioguideglossarycommandlineinterfacecli] tool for managing the Angular development cycle
--   [Extensible Markup Language (XML)][w3xml] used for translation files
+-   [Шаблоны][aioguideglossarytemplate]
 
-## Learn about common Angular internationalization tasks
+-   [Компоненты][aioguideglossarycomponent]
+
+-   [Angular CLI][aioclimain][командная строка][aioguideglossarycommandlineinterfacecli] инструмент для управления циклом разработки Angular
+
+-   [Extensible Markup Language (XML)][w3xml] используется для файлов перевода
+
+## Узнайте об общих задачах интернационализации Angular
 
 <div class="card-container">
-    <a href="guide/i18n-common-add-package" class="docs-card" title="Add the localize package">
+     <a href="guide/i18n-common-add-package" class="docs-card" title="Add the localize package">
         <section>Add the localize package</section>
         <p>Learn how to add the Angular Localize package to your project</p>
         <p class="card-footer">Add the localize package</p>

@@ -1,19 +1,19 @@
-# Example Angular Internationalization application
+# Пример интернационализации приложения Angular
 
-## Explore the translated example application
+## Изучите переведенный пример приложения
 
 <div class="alert is-helpful">
 
-To explore the sample application with French translations used in the [Angular Internationalization][aioguidei18noverview] guide, see <live-example name="i18n" title="live example"></live-example>.
+Чтобы изучить пример приложения с французским переводом, используемый в руководстве [Angular Internationalization][aioguidei18noverview], смотрите <live-example name="i18n" title="живой пример"></live-example>.
 
 </div>
 
-## `fr-CA` and `en-US` example
+## пример `fr-CA` и `en-US`.
 
-The following tabs display the example application and the associated translation files.
+На следующих вкладках отображается пример приложения и связанные с ним файлы перевода.
 
 <code-tabs>
-    <code-pane header="src/app/app.component.html" path="i18n/src/app/app.component.html"></code-pane>
+     <code-pane header="src/app/app.component.html" path="i18n/src/app/app.component.html"></code-pane>
     <code-pane header="src/app/app.component.ts" path="i18n/src/app/app.component.ts"></code-pane>
     <code-pane header="src/app/app.module.ts" path="i18n/src/app/app.module.ts"></code-pane>
     <code-pane header="src/main.ts" path="i18n/doc-files/main.1.ts"></code-pane>

@@ -1,102 +1,118 @@
-# Work with translation files
+# Работа с файлами перевода
 
-After you prepare a component for translation, use the [`extract-i18n`][aiocliextracti18n] [Angular CLI][aioclimain] command to extract the marked text in the component into a _source language_ file.
+После подготовки компонента к переводу используйте команду [`extract-i18n`][aiocliextracti18n] [Angular CLI][aioclimain] для извлечения помеченного текста компонента в файл _исходного языка_.
 
-The marked text includes text marked with `i18n`, attributes marked with `i18n-`_attribute_, and text tagged with `$localize` as described in [Prepare component for translation][aioguidei18ncommonprepare].
+Размеченный текст включает текст, помеченный `i18n`, атрибуты, помеченные `i18n-`_attribute_, и текст, помеченный `$localize`, как описано в [Подготовка компонента к переводу][aioguidei18ncommonprepare].
 
-Complete the following steps to create and update translation files for your project.
+Выполните следующие шаги, чтобы создать и обновить файлы перевода для вашего проекта.
 
-1.  [Extract the source language file][aioguidei18ncommontranslationfilesextractthesourcelanguagefile].
-    1.  Optionally, change the location, format, and name.
-1.  Copy the source language file to [create a translation file for each language][aioguidei18ncommontranslationfilescreateatranslationfileforeachlanguage].
-1.  [Translate each translation file][aioguidei18ncommontranslationfilestranslateeachtranslationfile].
-1.  Translate plurals and alternate expressions separately.
-    1.  [Translate plurals][aioguidei18ncommontranslationfilestranslateplurals].
-    1.  [Translate alternate expressions][aioguidei18ncommontranslationfilestranslatealternateexpressions].
-    1.  [Translate nested expressions][aioguidei18ncommontranslationfilestranslatenestedexpressions].
+1.  [Извлечение файла исходного языка][aioguidei18ncommontranslationfilesextractthesourcelanguagefile].
 
-## Extract the source language file
+    1.  По желанию измените местоположение, формат и имя.
 
-To extract the source language file, complete the following actions.
+1.  Скопируйте исходный языковой файл в [создать файл перевода для каждого языка][aioguidei18ncommontranslationfilescreateatranslationfileforeachlanguage].
 
-1.  Open a terminal window.
-1.  Change to the root directory of your project.
-1.  Run the following CLI command.
+1.  [Переведите каждый файл перевода][aioguidei18ncommontranslationfilesranslateeachtranslationfile].
 
-    <code-example path="i18n/doc-files/commands.sh" region="extract-i18n-default"></code-example>
+1.  Переведите множественное число и альтернативные выражения отдельно.
 
-The `extract-i18n` command creates a source language file named `messages.xlf` in the root directory of your project.
-For more information about the XML Localization Interchange File Format \(XLIFF, version 1.2\), see [XLIFF][wikipediawikixliff].
+    1.  [Переведите множественное число][aioguidei18ncommontranslationfilestranslateplurals].
 
-Use the following [`extract-i18n`][aiocliextracti18n] command options to change the source language file location, format, and file name.
+    1.  [Переведите альтернативные выражения][aioguidei18ncommontranslationfilestranslatealternateexpressions].
 
-| Command option  | Details                              |
-| :-------------- | :----------------------------------- |
-| `--format`      | Set the format of the output file    |
-| `--out-file`    | Set the name of the output file      |
-| `--output-path` | Set the path of the output directory |
+    1.  [Перевести вложенные выражения][aioguidei18ncommontranslationfilestranslatenestedexpressions].
 
-### Change the source language file location
+## Извлечение файла исходного языка
 
-To create a file in the `src/locale` directory, specify the output path as an option.
+Чтобы извлечь исходный языковой файл, выполните следующие действия.
 
-#### `extract-i18n --output-path` example
+1.  Откройте окно терминала.
 
-The following example specifies the output path as an option.
+1.  Перейдите в корневой каталог вашего проекта.
 
-<code-example path="i18n/doc-files/commands.sh" region="extract-i18n-output-path"></code-example>
+1.  Выполните следующую команду CLI.
 
-### Change the source language file format
+    <code-example path="i18n/doc-files/commands.sh" region="extract-i18n-default"></code-example>.
 
-The `extract-i18n` command creates files in the following translation formats.
+Команда `extract-i18n` создает файл исходного языка с именем `messages.xlf` в корневом каталоге вашего проекта. Подробнее о XML Localization Interchange File Format \(XLIFF, версия 1.2\) смотрите в [XLIFF][wikipediawikixliff].
 
-| Translation format | Details                                                                                                          | File extension    |
-| :----------------- | :--------------------------------------------------------------------------------------------------------------- | :---------------- |
-| ARB                | [Application Resource Bundle][githubgoogleappresourcebundlewikiapplicationresourcebundlespecification]           | `.arb`            |
-| JSON               | [JavaScript Object Notation][jsonmain]                                                                           | `.json`           |
-| XLIFF 1.2          | [XML Localization Interchange File Format, version 1.2][oasisopendocsxliffxliffcorexliffcorehtml]                | `.xlf`            |
-| XLIFF 2            | [XML Localization Interchange File Format, version 2][oasisopendocsxliffxliffcorev20cos01xliffcorev20cose01html] | `.xlf`            |
-| XMB                | [XML Message Bundle][unicodecldrdevelopmentdevelopmentprocessdesignproposalsxmb]                                 | `.xmb` \(`.xtb`\) |
+Используйте следующие опции команды [`extract-i18n`][aiocliextracti18n], чтобы изменить местоположение, формат и имя файла исходного языка.
 
-Specify the translation format explicitly with the `--format` command option.
+| Опция команды | Подробности | | :-------------- | :----------------------------------- |.
+
+| `--format` | Установить формат выходного файла | `--out-file`.
+
+| `--out-file` | Установите имя выходного файла |
+
+| `--output-path` | Установите путь к выходному каталогу |
+
+### Изменить расположение файла исходного языка
+
+Чтобы создать файл в каталоге `src/locale`, укажите путь вывода в качестве опции.
+
+#### `extract-i18n --output-path` пример
+
+В следующем примере путь вывода указан в качестве опции.
+
+<code-example path="i18n/doc-files/commands.sh" region="extract-i18n-output-path"></code-example>.
+
+### Изменение формата файла исходного языка
+
+Команда `extract-i18n` создает файлы в следующих форматах перевода.
+
+| Формат перевода | Подробности | Расширение файла | :----------------- | :--------------------------------------------------------------------------------------------------------------- | :---------------- | :----------------- | :--------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------.
+
+| ARB | [Application Resource Bundle][githubgoogleappresourcebundlewikiapplicationresourcebundlespecification] | | `.arb` | |
+
+| JSON | [JavaScript Object Notation][jsonmain] | `.json` | | [JavaScript Object Notation][jsonmain] | `.json` |
+
+| XLIFF 1.2 | [XML Localization Interchange File Format, version 1.2][oasisopendocsxliffxliffcorexliffcorehtml] | `.xlf` | | XLIFF 1.2 | [XML Localization Interchange File Format, version 1.2]oasisopendocsxliffxliffcorexliffcorehtml
+
+| XLIFF 2 | [XML Localization Interchange File Format, версия 2][oasisopendocsxliffxliffcorev20cos01xliffcorev20cose01html] | `.xlf` | | XMB | [XML Localization Interchange File Format, версия 2]oasisopendocsxliffxliffcorev20cose01html
+
+| XMB | [XML Message Bundle][unicodecldrdevelopmentdevelopmentprocessdesignproposalsxmb] | `.xmb` \(`.xtb`\) |
+
+Укажите формат перевода в явном виде с помощью опции команды `--format`.
 
 <div class="alert is-helpful">
 
-The XMB format generates `.xmb` source language files, but uses`.xtb` translation files.
+Формат XMB генерирует файлы исходного языка `.xmb`, но использует файлы перевода `.xtb`.
 
 </div>
 
-#### `extract-i18n --format` example
+#### `extract-i18n --format` пример
 
-The following example demonstrates several translation formats.
+Следующий пример демонстрирует несколько форматов перевода.
 
-<code-example path="i18n/doc-files/commands.sh" region="extract-i18n-formats"></code-example>
+<code-example path="i18n/doc-files/commands.sh" region="extract-i18n-formats"></code-example>.
 
-### Change the source language file name
+### Изменить имя файла исходного языка
 
-To change the name of the source language file generated by the extraction tool, use the `--out-file` command option.
+Чтобы изменить имя файла исходного языка, создаваемого инструментом извлечения, используйте опцию команды `--out-file`.
 
-#### `extract-i18n --out-file` example
+#### `extract-i18n --out-file` пример
 
-The following example demonstrates naming the output file.
+Следующий пример демонстрирует присвоение имени выходному файлу.
 
-<code-example path="i18n/doc-files/commands.sh" region="extract-i18n-out-file"></code-example>
+<code-example path="i18n/doc-files/commands.sh" region="extract-i18n-out-file"></code-example>.
 
-## Create a translation file for each language
+## Создание файла перевода для каждого языка
 
-To create a translation file for a locale or language, complete the following actions.
+Чтобы создать файл перевода для локали или языка, выполните следующие действия.
 
-1.  [Extract the source language file][aioguidei18ncommontranslationfilesextractthesourcelanguagefile].
-1.  Make a copy of the source language file to create a _translation_ file for each language.
-1.  Rename the _translation_ file to add the locale.
+1.  [Извлечение файла исходного языка][aioguidei18ncommontranslationfilesextractthesourcelanguagefile].
+
+1.  Сделайте копию исходного языкового файла, чтобы создать _переводной_ файл для каждого языка.
+
+1.  Переименуйте файл _translation_, чтобы добавить локаль.
 
     <code-example language="file">
 
     messages.xlf --&gt; messages.{locale}.xlf
 
-    </code-example>
+    </code-example>.
 
-1.  Create a new directory at your project root named `locale`.
+1.  Создайте новый каталог в корне проекта с именем `locale`.
 
     <code-example language="file">
 
@@ -104,58 +120,71 @@ To create a translation file for a locale or language, complete the following ac
 
     </code-example>
 
-1.  Move the _translation_ file to the new directory.
-1.  Send the _translation_ file to your translator.
-1.  Repeat the above steps for each language you want to add to your application.
+1.  Переместите файл _translation_ в новый каталог.
 
-### `extract-i18n` example for French
+1.  Отправьте файл _translation_ своему переводчику.
 
-For example, to create a French translation file, complete the following actions.
+1.  Повторите описанные выше шаги для каждого языка, который вы хотите добавить в свое приложение.
 
-1.  Run the `extract-i18n` command.
-1.  Make a copy of the `messages.xlf` source language file.
-1.  Rename the copy to `messages.fr.xlf` for the French language \(`fr`\) translation.
-1.  Move the `fr` translation file to the `src/locale` directory.
-1.  Send the `fr` translation file to the translator.
+### `extract-i18n` пример для французского языка
 
-## Translate each translation file
+Например, чтобы создать файл перевода на французский язык, выполните следующие действия.
 
-Unless you are fluent in the language and have the time to edit translations, you will likely complete the following steps.
+1.  Выполните команду `extract-i18n`.
 
-1.  Send each translation file to a translator.
-1.  The translator uses an XLIFF file editor to complete the following actions.
-    1.  Create the translation.
-    1.  Edit the translation.
+1.  Создайте копию исходного языкового файла `messages.xlf`.
 
-### Translation process example for French
+1.  Переименуйте копию в `messages.fr.xlf` для перевода на французский язык \(`fr`\).
 
-To demonstrate the process, review the `messages.fr.xlf` file in the [Example Angular Internationalization application][aioguidei18nexample]. The [Example Angular Internationalization application][aioguidei18nexample] includes a French translation for you to edit without a special XLIFF editor or knowledge of French.
+1.  Переместите файл перевода `fr` в каталог `src/locale`.
 
-The following actions describe the translation process for French.
+1.  Отправьте файл перевода `fr` переводчику.
 
-1.  Open `messages.fr.xlf` and find the first `<trans-unit>` element.
-    This is a _translation unit_, also known as a _text node_, that represents the translation of the `<h1>` greeting tag that was previously marked with the `i18n` attribute.
+## Переведите каждый файл перевода.
 
-    <code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translated-hello-before"></code-example>
+Если вы не владеете языком и у вас нет времени на редактирование переводов, вы, скорее всего, выполните следующие шаги.
 
-    The `id="introductionHeader"` is a [custom ID][aioguidei18noptionalmanagemarkedtext], but without the `@@` prefix required in the source HTML.
+1.  Отправьте каждый файл перевода переводчику.
 
-1.  Duplicate the `<source>... </source>` element in the text node, rename it to `target`, and then replace the content with the French text.
+1.  Переводчик использует редактор файлов XLIFF для выполнения следующих действий.
 
-    <code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;, after translation)" path="i18n/doc-files/messages.fr.xlf.html" region="translated-hello"></code-example>
+    1.  Создайте перевод.
 
-    In a more complex translation, the information and context in the [description and meaning elements][aioguidei18ncommonprepareaddhelpfuldescriptionsandmeanings] help you choose the right words for translation.
+    1.  Отредактируйте перевод.
 
-1.  Translate the other text nodes.
-    The following example displays the way to translate.
+### Пример процесса перевода для французского языка
+
+Чтобы продемонстрировать этот процесс, просмотрите файл `messages.fr.xlf` в [Example Angular Internationalization application][aioguidei18nexample]. В [Пример приложения Angular Internationalization][aioguidei18nexample] включен перевод на французский язык, который можно редактировать без специального редактора XLIFF или знания французского языка.
+
+Следующие действия описывают процесс перевода на французский язык.
+
+1.  Откройте файл `messages.fr.xlf` и найдите первый элемент `<trans-unit>`.
+    Это _переводной блок_, также известный как _текстовый узел_, который представляет собой перевод тега приветствия `<h1>`, который ранее был помечен атрибутом `i18n`.
+
+    <code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translated-hello-before"></code-example>.
+
+    `id="introductionHeader"` - это [пользовательский ID][aioguidei18noptionalmanagemarkedtext], но без префикса `@@`, необходимого в исходном HTML.
+
+1.  Продублируйте элемент `<source>... </source>` элемент в узле text, переименуйте его в `target`, а затем замените содержимое французским текстом.
+
+    <code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;, после перевода)" path="i18n/doc-files/messages.fr.xlf.html" region="translated-hello"></code-example>.
+
+    При более сложном переводе информация и контекст в [элементах описания и значения][aioguidei18ncommonprepareaddhelpfuldescriptionsandmeanings] помогают выбрать правильные слова для перевода.
+
+1.  Переведите остальные текстовые узлы.
+
+    В следующем примере показан способ перевода.
 
     <code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translated-other-nodes"></code-example>
 
     <div class="alert is-important">
 
     Don't change the IDs for translation units.
+
     Each `id` attribute is generated by Angular and depends on the content of the component text and the assigned meaning.
+
     If you change either the text or the meaning, then the `id` attribute changes.
+
     For more about managing text updates and IDs, see [custom IDs][aioguidei18noptionalmanagemarkedtext].
 
     </div>
@@ -166,74 +195,73 @@ Add or remove plural cases as needed for each language.
 
 <div class="alert is-helpful">
 
-For language plural rules, see [CLDR plural rules][githubunicodeorgcldrstagingchartslatestsupplementallanguagepluralruleshtml].
+Правила множественного числа языка см. в [CLDR plural rules][githubunicodeorgcldrstagingchartslatestsupplementallanguagepluralruleshtml].
 
 </div>
 
-### `minute` `plural` example
+### `минута` `множественное число` пример
 
-To translate a `plural`, translate the ICU format match values.
+Чтобы перевести `множественное число`, переведите значения соответствия формата ICU.
 
--   `just now`
--   `one minute ago`
--   `<x id="INTERPOLATION" equiv-text="{{minutes}}"/> minutes ago`
+-   `только что`
 
-The following example displays the way to translate.
+-   `минуту назад`
 
-<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translated-plural"></code-example>
+-   `<x id="INTERPOLATION" equiv-text="{{minutes}}"/> минут назад`.
 
-## Translate alternate expressions
+В следующем примере показан способ перевода.
 
-Angular also extracts alternate `select` ICU expressions as separate translation units.
+<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translated-plural"></code-example>.
 
-### `gender` `select` example
+## Перевод альтернативных выражений
 
-The following example displays a `select` ICU expression in the component template.
+Angular также извлекает альтернативные выражения `select` ICU в виде отдельных единиц перевода.
+
+### Пример `gender` `select`.
+
+Следующий пример отображает ICU-выражение `select` в шаблоне компонента.
 
 <code-example header="src/app/app.component.html" path="i18n/src/app/app.component.html" region="i18n-select"></code-example>
 
-In this example, Angular extracts the expression into two translation units.
-The first contains the text outside of the `select` clause, and uses a placeholder for `select` \(`<x id="ICU">`\):
+В этом примере Angular разделяет выражение на две единицы перевода. Первая содержит текст вне клаузы `select` и использует место для `select` \(`<x id="ICU">`\):
 
-<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-select-1"></code-example>
+<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-select-1"></code-example>.
 
 <div class="alert is-important">
 
-When you translate the text, move the placeholder if necessary, but don't remove it.
-If you remove the placeholder, the ICU expression is removed from your translated application.
+Когда вы переводите текст, при необходимости переместите заполнитель, но не удаляйте его. Если вы удалите заполнитель, выражение ICU будет удалено из переведенного приложения.
 
 </div>
 
-The following example displays the second translation unit that contains the `select` clause.
+В следующем примере отображается вторая единица перевода, содержащая предложение `select`.
 
-<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-select-2"></code-example>
+<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-select-2"></code-example>.
 
-The following example displays both translation units after translation is complete.
+В следующем примере после завершения перевода отображаются обе единицы перевода.
 
-<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translated-select"></code-example>
+<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translated-select"></code-example>.
 
-## Translate nested expressions
+## Перевод вложенных выражений
 
-Angular treats a nested expression in the same manner as an alternate expression.
-Angular extracts the expression into two translation units.
+Angular обрабатывает вложенное выражение таким же образом, как и альтернативное выражение. Angular разделяет выражение на две единицы перевода.
 
-### Nested `plural` example
+### Пример вложенного выражения `plural`.
 
-The following example displays the first translation unit that contains the text outside of the nested expression.
+В следующем примере отображается первая единица перевода, содержащая текст вне вложенного выражения.
 
-<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-nested-1"></code-example>
+<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-nested-1"></code-example>.
 
-The following example displays the second translation unit that contains the complete nested expression.
+В следующем примере отображается вторая единица перевода, содержащая полное вложенное выражение.
 
-<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-nested-2"></code-example>
+<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-nested-2"></code-example>.
 
-The following example displays both translation units after translating.
+В следующем примере после перевода отображаются обе единицы перевода.
 
-<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-nested"></code-example>
+<code-example header="src/locale/messages.fr.xlf (&lt;trans-unit&gt;)" path="i18n/doc-files/messages.fr.xlf.html" region="translate-nested"></code-example>.
 
-## What's next
+## Что дальше
 
--   [Merge translations into the app][aioguidei18ncommonmerge]
+-   [Слияние переводов в приложение][aioguidei18ncommonmerge]
 
 <!-- links -->
 

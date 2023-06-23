@@ -1,6 +1,6 @@
-# Import global variants of the locale data
+# Импорт глобальных вариантов данных локали
 
-The [Angular CLI][aioclimain] automatically includes locale data if you run the [`ng build`][aioclibuild] command with the `--localize` option.
+[Angular CLI][aioclimain] автоматически включает данные о локали, если вы выполняете команду [`ng build`][aioclibuild] с опцией `--localize`.
 
 <!--todo: replace with code-example -->
 
@@ -10,12 +10,11 @@ ng build --localize
 
 </code-example>
 
-The `@angular/common` package on npm contains the locale data files.
-Global variants of the locale data are available in [`@angular/common/locales/global`][unpkgbrowseangularcommonlocalesglobal].
+Пакет `@angular/common` на npm содержит файлы данных локали. Глобальные варианты данных локали доступны в [`@angular/common/locales/global`][unpkgbrowseangularcommonlocalesglobal].
 
-## `import` example for French
+## Пример `импорта` для французского языка
 
-The following example imports the global variants for French \(`fr`\).
+Следующий пример импортирует глобальные варианты для французского языка \(`fr`\).
 
 <code-example header="src/app/app.module.ts" path="i18n/doc-files/app.module.ts" region="global-locale"></code-example>
 

@@ -1,18 +1,20 @@
-# Format data based on locale
+# Форматирование данных на основе локали
 
-Angular provides the following built-in data transformation [pipes][aioguideglossarypipe].
-The data transformation pipes use the [`LOCALE_ID`][aioapicorelocaleid] token to format data based on rules of each locale.
+Angular предоставляет следующие встроенные средства преобразования данных [pipes][aioguideglossarypipe]. Трубы преобразования данных используют токен [`LOCALE_ID`][aioapicorelocaleid] для форматирования данных на основе правил каждой локали.
 
-| Data transformation pipe                   | Details                                           |
-| :----------------------------------------- | :------------------------------------------------ |
-| [`DatePipe`][aioapicommondatepipe]         | Formats a date value.                             |
-| [`CurrencyPipe`][aioapicommoncurrencypipe] | Transforms a number into a currency string.       |
-| [`DecimalPipe`][aioapicommondecimalpipe]   | Transforms a number into a decimal number string. |
-| [`PercentPipe`][aioapicommonpercentpipe]   | Transforms a number into a percentage string.     |
+| Труба преобразования данных | Подробности | | | :----------------------------------------- | :------------------------------------------------ |.
 
-## Use DatePipe to display the current date
+| [`DatePipe`][aioapicommondatepipe] | Форматирует значение даты. |
 
-To display the current date in the format for the current locale, use the following format for the `DatePipe`.
+| [`CurrencyPipe`][aioapicommoncurrencypipe] | Преобразование числа в строку валюты. |
+
+| | [`DecimalPipe`][aioapicommondecimalpipe] | Преобразование числа в десятичную строку. |
+
+| | [`PercentPipe`][aioapicommonpercentpipe] | Преобразование числа в процентную строку. |
+
+## Использование DatePipe для отображения текущей даты
+
+Чтобы отобразить текущую дату в формате для текущей локали, используйте следующий формат для `DatePipe`.
 
 <!--todo: replace with code-example -->
 
@@ -22,11 +24,11 @@ To display the current date in the format for the current locale, use the follow
 
 </code-example>
 
-## Override current locale for CurrencyPipe
+## Переопределение текущей локали для CurrencyPipe
 
-Add the `locale` parameter to the pipe to override the current value of `LOCALE_ID` token.
+Добавьте параметр `locale` в трубу, чтобы переопределить текущее значение токена `LOCALE_ID`.
 
-To force the currency to use American English \(`en-US`\), use the following format for the `CurrencyPipe`
+Чтобы заставить валюту использовать американский английский \(`en-US`\), используйте следующий формат для `CurrencyPipe`
 
 <!--todo: replace with code-example -->
 
@@ -38,14 +40,13 @@ To force the currency to use American English \(`en-US`\), use the following for
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-The locale specified for the `CurrencyPipe` overrides the global `LOCALE_ID` token of your application.
+**NOTE**: <br /> The locale specified for the `CurrencyPipe` overrides the global `LOCALE_ID` token of your application.
 
 </div>
 
-## What's next
+## Что дальше
 
--   [Prepare component for translation][aioguidei18ncommonprepare]
+-   [Подготовка компонента к переводу][aioguidei18ncommonprepare]
 
 <!-- links -->
 

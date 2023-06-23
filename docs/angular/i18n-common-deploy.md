@@ -1,41 +1,44 @@
-# Deploy multiple locales
+# Развертывание нескольких локалей
 
-If `myapp` is the directory that contains the distributable files of your project, you typically make different versions available for different locales in locale directories.
-For example, your French version is located in the `myapp/fr` directory and the Spanish version is located in the `myapp/es` directory.
+Если `myapp` - это каталог, содержащий распространяемые файлы вашего проекта, вы обычно делаете различные версии доступными для разных локалей в каталогах locale. Например, ваша французская версия находится в директории `myapp/fr`, а испанская версия - в директории `myapp/es`.
 
-The HTML `base` tag with the `href` attribute specifies the base URI, or URL, for relative links.
-If you set the `"localize"` option in [`angular.json`][aioguideworkspaceconfig] workspace build configuration file to `true` or to an array of locale IDs, the CLI adjusts the base `href` for each version of the application.
-To adjust the base `href` for each version of the application, the CLI adds the locale to the configured `"baseHref"`.
-Specify the `"baseHref"` for each locale in your [`angular.json`][aioguideworkspaceconfig] workspace build configuration file.
-The following example displays `"baseHref"` set to an empty string.
+HTML тег `base` с атрибутом `href` определяет базовый URI, или URL, для относительных ссылок. Если вы установите опцию `"localize"` в файле конфигурации сборки рабочего пространства [`angular.json`][aioguideworkspaceconfig] в значение `true` или в массив идентификаторов локалей, CLI настроит базовый `href` для каждой версии приложения.
 
-<code-example header="angular.json" path="i18n/angular.json" region="i18n-baseHref"></code-example>
+Чтобы настроить базовый `href` для каждой версии приложения, CLI добавляет локаль к настроенной `"baseHref"`.
 
-Also, to declare the base `href` at compile time, use the CLI `--baseHref` option with [`ng build`][aioclibuild].
+Укажите `"baseHref"` для каждой локали в файле конфигурации сборки рабочего пространства [`angular.json`][aioguideworkspaceconfig].
 
-## Configure a server
+В следующем примере `"baseHref"` установлен на пустую строку.
 
-Typical deployment of multiple languages serve each language from a different subdirectory.
-Users are redirected to the preferred language defined in the browser using the `Accept-Language` HTTP header.
-If the user has not defined a preferred language, or if the preferred language is not available, then the server falls back to the default language.
-To change the language, change your current location to another subdirectory.
-The change of subdirectory often occurs using a menu implemented in the application.
+<code-example header="angular.json" path="i18n/angular.json" region="i18n-baseHref"></code-example>.
+
+Также, чтобы объявить базовый `href` во время компиляции, используйте опцию CLI `--baseHref` с [`ng build`][aioclibuild].
+
+## Настройка сервера
+
+Типичное развертывание нескольких языков обслуживает каждый язык из отдельного подкаталога. Пользователи перенаправляются на предпочтительный язык, определенный в браузере с помощью HTTP-заголовка `Accept-Language`.
+
+Если пользователь не определил предпочитаемый язык, или если предпочитаемый язык недоступен, то сервер возвращается к языку по умолчанию.
+
+Чтобы изменить язык, измените текущее местоположение на другой подкаталог.
+
+Смена подкаталога часто происходит с помощью меню, реализованного в приложении.
 
 <div class="alert is-helpful">
 
-For more information on how to deploy apps to a remote server, see [Deployment][aioguidedeployment].
+Дополнительную информацию о том, как развернуть приложения на удаленном сервере, см. в разделе [Развертывание][aioguidedeployment].
 
 </div>
 
-### Nginx example
+### Пример Nginx
 
-The following example displays an Nginx configuration.
+В следующем примере показана конфигурация Nginx.
 
-<code-example path="i18n/doc-files/nginx.conf" language="nginx"></code-example>
+<code-example path="i18n/doc-files/nginx.conf" language="nginx"></code-example>.
 
-### Apache example
+### Пример Apache
 
-The following example displays an Apache configuration.
+В следующем примере показана конфигурация Apache.
 
 <code-example path="i18n/doc-files/apache2.conf" language="apache"></code-example>
 

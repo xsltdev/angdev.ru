@@ -6,37 +6,37 @@
 
 <div class="grid cards" style="margin-top: 1.6em" markdown>
 
--   :simple-angular:{ .lg .middle } **Build your first Angular app**
+-   :simple-angular:{ .lg .middle } **Создайте свое первое Angular приложение.**
 
     ***
 
-    Work through a full tutorial to create your first application.
+    Пройдите полное руководство, чтобы создать свое первое приложение.
 
-    **[:octicons-arrow-right-24: Homes App Tutorial](tutorial/first-app.md)**
+    **[:octicons-arrow-right-24: Руководство по созданию приложения](tutorial/first-app.md)**
 
--   :simple-angular:{ .lg .middle } **What is Angular**
-
-    ***
-
-    Get a high-level overview of the Angular platform.
-
-    **[:octicons-arrow-right-24: Platform overview](guide/what-is-angular.md)**
-
--   :simple-angular:{ .lg .middle } **Learn and Explore**
+-   :simple-angular:{ .lg .middle } **Что такое Angular**
 
     ***
 
-    Learn about the fundamental design concepts and architecture of Angular applications.
+    Получите общее представление о платформе Angular.
 
-    **[:octicons-arrow-right-24: Introduction to Angular concepts](guide/architecture.md)**
+    **[:octicons-arrow-right-24: Обзор платформы](guide/what-is-angular.md)**
 
--   :simple-angular:{ .lg .middle } **Set up your environment**
+-   :simple-angular:{ .lg .middle } **Учись и исследуй**
 
     ***
 
-    Set up your local environment for development with the Angular CLI.
+    Узнайте о фундаментальных концепциях проектирования и архитектуре приложений Angular.
 
-    **[:octicons-arrow-right-24: Local setup](guide/setup-local.md)**
+    **[:octicons-arrow-right-24: Введение в концепции Angular](guide/architecture.md)**
+
+-   :simple-angular:{ .lg .middle } **Настройка вашей среды.**
+
+    ***
+
+    Настройте вашу локальную среду для разработки с помощью Angular CLI.
+
+    **[:octicons-arrow-right-24: Локальная настройка](guide/setup-local.md)**
 
 </div>
 

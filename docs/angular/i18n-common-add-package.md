@@ -1,34 +1,36 @@
-# Add the localize package
+# Добавьте пакет localize
 
-To take advantage of the localization features of Angular, use the [Angular CLI][aioclimain] to add the `@angular/localize` package to your project.
+Чтобы воспользоваться возможностями локализации в Angular, используйте [Angular CLI][aioclimain] для добавления пакета `@angular/localize` в ваш проект.
 
-To add the `@angular/localize` package, use the following command to update the `package.json` and TypeScript configuration files in your project.
+Чтобы добавить пакет `@angular/localize`, используйте следующую команду для обновления конфигурационных файлов `package.json` и TypeScript в вашем проекте.
 
-<code-example path="i18n/doc-files/commands.sh" region="add-localize"></code-example>
+<code-example path="i18n/doc-files/commands.sh" region="add-localize"></code-example>.
 
-It adds `types: ["@angular/localize"]` in the TypeScript configuration files as well as the reference to the type definition of `@angular/localize` at the top of the `main.ts` file.
+Это добавляет `типы: ["@angular/localize"]` в конфигурационные файлы TypeScript, а также ссылку на определение типа `@angular/localize` в верхней части файла `main.ts`.
 
 <div class="alert is-helpful">
 
-For more information about `package.json` and `tsconfig.json` files, see [Workspace npm dependencies][aioguidenpmpackages] and [TypeScript Configuration][aioguidetsconfig].
+Дополнительную информацию о файлах `package.json` и `tsconfig.json` смотрите в разделах [Workspace npm dependencies][aioguidenpmpackages] и [TypeScript Configuration][aioguidetsconfig].
 
 </div>
 
-If `@angular/localize` is not installed and you try to build a localized version of your project (for example, while using the `i18n` attributes in templates), the [Angular CLI][aioclimain] will generate an error, which would contain the steps that you can take to enable i18n for your project.
+Если `@angular/localize` не установлен и вы пытаетесь собрать локализованную версию вашего проекта (например, при использовании атрибутов `i18n` в шаблонах), [Angular CLI][aioclimain] выдаст ошибку, которая будет содержать шаги, которые вы можете предпринять, чтобы включить i18n для вашего проекта.
 
 ## Options
 
-| OPTION             | DESCRIPTION                                                                                                                                                                                   | VALUE TYPE | DEFAULT VALUE |
-| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------------ |
-| `--project`        | The name of the project.                                                                                                                                                                      | `string`   |
-| `--use-at-runtime` | If set, then `$localize` can be used at runtime. Also `@angular/localize` gets included in the `dependencies` section of `package.json`, rather than `devDependencies`, which is the default. | `boolean`  | `false`       |
+| OPTION | DESCRIPTION | VALUE TYPE | VALUE TYPE | DEFAULT VALUE | | :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------------ |.
 
-For more available options, see [ng add][aiocliadd] in [Angular CLI][aioclimain].
+| `--project` | Имя проекта. | `string` |
 
-## What's next
+| `--use-at-runtime` | Если установлено, то `$localize` может быть использован во время выполнения. Также `@angular/localize` включается в секцию `dependencies` в `package.json`, а не в `devDependencies`, которая используется по умолчанию. | `boolean` | `false`.
+
+Дополнительные доступные опции см. в [ng add][aiocliadd] в [Angular CLI][aioclimain].
+
+## Что дальше
 
 -   [@angular/localize API][aioapilocalize]
--   [Refer to locales by ID][aioguidei18ncommonlocaleid]
+
+-   [Ссылка на локали по ID][aioguidei18ncommonlocaleid]
 
 <!-- links -->
 

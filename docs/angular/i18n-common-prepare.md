@@ -1,14 +1,16 @@
-# Prepare component for translation
+# Подготовка компонента к переводу
 
-To prepare your project for translation, complete the following actions.
+Чтобы подготовить проект к переводу, выполните следующие действия.
 
--   Use the `i18n` attribute to mark text in component templates
--   Use the `i18n-` attribute to mark attribute text strings in component templates
--   Use the `$localize` tagged message string to mark text strings in component code
+-   Используйте атрибут `i18n` для маркировки текста в шаблонах компонентов
 
-## Mark text in component template
+-   Используйте атрибут `i18n-` для маркировки текстовых строк атрибутов в шаблонах компонентов
 
-In a component template, the i18n metadata is the value of the `i18n` attribute.
+-   Используйте строку сообщения с меткой `$localize` для пометки текстовых строк в коде компонента
+
+## Пометить текст в шаблоне компонента
+
+В шаблоне компонента метаданные i18n являются значением атрибута `i18n`.
 
 <code-example format="html" language="html">
 
@@ -16,42 +18,40 @@ In a component template, the i18n metadata is the value of the `i18n` attribute.
 
 </code-example>
 
-Use the `i18n` attribute to mark a static text message in your component templates for translation.
-Place it on every element tag that contains fixed text you want to translate.
+Используйте атрибут `i18n`, чтобы пометить статический текст в шаблонах ваших компонентов для перевода. Поместите его на каждый тег элемента, который содержит фиксированный текст, который вы хотите перевести.
 
 <div class="alert is-helpful">
 
-The `i18n` attribute is a custom attribute that the Angular tools and compilers recognize.
+Атрибут `i18n` - это пользовательский атрибут, который распознается инструментами и компиляторами Angular.
 
 </div>
 
-### `i18n` example
+### `i18n` пример
 
-The following `<h1>` tag displays a simple English language greeting, "Hello i18n!".
+Следующий тег `<h1>` отображает простое приветствие на английском языке "Hello i18n!".
 
-<code-example header="src/app/app.component.html" path="i18n/doc-files/app.component.html" region="greeting"></code-example>
+<code-example header="src/app/app.component.html" path="i18n/doc-files/app.component.html" region="greeting"></code-example>.
 
-To mark the greeting for translation, add the `i18n` attribute to the `<h1>` tag.
+Чтобы пометить приветствие для перевода, добавьте атрибут `i18n` к тегу `<h1>`.
 
 <code-example header="src/app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute"></code-example>
 
-### Translate inline text without HTML element
+### Перевод встроенного текста без элемента HTML
 
-Use the `<ng-container>` element to associate a translation behavior for specific text without changing the way text is displayed.
+Используйте элемент `<ng-container>`, чтобы связать поведение перевода для определенного текста, не изменяя способ отображения текста.
 
 <div class="alert is-helpful">
 
-Each HTML element creates a new DOM element.
-To avoid creating a new DOM element, wrap the text in an `<ng-container>` element.
-The following example shows the `<ng-container>` element transformed into a non-displayed HTML comment.
+Каждый элемент HTML создает новый элемент DOM. Чтобы избежать создания нового элемента DOM, оберните текст в элемент `<ng-container>`.
+В следующем примере элемент `<ng-container>` преобразован в неотображаемый HTML-комментарий.
 
-<code-example path="i18n/src/app/app.component.html" region="i18n-ng-container"></code-example>
+<code-example path="i18n/src/app/app.component.html" region="i18n-ng-container"></code-example>.
 
 </div>
 
-## Mark element attributes for translations
+## Пометить атрибуты элементов для перевода
 
-In a component template, the i18n metadata is the value of the `i18n-{attribute_name}` attribute.
+В шаблоне компонента метаданные i18n являются значением атрибута `i18n-{имя_атрибута}`.
 
 <code-example format="html" language="html">
 
@@ -59,23 +59,21 @@ In a component template, the i18n metadata is the value of the `i18n-{attribute_
 
 </code-example>
 
-The attributes of HTML elements include text that should be translated along with the rest of the displayed text in the component template.
+Атрибуты элементов HTML включают текст, который должен быть переведен вместе с остальным отображаемым текстом в шаблоне компонента.
 
-Use `i18n-{attribute_name}` with any attribute of any element and replace `{attribute_name}` with the name of the attribute.
-Use the following syntax to assign a meaning, description, and custom ID.
+Используйте `i18n-{имя_атрибута}` с любым атрибутом любого элемента и замените `{имя_атрибута}` на имя атрибута. Используйте следующий синтаксис для присвоения значения, описания и пользовательского идентификатора.
 
 <!--todo: replace with code-example -->
 
 <code-example format="html" language="html">
 
-i18n-{attribute_name}="{meaning}|{description}&commat;&commat;{id}"
+i18n-{имя_атрибута}="{значение}|{описание}&commat;&commat;{id}"
 
 </code-example>
 
-### `i18n-title` example
+### `i18n-title` пример
 
-To translate the title of an image, review this example.
-The following example displays an image with a `title` attribute.
+Чтобы перевести название изображения, рассмотрите этот пример. В следующем примере отображается изображение с атрибутом `title`.
 
 <code-example header="src/app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-title"></code-example>
 
@@ -101,7 +99,7 @@ Use the [`$localize`][aioapilocalizeinitlocalize] tagged message string to mark 
 
 </code-example>
 
-The i18n metadata is surrounded by colon \(`:`\) characters and prepends the translation source text.
+Метаданные i18n окружены символами двоеточия \(`:`\) и дополняют исходный текст перевода.
 
 <!--todo: replace with code-example -->
 
@@ -111,9 +109,9 @@ The i18n metadata is surrounded by colon \(`:`\) characters and prepends the tra
 
 </code-example>
 
-### Include interpolated text
+### Включить интерполированный текст
 
-Include [interpolations][aioguideglossaryinterpolation] in a [`$localize`][aioapilocalizeinitlocalize] tagged message string.
+Включение [интерполяции][aioguideglossaryinterpolation] в строку сообщения с меткой [`$localize`][aioapilocalizeinitlocalize].
 
 <!--todo: replace with code-example -->
 
@@ -123,7 +121,7 @@ Include [interpolations][aioguideglossaryinterpolation] in a [`$localize`][aioap
 
 </code-example>
 
-### Name the interpolation placeholder
+### Имя интерполяционного держателя
 
 <code-example format="typescript" language="typescript">
 
@@ -131,7 +129,7 @@ Include [interpolations][aioguideglossaryinterpolation] in a [`$localize`][aioap
 
 </code-example>
 
-## i18n metadata for translation
+## i18n метаданные для перевода
 
 <!--todo: replace with code-example -->
 
@@ -141,93 +139,93 @@ Include [interpolations][aioguideglossaryinterpolation] in a [`$localize`][aioap
 
 </code-example>
 
-The following parameters provide context and additional information to reduce confusion for your translator.
+Следующие параметры обеспечивают контекст и дополнительную информацию, чтобы ваш переводчик не запутался.
 
-| Metadata parameter | Details                                                               |
-| :----------------- | :-------------------------------------------------------------------- |
-| Custom ID          | Provide a custom identifier                                           |
-| Description        | Provide additional information or context                             |
-| Meaning            | Provide the meaning or intent of the text within the specific context |
+| Параметр метаданных | Подробности | | :----------------- | :-------------------------------------------------------------------- |
 
-For additional information about custom IDs, see [Manage marked text with custom IDs][aioguidei18noptionalmanagemarkedtext].
+| Пользовательский идентификатор | Укажите пользовательский идентификатор |
 
-### Add helpful descriptions and meanings
+| Описание | Предоставьте дополнительную информацию или контекст |
 
-To translate a text message accurately, provide additional information or context for the translator.
+| Значение | Укажите смысл или намерение текста в конкретном контексте | |
 
-Add a _description_ of the text message as the value of the `i18n` attribute or [`$localize`][aioapilocalizeinitlocalize] tagged message string.
+Дополнительные сведения о пользовательских идентификаторах см. в разделе [Управление отмеченным текстом с помощью пользовательских идентификаторов][aioguidei18noptionalmanagemarkedtext].
 
-The following example shows the value of the `i18n` attribute.
+### Добавляйте полезные описания и значения
 
-<code-example header="src/app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-desc"></code-example>
+Чтобы точно перевести текстовое сообщение, предоставьте переводчику дополнительную информацию или контекст.
 
-The following example shows the value of the [`$localize`][aioapilocalizeinitlocalize] tagged message string with a description.
+Добавьте _описание_ текстового сообщения в качестве значения атрибута `i18n` или [`$localize`][aioapilocalizeinitlocalize] маркированной строки сообщения.
+
+В следующем примере показано значение атрибута `i18n`.
+
+<code-example header="src/app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-desc"></code-example>.
+
+Следующий пример показывает значение строки сообщения с меткой [`$localize`][aioapilocalizeinitlocalize] с описанием.
 
 <!--todo: replace with code-example -->
 
 <code-example format="typescript" language="typescript">
 
-\$localize `:An introduction header for this sample:Hello i18n!`;
+\$localize`:Вводный заголовок для этого образца:Hello i18n!`;
 
 </code-example>
 
-The translator may also need to know the meaning or intent of the text message within this particular application context, in order to translate it the same way as other text with the same meaning.
-Start the `i18n` attribute value with the _meaning_ and separate it from the _description_ with the `|` character: `{meaning}|{description}`.
+Переводчику также может понадобиться знать смысл или намерение текстового сообщения в данном конкретном контексте приложения, чтобы перевести его так же, как и другой текст с тем же смыслом. Начните значение атрибута `i18n` со значения _meaning_ и отделите его от _description_ символом `|`: `{meaning}|{description}`.
 
-#### `h1` example
+#### `h1` пример
 
-For example, you may want to specify that the `<h1>` tag is a site header that you need translated the same way, whether it is used as a header or referenced in another section of text.
+Например, вы можете указать, что тег `<h1>` является заголовком сайта, который нужно перевести одинаково, независимо от того, используется ли он в качестве заголовка или является ссылкой в другом разделе текста.
 
-The following example shows how to specify that the `<h1>` tag must be translated as a header or referenced elsewhere.
+В следующем примере показано, как указать, что тег `<h1>` должен быть переведен как заголовок или как ссылка в другом месте.
 
-<code-example header="src/app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-meaning"></code-example>
+<code-example header="src/app/app.component.html" path="i18n/doc-files/app.component.html" region="i18n-attribute-meaning"></code-example>.
 
-The result is any text marked with `site header`, as the _meaning_ is translated exactly the same way.
+В результате любой текст, помеченный `site header`, как _значение_ переводится точно так же.
 
-The following code example shows the value of the [`$localize`][aioapilocalizeinitlocalize] tagged message string with a meaning and a description.
+Следующий пример кода показывает значение строки сообщения с меткой [`$localize`][aioapilocalizeinitlocalize] со значением и описанием.
 
 <!--todo: replace with code-example -->
 
 <code-example format="typescript" language="typescript">
 
-\$localize `:site header|An introduction header for this sample:Hello i18n!`;
+\$localize `:site header|Вводный заголовок для этого образца:Hello i18n!`;
 
 </code-example>
 
 <div class="callout is-helpful">
 
 <header>
-<a name="how-meanings-control-text-extraction-and-merges"></a> How meanings control text extraction and merges
+ <a name="how-meanings-control-text-extraction-and-merges"></a> How meanings control text extraction and merges
 </header>
 
-The Angular extraction tool generates a translation unit entry for each `i18n` attribute in a template.
-The Angular extraction tool assigns each translation unit a unique ID based on the _meaning_ and _description_.
+Инструмент извлечения Angular генерирует запись единицы перевода для каждого атрибута `i18n` в шаблоне. Инструмент извлечения Angular присваивает каждой единице перевода уникальный идентификатор, основанный на _значении_ и _описании_.
 
 <div class="alert is-helpful">
 
-For more information about the Angular extraction tool, see [Work with translation files][aioguidei18ncommontranslationfiles].
+Подробнее об инструменте извлечения Angular см. в разделе [Работа с файлами переводов][aioguidei18ncommontranslationfiles].
 
 </div>
 
-The same text elements with different _meanings_ are extracted with different IDs.
-For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
+Одни и те же элементы текста с разными _значениями_ извлекаются с разными идентификаторами. Например, если для слова "right" используются следующие два определения в двух разных местах, это слово переводится по-разному и объединяется обратно в приложение в виде разных записей перевода.
 
--   `correct` as in "you are right"
--   `direction` as in "turn right"
+-   `корректный` в значении "вы правы"
 
-If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
+-   `направление` в значении "повернуть направо".
 
--   Same meaning or definition
--   Different descriptions
+Если одни и те же элементы текста удовлетворяют следующим условиям, элементы текста извлекаются только один раз и используют один и тот же идентификатор.
 
-That one translation entry is merged back into the application wherever the same text elements appear.
+-   Одинаковое значение или определение
+
+-   Разные описания
+
+Эта одна запись перевода объединяется обратно в приложение везде, где появляются одинаковые элементы текста.
 
 </div>
 
-## ICU expressions
+## Выражения ICU
 
-ICU expressions help you mark alternate text in component templates to meet conditions.
-An ICU expression includes a component property, an ICU clause, and the case statements surrounded by open curly brace \(`{`\) and close curly brace \(`}`\) characters.
+Выражения ICU помогают отметить альтернативный текст в шаблонах компонентов для выполнения условий. Выражение ICU включает свойство компонента, условие ICU и утверждения case, окруженные символами открытой фигурной скобки \(`{`\) и закрытой фигурной скобки \(`}`\).
 
 <!--todo: replace with code-example -->
 
@@ -237,27 +235,27 @@ An ICU expression includes a component property, an ICU clause, and the case sta
 
 </code-example>
 
-The component property defines the variable
-An ICU clause defines the type of conditional text.
+Свойство компонента определяет переменную В ICU-клаузе определяется тип условного текста.
 
-| ICU clause                                                              | Details                                                             |
-| :---------------------------------------------------------------------- | :------------------------------------------------------------------ |
-| [`plural`][aioguidei18ncommonpreparemarkplurals]                        | Mark the use of plural numbers                                      |
-| [`select`][aioguidei18ncommonpreparemarkalternatesandnestedexpressions] | Mark choices for alternate text based on your defined string values |
+| ICU clause | Details | | | :---------------------------------------------------------------------- | :------------------------------------------------------------------ | |
 
-To simplify translation, use International Components for Unicode clauses \(ICU clauses\) with regular expressions.
+| [`plural`][aioguidei18ncommonpreparemarkplurals] | Отметить использование множественного числа |
+
+| [`select`][aioguidei18ncommonpreparemarkalternatesandnestedexpressions] | Отметьте варианты альтернативного текста на основе определенных вами строковых значений |
+
+Чтобы упростить перевод, используйте Международные компоненты для Юникода \(ICU clauses\) с регулярными выражениями.
 
 <div class="alert is-helpful">
 
-The ICU clauses adhere to the [ICU Message Format][githubunicodeorgicuuserguideformatparsemessages] specified in the [CLDR pluralization rules][unicodecldrindexcldrspecpluralrules].
+Клаузулы ICU придерживаются [формата сообщений ICU][githubunicodeorgicuuserguideformatparsemessages], указанного в [правилах плюрализации CLDR][unicodecldrindexcldrspecpluralrules].
 
 </div>
 
-### Mark plurals
+### Обозначьте множественное число
 
-Different languages have different pluralization rules that increase the difficulty of translation.
-Because other locales express cardinality differently, you may need to set pluralization categories that do not align with English.
-Use the `plural` clause to mark expressions that may not be meaningful if translated word-for-word.
+В разных языках действуют разные правила использования множественного числа, что увеличивает сложность перевода. Поскольку в других языках по-разному выражается кардинальность, вам может понадобиться установить категории множественного числа, которые не совпадают с английскими.
+
+Используйте предложение `plural`, чтобы отметить выражения, которые могут не иметь смысла при дословном переводе.
 
 <!--todo: replace with code-example -->
 
@@ -267,7 +265,7 @@ Use the `plural` clause to mark expressions that may not be meaningful if transl
 
 </code-example>
 
-After the pluralization category, enter the default text \(English\) surrounded by open curly brace \(`{`\) and close curly brace \(`}`\) characters.
+После категории множественного числа введите текст по умолчанию \(English\), окруженный символами открытой фигурной скобки \(`{`\) и закрытой фигурной скобки \(`}`\).
 
 <!--todo: replace with code-example -->
 
@@ -279,14 +277,19 @@ pluralization_category { }
 
 The following pluralization categories are available for English and may change based on the locale.
 
-| Pluralization category | Details                    | Example                    |
-| :--------------------- | :------------------------- | :------------------------- |
-| `zero`                 | Quantity is zero           | `=0 { }` <br /> `zero { }` |
-| `one`                  | Quantity is 1              | `=1 { }` <br /> `one { }`  |
-| `two`                  | Quantity is 2              | `=2 { }` <br /> `two { }`  |
-| `few`                  | Quantity is 2 or more      | `few { }`                  |
-| `many`                 | Quantity is a large number | `many { }`                 |
-| `other`                | The default quantity       | `other { }`                |
+| Pluralization category | Details | Example | | :--------------------- | :------------------------- | :------------------------- |
+
+| `zero` | Quantity is zero | `=0 { }` <br /> `zero { }` |
+
+| `one` | Quantity is 1 | `=1 { }` <br /> `one { }` |
+
+| `two` | Quantity is 2 | `=2 { }` <br /> `two { }` |
+
+| `few` | Quantity is 2 or more | `few { }` |
+
+| `many` | Quantity is a large number | `many { }` |
+
+| `other` | The default quantity | `other { }` |
 
 If none of the pluralization categories match, Angular uses `other` to match the standard fallback for a missing category.
 
@@ -294,13 +297,13 @@ If none of the pluralization categories match, Angular uses `other` to match the
 
 <code-example>
 
-other { default_quantity }
+другие { default_quantity }
 
 </code-example>
 
 <div class="alert is-helpful">
 
-For more information about pluralization categories, see [Choosing plural category names][unicodecldrindexcldrspecpluralrulestocchoosingpluralcategorynames] in the [CLDR - Unicode Common Locale Data Repository][unicodecldrmain].
+Для получения дополнительной информации о категориях множественного числа см. раздел [Выбор имен категорий множественного числа][unicodecldrindexcldrspecpluralrulestocchoosingpluralcategorynames] в [CLDR - Unicode Common Locale Data Repository][unicodecldrmain].
 
 </div>
 
@@ -310,21 +313,20 @@ For more information about pluralization categories, see [Choosing plural catego
 
 <header>Background: Locales may not support some pluralization categories</header>
 
-Many locales don't support some of the pluralization categories.
-The default locale \(`en-US`\) uses a very simple `plural()` function that doesn't support the `few` pluralization category.
-Another locale with a simple `plural()` function is `es`.
-The following code example shows the [en-US `plural()`][githubangularangularblobecffc3557fe1bff9718c01277498e877ca44588dpackagescoresrci18nlocaleentsl14l18] function.
+Многие локали не поддерживают некоторые категории множественного числа. Локаль по умолчанию \(`en-US`\) использует очень простую функцию `plural()`, которая не поддерживает категорию множественного числа `few`.
+Другой локалью с простой функцией `plural()` является `es`.
 
-<code-example path="i18n/doc-files/locale_plural_function.ts" class="no-box" hideCopy></code-example>
+В следующем примере кода показана функция [en-US `plural()`][githubangularangularblobecffc3557fe1bff9718c01277498e877ca44588dpackagescoresrci18nlocaleentsl14l18].
 
-The `plural()` function only returns 1 \(`one`\) or 5 \(`other`\).
-The `few` category never matches.
+<code-example path="i18n/doc-files/locale_plural_function.ts" class="no-box" hideCopy></code-example>.
+
+Функция `plural()` возвращает только 1 \(`один`\) или 5 \(`другой`\). Категория `несколько` никогда не подходит.
 
 </div>
 
-#### `minutes` example
+#### `минуты` пример
 
-If you want to display the following phrase in English, where `x` is a number.
+Если вы хотите отобразить следующую фразу на английском языке, где `x` - число.
 
 <!--todo: replace output code-example with screen capture image --->
 
@@ -381,9 +383,9 @@ The `select` clause marks choices for alternate text based on your defined strin
 
 </code-example>
 
-Translate all of the alternates to display alternate text based on the value of a variable.
+Переведите все альтернативы для отображения альтернативного текста на основе значения переменной.
 
-After the selection category, enter the text \(English\) surrounded by open curly brace \(`{`\) and close curly brace \(`}`\) characters.
+После категории выбора введите текст \(English\), окруженный символами открытой фигурной скобки \(`{`\) и закрытой фигурной скобки \(`}`\).
 
 <!--todo: replace with code-example -->
 
@@ -393,9 +395,8 @@ selection_category { text }
 
 </code-example>
 
-Different locales have different grammatical constructions that increase the difficulty of translation.
-Use HTML markup.
-If none of the selection categories match, Angular uses `other` to match the standard fallback for a missing category.
+В разных странах существуют разные грамматические конструкции, что увеличивает сложность перевода. Используйте HTML-разметку.
+Если ни одна из категорий выбора не совпадает, Angular использует `other` для стандартного возврата к отсутствующей категории.
 
 <!--todo: replace with code-example -->
 
@@ -405,9 +406,9 @@ other { default_value }
 
 </code-example>
 
-#### `gender` example
+#### `gender` пример
 
-If you want to display the following phrase in English.
+Если вы хотите отобразить следующую фразу на английском языке.
 
 <!--todo: replace output code-example with screen capture image --->
 
