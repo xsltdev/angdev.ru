@@ -1,20 +1,18 @@
-# Getting started with standalone components
+# Начало работы с автономными компонентами
 
-**Standalone components** provide a simplified way to build Angular applications. Standalone components, directives, and pipes aim to streamline the authoring experience by reducing the need for `NgModule`s. Existing applications can optionally and incrementally adopt the new standalone style without any breaking changes.
+**Стандартные компоненты** обеспечивают упрощенный способ создания приложений Angular. Автономные компоненты, директивы и трубы призваны упростить процесс создания приложений за счет сокращения необходимости использования `NgModule`. Существующие приложения могут по желанию и постепенно переходить на новый автономный стиль без каких-либо ломающих изменений.
 
-## Creating standalone components
+## Создание автономных компонентов
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/x5PZwb4XurU" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-### The `standalone` flag and component `imports`
+### Флаг `standalone` и компонентные `импорты`.
 
-Components, directives, and pipes can now be marked as `standalone: true`. Angular classes marked as standalone do not need to be declared in an `NgModule` (the Angular compiler will report an error if you try).
+Компоненты, директивы и трубы теперь могут быть помечены как `standalone: true`. Классы Angular, помеченные как автономные, не нужно объявлять в `NgModule` (компилятор Angular сообщит об ошибке, если вы попытаетесь это сделать).
 
-Standalone components specify their dependencies directly instead of getting them through `NgModule`s. For example, if `PhotoGalleryComponent` is a standalone component, it can directly import another standalone component `ImageGridComponent`:
+Автономные компоненты указывают свои зависимости напрямую, а не получают их через `NgModule`. Например, если `PhotoGalleryComponent` является автономным компонентом, он может напрямую импортировать другой автономный компонент `ImageGridComponent`:
 
-
-```ts
-@Component({
+```ts @Component({
   standalone: true,
   selector: 'photo-gallery',
   imports: [ImageGridComponent],
@@ -27,14 +25,13 @@ export class PhotoGalleryComponent {
 }
 ```
 
-`imports` can also be used to reference standalone directives and pipes. In this way, standalone components can be written without the need to create an `NgModule` to manage template dependencies.
+`imports` можно также использовать для ссылки на отдельные директивы и трубы. Таким образом, автономные компоненты могут быть написаны без необходимости создания `NgModule` для управления зависимостями шаблонов.
 
-### Using existing NgModules in a standalone component
+### Использование существующих NgModules в автономном компоненте
 
-When writing a standalone component, you may want to use other components, directives, or pipes in the component's template. Some of those dependencies might not be marked as standalone, but instead declared and exported by an existing `NgModule`. In this case, you can import the `NgModule` directly into the standalone component:
+При написании автономного компонента вы можете захотеть использовать другие компоненты, директивы или трубы в шаблоне компонента. Некоторые из этих зависимостей могут быть не помечены как самостоятельные, а вместо этого объявлены и экспортированы существующим `NgModule`. В этом случае вы можете импортировать `NgModule` непосредственно в отдельный компонент:
 
-```ts
-@Component({
+```ts @Component({
   standalone: true,
   selector: 'photo-gallery',
   // an existing module is imported directly into a standalone component
@@ -49,41 +46,38 @@ export class PhotoGalleryComponent {
 }
 ```
 
-You can use standalone components with existing `NgModule`-based libraries or dependencies in your template. Standalone components can take full advantage of the existing ecosystem of Angular libraries.
+Вы можете использовать автономные компоненты с существующими библиотеками на основе `NgModule` или зависимостями в вашем шаблоне. Автономные компоненты могут использовать все преимущества существующей экосистемы библиотек Angular.
 
-## Using standalone components in NgModule-based applications
+## Использование автономных компонентов в приложениях на основе NgModule
 
-Standalone components can also be imported into existing NgModules-based contexts. This allows existing applications (which are using NgModules today) to incrementally adopt the new, standalone style of component.
+Автономные компоненты также могут быть импортированы в существующие контексты на основе NgModules. Это позволяет существующим приложениям (которые используют NgModules сегодня) постепенно переходить на новый, автономный стиль компонента.
 
-You can import a standalone component (or directive, or pipe) just like you would an `NgModule` - using `NgModule.imports`:
+Вы можете импортировать отдельный компонент (или директиву, или трубу) точно так же, как и `NgModule` - используя `NgModule.imports`:
 
-```ts
-@NgModule({
+```ts @NgModule({
   declarations: [AlbumComponent],
-  exports: [AlbumComponent], 
+  exports: [AlbumComponent],
   imports: [PhotoGalleryComponent],
 })
 export class AlbumModule {}
 ```
 
-## Bootstrapping an application using a standalone component
+## Загрузка приложения с помощью отдельного компонента
 
-An Angular application can be bootstrapped without any `NgModule` by using a standalone component as the application's root component. This is done using the `bootstrapApplication` API:
+Приложение Angular может быть загружено без какого-либо `NgModule`, используя отдельный компонент в качестве корневого компонента приложения. Для этого используется API `bootstrapApplication`:
 
-```ts
-// in the main.ts file
-import {bootstrapApplication} from '@angular/platform-browser';
-import {PhotoAppComponent} from './app/photo.app.component';
+```ts // in the main.ts file
+import { bootstrapApplication } from '@angular/platform-browser';
+import { PhotoAppComponent } from './app/photo.app.component';
 
 bootstrapApplication(PhotoAppComponent);
 ```
 
-### Configuring dependency injection
+### Настройка внедрения зависимостей
 
-When bootstrapping an application, often you want to configure Angular’s dependency injection and provide configuration values or services for use throughout the application. You can pass these as providers to `bootstrapApplication`:
+При загрузке приложения часто требуется настроить внедрение зависимостей Angular и предоставить значения конфигурации или сервисы для использования во всем приложении. Вы можете передать их в качестве провайдеров в `bootstrapApplication`:
 
-```ts
-bootstrapApplication(PhotoAppComponent, {
+```ts bootstrapApplication(PhotoAppComponent, {
   providers: [
     {provide: BACKEND_URL, useValue: 'https://photoapp.looknongmodules.com/api'},
     // ...
@@ -91,10 +85,9 @@ bootstrapApplication(PhotoAppComponent, {
 });
 ```
 
-The standalone bootstrap operation is based on explicitly configuring a list of `Provider`s for dependency injection. In Angular, `provide`-prefixed functions can be used to configure different systems without needing to import NgModules. For example, `provideRouter` is used in place of `RouterModule.forRoot` to configure the router:
+Автономная работа bootstrap основана на явной настройке списка `Provider` для инъекции зависимостей. В Angular функции с префиксом `provide` можно использовать для настройки различных систем без необходимости импортировать NgModules. Например, `provideRouter` используется вместо `RouterModule.forRoot` для настройки маршрутизатора:
 
-```ts
-bootstrapApplication(PhotoAppComponent, {
+```ts bootstrapApplication(PhotoAppComponent, {
   providers: [
     {provide: BACKEND_URL, useValue: 'https://photoapp.looknongmodules.com/api'},
     provideRouter([/* app routes */]),
@@ -103,84 +96,89 @@ bootstrapApplication(PhotoAppComponent, {
 });
 ```
 
-Many third party libraries have also been updated to support this `provide`-function configuration pattern. If a library only offers an NgModule API for its DI configuration, you can use the `importProvidersFrom` utility to still use it with `bootstrapApplication` and other standalone contexts:
+Многие сторонние библиотеки также были обновлены для поддержки этого шаблона конфигурации `provide`-функции. Если библиотека предлагает только API NgModule для конфигурации DI, вы можете использовать утилиту `importProvidersFrom`, чтобы по-прежнему использовать ее в `bootstrapApplication` и других автономных контекстах:
 
-```ts
-import {LibraryModule} from 'ngmodule-based-library';
-
+```ts import {LibraryModule} from 'ngmodule-based-library';
 bootstrapApplication(PhotoAppComponent, {
-  providers: [
-    {provide: BACKEND_URL, useValue: 'https://photoapp.looknongmodules.com/api'},
-    importProvidersFrom(
-      LibraryModule.forRoot()
-    ),
-  ]
+    providers: [
+        {
+            provide: BACKEND_URL,
+            useValue:
+                'https://photoapp.looknongmodules.com/api',
+        },
+        importProvidersFrom(LibraryModule.forRoot()),
+    ],
 });
 ```
 
-## Routing and lazy-loading
+## Маршрутизация и ленивая загрузка
 
-The router APIs were updated and simplified to take advantage of the standalone components: an `NgModule` is no longer required in many common, lazy-loading scenarios.
+API маршрутизатора были обновлены и упрощены, чтобы использовать преимущества автономных компонентов: `NgModule` больше не требуется во многих распространенных сценариях ленивой загрузки.
 
-### Lazy loading a standalone component
+### Ленивая загрузка отдельного компонента
 
-Any route can lazily load its routed, standalone component by using `loadComponent`:
+Любой маршрут может лениво загрузить свой маршрутизируемый отдельный компонент, используя `loadComponent`:
 
-```ts
-export const ROUTES: Route[] = [
+```ts export const ROUTES: Route[] = [
   {path: 'admin', loadComponent: () => import('./admin/panel.component').then(mod => mod.AdminPanelComponent)},
   // ...
 ];
 ```
 
-This works as long as the loaded component is standalone.
+Это работает до тех пор, пока загружаемый компонент является автономным.
 
-### Lazy loading many routes at once
+### Ленивая загрузка множества маршрутов одновременно
 
-The `loadChildren` operation now supports loading a new set of child `Route`s without needing to write a lazy loaded `NgModule` that imports `RouterModule.forChild` to declare the routes. This works when every route loaded this way is using a standalone component.
+Операция `loadChildren` теперь поддерживает загрузку нового набора дочерних `маршрутов` без необходимости писать лениво загружаемый `NgModule`, который импортирует `RouterModule.forChild` для объявления маршрутов. Это работает, когда каждый маршрут, загруженный таким образом, использует отдельный компонент.
 
-```ts
-// In the main application:
+```ts // In the main application:
 export const ROUTES: Route[] = [
-  {path: 'admin', loadChildren: () => import('./admin/routes').then(mod => mod.ADMIN_ROUTES)},
-  // ...
+    {
+        path: 'admin',
+        loadChildren: () =>
+            import('./admin/routes').then(
+                (mod) => mod.ADMIN_ROUTES
+            ),
+    },
+    // ...
 ];
 
 // In admin/routes.ts:
 export const ADMIN_ROUTES: Route[] = [
-  {path: 'home', component: AdminHomeComponent},
-  {path: 'users', component: AdminUsersComponent},
-  // ...
+    { path: 'home', component: AdminHomeComponent },
+    { path: 'users', component: AdminUsersComponent },
+    // ...
 ];
 ```
 
-### Lazy loading and default exports
+### Ленивая загрузка и экспорты по умолчанию
 
-When using `loadChildren` and `loadComponent`, the router understands and automatically unwraps dynamic `import()` calls with `default` exports. You can take advantage of this to skip the `.then()` for such lazy loading operations.
+При использовании `loadChildren` и `loadComponent` маршрутизатор понимает и автоматически разворачивает динамические вызовы `import()` с `default` экспортом. Вы можете воспользоваться этим, чтобы пропустить `.then()` для таких операций ленивой загрузки.
 
-```ts
-// In the main application:
+```ts // In the main application:
 export const ROUTES: Route[] = [
-  {path: 'admin', loadChildren: () => import('./admin/routes')},
-  // ...
+    {
+        path: 'admin',
+        loadChildren: () => import('./admin/routes'),
+    },
+    // ...
 ];
 
 // In admin/routes.ts:
 export default [
-  {path: 'home', component: AdminHomeComponent},
-  {path: 'users', component: AdminUsersComponent},
-  // ...
+    { path: 'home', component: AdminHomeComponent },
+    { path: 'users', component: AdminUsersComponent },
+    // ...
 ] as Route[];
 ```
 
-### Providing services to a subset of routes
+### Предоставление услуг подмножеству маршрутов
 
-The lazy loading API for `NgModule`s (`loadChildren`) creates a new "module" injector when it loads the lazily loaded children of a route. This feature was often useful to provide services only to a subset of routes in the application. For example, if all routes under `/admin` were scoped using a `loadChildren` boundary, then admin-only services could be provided only to those routes. Doing this required using the `loadChildren` API, even if lazy loading of the routes in question was unnecessary.
+API ленивой загрузки для `NgModule` (`loadChildren`) создает новый инжектор "модуля", когда загружает лениво загруженные дочерние элементы маршрута. Эта возможность часто была полезна для предоставления услуг только подмножеству маршрутов в приложении. Например, если все маршруты под `/admin` были скопированы с помощью границы `loadChildren`, то сервисы только для администраторов могли быть предоставлены только этим маршрутам. Для этого требовалось использовать API `loadChildren`, даже если ленивая загрузка соответствующих маршрутов не требовалась.
 
-The Router now supports explicitly specifying additional `providers` on a `Route`, which allows this same scoping without the need for either lazy loading or `NgModule`s. For example, scoped services within an `/admin` route structure would look like:
+Теперь Router поддерживает явное указание дополнительных `провайдеров` в `маршруте`, что позволяет сделать такую же привязку без ленивой загрузки или `NgModule`. Например, скопированные сервисы в структуре маршрута `/admin` будут выглядеть следующим образом:
 
-```ts
-export const ROUTES: Route[] = [
+```ts export const ROUTES: Route[] = [
   {
     path: 'admin',
     providers: [
@@ -197,10 +195,9 @@ export const ROUTES: Route[] = [
 ];
 ```
 
-It's also possible to combine `providers` with `loadChildren` of additional routing configuration, to achieve the same effect of lazy loading an `NgModule` with additional routes and route-level providers. This example configures the same providers/child routes as above, but behind a lazy loaded boundary:
+Также можно комбинировать `providers` с `loadChildren` дополнительной конфигурации маршрутизации, чтобы достичь того же эффекта ленивой загрузки `NgModule` с дополнительными маршрутами и провайдерами на уровне маршрутов. В этом примере настраиваются те же провайдеры/детские маршруты, что и выше, но за границей ленивой загрузки:
 
-```ts
-// Main application:
+```ts // Main application:
 export const ROUTES: Route[] = {
   // Lazy-load the admin routes.
   {path: 'admin', loadChildren: () => import('./admin/routes').then(mod => mod.ADMIN_ROUTES)},
@@ -222,49 +219,48 @@ export const ADMIN_ROUTES: Route[] = [{
 }];
 ```
 
-Note the use of an empty-path route to host `providers` that are shared among all the child routes.
+Обратите внимание на использование маршрута с пустым путем для размещения `провайдеров`, которые являются общими для всех дочерних маршрутов.
 
-`importProvidersFrom` can be used to import existing NgModule-based DI configuration into route `providers` as well.
+`importProvidersFrom` можно использовать для импорта существующей конфигурации DI на основе NgModule в маршрутные `провайдеры`.
 
-## Advanced topics
+## Дополнительные темы
 
-This section goes into more details that are relevant only to more advanced usage patterns. You can safely skip this section when learning about standalone components, directives, and pipes for the first time. 
+В этом разделе рассматриваются детали, которые относятся только к более продвинутым моделям использования. Вы можете смело пропустить этот раздел при первом знакомстве с автономными компонентами, директивами и трубами.
 
-### Standalone components for library authors
+### Автономные компоненты для авторов библиотек
 
-Standalone components, directives, and pipes can be exported from `NgModule`s that import them:
+Автономные компоненты, директивы и трубы могут быть экспортированы из `NgModule`, которые их импортируют:
 
-```ts
-@NgModule({
+```ts @NgModule({
   imports: [ImageCarouselComponent, ImageSlideComponent],
   exports: [ImageCarouselComponent, ImageSlideComponent],
 })
 export class CarouselModule {}
 ```
 
-This pattern is useful for Angular libraries that publish a set of cooperating directives. In the above example, both the `ImageCarouselComponent` and `ImageSlideComponent` need to be present in a template to build up one logical "carousel widget". 
+Этот шаблон полезен для библиотек Angular, которые публикуют набор взаимодействующих директив. В приведенном выше примере в шаблоне должны присутствовать `ImageCarouselComponent` и `ImageSlideComponent`, чтобы построить один логический "виджет карусели".
 
-As an alternative to publishing a `NgModule`, library authors might want to export an array of cooperating directives:
+В качестве альтернативы публикации `NgModule`, авторы библиотек могут захотеть экспортировать массив взаимодействующих директив:
 
-```ts
-export const CAROUSEL_DIRECTIVES = [ImageCarouselComponent, ImageSlideComponent] as const;
+```ts export const CAROUSEL_DIRECTIVES = [ImageCarouselComponent, ImageSlideComponent] as const;
+
 ```
 
-Such an array could be imported by applications using `NgModule`s and added to the `@NgModule.imports`. Please note the presence of the TypeScript’s `as const` construct: it gives Angular compiler additional information required for proper compilation and is a recommended practice (as it makes the exported array immutable from the TypeScript point of view).
+Такой массив может быть импортирован приложениями, использующими `NgModule`, и добавлен в `@NgModule.imports`. Обратите внимание на наличие конструкции `as const` в TypeScript: она предоставляет компилятору Angular дополнительную информацию, необходимую для правильной компиляции, и является рекомендуемой практикой (поскольку делает экспортируемый массив неизменяемым с точки зрения TypeScript).
 
-### Dependency injection and injectors hierarchy
+### Инъекция зависимостей и иерархия инжекторов
 
-Angular applications can configure dependency injection by specifying a set of available providers. In a typical application, there are two different injector types:
+В приложениях Angular можно настроить инъекцию зависимостей, указав набор доступных провайдеров. В типичном приложении существует два различных типа инжекторов:
 
-*   **module injector** with providers configured in `@NgModule.providers` or `@Injectable({providedIn: "..."})`. Those application-wide providers are visible to all components in as well as to other services configured in a module injector.
-*   **node injectors** configured in `@Directive.providers` / `@Component.providers` or `@Component.viewProviders`. Those providers are visible to a given component and all its children only.
+-   **модульный инжектор** с провайдерами, настроенными в `@NgModule.providers` или `@Injectable({providedIn: "..."})`. Эти общеприкладные провайдеры видны всем компонентам, а также другим сервисам, настроенным в инжекторе модуля.
 
-#### Environment injectors
+-   **инжекторы узлов**, настроенные в `@Directive.providers` / `@Component.providers` или `@Component.viewProviders`. Эти провайдеры видны только для данного компонента и всех его дочерних компонентов.
 
-Making `NgModule`s optional will require new ways of configuring "module" injectors with application-wide providers (for example, [HttpClient](/api/common/http/HttpClient)). In the standalone application (one created with `bootstrapApplication`), “module” providers can be configured during the bootstrap process, in the `providers` option: 
+#### Инжекторы среды
 
-```ts
-bootstrapApplication(PhotoAppComponent, {
+Сделать `NgModule` необязательным потребует новых способов конфигурирования инжекторов "модуля" с провайдерами для всего приложения (например, [HttpClient](/api/common/http/HttpClient)). В автономном приложении (созданном с помощью `bootstrapApplication`) провайдеры "модуля" могут быть настроены в процессе бутстрапа, в опции `providers`:
+
+```ts bootstrapApplication(PhotoAppComponent, {
   providers: [
     {provide: BACKEND_URL, useValue: 'https://photoapp.looknongmodules.com/api'},
     {provide: PhotosService, useClass: PhotosService},
@@ -273,43 +269,50 @@ bootstrapApplication(PhotoAppComponent, {
 });
 ```
 
-The new bootstrap API gives us back the means of configuring “module injectors” without using `NgModule`s. In this sense, the “module” part of the name is no longer relevant and we’ve decided to introduce a new term: “environment injectors”. 
+Новый API bootstrap вернул нам возможность конфигурировать "инжекторы модулей" без использования `NgModule`. В этом смысле "модульная" часть названия больше не актуальна, и мы решили ввести новый термин: "инжекторы окружения".
 
-Environment injectors can be configured using one of the following:
+Инжекторы окружения могут быть настроены с помощью одного из следующих способов:
 
-*   `@NgModule.providers` (in applications bootstrapping through an `NgModule`);
-*   `@Injectable({provideIn: "..."})`(in both the NgModule-based and the “standalone” applications);
-*   `providers` option in the `bootstrapApplication` call (in fully “standalone” applications);
-*   `providers` field in a `Route` configuration.
+-   `@NgModule.providers` (в приложениях, загружающихся через `NgModule`);
 
-Angular v14 introduces a new TypeScript type `EnvironmentInjector` to represent this new naming. The accompanying `createEnvironmentInjector` API makes it possible to create environment injectors programmatically: 
+-   `@Injectable({provideIn: "..."})` (как в приложениях на основе NgModule, так и в "автономных" приложениях);
 
-```ts
-import {createEnvironmentInjector} from '@angular/core';
+-   опция `providers` в вызове `bootstrapApplication` (в полностью "автономных" приложениях);
+
+-   поле `providers` в конфигурации `Route`.
+
+Angular v14 вводит новый тип TypeScript `EnvironmentInjector` для представления этого нового именования. Сопутствующий API `createEnvironmentInjector` позволяет создавать инжекторы окружения программно:
+
+```ts import {createEnvironmentInjector} from '@angular/core';
 
 const parentInjector = … // existing environment injector
 const childInjector = createEnvironmentInjector([{provide: PhotosService, useClass: CustomPhotosService}], parentInjector);
 ```
 
-Environment injectors have one additional capability: they can execute initialization logic when an environment injector gets created (similar to the `NgModule` constructors that get executed when a module injector is created):
+Инжекторы среды имеют одну дополнительную возможность: они могут выполнять логику инициализации при создании инжектора среды (аналогично конструкторам `NgModule`, которые выполняются при создании инжектора модуля):
 
-```ts
-import {createEnvironmentInjector, ENVIRONMENT_INITIALIZER} from '@angular/core';
-
+```ts import {createEnvironmentInjector, ENVIRONMENT_INITIALIZER} from '@angular/core';
 createEnvironmentInjector([
-{provide: PhotosService, useClass: CustomPhotosService},
-{provide: ENVIRONMENT_INITIALIZER, useValue: () => {
-        console.log("This function runs when this EnvironmentInjector gets created");
-}}
+    {
+        provide: PhotosService,
+        useClass: CustomPhotosService,
+    },
+    {
+        provide: ENVIRONMENT_INITIALIZER,
+        useValue: () => {
+            console.log(
+                'This function runs when this EnvironmentInjector gets created'
+            );
+        },
+    },
 ]);
 ```
 
-#### Standalone injectors
+#### Автономные инжекторы
 
-In reality, the dependency injectors hierarchy is slightly more elaborate in applications using standalone components. Let’s consider the following example:
+В действительности иерархия инжекторов зависимостей в приложениях, использующих автономные компоненты, несколько более сложна. Рассмотрим следующий пример:
 
-```ts
-// an existing "datepicker" component with an NgModule
+```ts // an existing "datepicker" component with an NgModule
 @Component({
         selector: 'datepicker',
         template: '...',
@@ -336,25 +339,24 @@ class DateModalComponent {
 }
 ```
 
-In the above example, the component `DateModalComponent` is standalone - it can be consumed directly and has no NgModule which needs to be imported in order to use it. However, `DateModalComponent` has a dependency, the `DatePickerComponent,` which is imported via its NgModule (the `DatePickerModule`). This NgModule may declare providers (in this case: `CalendarService`) which are required for the `DatePickerComponent` to function correctly.
+В приведенном выше примере компонент `DateModalComponent` является автономным - он может быть использован напрямую и не имеет NgModule, который должен быть импортирован для его использования. Однако `DateModalComponent` имеет зависимость, `DatePickerComponent`, которая импортируется через свой NgModule (`DatePickerModule`). Этот NgModule может объявлять провайдеров (в данном случае: `CalendarService`), которые необходимы для правильной работы `DatePickerComponent`.
 
-When Angular creates a standalone component, it needs to know that the current injector has all of the necessary services for the standalone component's dependencies, including those based on NgModules. To guarantee that, in some cases Angular will create a new "standalone injector" as a child of the current environment injector. Today, this happens for all bootstrapped standalone components: it will be a child of the root environment injector. The same rule applies to the dynamically created (for example, by the router or the `ViewContainerRef` API) standalone components. 
+Когда Angular создает отдельный компонент, ему необходимо знать, что текущий инжектор имеет все необходимые сервисы для зависимостей отдельного компонента, включая те, которые основаны на NgModules. Чтобы гарантировать это, в некоторых случаях Angular создает новый "автономный инжектор" в качестве дочернего инжектора текущего окружения. Сегодня это происходит для всех загружаемых автономных компонентов: они будут дочерними по отношению к инжектору корневого окружения. Это же правило применяется к динамически создаваемым (например, маршрутизатором или API `ViewContainerRef`) автономным компонентам.
 
-A separate standalone injector is created to ensure that providers imported by a standalone component are “isolated” from the rest of the application. This lets us think of standalone components as truly self-contained pieces that can’t “leak” their implementation details to the rest of the application.
+Отдельный инжектор автономного компонента создается для того, чтобы провайдеры, импортируемые автономным компонентом, были "изолированы" от остальной части приложения. Это позволяет нам рассматривать автономные компоненты как действительно самодостаточные части, которые не могут "сливать" детали своей реализации остальному приложению.
 
-#### Resolve circular dependencies with a forward class reference
+#### Разрешение циклических зависимостей с помощью прямой ссылки на класс
 
-The order of class declaration matters in TypeScript. You can't refer directly to a class until it's been defined.
+Порядок объявления классов имеет значение в TypeScript. Вы не можете напрямую ссылаться на класс, пока он не определен.
 
-This isn't usually a problem but sometimes circular references are unavoidable. For example, when class 'A' refers to class 'B' and 'B' refers to 'A'. One of them has to be defined first.
+Обычно это не является проблемой, но иногда круговые ссылки неизбежны. Например, когда класс 'A' ссылается на класс 'B', а 'B' ссылается на 'A'. Один из них должен быть определен первым.
 
-The Angular `forwardRef()` function creates an indirect reference that Angular can resolve later. 
+Функция Angular `forwardRef()` создает косвенную ссылку, которую Angular может разрешить позже.
 
-For example, this situation happens when a standalone parent component imports a standalone child component and vice-versa. You can resolve this circular dependency issue by using the `forwardRef` function.
+Например, такая ситуация возникает, когда отдельный родительский компонент импортирует отдельный дочерний компонент и наоборот. Вы можете решить эту проблему круговой зависимости с помощью функции `forwardRef`.
 
-```ts
-@Component({
-  standalone: true, 
+```ts @Component({
+  standalone: true,
   imports: [ChildComponent],
   selector: 'app-parent',
   template: `<app-child [hideParent]="hideParent"></app-child>`,
@@ -377,6 +379,6 @@ export class ChildComponent {
 
 <div class="alert is-important">
 
-This kind of imports may result in an infinite recursion during component instantiation. Make sure that this recursion has an exit condition that stops it at some point.
+Такой импорт может привести к бесконечной рекурсии во время инстанцирования компонента. Убедитесь, что эта рекурсия имеет условие выхода, которое останавливает ее в определенный момент.
 
 </div>
