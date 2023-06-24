@@ -1,22 +1,24 @@
-# Angular Internationalization
+# Интернационализация Angular
 
 {@searchKeywords i18n}
 
-_Internationalization_, sometimes referenced as i18n, is the process of designing and preparing your project for use in different locales around the world.
-_Localization_ is the process of building versions of your project for different locales.
-The localization process includes the following actions.
+_Интернационализация_, иногда называемая i18n, - это процесс разработки и подготовки проекта для использования в различных локализациях по всему миру. Локализация\_ - это процесс создания версий вашего проекта для разных локализаций.
 
--   Extract text for translation into different languages
--   Format data for a specific locale
+Процесс локализации включает следующие действия.
 
-A _locale_ identifies a region in which people speak a particular language or language variant.
-Possible regions includes countries and geographical regions.
-A locale determines the formatting and parsing of the following details.
+-   Извлечение текста для перевода на разные языки
 
--   Measurement units including date and time, numbers, and currencies
--   Translated names including time zones, languages, and countries
+-   Форматирование данных для конкретной локали
 
-For a quick introduction to localization and internationalization watch this video:
+Локаль\_ определяет регион, в котором люди говорят на определенном языке или варианте языка. Возможные регионы включают страны и географические регионы.
+
+Локаль определяет форматирование и разбор следующих данных.
+
+-   Единицы измерения, включая дату и время, числа и валюты.
+
+-   Переведенные названия, включая часовые пояса, языки и страны.
+
+Для быстрого ознакомления с локализацией и интернационализацией посмотрите это видео:
 
 <div class="video-container">
 
@@ -24,10 +26,9 @@ For a quick introduction to localization and internationalization watch this vid
 
 </div>
 
-## Learn about Angular internationalization
+## Узнайте об интернационализации Angular
 
-<div class="card-container">
-    <a href="guide/i18n-common-overview" class="docs-card" title="Common internationalization tasks">
+<div class="card-container">     <a href="guide/i18n-common-overview" class="docs-card" title="Common internationalization tasks">
         <section>Common tasks</section>
         <p>Learn how to implement many of the common tasks associated with Angular internationalization.</p>
         <p class="card-footer">Common internationalization tasks</p>

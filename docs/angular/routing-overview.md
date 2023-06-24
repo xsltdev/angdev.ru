@@ -1,25 +1,24 @@
 # Angular Routing
 
-In a single-page app, you change what the user sees by showing or hiding portions of the display that correspond to particular components, rather than going out to the server to get a new page.
-As users perform application tasks, they need to move between the different [views](guide/glossary#view 'Definition of view') that you have defined.
+В одностраничном приложении вы изменяете то, что видит пользователь, показывая или скрывая части экрана, соответствующие определенным компонентам, вместо того, чтобы обращаться к серверу для получения новой страницы. Когда пользователи выполняют задачи приложения, им необходимо перемещаться между различными [представлениями] (guide/glossary#view 'Definition of view'), которые вы определили.
 
-To handle the navigation from one [view](guide/glossary#view) to the next, you use the Angular **`Router`**.
-The **`Router`** enables navigation by interpreting a browser URL as an instruction to change the view.
+Для навигации от одного [представления](guide/glossary#view) к другому используется Angular **`Router`**. Маршрутизатор **`Router`** обеспечивает навигацию, интерпретируя URL-адрес браузера как инструкцию по смене представления.
 
-To explore a sample app featuring the router's primary features, see the <live-example name="router"></live-example>.
+Чтобы изучить пример приложения, демонстрирующий основные возможности маршрутизатора, смотрите <live-example name="router"></live-example>.
 
-## Prerequisites
+## Предварительные условия
 
-Before creating a route, you should be familiar with the following:
+Перед созданием маршрута вы должны быть знакомы со следующим:
 
--   [Basics of components](guide/architecture-components)
--   [Basics of templates](guide/glossary#template)
--   An Angular app &mdash;you can generate a basic Angular application using the [Angular CLI](cli).
+-   [Основы компонентов](guide/architecture-components)
 
-## Learn about Angular routing
+-   [Основы шаблонов](guide/glossary#template)
 
-<div class="card-container">
-  <a href="guide/router" class="docs-card" title="Common routing tasks">
+-   Приложение Angular &mdash; вы можете создать базовое приложение Angular, используя [Angular CLI](cli).
+
+## Узнайте о маршрутизации Angular
+
+<div class="card-container">   <a href="guide/router" class="docs-card" title="Common routing tasks">
     <section>Common routing tasks</section>
     <p>Learn how to implement many of the common tasks associated with Angular routing.</p>
     <p class="card-footer">Common routing tasks</p>

@@ -1,13 +1,12 @@
-# Common Routing Tasks
+# Общие задачи маршрутизации
 
-This topic describes how to implement many of the common tasks associated with adding the Angular router to your application.
+В этой теме описывается, как реализовать многие из общих задач, связанных с добавлением маршрутизатора Angular в ваше приложение.
 
 <a id="basics"></a>
 
-## Generate an application with routing enabled
+## Генерация приложения с включенной маршрутизацией
 
-The following command uses the Angular CLI to generate a basic Angular application with an application routing module, called `AppRoutingModule`, which is an NgModule where you can configure your routes.
-The application name in the following example is `routing-app`.
+Следующая команда использует Angular CLI для генерации базового приложения Angular с модулем маршрутизации приложения, называемым `AppRoutingModule`, который представляет собой NgModule, где вы можете настроить маршруты. Имя приложения в следующем примере - `routing-app`.
 
 <code-example format="shell" language="shell">
 
@@ -15,27 +14,25 @@ ng new routing-app --routing --defaults
 
 </code-example>
 
-### Adding components for routing
+### Добавление компонентов для маршрутизации
 
-To use the Angular router, an application needs to have at least two components so that it can navigate from one to the other.
-To create a component using the CLI, enter the following at the command line where `first` is the name of your component:
-
-<code-example format="shell" language="shell">
-
-ng generate component first
-
-</code-example>
-
-Repeat this step for a second component but give it a different name.
-Here, the new name is `second`.
+Чтобы использовать маршрутизатор Angular, приложение должно иметь как минимум два компонента, чтобы можно было переходить от одного к другому. Чтобы создать компонент с помощью CLI, введите в командной строке следующее, где `first` - имя вашего компонента:
 
 <code-example format="shell" language="shell">
 
-ng generate component second
+ng сначала создайте компонент
 
 </code-example>
 
-The CLI automatically appends `Component`, so if you were to write `first-component`, your component would be `FirstComponentComponent`.
+Повторите этот шаг для второго компонента, но дайте ему другое имя. Здесь новое имя будет `second`.
+
+<code-example format="shell" language="shell">
+
+ng генерировать второй компонент
+
+</code-example>
+
+CLI автоматически добавляет `Component`, поэтому если бы вы написали `first-component`, ваш компонент был бы `FirstComponentComponent`.
 
 <a id="basics-base-href"></a>
 
@@ -43,110 +40,118 @@ The CLI automatically appends `Component`, so if you were to write `first-compon
 
 <header><code>&lt;base href&gt;</code></header>
 
-This guide works with a CLI-generated Angular application.
-If you are working manually, make sure that you have `<base href="/">` in the `<head>` of your index.html file.
-This assumes that the `app` folder is the application root, and uses `"/"`.
+Это руководство работает с приложением Angular, созданным с помощью CLI. Если вы работаете вручную, убедитесь, что у вас есть `<base href="/">` в `<head>` вашего файла index.html.
+Это предполагает, что папка `app` является корнем приложения, и использует `"/"`.
 
 </div>
 
-### Importing your new components
+### Импортирование новых компонентов
 
-To use your new components, import them into `AppRoutingModule` at the top of the file, as follows:
+Чтобы использовать ваши новые компоненты, импортируйте их в `AppRoutingModule` в верхней части файла, как показано ниже:
 
 <code-example header="AppRoutingModule (excerpt)">
 
-import { FirstComponent } from './first/first.component';
-import { SecondComponent } from './second/second.component';
+import { FirstComponent } from './first/first.component'; import { SecondComponent } from './second/second.component';
 
 </code-example>
 
 <a id="basic-route"></a>
 
-## Defining a basic route
+## Определение базового маршрута
 
-There are three fundamental building blocks to creating a route.
+Создание маршрута состоит из трех основных компонентов.
 
-Import the `AppRoutingModule` into `AppModule` and add it to the `imports` array.
+Импортируйте `AppRoutingModule` в `AppModule` и добавьте его в массив `imports`.
 
-The Angular CLI performs this step for you.
-However, if you are creating an application manually or working with an existing, non-CLI application, verify that the imports and configuration are correct.
-The following is the default `AppModule` using the CLI with the `--routing` flag.
+Angular CLI выполнит этот шаг за вас. Однако если вы создаете приложение вручную или работаете с существующим приложением без CLI, проверьте правильность импорта и конфигурации.
 
-<code-example header="Default CLI AppModule with routing" path="router/src/app/app.module.8.ts"></code-example>
+Ниже приведен стандартный `AppModule`, использующий CLI с флагом `--routing`.
 
-1.  Import `RouterModule` and `Routes` into your routing module.
+<code-example header="Default CLI AppModule with routing" path="router/src/app/app.module.8.ts"></code-example>.
 
-    The Angular CLI performs this step automatically.
-    The CLI also sets up a `Routes` array for your routes and configures the `imports` and `exports` arrays for `@NgModule()`.
+1.  Импортируйте `RouterModule` и `Routes` в ваш модуль маршрутизации.
 
-    <code-example header="CLI application routing module" path="router/src/app/app-routing.module.7.ts"></code-example>
+    Angular CLI выполняет этот шаг автоматически.
 
-1.  Define your routes in your `Routes` array.
+    CLI также устанавливает массив `Routes` для ваших маршрутов и настраивает массивы `imports` и `exports` для `@NgModule()`.
 
-    Each route in this array is a JavaScript object that contains two properties.
-    The first property, `path`, defines the URL path for the route.
-    The second property, `component`, defines the component Angular should use for the corresponding path.
+    <code-example header="Модуль маршрутизации приложений CLI" path="router/src/app/app-routing.module.7.ts"></code-example>.
 
-    <code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.8.ts" region="routes"></code-example>
+1.  Определите маршруты в массиве `Routes`.
 
-1.  Add your routes to your application.
+    Каждый маршрут в этом массиве представляет собой объект JavaScript, который содержит два свойства.
 
-    Now that you have defined your routes, add them to your application.
-    First, add links to the two components.
-    Assign the anchor tag that you want to add the route to the `routerLink` attribute.
-    Set the value of the attribute to the component to show when a user clicks on each link.
-    Next, update your component template to include `<router-outlet>`.
-    This element informs Angular to update the application view with the component for the selected route.
+    Первое свойство, `path`, определяет путь URL для маршрута.
 
-    <code-example header="Template with routerLink and router-outlet" path="router/src/app/app.component.7.html"></code-example>
+    Второе свойство, `component`, определяет компонент, который Angular должен использовать для соответствующего пути.
+
+    <code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.8.ts" region="routes"></code-example>.
+
+1.  Добавьте маршруты в приложение.
+
+    Теперь, когда вы определили маршруты, добавьте их в приложение.
+
+    Сначала добавьте ссылки на два компонента.
+
+    Присвойте тегу якоря, в который вы хотите добавить маршрут, атрибут `routerLink`.
+
+    Установите значение атрибута для компонента, который будет отображаться, когда пользователь нажмет на каждую ссылку.
+
+    Далее обновите шаблон компонента, включив в него `<router-outlet>`.
+
+    Этот элемент сообщает Angular обновить представление приложения компонентом для выбранного маршрута.
+
+    <code-example header="Шаблон с routerLink и router-outlet" path="router/src/app/app.component.7.html"></code-example>.
 
 <a id="route-order"></a>
 
-### Route order
+### Порядок маршрутов
 
-The order of routes is important because the `Router` uses a first-match wins strategy when matching routes, so more specific routes should be placed above less specific routes.
-List routes with a static path first, followed by an empty path route, which matches the default route.
-The [wildcard route](guide/router#setting-up-wildcard-routes) comes last because it matches every URL and the `Router` selects it only if no other routes match first.
+Порядок маршрутов важен, поскольку `Router` использует стратегию выигрыша по первому совпадению при подборе маршрутов, поэтому более конкретные маршруты должны располагаться выше менее конкретных. Сначала перечисляются маршруты со статическим путем, затем пустой маршрут, который соответствует маршруту по умолчанию.
+
+Маршрут [wildcard route](guide/router#setting-up-wildcard-routes) идет последним, потому что он соответствует каждому URL, и `Router` выбирает его только в том случае, если ни один другой маршрут не подходит первым.
 
 <a id="getting-route-information"></a>
 
-## Getting route information
+## Получение информации о маршруте
 
-Often, as a user navigates your application, you want to pass information from one component to another.
-For example, consider an application that displays a shopping list of grocery items.
-Each item in the list has a unique `id`.
-To edit an item, users click an Edit button, which opens an `EditGroceryItem` component.
-You want that component to retrieve the `id` for the grocery item so it can display the right information to the user.
+Часто, когда пользователь перемещается по вашему приложению, вы хотите передавать информацию от одного компонента к другому. Например, рассмотрим приложение, которое отображает список покупок продуктов.
 
-Use a route to pass this type of information to your application components.
-To do so, you use the [withComponentInputBinding](api/router/withComponentInputBinding) feature with `provideRouter` or the `bindToComponentInputs` option of `RouterModule.forRoot`.
+Каждый элемент в списке имеет уникальный `id`.
 
-To get information from a route:
+Чтобы отредактировать элемент, пользователи нажимают кнопку Edit, которая открывает компонент `EditGroceryItem`.
 
-1.  Add the `withComponentInputBinding` feature to the `provideRouter` method.
+Вы хотите, чтобы этот компонент получал `id` для бакалейного товара, чтобы он мог отображать правильную информацию пользователю.
 
-    <code-example header="provideRouter feature" path="router/src/app/app-routing.module.11.ts" region="withComponentInputBinding"></code-example>
+Используйте маршрут для передачи такого типа информации компонентам приложения. Для этого вы используете функцию [withComponentInputBinding](api/router/withComponentInputBinding) с `provideRouter` или опцию `bindToComponentInputs` в `RouterModule.forRoot`.
 
-1.  Update the component to have an `Input` matching the name of the parameter.
+Чтобы получить информацию из маршрута:
+
+1.  Добавьте функцию `withComponentInputBinding` к методу `provideRouter`.
+
+    <code-example header="provideRouter feature" path="router/src/app/app-routing.module.11.ts" region="withComponentInputBinding"></code-example>.
+
+1.  Обновите компонент, чтобы у него был `Input`, соответствующий имени параметра.
 
     <code-example header="The component input (excerpt)" path="router/src/app/heroes/hero-detail/hero-detail.component.4.ts" region="id-input"></code-example>
 
     <div class="alert is-helpful">
 
     **NOTE:** <br>
+
     You can bind all route data with key, value pairs to component inputs: static or resolved route data, path parameters, matrix parameters, and query parameters.
 
     </div>
 
 <a id="wildcard-route-how-to"></a>
 
-## Setting up wildcard routes
+## Настройка маршрутов wildcard
 
-A well-functioning application should gracefully handle when users attempt to navigate to a part of your application that does not exist.
-To add this functionality to your application, you set up a wildcard route.
-The Angular router selects this route any time the requested URL doesn't match any router paths.
+Хорошо функционирующее приложение должно изящно обрабатывать попытки пользователей перейти к несуществующей части вашего приложения. Чтобы добавить эту функциональность в ваше приложение, вы устанавливаете маршрут wildcard.
 
-To set up a wildcard route, add the following code to your `routes` definition.
+Маршрутизатор Angular выбирает этот маршрут каждый раз, когда запрашиваемый URL не соответствует ни одному пути маршрутизатора.
+
+Чтобы настроить маршрут с подстановочным знаком, добавьте следующий код в определение `routes`.
 
 <code-example header="AppRoutingModule (excerpt)">
 
@@ -154,61 +159,58 @@ To set up a wildcard route, add the following code to your `routes` definition.
 
 </code-example>
 
-The two asterisks, `**`, indicate to Angular that this `routes` definition is a wildcard route.
-For the component property, you can define any component in your application.
-Common choices include an application-specific `PageNotFoundComponent`, which you can define to [display a 404 page](guide/router#404-page-how-to) to your users; or a redirect to your application's main component.
-A wildcard route is the last route because it matches any URL.
-For more detail on why order matters for routes, see [Route order](guide/router#route-order).
+Две звездочки, `**`, указывают Angular, что это определение `routes` является маршрутом с подстановочным знаком. Для свойства component вы можете определить любой компонент в вашем приложении.
+Обычно это `PageNotFoundComponent`, который можно определить как [отображение страницы 404](guide/router#404-page-how-to) для ваших пользователей; или перенаправление на основной компонент вашего приложения.
+
+Маршрут с подстановочным знаком - это последний маршрут, поскольку он соответствует любому URL.
+
+Подробнее о том, почему порядок имеет значение для маршрутов, смотрите в разделе [Порядок маршрутов](guide/router#route-order).
 
 <a id="404-page-how-to"></a>
 
-## Displaying a 404 page
+## Отображение страницы 404
 
-To display a 404 page, set up a [wildcard route](guide/router#wildcard-route-how-to) with the `component` property set to the component you'd like to use for your 404 page as follows:
+Чтобы отобразить страницу 404, настройте [wildcard route](guide/router#wildcard-route-how-to) со свойством `component`, установленным на компонент, который вы хотите использовать для страницы 404, следующим образом:
 
-<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.8.ts" region="routes-with-wildcard"></code-example>
+<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.8.ts" region="routes-with-wildcard"></code-example>.
 
-The last route with the `path` of `**` is a wildcard route.
-The router selects this route if the requested URL doesn't match any of the paths earlier in the list and sends the user to the `PageNotFoundComponent`.
+Последний маршрут с `путем` в `**` является маршрутом с подстановочным знаком. Маршрутизатор выбирает этот маршрут, если запрашиваемый URL не соответствует ни одному из предыдущих в списке путей, и отправляет пользователя на `PageNotFoundComponent`.
 
-## Setting up redirects
+## Настройка перенаправлений
 
-To set up a redirect, configure a route with the `path` you want to redirect from, the `component` you want to redirect to, and a `pathMatch` value that tells the router how to match the URL.
+Чтобы настроить перенаправление, настройте маршрут с `путем`, с которого вы хотите перенаправить, `компонентом`, на который вы хотите перенаправить, и значением `pathMatch`, которое указывает маршрутизатору, как сопоставить URL.
 
-<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.8.ts" region="redirect"></code-example>
+<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.8.ts" region="redirect"></code-example>.
 
-In this example, the third route is a redirect so that the router defaults to the `first-component` route.
-Notice that this redirect precedes the wildcard route.
-Here, `path: ''` means to use the initial relative URL \(`''`\).
+В этом примере третий маршрут является перенаправлением, так что маршрутизатор по умолчанию переходит к маршруту `первого компонента`. Обратите внимание, что этот перенаправление предшествует маршруту с подстановочным знаком.
 
-For more details on `pathMatch` see [Spotlight on `pathMatch`](guide/router-tutorial-toh#pathmatch).
+Здесь `path: ''` означает использование начального относительного URL \(`''`\).
+
+Более подробно о `pathMatch` смотрите [Spotlight on `pathMatch`](guide/router-tutorial-toh#pathmatch).
 
 <a id="nesting-routes"></a>
 
-## Nesting routes
+## Вложенные маршруты
 
-As your application grows more complex, you might want to create routes that are relative to a component other than your root component.
-These types of nested routes are called child routes.
-This means you're adding a second `<router-outlet>` to your app, because it is in addition to the `<router-outlet>` in `AppComponent`.
+По мере роста сложности вашего приложения вы можете захотеть создать маршруты, которые будут относиться к компоненту, отличному от корневого компонента. Такие типы вложенных маршрутов называются дочерними маршрутами.
 
-In this example, there are two additional child components, `child-a`, and `child-b`.
-Here, `FirstComponent` has its own `<nav>` and a second `<router-outlet>` in addition to the one in `AppComponent`.
+Это означает, что вы добавляете второй `<router-outlet>` в ваше приложение, поскольку он является дополнением к `<router-outlet>` в `AppComponent`.
 
-<code-example header="In the template" path="router/src/app/app.component.8.html" region="child-routes"></code-example>
+В этом примере есть два дополнительных дочерних компонента, `child-a` и `child-b`. Здесь `FirstComponent` имеет свою собственную `<nav>` и второй `<router-outlet>` в дополнение к тому, который находится в `AppComponent`.
 
-A child route is like any other route, in that it needs both a `path` and a `component`.
-The one difference is that you place child routes in a `children` array within the parent route.
+<code-example header="В шаблоне" path="router/src/app/app.component.8.html" region="child-routes"></code-example>.
 
-<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.9.ts" region="child-routes"></code-example>
+Дочерний маршрут подобен любому другому маршруту, так как ему нужны `путь` и `компонент`. Единственное отличие заключается в том, что дочерние маршруты размещаются в массиве `children` внутри родительского маршрута.
+
+<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.9.ts" region="child-routes"></code-example>.
 
 <a id="setting-the-page-title"></a>
 
-## Setting the page title
+## Установка заголовка страницы
 
-Each page in your application should have a unique title so that they can be identified in the browser history.
-The `Router` sets the document's title using the `title` property from the `Route` config.
+Каждая страница в вашем приложении должна иметь уникальный заголовок, чтобы ее можно было идентифицировать в истории браузера. Маршрутизатор `Router` устанавливает заголовок документа, используя свойство `title` из конфигурации `Route`.
 
-<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.10.ts" region="page-title"></code-example>
+<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.10.ts" region="page-title"></code-example>.
 
 <div class="alert is-helpful">
 
@@ -216,56 +218,54 @@ The `Router` sets the document's title using the `title` property from the `Rout
 
 </div>
 
-You can also provide a custom title strategy by extending the `TitleStrategy`.
+Вы также можете создать собственную стратегию заголовка, расширив `TitleStrategy`.
 
-<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.10.ts" region="custom-page-title"></code-example>
+<code-example header="AppRoutingModule (excerpt)" path="router/src/app/app-routing.module.10.ts" region="custom-page-title"></code-example>.
 
 <a id="using-relative-paths"></a>
 
-## Using relative paths
+## Использование относительных путей
 
-Relative paths let you define paths that are relative to the current URL segment.
-The following example shows a relative route to another component, `second-component`.
-`FirstComponent` and `SecondComponent` are at the same level in the tree, however, the link to `SecondComponent` is situated within the `FirstComponent`, meaning that the router has to go up a level and then into the second directory to find the `SecondComponent`.
-Rather than writing out the whole path to get to `SecondComponent`, use the `../` notation to go up a level.
+Относительные пути позволяют определять пути, которые являются относительными по отношению к текущему сегменту URL. Следующий пример показывает относительный путь к другому компоненту, `second-component`.
 
-<code-example header="In the template" path="router/src/app/app.component.8.html" region="relative-route"></code-example>
+`FirstComponent` и `SecondComponent` находятся на одном уровне в дереве, однако ссылка на `SecondComponent` расположена внутри `FirstComponent`, что означает, что маршрутизатор должен подняться на один уровень вверх, а затем во второй каталог, чтобы найти `SecondComponent`.
 
-In addition to `../`, use `./` or no leading slash to specify the current level.
+Вместо того чтобы писать весь путь к `SecondComponent`, используйте обозначение `../` для перехода на уровень выше.
 
-### Specifying a relative route
+<code-example header="В шаблоне" path="router/src/app/app.component.8.html" region="relative-route"></code-example>.
 
-To specify a relative route, use the `NavigationExtras` `relativeTo` property.
-In the component class, import `NavigationExtras` from the `@angular/router`.
+В дополнение к `../`, используйте `./` или без ведущей косой черты для указания текущего уровня.
 
-Then use `relativeTo` in your navigation method.
-After the link parameters array, which here contains `items`, add an object with the `relativeTo` property set to the `ActivatedRoute`, which is `this.route`.
+### Указание относительного маршрута
+
+Чтобы указать относительный маршрут, используйте свойство `NavigationExtras` `relativeTo`. В классе компонента импортируйте `NavigationExtras` из `@angular/router`.
+
+Затем используйте `relativeTo` в своем методе навигации. После массива параметров ссылки, который здесь содержит `items`, добавьте объект со свойством `relativeTo`, установленным на `ActivatedRoute`, которым является `this.route`.
 
 <code-example header="RelativeTo" path="router/src/app/app.component.4.ts" region="relative-to">
 
-The `navigate()` arguments configure the router to use the current route as a basis upon which to append `items`.
+Аргументы `navigate()` настраивают маршрутизатор на использование текущего маршрута в качестве основы для добавления `элементов`.
 
 </code-example>
 
-The `goToItems()` method interprets the destination URI as relative to the activated route and navigates to the `items` route.
+Метод `goToItems()` интерпретирует URI назначения как относительный к активированному маршруту и переходит к маршруту `items`.
 
-## Accessing query parameters and fragments
+## Доступ к параметрам запроса и фрагментам
 
-Sometimes, a feature of your application requires accessing a part of a route, such as a query parameter or a fragment.
-The Tour of Heroes application at this stage in the tutorial uses a list view in which you can click on a hero to see details.
-The router uses an `id` to show the correct hero's details.
+Иногда функции вашего приложения требуют доступа к части маршрута, например, к параметру запроса или фрагменту. Приложение Tour of Heroes на данном этапе обучения использует представление списка, в котором вы можете нажать на героя, чтобы увидеть подробности.
 
-First, import the following members in the component you want to navigate from.
+Маршрутизатор использует `id` для отображения подробностей нужного героя.
+
+Сначала импортируйте следующие члены в компонент, из которого вы хотите осуществлять навигацию.
 
 <code-example header="Component import statements (excerpt)">
 
-import { ActivatedRoute } from '&commat;angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute } from '&commat;angular/router'; import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 </code-example>
 
-Next inject the activated route service:
+Затем введите активированную службу маршрутизации:
 
 <code-example header="Component (excerpt)">
 
@@ -273,83 +273,92 @@ constructor(private route: ActivatedRoute) {}
 
 </code-example>
 
-Configure the class so that you have an observable, `heroes$`, a `selectedId` to hold the `id` number of the hero, and the heroes in the `ngOnInit()`, add the following code to get the `id` of the selected hero.
-This code snippet assumes that you have a heroes list, a hero service, a function to get your heroes, and the HTML to render your list and details, just as in the Tour of Heroes example.
+Настройте класс так, чтобы у вас была наблюдаемая `heroes$`, `selectedId` для хранения `id` номера героя, и герои в `ngOnInit()`, добавьте следующий код для получения `id` выбранного героя. Этот фрагмент кода предполагает, что у вас есть список героев, служба героев, функция для получения героев и HTML для отображения списка и деталей, как в примере Tour of Heroes.
 
 <code-example header="Component 1 (excerpt)">
 
-heroes\$: Observable&lt;Hero[]&gt;;
-selectedId: number;
+герои\$: Observable&lt;Hero[]&gt;; selectedId: number;
 heroes = HEROES;
 
-ngOnInit() {
-this.heroes\$ = this.route.paramMap.pipe(
+ngOnInit() { this.heroes\$ = this.route.paramMap.pipe(
+
 switchMap(params =&gt; {
+
 this.selectedId = Number(params.get('id'));
+
 return this.service.getHeroes();
+
 })
+
 );
+
 }
 
 </code-example>
 
-Next, in the component that you want to navigate to, import the following members.
+Затем в компоненте, на который вы хотите перейти, импортируйте следующие члены.
 
 <code-example header="Component 2 (excerpt)">
 
-import { Router, ActivatedRoute, ParamMap } from '&commat;angular/router';
-import { Observable } from 'rxjs';
+import { Router, ActivatedRoute, ParamMap } from '&commat;angular/router'; import { Observable } from 'rxjs';
 
 </code-example>
 
-Inject `ActivatedRoute` and `Router` in the constructor of the component class so they are available to this component:
+Вставьте `ActivatedRoute` и `Router` в конструктор класса компонента, чтобы они были доступны этому компоненту:
 
 <code-example header="Component 2 (excerpt)">
 
-hero\$: Observable&lt;Hero&gt;;
+герой\$: Observable&lt;Hero&gt;;
 
-constructor(
-private route: ActivatedRoute,
+constructor( private route: ActivatedRoute,
+
 private router: Router ) {}
 
-ngOnInit() {
-const heroId = this.route.snapshot.paramMap.get('id');
+ngOnInit() { const heroId = this.route.snapshot.paramMap.get('id');
+
 this.hero\$ = this.service.getHero(heroId);
+
 }
 
-gotoItems(hero: Hero) {
-const heroId = hero ? hero.id : null;
-// Pass along the hero id if available
-// so that the HeroList component can select that item.
+gotoItems(hero: Hero) { const heroId = hero ? hero.id : null;
+
+// Передаем идентификатор героя, если он доступен
+
+// чтобы компонент HeroList мог выбрать этот элемент.
+
 this.router.navigate(['/heroes', { id: heroId }]);
+
 }
 
 </code-example>
 
 <a id="lazy-loading"></a>
 
-## Lazy loading
+## Ленивая загрузка
 
-You can configure your routes to lazy load modules, which means that Angular only loads modules as needed, rather than loading all modules when the application launches.
-Additionally, preload parts of your application in the background to improve the user experience.
+Вы можете настроить свои маршруты на ленивую загрузку модулей, что означает, что Angular загружает модули только по мере необходимости, а не загружает все модули при запуске приложения. Кроме того, можно предварительно загружать части приложения в фоновом режиме, чтобы улучшить качество работы пользователя.
 
-For more information on lazy loading and preloading see the dedicated guide [Lazy loading NgModules](guide/lazy-loading-ngmodules).
+Более подробную информацию о ленивой загрузке и предварительной загрузке можно найти в специальном руководстве [Ленивая загрузка NgModules] (guide/lazy-loading-ngmodules).
 
-## Preventing unauthorized access
+## Предотвращение несанкционированного доступа
 
-Use route guards to prevent users from navigating to parts of an application without authorization.
-The following route guards are available in Angular:
+Для предотвращения несанкционированного доступа пользователей к частям приложения используйте защитные экраны маршрутов. В Angular доступны следующие защиты маршрутов:
 
 -   [`canActivate`](api/router/CanActivateFn)
+
 -   [`canActivateChild`](api/router/CanActivateChildFn)
+
 -   [`canDeactivate`](api/router/CanDeactivateFn)
+
 -   [`canMatch`](api/router/CanMatchFn)
+
 -   [`resolve`](api/router/ResolveFn)
+
 -   [`canLoad`](api/router/CanLoadFn)
 
-To use route guards, consider using [component-less routes](api/router/Route#componentless-routes) as this facilitates guarding child routes.
+Чтобы использовать защиту маршрутов, используйте [component-less routes](api/router/Route#componentless-routes), так как это облегчает защиту дочерних маршрутов.
 
-Create a file for your guard:
+Создайте файл для вашего охранника:
 
 <code-example format="shell" language="shell">
 
@@ -357,92 +366,106 @@ ng generate guard your-guard
 
 </code-example>
 
-In your guard file, add the guard functions you want to use.
-The following example uses `canActivateFn` to guard the route.
+В файле guard добавьте функции guard, которые вы хотите использовать. В следующем примере для защиты маршрута используется `canActivateFn`.
 
 <code-example header="guard (excerpt)">
 
-export const yourGuardFunction: CanActivateFn = (
-next: ActivatedRouteSnapshot,
-state: RouterStateSnapshot) => {
-// your logic goes here
+export const yourGuardFunction: CanActivateFn = ( next: ActivatedRouteSnapshot,
+состояние: RouterStateSnapshot) => {
+
+// ваша логика здесь
+
 }
+
 </code-example>
-In your routing module, use the appropriate property in your `routes` configuration.
-Here, `canActivate` tells the router to mediate navigation to this particular route.
-<code-example header="Routing module (excerpt)">
+
+В модуле маршрутизации используйте соответствующее свойство в конфигурации `routes`.
+
+В данном случае `canActivate` указывает маршрутизатору на необходимость посредничества в навигации по данному конкретному маршруту.
+
+<code-example header="Модуль маршрутизации (выдержка)">
+
 {
-path: '/your-path',
-component: YourComponent,
+
+путь: '/ваш путь',
+
+компонент: YourComponent,
+
 canActivate: [yourGuardFunction],
+
 }
 
 </code-example>
 
-For more information with a working example, see the [routing tutorial section on route guards](guide/router-tutorial-toh#milestone-5-route-guards).
+Более подробную информацию с рабочим примером можно найти в разделе [учебника по маршрутизации, посвященном охранникам маршрутов] (guide/router-tutorial-toh#milestone-5-route-guards).
 
-## Link parameters array
+## Массив параметров ссылки
 
-A link parameters array holds the following ingredients for router navigation:
+Массив параметров ссылки содержит следующие компоненты для навигации маршрутизатора:
 
--   The path of the route to the destination component
--   Required and optional route parameters that go into the route URL
+-   Путь маршрута к компоненту назначения
 
-Bind the `RouterLink` directive to such an array like this:
+-   Необходимые и необязательные параметры маршрута, которые входят в URL маршрута.
 
-<code-example header="src/app/app.component.ts (h-anchor)" path="router/src/app/app.component.3.ts" region="h-anchor"></code-example>
+Привяжите директиву `RouterLink` к такому массиву следующим образом:
 
-The following is a two-element array when specifying a route parameter:
+<code-example header="src/app/app.component.ts (h-anchor)" path="router/src/app/app.component.3.ts" region="h-anchor"></code-example>.
 
-<code-example header="src/app/heroes/hero-list/hero-list.component.html (nav-to-detail)" path="router/src/app/heroes/hero-list/hero-list.component.1.html" region="nav-to-detail"></code-example>
+Ниже представлен двухэлементный массив при указании параметра маршрута:
 
-Provide optional route parameters in an object, as in `{ foo: 'foo' }`:
+<code-example header="src/app/heroes/hero-list/hero-list.component.html (nav-to-detail)" path="router/src/app/heroes/hero-list/hero-list.component.1.html" region="nav-to-detail"></code-example>.
 
-<code-example header="src/app/app.component.ts (cc-query-params)" path="router/src/app/app.component.3.ts" region="cc-query-params"></code-example>
+Предоставьте необязательные параметры маршрута в объекте, как в `{ foo: 'foo' }`:
 
-These three examples cover the needs of an application with one level of routing.
-However, with a child router, such as in the crisis center, you create new link array possibilities.
+<code-example header="src/app/app.component.ts (cc-query-params)" path="router/src/app/app.component.3.ts" region="cc-query-params"></code-example
 
-The following minimal `RouterLink` example builds upon a specified [default child route](guide/router-tutorial-toh#a-crisis-center-with-child-routes) for the crisis center.
+Эти три примера покрывают потребности приложения с одним уровнем маршрутизации. Однако с дочерним маршрутизатором, как, например, в кризисном центре, вы создаете новые возможности массива ссылок.
 
-<code-example header="src/app/app.component.ts (cc-anchor-w-default)" path="router/src/app/app.component.3.ts" region="cc-anchor-w-default"></code-example>
+Следующий минимальный пример `RouterLink` основан на заданном [дочернем маршруте по умолчанию](guide/router-tutorial-toh#a-crisis-center-with-child-routes) для кризисного центра.
 
-Review the following:
+<code-example header="src/app/app.component.ts (cc-anchor-w-default)" path="router/src/app/app/app.component.3.ts" region="cc-anchor-w-default"></code-example>.
 
--   The first item in the array identifies the parent route \(`/crisis-center`\)
--   There are no parameters for this parent route
--   There is no default for the child route so you need to pick one
--   You're navigating to the `CrisisListComponent`, whose route path is `/`, but you don't need to explicitly add the slash
+Рассмотрите следующее:
 
-Consider the following router link that navigates from the root of the application down to the Dragon Crisis:
+-   Первый элемент массива идентифицирует родительский маршрут \(`/crisis-center`\).
+
+-   Для этого родительского маршрута нет параметров
+
+-   Для дочернего маршрута нет параметров по умолчанию, поэтому вам нужно выбрать один из них.
+
+-   Вы переходите к `CrisisListComponent`, путь маршрута которого `/`, но вам не нужно явно добавлять слеш.
+
+Рассмотрим следующую ссылку маршрутизатора, которая ведет от корня приложения вниз к Кризису Дракона:
 
 <code-example header="src/app/app.component.ts (Dragon-anchor)" path="router/src/app/app.component.3.ts" region="Dragon-anchor"></code-example>
 
--   The first item in the array identifies the parent route \(`/crisis-center`\)
--   There are no parameters for this parent route
--   The second item identifies the child route details about a particular crisis \(`/:id`\)
--   The details child route requires an `id` route parameter
--   You added the `id` of the Dragon Crisis as the second item in the array \(`1`\)
--   The resulting path is `/crisis-center/1`
+-   Первый элемент массива идентифицирует родительский маршрут \(`/crisis-center`\).
 
-You could also redefine the `AppComponent` template with Crisis Center routes exclusively:
+-   Для этого родительского маршрута нет параметров
+
+-   Второй элемент идентифицирует дочерний маршрут подробностей о конкретном кризисе \(`/:id`\)
+
+-   Для дочернего маршрута подробностей требуется параметр маршрута `id`.
+
+-   Вы добавили `id` кризиса Дракона в качестве второго элемента массива \(`1`\)
+
+-   Получился путь `/crisis-center/1`.
+
+Вы также можете переопределить шаблон `AppComponent` исключительно с маршрутами Кризисного центра:
 
 <code-example header="src/app/app.component.ts (template)" path="router/src/app/app.component.3.ts" region="template"></code-example>
 
-In summary, you can write applications with one, two or more levels of routing.
-The link parameters array affords the flexibility to represent any routing depth and any legal sequence of route paths, \(required\) router parameters, and \(optional\) route parameter objects.
+В целом, вы можете писать приложения с одним, двумя или более уровнями маршрутизации. Массив параметров ссылок позволяет гибко представлять любую глубину маршрутизации и любую законную последовательность маршрутных путей, \(требуется\) параметров маршрутизатора и \(необязательно\) объектов параметров маршрута.
 
-<a id="browser-url-styles"></a>
-<a id="location-strategy"></a>
+<a id="browser-url-styles"></a> <a id="location-strategy"></a>
 
-## `LocationStrategy` and browser URL styles
+## `LocationStrategy` и стили URL браузера
 
-When the router navigates to a new component view, it updates the browser's location and history with a URL for that view.
+Когда маршрутизатор переходит к новому представлению компонента, он обновляет местоположение и историю браузера с URL для этого представления.
 
-Modern HTML5 browsers support [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries 'HTML5 browser history push-state'), a technique that changes a browser's location and history without triggering a server page request.
-The router can compose a "natural" URL that is indistinguishable from one that would otherwise require a page load.
+Современные браузеры HTML5 поддерживают [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries 'HTML5 browser history push-state'), технику, которая изменяет местоположение и историю браузера, не вызывая запрос страницы на сервере. Маршрутизатор может составить "естественный" URL, неотличимый от того, который в противном случае потребовал бы загрузки страницы.
 
-Here's the Crisis Center URL in this "HTML5 pushState" style:
+Вот URL Кризисного центра в этом стиле "HTML5 pushState":
 
 <code-example format="none" language="http">
 
@@ -450,9 +473,8 @@ localhost:3002/crisis-center
 
 </code-example>
 
-Older browsers send page requests to the server when the location URL changes unless the change occurs after a "#" \(called the "hash"\).
-Routers can take advantage of this exception by composing in-application route URLs with hashes.
-Here's a "hash URL" that routes to the Crisis Center.
+Старые браузеры отправляют запросы на сервер при изменении URL местоположения, если только изменение не происходит после "#" \(называемого "хэшем"\). Маршрутизаторы могут воспользоваться этим исключением, составляя URL маршрутов в приложении с помощью хэшей.
+Вот "хэш URL", который направляет в Кризисный центр.
 
 <code-example format="none" language="http">
 
@@ -460,104 +482,102 @@ localhost:3002/src/#/crisis-center
 
 </code-example>
 
-The router supports both styles with two `LocationStrategy` providers:
+Маршрутизатор поддерживает оба стиля с помощью двух провайдеров `LocationStrategy`:
 
-| Providers              | Details                              |
-| :--------------------- | :----------------------------------- |
-| `PathLocationStrategy` | The default "HTML5 pushState" style. |
-| `HashLocationStrategy` | The "hash URL" style.                |
+| Провайдеры | Подробности | | :--------------------- | :----------------------------------- |.
 
-The `RouterModule.forRoot()` function sets the `LocationStrategy` to the `PathLocationStrategy`, which makes it the default strategy.
-You also have the option of switching to the `HashLocationStrategy` with an override during the bootstrapping process.
+| `PathLocationStrategy` | Стиль по умолчанию "HTML5 pushState". |
 
-<div class="alert is-helpful">
+| | `HashLocationStrategy` | Стиль "хэш URL". |
 
-For more information on providers and the bootstrap process, see [Dependency Injection](guide/dependency-injection-providers).
-
-</div>
-
-## Choosing a routing strategy
-
-You must choose a routing strategy early in the development of your project because once the application is in production, visitors to your site use and depend on application URL references.
-
-Almost all Angular projects should use the default HTML5 style.
-It produces URLs that are easier for users to understand and it preserves the option to do server-side rendering.
-
-Rendering critical pages on the server is a technique that can greatly improve perceived responsiveness when the application first loads.
-An application that would otherwise take ten or more seconds to start could be rendered on the server and delivered to the user's device in less than a second.
-
-This option is only available if application URLs look like normal web URLs without hash \(`#`\) characters in the middle.
-
-## `<base href>`
-
-The router uses the browser's [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries 'HTML5 browser history push-state') for navigation.
-`pushState` lets you customize in-application URL paths; for example, `localhost:4200/crisis-center`.
-The in-application URLs can be indistinguishable from server URLs.
-
-Modern HTML5 browsers were the first to support `pushState` which is why many people refer to these URLs as "HTML5 style" URLs.
+Функция `RouterModule.forRoot()` устанавливает `LocationStrategy` в `PathLocationStrategy`, что делает ее стратегией по умолчанию. У вас также есть возможность переключиться на `HashLocationStrategy` с помощью переопределения во время процесса загрузки.
 
 <div class="alert is-helpful">
 
-HTML5 style navigation is the router default.
-In the [LocationStrategy and browser URL styles](#browser-url-styles) section, learn why HTML5 style is preferable, how to adjust its behavior, and how to switch to the older hash \(`#`\) style, if necessary.
+Более подробную информацию о провайдерах и процессе bootstrap смотрите в [Dependency Injection](guide/dependency-injection-providers).
 
 </div>
 
-You must add a [`<base href>` element](https://developer.mozilla.org/docs/Web/HTML/Element/base 'base href') to the application's `index.html` for `pushState` routing to work.
-The browser uses the `<base href>` value to prefix relative URLs when referencing CSS files, scripts, and images.
+## Выбор стратегии маршрутизации
 
-Add the `<base>` element just after the `<head>` tag.
-If the `app` folder is the application root, as it is for this application, set the `href` value in `index.html` as shown here.
+Вы должны выбрать стратегию маршрутизации на ранних этапах разработки проекта, потому что, как только приложение будет запущено в производство, посетители вашего сайта будут использовать и зависеть от ссылок URL приложения.
 
-<code-example header="src/index.html (base-href)" path="router/src/index.html" region="base-href"></code-example>
+Почти все проекты Angular должны использовать стиль HTML5 по умолчанию. Он создает URL-адреса, которые легче понять пользователям, и сохраняет возможность рендеринга на стороне сервера.
 
-### HTML5 URLs and the `<base href>`
+Рендеринг критических страниц на сервере - это техника, которая может значительно улучшить воспринимаемую отзывчивость при первой загрузке приложения. Приложение, запуск которого в противном случае занял бы десять или более секунд, может быть отрисовано на сервере и доставлено на устройство пользователя менее чем за секунду.
 
-The guidelines that follow will refer to different parts of a URL.
-This diagram outlines what those parts refer to:
+Эта опция доступна только в том случае, если URL-адреса приложений выглядят как обычные веб-адреса без символов хэша \(`#`\) в середине.
+
+## `<base href>`.
+
+Маршрутизатор использует [history.pushState](https://developer.mozilla.org/docs/Web/API/History_API/Working_with_the_History_API#adding_and_modifying_history_entries 'HTML5 browser history push-state') браузера для навигации. `pushState` позволяет настраивать пути URL в приложении; например, `localhost:4200/crisis-center`.
+
+URL-адреса внутри приложения могут быть неотличимы от URL-адресов сервера.
+
+Современные браузеры HTML5 первыми стали поддерживать `pushState`, поэтому многие называют эти URL "URL в стиле HTML5".
+
+<div class="alert is-helpful">
+
+Навигация в стиле HTML5 является маршрутизатором по умолчанию. В разделе [LocationStrategy и стили URL браузера](#browser-url-styles) вы узнаете, почему стиль HTML5 предпочтительнее, как настроить его поведение и как при необходимости переключиться на более старый стиль хэш \(`#`\).
+
+</div>
+
+Вы должны добавить элемент [`<base href>`](https://developer.mozilla.org/docs/Web/HTML/Element/base 'base href') в `index.html` приложения, чтобы маршрутизация `pushState` работала. Браузер использует значение `<base href>` для префиксации относительных URL при ссылке на файлы CSS, скрипты и изображения.
+
+Добавьте элемент `<base>` сразу после тега `<head>`. Если папка `app` является корнем приложения, как это сделано для данного приложения, установите значение `href` в `index.html`, как показано здесь.
+
+<code-example header="src/index.html (base-href)" path="router/src/index.html" region="base-href"></code-example>.
+
+### HTML5 URLs и `<base href>`
+
+В последующих руководствах будут упоминаться различные части URL. На этой диаграмме показано, к чему относятся эти части:
 
 <code-example format="output" hideCopy language="none">
 
-foo://example.com:8042/over/there?name=ferret#nose
-&bsol;\_/ &bsol;\_\_\_\_\_\_\_\_\_\_\_\_\_\_/&bsol;\_\_\_\_\_\_\_\_\_/ &bsol;\_\_\_\_\_\_\_\_\_/ &bsol;\_\_/
-&verbar; &verbar; &verbar; &verbar; &verbar;
-scheme authority path query fragment
+foo://example.com:8042/over/there?name=ferret#nose &bsol;\_/ &bsol;\_\_\_\_\_\_\_\_\_\_\_\_\_\_/&bsol;\_\_\_\_\_\_\_\_\_/ &bsol;\_\_\_\_\_\_\_\_\_/ &bsol;\_\_/
+&verbar; &verbar; &verbar; &verbar; &verbar; &verbar;
+
+схема авторитет путь фрагмент запроса
 
 </code-example>
 
-While the router uses the [HTML5 pushState](https://developer.mozilla.org/docs/Web/API/History_API#Adding_and_modifying_history_entries 'Browser history push-state') style by default, you must configure that strategy with a `<base href>`.
+Хотя маршрутизатор по умолчанию использует стиль [HTML5 pushState](https://developer.mozilla.org/docs/Web/API/History_API#Adding_and_modifying_history_entries 'Browser history push-state'), вы должны настроить эту стратегию с помощью `<base href>`.
 
-The preferred way to configure the strategy is to add a [`<base href>` element](https://developer.mozilla.org/docs/Web/HTML/Element/base 'base href') tag in the `<head>` of the `index.html`.
+Предпочтительным способом настройки стратегии является добавление тега [`<base href>` element](https://developer.mozilla.org/docs/Web/HTML/Element/base 'base href') в `<head>` в `index.html`.
 
-<code-example header="src/index.html (base-href)" path="router/src/index.html" region="base-href"></code-example>
+<code-example header="src/index.html (base-href)" path="router/src/index.html" region="base-href"></code-example>.
 
-Without that tag, the browser might not be able to load resources \(images, CSS, scripts\) when "deep linking" into the application.
+Без этого тега браузер не сможет загрузить ресурсы\(изображения, CSS, скрипты\) при "глубокой ссылке" в приложение.
 
-Some developers might not be able to add the `<base>` element, perhaps because they don't have access to `<head>` or the `index.html`.
+Некоторые разработчики могут не иметь возможности добавить элемент `<base>`, возможно, потому что у них нет доступа к `<head>` или `index.html`.
 
-Those developers can still use HTML5 URLs by taking the following two steps:
+Такие разработчики все равно могут использовать HTML5 URL, выполнив следующие два шага:
 
-1.  Provide the router with an appropriate `APP_BASE_HREF` value.
-1.  Use root URLs \(URLs with an `authority`\) for all web resources: CSS, images, scripts, and template HTML files.
+1.  Предоставьте маршрутизатору соответствующее значение `APP_BASE_HREF`.
 
-    -   The `<base href>` `path` should end with a "/", as browsers ignore characters in the `path` that follow the right-most "`/`"
-    -   If the `<base href>` includes a `query` part, the `query` is only used if the `path` of a link in the page is empty and has no `query`.
-        This means that a `query` in the `<base href>` is only included when using `HashLocationStrategy`.
+1.  Используйте корневые URL \(URL с `авторитетом`\) для всех веб-ресурсов: CSS, изображений, скриптов и HTML-файлов шаблона.
 
-    -   If a link in the page is a root URL \(has an `authority`\), the `<base href>` is not used.
-        In this way, an `APP_BASE_HREF` with an authority will cause all links created by Angular to ignore the `<base href>` value.
+    -   Путь `<base href>` должен заканчиваться символом "/", так как браузеры игнорируют символы в `пути`, следующие за крайним правым "`/`".
 
-    -   A fragment in the `<base href>` is _never_ persisted
+    -   Если `<base href>` включает часть `query`, то `query` используется только в том случае, если `путь` ссылки на странице пуст и не содержит `query`.
 
-For more complete information on how `<base href>` is used to construct target URIs, see the [RFC](https://tools.ietf.org/html/rfc3986#section-5.2.2) section on transforming references.
+        Это означает, что `query` в `<base href>` включается только при использовании `HashLocationStrategy`.
+
+    -   Если ссылка на странице является корневым URL\(имеет `авторитет`\), то `<базовый href>` не используется.
+
+        Таким образом, `APP_BASE_HREF` с авторитетом приведет к тому, что все ссылки, созданные Angular, будут игнорировать значение `<base href>`.
+
+    -   Фрагмент в `<base href>` _никогда_ не сохраняется.
+
+Для более полной информации о том, как `<base href>` используется для построения целевых URI, смотрите раздел [RFC](https://tools.ietf.org/html/rfc3986#section-5.2.2) о преобразовании ссылок.
 
 <a id="hashlocationstrategy"></a>
 
-### `HashLocationStrategy`
+### `HashLocationStrategy`.
 
-Use `HashLocationStrategy` by providing the `useHash: true` in an object as the second argument of the `RouterModule.forRoot()` in the `AppModule`.
+Используйте `HashLocationStrategy`, предоставив `useHash: true` в объекте в качестве второго аргумента `RouterModule.forRoot()` в `AppModule`.
 
-<code-example header="src/app/app.module.ts (hash URL strategy)" path="router/src/app/app.module.6.ts"></code-example>
+<code-example header="src/app/app.module.ts (стратегия хэш URL)" path="router/src/app/app.module.6.ts"></code-example>
 
 <!-- links -->
 

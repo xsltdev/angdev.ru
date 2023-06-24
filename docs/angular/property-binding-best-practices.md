@@ -1,72 +1,74 @@
-# Property binding best practices
+# Лучшие практики связывания свойств
 
-By following a few guidelines, you can use property binding in a way that helps you reduce bugs and keep your code readable.
+Следуя нескольким рекомендациям, вы можете использовать связывание свойств таким образом, чтобы уменьшить количество ошибок и сохранить читабельность кода.
 
 <div class="alert is-helpful">
 
-See the <live-example name="property-binding"></live-example> for a working example containing the code snippets in this guide.
+Смотрите <live-example name="property-binding"></live-example> для рабочего примера, содержащего фрагменты кода из этого руководства.
 
 </div>
 
-## Avoid side effects
+## Избегайте побочных эффектов
 
-Evaluation of a template expression should have no visible side effects.
-Use the syntax for template expressions to help avoid side effects.
-In general, the correct syntax prevents you from assigning a value to anything in a property binding expression.
-The syntax also prevents you from using increment and decrement operators.
+Оценка шаблонного выражения не должна иметь видимых побочных эффектов. Используйте синтаксис шаблонных выражений, чтобы избежать побочных эффектов.
 
-### An example of producing side effects
+В целом, правильный синтаксис не позволяет присваивать значение чему-либо в выражении привязки свойств.
 
-If you had an expression that changed the value of something else that you were binding to, that change of value would be a side effect.
-Angular might or might not display the changed value.
-If Angular does detect the change, it throws an error.
+Синтаксис также не позволяет использовать операторы инкремента и декремента.
 
-As a best practice, use only properties and methods that return values.
+### Пример возникновения побочных эффектов
 
-## Return the proper type
+Если у вас есть выражение, которое изменяет значение чего-то другого, к чему вы привязываете свойство, то это изменение значения будет побочным эффектом. Angular может отобразить измененное значение, а может и не отобразить.
 
-A template expression should result in the type of value that the target property expects.
-For example, return:
+Если Angular обнаружит изменение, он выдаст ошибку.
 
--   a `string`, if the target property expects a string
--   a `number`, if it expects a number
--   an `object`, if it expects an object.
+В качестве лучшей практики используйте только те свойства и методы, которые возвращают значения.
 
-### Passing in a string
+## Возвращайте правильный тип
 
-In the following example, the `childItem` property of the `ItemDetailComponent` expects a string.
+Выражение шаблона должно возвращать значение того типа, которое ожидает целевое свойство. Например, return:
+
+-   a `строка`, если целевое свойство ожидает строку
+
+-   `number`, если ожидается число
+
+-   `object`, если ожидается объект.
+
+### Передача строки
+
+В следующем примере свойство `childItem` компонента `ItemDetailComponent` ожидает строку.
 
 <code-example header="src/app/app.component.html" path="property-binding/src/app/app.component.html" region="model-property-binding"></code-example>
 
-Confirm this expectation by looking in the `ItemDetailComponent` where the `@Input()` type is `string`:
+Подтвердите это ожидание, посмотрев в `ItemDetailComponent`, где тип `@Input()` является `string`:
 
-<code-example header="src/app/item-detail/item-detail.component.ts (setting the @Input() type)" path="property-binding/src/app/item-detail/item-detail.component.ts" region="input-type"></code-example>
+<code-example header="src/app/item-detail/item-detail.component.ts (установка типа @Input())" path="property-binding/src/app/item-detail/item-detail.component.ts" region="input-type"></code-example>.
 
-The `parentItem` in `AppComponent` is a string, which means that the expression, `parentItem` within `[childItem]="parentItem"`, evaluates to a string.
+`parentItem` в `AppComponent` является строкой, что означает, что выражение `parentItem` в `[childItem]="parentItem"`, оценивается как строка.
 
-<code-example header="src/app/app.component.ts" path="property-binding/src/app/app.component.ts" region="parent-data-type"></code-example>
+<code-example header="src/app/app.component.ts" path="property-binding/src/app/app.component.ts" region="parent-data-type"></code-example>.
 
-If `parentItem` were some other type, you would need to specify `childItem` `@Input()` as that type as well.
+Если бы `parentItem` был каким-то другим типом, вам нужно было бы указать `childItem` `@Input()` как этот тип.
 
-### Passing in an object
+### Передача объекта
 
-In this example, `ItemListComponent` is a child component of `AppComponent` and the `items` property expects an array of objects.
+В этом примере `ItemListComponent` является дочерним компонентом `AppComponent` и свойство `items` ожидает массив объектов.
 
 <code-example header="src/app/app.component.html" path="property-binding/src/app/app.component.html" region="pass-object"></code-example>
 
-In the `ItemListComponent` the `@Input()`, `items`, has a type of `Item[]`.
+В `ItemListComponent` `@Input()`, `items`, имеет тип `Item[]`.
 
-<code-example header="src/app/item-list.component.ts" path="property-binding/src/app/item-list/item-list.component.ts" region="item-input"></code-example>
+<code-example header="src/app/item-list.component.ts" path="property-binding/src/app/item-list/item-list.component.ts" region="item-input"></code-example>.
 
-Notice that `Item` is an object and it has two properties, an `id` and a `name`.
+Обратите внимание, что `Item` является объектом и имеет два свойства, `id` и `name`.
 
-<code-example header="src/app/item.ts" path="property-binding/src/app/item.ts" region="item-class"></code-example>
+<code-example header="src/app/item.ts" path="property-binding/src/app/item.ts" region="item-class"></code-example>.
 
-In `app.component.ts`, `currentItems` is an array of objects in the same shape as the `Item` object in `items.ts`, with an `id` and a `name`.
+В `app.component.ts`, `currentItems` - это массив объектов в той же форме, что и объект `Item` в `items.ts`, с `id` и `name`.
 
-<code-example header="src/app.component.ts" path="property-binding/src/app/app.component.ts" region="pass-object"></code-example>
+<code-example header="src/app.component.ts" path="property-binding/src/app/app.component.ts" region="pass-object"></code-example>.
 
-By supplying an object in the same shape, you meet the expectations of `items` when Angular evaluates the expression `currentItems`.
+Предоставляя объект в той же форме, вы удовлетворяете ожиданиям `items`, когда Angular оценивает выражение `currentItems`.
 
 <!-- links -->
 
@@ -74,4 +76,4 @@ By supplying an object in the same shape, you meet the expectations of `items` w
 
 <!-- end links -->
 
-:date: 28.02.2022
+:дата: 28.02.2022

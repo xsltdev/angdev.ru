@@ -1,33 +1,36 @@
-# Route transition animations
+# Анимация перехода между маршрутами
 
-Routing enables users to navigate between different routes in an application.
+Маршрутизация позволяет пользователям перемещаться между различными маршрутами в приложении.
 
-## Prerequisites
+## Предварительные условия
 
-A basic understanding of the following concepts:
+Базовое понимание следующих концепций:
 
--   [Introduction to Angular animations](guide/animations)
--   [Transition and triggers](guide/transition-and-triggers)
--   [Reusable animations](guide/reusable-animations)
+-   [Введение в анимации Angular](руководство/анимации)
 
-## Enable routing transition animation
+-   [Переход и триггеры](руководство/переход и триггеры)
 
-When a user navigates from one route to another, the Angular router maps the URL path to a relevant component and displays its view.
-Animating this route transition can greatly enhance the user experience.
+-   [Многоразовые анимации](guide/reusable-animations)
 
-The Angular router comes with high-level animation functions that let you animate the transitions between views when a route changes.
-To produce an animation sequence when switching between routes, you need to define nested animation sequences.
-Start with the top-level component that hosts the view, and nest animations in the components that host the embedded views.
+## Включить анимацию перехода маршрутизации
 
-To enable routing transition animation, do the following:
+Когда пользователь переходит от одного маршрута к другому, маршрутизатор Angular сопоставляет путь URL с соответствующим компонентом и отображает его вид. Анимация этого перехода маршрута может значительно улучшить пользовательский опыт.
 
-1.  Import the routing module into the application and create a routing configuration that defines the possible routes.
-1.  Add a router outlet to tell the Angular router where to place the activated components in the DOM.
-1.  Define the animation.
+Angular router поставляется с высокоуровневыми функциями анимации, которые позволяют анимировать переходы между представлениями при изменении маршрута. Чтобы создать анимационную последовательность при переключении между маршрутами, необходимо определить вложенные анимационные последовательности.
 
-Illustrate a router transition animation by navigating between two routes, _Home_ and _About_ associated with the `HomeComponent` and `AboutComponent` views respectively.
-Both of these component views are children of the top-most view, hosted by `AppComponent`.
-Implement a router transition animation that slides in the new view to the right and slides out the old view when navigating between the two routes.
+Начните с компонента верхнего уровня, в котором расположено представление, и вложите анимацию в компоненты, в которых расположены встроенные представления.
+
+Чтобы включить анимацию перехода между маршрутами, сделайте следующее:
+
+1.  Импортируйте модуль маршрутизации в приложение и создайте конфигурацию маршрутизации, определяющую возможные маршруты.
+
+1.  Добавьте выход маршрутизатора, чтобы указать маршрутизатору Angular, где разместить активированные компоненты в DOM.
+
+1.  Определите анимацию.
+
+Проиллюстрируйте анимацию перехода маршрутизатора, перемещаясь между двумя маршрутами, _Home_ и _About_, связанными с представлениями `HomeComponent` и `AboutComponent` соответственно. Оба эти представления компонентов являются дочерними для самого верхнего представления, расположенного в `AppComponent`.
+
+Реализуйте анимацию перехода маршрутизатора, которая при навигации между двумя маршрутами сдвигает новый вид вправо и сдвигает старый вид.
 
 <div class="lightbox">
 
@@ -35,128 +38,126 @@ Implement a router transition animation that slides in the new view to the right
 
 </div>
 
-## Route configuration
+## Конфигурация маршрутов
 
-To begin, configure a set of routes using methods available in the `RouterModule` class.
-This route configuration tells the router how to navigate.
+Для начала настройте набор маршрутов, используя методы, доступные в классе `RouterModule`. Эта конфигурация маршрутов указывает маршрутизатору, как перемещаться.
 
-Use the `RouterModule.forRoot` method to define a set of routes.
-Also, add `RouterModule` to the `imports` array of the main module, `AppModule`.
+Используйте метод `RouterModule.forRoot` для определения набора маршрутов. Также добавьте `RouterModule` в массив `imports` главного модуля, `AppModule`.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-Use the `RouterModule.forRoot` method in the root module, `AppModule`, to register top-level application routes and providers.
+**NOTE**: <br /> Use the `RouterModule.forRoot` method in the root module, `AppModule`, to register top-level application routes and providers.
 For feature modules, call the `RouterModule.forChild` method instead.
 
 </div>
 
-The following configuration defines the possible routes for the application.
+Следующая конфигурация определяет возможные маршруты для приложения.
 
-<code-example header="src/app/app.module.ts" path="animations/src/app/app.module.ts" region="route-animation-data"></code-example>
+<code-example header="src/app/app.module.ts" path="animations/src/app/app/app.module.ts" region="route-animation-data"></code-example>.
 
-The `home` and `about` paths are associated with the `HomeComponent` and `AboutComponent` views.
-The route configuration tells the Angular router to instantiate the `HomeComponent` and `AboutComponent` views when the navigation matches the corresponding path.
+Пути `home` и `about` связаны с представлениями `HomeComponent` и `AboutComponent`. Конфигурация маршрута указывает маршрутизатору Angular инстанцировать представления `HomeComponent` и `AboutComponent`, когда навигация соответствует соответствующему пути.
 
-The `data` property of each route defines the key animation-specific configuration associated with a route.
-The `data` property value is passed into `AppComponent` when the route changes.
+Свойство `data` каждого маршрута определяет ключевую конфигурацию, специфичную для анимации, связанную с маршрутом. Значение свойства `data` передается в `AppComponent` при изменении маршрута.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-The `data` property names that you use can be arbitrary.
+**NOTE**: <br /> The `data` property names that you use can be arbitrary.
 For example, the name _animation_ used in the preceding example is an arbitrary choice.
 
 </div>
 
 ## Router outlet
 
-After configuring the routes, add a `<router-outlet>` inside the root `AppComponent` template.
-The `<router-outlet>` directive tells the Angular router where to render the views when matched with a route.
+После настройки маршрутов добавьте `<router-outlet>` внутри корневого шаблона `AppComponent`. Директива `<router-outlet>` указывает маршрутизатору Angular, где отображать представления при сопоставлении с маршрутом.
 
-The `ChildrenOutletContexts` holds information about outlets and activated routes.
-The `data` property of each `Route` can be used to animate routing transitions.
+В `ChildrenOutletContexts` хранится информация об аутлетах и активированных маршрутах. Свойство `data` каждого `маршрута` может быть использовано для анимации переходов маршрутизации.
 
 <code-example header="src/app/app.component.html" path="animations/src/app/app.component.html" region="route-animations-outlet"></code-example>
 
-`AppComponent` defines a method that can detect when a view changes.
-The method assigns an animation state value to the animation trigger \(`@routeAnimation`\) based on the route configuration `data` property value.
-Here's an example of an `AppComponent` method that detects when a route change happens.
+`AppComponent` определяет метод, который может обнаружить, когда представление изменяется. Метод присваивает значение состояния анимации триггеру анимации \(`@routeAnimation`\) на основе значения свойства `data` конфигурации маршрута.
+
+Вот пример метода `AppComponent`, который обнаруживает изменение маршрута.
 
 <code-example header="src/app/app.component.ts" path="animations/src/app/app.component.ts" region="get-route-animations-data"></code-example>
 
-The `getRouteAnimationData()` method takes the value of the outlet. It returns a string that represents the state of the animation based on the custom data of the current active route.
-Use this data to control which transition to run for each route.
+Метод `getRouteAnimationData()` принимает значение розетки. Он возвращает строку, которая представляет состояние анимации, основанное на пользовательских данных текущего активного маршрута. Используйте эти данные для управления тем, какой переход запускать для каждого маршрута.
 
-## Animation definition
+## Определение анимации
 
-Animations can be defined directly inside your components.
-For this example you are defining the animations in a separate file, which allows re-use of animations.
+Анимации могут быть определены непосредственно внутри ваших компонентов. В данном примере вы определяете анимации в отдельном файле, что позволяет повторно использовать анимации.
 
-The following code snippet defines a reusable animation named `slideInAnimation`.
+Следующий фрагмент кода определяет многократно используемую анимацию с именем `slideInAnimation`.
 
-<code-example header="src/app/animations.ts" path="animations/src/app/animations.ts" region="route-animations"></code-example>
+<code-example header="src/app/animations.ts" path="animations/src/app/animations.ts" region="route-animations"></code-example>.
 
-The animation definition performs the following tasks:
+Определение анимации выполняет следующие задачи:
 
--   Defines two transitions \(a single `trigger` can define multiple states and transitions\)
--   Adjusts the styles of the host and child views to control their relative positions during the transition
--   Uses `query()` to determine which child view is entering and which is leaving the host view
+-   Определяет два перехода\(один `триггер` может определять несколько состояний и переходов\)
 
-A route change activates the animation trigger, and a transition matching the state change is applied.
+-   Настраивает стили главного и дочернего представлений для управления их относительным положением во время перехода
+
+-   Использует `query()` для определения того, какое дочернее представление входит, а какое выходит из главного представления.
+
+Изменение маршрута активирует триггер анимации, и применяется переход, соответствующий изменению состояния.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-The transition states must match the `data` property value defined in the route configuration.
+**NOTE**: <br /> The transition states must match the `data` property value defined in the route configuration.
 
 </div>
 
-Make the animation definition available in your application by adding the reusable animation \(`slideInAnimation`\) to the `animations` metadata of the `AppComponent`.
+Сделайте определение анимации доступным в вашем приложении, добавив многоразовую анимацию \(`slideInAnimation`\) в метаданные `animations` компонента `AppComponent`.
 
-<code-example header="src/app/app.component.ts" path="animations/src/app/app.component.ts" region="define"></code-example>
+<code-example header="src/app/app.component.ts" path="animations/src/app/app/app.component.ts" region="define"></code-example>.
 
-### Style the host and child components
+### Стиль главного и дочернего компонентов
 
-During a transition, a new view is inserted directly after the old one and both elements appear on screen at the same time.
-To prevent this behavior, update the host view to use relative positioning.
-Then, update the removed and inserted child views to use absolute positioning.
-Adding these styles to the views animates the containers in place and prevents one view from affecting the position of the other on the page.
+Во время перехода новое представление вставляется непосредственно после старого, и оба элемента появляются на экране одновременно. Чтобы предотвратить такое поведение, обновите основное представление, чтобы оно использовало относительное позиционирование.
+
+Затем обновите удаленные и вставленные дочерние представления, чтобы использовать абсолютное позиционирование.
+
+Добавление этих стилей к представлениям анимирует контейнеры на месте и не позволяет одному представлению влиять на положение другого на странице.
 
 <code-example header="src/app/animations.ts (excerpt)" path="animations/src/app/animations.ts" region="style-view"></code-example>
 
-### Query the view containers
+### Запрос контейнеров представления
 
-Use the `query()` method to find and animate elements within the current host component.
-The `query(":enter")` statement returns the view that is being inserted, and `query(":leave")` returns the view that is being removed.
+Используйте метод `query()` для поиска и анимации элементов внутри текущего компонента хоста. Оператор `query(":enter")` возвращает представление, которое вставляется, а `query(":leave")` возвращает представление, которое удаляется.
 
-Assume that you are routing from the _Home =&gt; About_.
+Предположим, что вы выполняете маршрутизацию из раздела _Home =&gt; About_.
 
-<code-example header="src/app/animations.ts (excerpt)" path="animations/src/app/animations.ts" region="query"></code-example>
+<code-example header="src/app/animations.ts (excerpt)" path="animations/src/app/animations.ts" region="query"></code-example>.
 
-The animation code does the following after styling the views:
+После стилизации представлений код анимации выполняет следующие действия:
 
-1.  `query(':enter', style({ left: '-100%' }))` matches the view that is added and hides the newly added view by positioning it to the far left.
-1.  Calls `animateChild()` on the view that is leaving, to run its child animations.
-1.  Uses [`group()`](api/animations/group) function to make the inner animations run in parallel.
-1.  Within the [`group()`](api/animations/group) function:
+1.  `query(':enter', style({ left: '-100%' }))` соответствует добавляемому представлению и скрывает вновь добавленное представление, позиционируя его в крайнем левом углу.
 
-    1.  Queries the view that is removed and animates it to slide far to the right.
-    1.  Slides in the new view by animating the view with an easing function and duration.
+1.  Вызывает `animateChild()` на уходящем представлении, чтобы запустить его дочерние анимации.
 
-        This animation results in the `about` view sliding in from the left.
+1.  Использует функцию [`group()`](api/animations/group), чтобы внутренние анимации запускались параллельно.
 
-1.  Calls the `animateChild()` method on the new view to run its child animations after the main animation completes.
+1.  Внутри функции [`group()`](api/animations/group):
 
-You now have a basic routable animation that animates routing from one view to another.
+    1.  Запрашивает удаляемый вид и анимирует его сдвиг далеко вправо.
 
-## More on Angular animations
+    1.  Вставляет новый вид, анимируя его с помощью функции смягчения и длительности.
 
-You might also be interested in the following:
+        В результате анимации вид `about` сдвигается влево.
 
--   [Introduction to Angular animations](guide/animations)
--   [Transition and triggers](guide/transition-and-triggers)
--   [Complex animation sequences](guide/complex-animation-sequences)
--   [Reusable animations](guide/reusable-animations)
+1.  Вызывает метод `animateChild()` нового представления, чтобы запустить его дочерние анимации после завершения основной анимации.
 
-:date: 11.10.2022
+Теперь у вас есть базовая маршрутизируемая анимация, которая анимирует переход от одного представления к другому.
+
+## Подробнее об анимации в Angular
+
+Вам также может быть интересно следующее:
+
+-   [Введение в анимации Angular](руководство/анимации)
+
+-   [Переход и триггеры](guide/transition-and-triggers)
+
+-   [Сложные анимационные последовательности](руководство/complex-animation-sequences)
+
+-   [Многоразовые анимации](guide/reusable-animations)
+
+:дата: 11.10.2022

@@ -1,47 +1,47 @@
-# Reusable animations
+# Многоразовые анимации
 
-This topic provides some examples of how to create reusable animations.
+В этой теме приведены примеры создания многократно используемых анимаций.
 
-## Prerequisites
+## Предварительные условия
 
-Before continuing with this topic, you should be familiar with the following:
+Прежде чем продолжить изучение этой темы, вы должны быть знакомы со следующим:
 
--   [Introduction to Angular animations](guide/animations)
--   [Transition and triggers](guide/transition-and-triggers)
+-   [Введение в анимации Angular](руководство/анимации)
 
-## Create reusable animations
+-   [Переход и триггеры](guide/transition-and-triggers)
 
-To create a reusable animation, use the [`animation()`](api/animations/animation) function to define an animation in a separate `.ts` file and declare this animation definition as a `const` export variable.
-You can then import and reuse this animation in any of your application components using the [`useAnimation()`](api/animations/useAnimation) function.
+## Создание многократно используемых анимаций
 
-<code-example header="src/app/animations.ts" path="animations/src/app/animations.1.ts" region="animation-const"></code-example>
+Чтобы создать многократно используемую анимацию, используйте функцию [`animation()`](api/animations/animation) для определения анимации в отдельном файле `.ts` и объявите это определение анимации как экспортную переменную `const`. Затем вы можете импортировать и повторно использовать эту анимацию в любом из компонентов вашего приложения с помощью функции [`useAnimation()`](api/animations/useAnimation).
 
-In the preceding code snippet, `transitionAnimation` is made reusable by declaring it as an export variable.
+<code-example header="src/app/animations.ts" path="animations/src/app/animations.1.ts" region="animation-const"></code-example>.
+
+В предыдущем фрагменте кода `transitionAnimation` сделан многократно используемым путем объявления его как переменной экспорта.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-The `height`, `opacity`, `backgroundColor`, and `time` inputs are replaced during runtime.
+**NOTE**: <br /> The `height`, `opacity`, `backgroundColor`, and `time` inputs are replaced during runtime.
 
 </div>
 
-You can also export a part of an animation.
-For example, the following snippet exports the animation `trigger`.
+Вы также можете экспортировать часть анимации. Например, в следующем фрагменте экспортируется анимация `trigger`.
 
-<code-example header="src/app/animations.1.ts" path="animations/src/app/animations.1.ts" region="trigger-const"></code-example>
+<code-example header="src/app/animations.1.ts" path="animations/src/app/animations.1.ts" region="trigger-const"></code-example>.
 
-From this point, you can import reusable animation variables in your component class.
-For example, the following code snippet imports the `transitionAnimation` variable and uses it via the `useAnimation()` function.
+С этого момента вы можете импортировать многократно используемые переменные анимации в класс вашего компонента. Например, следующий фрагмент кода импортирует переменную `transitionAnimation` и использует ее с помощью функции `useAnimation()`.
 
-<code-example header="src/app/open-close.component.ts" path="animations/src/app/open-close.component.3.ts" region="reusable"></code-example>
+<code-example header="src/app/open-close.component.ts" path="animations/src/app/open-close.component.3.ts" region="reusable"></code-example>.
 
-## More on Angular animations
+## Больше об анимации Angular
 
-You might also be interested in the following:
+Вам также может быть интересно следующее:
 
--   [Introduction to Angular animations](guide/animations)
--   [Transition and triggers](guide/transition-and-triggers)
--   [Complex animation Sequences](guide/complex-animation-sequences)
--   [Route transition animations](guide/route-animations)
+-   [Введение в анимации Angular](руководство/анимации)
+
+-   [Переход и триггеры](guide/transition-and-triggers)
+
+-   [Сложные анимационные последовательности](руководство/complex-animation-sequences)
+
+-   [Анимации перехода по маршруту](guide/route-animations)
 
 :date: 11.10.2022

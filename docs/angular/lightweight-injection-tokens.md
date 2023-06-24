@@ -1,58 +1,59 @@
-# Optimizing client application size with lightweight injection tokens
+# Оптимизация размера клиентского приложения с помощью облегченных инъекционных маркеров
 
-This page provides a conceptual overview of a dependency injection technique that is recommended for library developers.
-Designing your library with _lightweight injection tokens_ helps optimize the bundle size of client applications that use your library.
+На этой странице представлен концептуальный обзор техники инъекции зависимостей, которая рекомендуется разработчикам библиотек. Проектирование вашей библиотеки с использованием _легких инъекционных маркеров_ помогает оптимизировать размер пакета клиентских приложений, использующих вашу библиотеку.
 
-You can manage the dependency structure among your components and injectable services to optimize bundle size by using [tree-shakable providers](guide/architecture-services#introduction-to-services-and-dependency-injection).
-This normally ensures that if a provided component or service is never actually used by the application, the compiler can remove its code from the bundle.
+Вы можете управлять структурой зависимостей среди ваших компонентов и инжектируемых сервисов для оптимизации размера пакета, используя [tree-shakable providers] (guide/architecture-services#introduction-to-services-and-dependency-injection). Обычно это гарантирует, что если предоставленный компонент или сервис никогда не будет использоваться приложением, компилятор сможет удалить его код из пакета.
 
-Due to the way Angular stores injection tokens, it is possible that such an unused component or service can end up in the bundle anyway.
-This page describes a dependency-injection design pattern that supports proper tree-shaking by using lightweight injection tokens.
+Из-за того, как Angular хранит инъекционные маркеры, возможно, что такой неиспользуемый компонент или сервис все равно окажется в связке. На этой странице описан шаблон проектирования инъекции зависимостей, который поддерживает правильное встряхивание дерева с помощью облегченных инъекционных маркеров.
 
-The lightweight injection token design pattern is especially important for library developers.
-It ensures that when an application uses only some of your library's capabilities, the unused code can be eliminated from the client's application bundle.
+Шаблон проектирования облегченных инъекционных маркеров особенно важен для разработчиков библиотек. Он гарантирует, что когда приложение использует только некоторые из возможностей вашей библиотеки, неиспользуемый код может быть исключен из пакета клиентского приложения.
 
-When an application uses your library, there might be some services that your library supplies which the client application doesn't use.
-In this case, the application developer should expect that service to be tree-shaken, and not contribute to the size of the compiled application.
-Because the application developer cannot know about or remedy a tree-shaking problem in the library, it is the responsibility of the library developer to do so.
-To prevent the retention of unused components, your library should use the lightweight injection token design pattern.
+Когда приложение использует вашу библиотеку, могут существовать некоторые сервисы, предоставляемые вашей библиотекой, которые клиентское приложение не использует. В этом случае разработчик приложения должен ожидать, что этот сервис будет разнесен по деревьям и не будет способствовать увеличению размера скомпилированного приложения.
 
-## When tokens are retained
+Поскольку разработчик приложения не может знать о проблеме tree-shaking в библиотеке или устранить ее, ответственность за это лежит на разработчике библиотеки.
 
-To better explain the condition under which token retention occurs, consider a library that provides a library-card component. This component contains a body and can contain an optional header.
+Чтобы предотвратить сохранение неиспользуемых компонентов, ваша библиотека должна использовать облегченный шаблон проектирования инъекционных токенов.
+
+## Когда маркеры сохраняются
+
+Чтобы лучше объяснить условие, при котором происходит сохранение маркера, рассмотрим библиотеку, которая предоставляет компонент library-card. Этот компонент содержит тело и может содержать необязательный заголовок.
 
 <code-example format="html" language="html">
 
-&lt;lib-card&gt;
-&lt;lib-header&gt;&hellip;&lt;/lib-header&gt;
+&lt;lib-card&gt; &lt;lib-header&gt;&hellip;&lt;/lib-header&gt;
 &lt;/lib-card&gt;
 
 </code-example>
 
-In a likely implementation, the `<lib-card>` component uses `@ContentChild()` or `@ContentChildren()` to get `<lib-header>` and `<lib-body>`, as in the following.
+В вероятной реализации компонент `<lib-card>` использует `@ContentChild()` или `@ContentChildren()` для получения `<lib-header>` и `<lib-body>`, как показано ниже.
 
 <code-example format="typescript" language="typescript">
 
-&commat;Component({
-selector: 'lib-header',
+&commat;Component({ selector: 'lib-header',
 &hellip;,
+
 })
+
 class LibHeaderComponent {}
 
-&commat;Component({
-selector: 'lib-card',
+&commat;Component({ selector: 'lib-card',
+
 &hellip;,
+
 })
+
 class LibCardComponent {
+
 &commat;ContentChild(LibHeaderComponent)
-header: LibHeaderComponent|null = null;
+
+заголовок: LibHeaderComponent|null = null;
+
 }
 
 </code-example>
 
-Because `<lib-header>` is optional, the element can appear in the template in its minimal form, `<lib-card></lib-card>`.
-In this case, `<lib-header>` is not used and you would expect it to be tree-shaken, but that is not what happens.
-This is because `LibCardComponent` actually contains two references to the `LibHeaderComponent`.
+Поскольку `<lib-header>` является необязательным, элемент может появиться в шаблоне в своей минимальной форме, `<lib-card></lib-card>`. В этом случае `<lib-header>` не используется, и можно было бы ожидать, что он будет в виде дерева, но этого не происходит.
+Это происходит потому, что `LibCardComponent` фактически содержит две ссылки на `LibHeaderComponent`.
 
 <code-example format="typescript" language="typescript">
 
@@ -60,150 +61,169 @@ This is because `LibCardComponent` actually contains two references to the `LibH
 
 </code-example>
 
--   One of these reference is in the _type position_-- that is, it specifies `LibHeaderComponent` as a type: `header: LibHeaderComponent;`.
+-   Одна из этих ссылок находится в позиции _type_ - то есть, она указывает `LibHeaderComponent` как тип: `header: LibHeaderComponent;`.
 
--   The other reference is in the _value position_-- that is, LibHeaderComponent is the value of the `@ContentChild()` parameter decorator: `@ContentChild(LibHeaderComponent)`.
+-   Другая ссылка находится в позиции _value_ -- то есть LibHeaderComponent является значением декоратора параметров `@ContentChild()`: `@ContentChild(LibHeaderComponent)`.
 
-The compiler handles token references in these positions differently.
+Компилятор по-разному обрабатывает ссылки на маркеры в этих позициях.
 
--   The compiler erases _type position_ references after conversion from TypeScript, so they have no impact on tree-shaking.
+-   Компилятор стирает ссылки _type position_ после преобразования из TypeScript, поэтому они не влияют на дрожание деревьев.
 
--   The compiler must keep _value position_ references at runtime, which prevents the component from being tree-shaken.
+-   Компилятор должен сохранять ссылки _value position_ во время выполнения, что предотвращает древовидное дрожание компонента.
 
-In the example, the compiler retains the `LibHeaderComponent` token that occurs in the value position. This prevents the referenced component from being tree-shaken, even if the application developer does not actually use `<lib-header>` anywhere.
-If `LibHeaderComponent` 's code, template, and styles combined becomes too large, including it unnecessarily can significantly increase the size of the client application.
+В примере компилятор сохраняет маркер `LibHeaderComponent`, который встречается в позиции значения. Это предотвращает перетряхивание дерева ссылающегося компонента, даже если разработчик приложения фактически нигде не использует `<lib-header>`. Если код, шаблон и стили `LibHeaderComponent`` в совокупности становятся слишком большими, включение их без необходимости может значительно увеличить размер клиентского приложения.
 
-## When to use the lightweight injection token pattern
+## Когда использовать облегченный шаблон инъекционного маркера
 
-The tree-shaking problem arises when a component is used as an injection token.
-There are two cases when that can happen.
+Проблема "дрожащего дерева" возникает, когда компонент используется в качестве маркера инъекции. Это может произойти в двух случаях.
 
--   The token is used in the value position of a [content query](guide/lifecycle-hooks#using-aftercontent-hooks 'See more about using content queries.').
--   The token is used as a type specifier for constructor injection.
+-   Маркер используется в позиции значения [content query] (guide/lifecycle-hooks#using-aftercontent-hooks 'Подробнее об использовании content queries.').
 
-In the following example, both uses of the `OtherComponent` token cause retention of `OtherComponent`, preventing it from being tree-shaken when it is not used.
+-   Маркер используется в качестве спецификатора типа для инъекции конструктора.
+
+В следующем примере оба использования маркера `OtherComponent` приводят к сохранению `OtherComponent`, предотвращая его от перетряхивания дерева, когда он не используется.
 
 <code-example format="typescript" language="typescript">
 
-class MyComponent {
-constructor(&commat;Optional() other: OtherComponent) {}
+class MyComponent { constructor(&commat;Optional() other: OtherComponent) {}
 
-&commat;ContentChild(OtherComponent)
-other: OtherComponent|null;
+&commat;ContentChild(OtherComponent) other: OtherComponent|null;
+
 }
 
 </code-example>
 
-Although tokens used only as type specifiers are removed when converted to JavaScript, all tokens used for dependency injection are needed at runtime.
-These effectively change `constructor(@Optional() other: OtherComponent)` to `constructor(@Optional() @Inject(OtherComponent) other)`.
-The token is now in a value position, and causes the tree shaker to keep the reference.
+Хотя маркеры, используемые только в качестве спецификаторов типов, удаляются при преобразовании в JavaScript, все маркеры, используемые для инъекции зависимостей, необходимы во время выполнения. Они эффективно изменяют `constructor(@Optional() other: OtherComponent)` на `constructor(@Optional() @Inject(OtherComponent) other)`.
+Теперь маркер находится в позиции значения и заставляет шейкер дерева сохранять ссылку.
 
 <div class="alert is helpful">
 
-For all services, a library should use [tree-shakable providers](guide/architecture-services#introduction-to-services-and-dependency-injection), providing dependencies at the root level rather than in component constructors.
+Для всех сервисов библиотека должна использовать [tree-shakable providers](guide/architecture-services#introduction-to-services-and-dependency-injection), предоставляя зависимости на корневом уровне, а не в конструкторах компонентов.
 
 </div>
 
-## Using lightweight injection tokens
+## Использование облегченных инъекционных маркеров
 
-The lightweight injection token design pattern consists of using a small abstract class as an injection token, and providing the actual implementation at a later stage.
-The abstract class is retained, not tree-shaken, but it is small and has no material impact on the application size.
+Шаблон проектирования облегченных инъекционных маркеров заключается в использовании небольшого абстрактного класса в качестве инъекционного маркера и предоставлении фактической реализации на более позднем этапе. Абстрактный класс сохраняется, а не встряхивается в дерево, но он мал и не оказывает существенного влияния на размер приложения.
 
-The following example shows how this works for the `LibHeaderComponent`.
+Следующий пример показывает, как это работает для `LibHeaderComponent`.
 
 <code-example format="typescript" language="typescript">
 
 abstract class LibHeaderToken {}
 
-&commat;Component({
-selector: 'lib-header',
-providers: [
+&commat;Component({ selector: 'lib-header',
+
+провайдеры: [
+
 {provide: LibHeaderToken, useExisting: LibHeaderComponent}
+
 ]
+
 &hellip;,
+
 })
+
 class LibHeaderComponent extends LibHeaderToken {}
 
-&commat;Component({
-selector: 'lib-card',
+&commat;Component({ selector: 'lib-card',
+
 &hellip;,
+
 })
+
 class LibCardComponent {
+
 &commat;ContentChild(LibHeaderToken) header: LibHeaderToken|null = null;
+
 }
 
 </code-example>
 
-In this example, the `LibCardComponent` implementation no longer refers to `LibHeaderComponent` in either the type position or the value position.
-This lets full tree shaking of `LibHeaderComponent` take place.
-The `LibHeaderToken` is retained, but it is only a class declaration, with no concrete implementation.
-It is small and does not materially impact the application size when retained after compilation.
+В этом примере реализация `LibCardComponent` больше не ссылается на `LibHeaderComponent` ни в позиции типа, ни в позиции значения. Это позволяет полностью перетряхнуть дерево `LibHeaderComponent`.
+Сохраняется `LibHeaderToken`, но это только объявление класса, без конкретной реализации.
 
-Instead, `LibHeaderComponent` itself implements the abstract `LibHeaderToken` class.
-You can safely use that token as the provider in the component definition, allowing Angular to correctly inject the concrete type.
+Он мал и не оказывает существенного влияния на размер приложения, если сохраняется после компиляции.
 
-To summarize, the lightweight injection token pattern consists of the following.
+Вместо этого сам `LibHeaderComponent` реализует абстрактный класс `LibHeaderToken`. Вы можете смело использовать этот токен в качестве провайдера в определении компонента, что позволит Angular правильно инжектировать конкретный тип.
 
-1.  A lightweight injection token that is represented as an abstract class.
-1.  A component definition that implements the abstract class.
-1.  Injection of the lightweight pattern, using ` @ContentChild()` or `@ContentChildren()`.
-1.  A provider in the implementation of the lightweight injection token which associates the lightweight injection token with the implementation.
+Подводя итог, можно сказать, что паттерн облегченной инъекции токенов состоит из следующего.
 
-### Use the lightweight injection token for API definition
+1.  Легкий инжектируемый токен, который представлен в виде абстрактного класса.
 
-A component that injects a lightweight injection token might need to invoke a method in the injected class.
-The token is now an abstract class. Since the injectable component implements that class, you must also declare an abstract method in the abstract lightweight injection token class.
-The implementation of the method, with all its code overhead, resides in the injectable component that can be tree-shaken.
-This lets the parent communicate with the child, if it is present, in a type-safe manner.
+1.  Определение компонента, реализующего абстрактный класс.
 
-For example, the `LibCardComponent` now queries `LibHeaderToken` rather than `LibHeaderComponent`.
-The following example shows how the pattern lets `LibCardComponent` communicate with the `LibHeaderComponent` without actually referring to `LibHeaderComponent`.
+1.  Инъекция облегченного шаблона с использованием `@ContentChild()` или `@ContentChildren()`.
+
+1.  Провайдер в реализации маркера инъекции легковесного паттерна, который связывает маркер инъекции легковесного паттерна с реализацией.
+
+### Использование маркера облегченной инъекции для определения API.
+
+Компоненту, инжектирующему легкий инжектируемый маркер, может понадобиться вызвать метод в инжектированном классе. Теперь маркер является абстрактным классом. Поскольку инжектируемый компонент реализует этот класс, вы должны также объявить абстрактный метод в абстрактном классе легкого инжектируемого маркера.
+
+Реализация метода со всеми его накладными расходами кода находится в инжектируемом компоненте, который может быть встряхнут деревом.
+
+Это позволяет родителю общаться с дочерним компонентом, если он присутствует, безопасным для типов образом.
+
+Например, `LibCardComponent` теперь запрашивает `LibHeaderToken`, а не `LibHeaderComponent`. Следующий пример показывает, как шаблон позволяет `LibCardComponent` взаимодействовать с `LibHeaderComponent` без фактического обращения к `LibHeaderComponent`.
 
 <code-example format="typescript" language="typescript">
 
-abstract class LibHeaderToken {
-abstract doSomething(): void;
+abstract class LibHeaderToken { abstract doSomething(): void;
 }
 
-&commat;Component({
-selector: 'lib-header',
+&commat;Component({ selector: 'lib-header',
+
 providers: [
+
 {provide: LibHeaderToken, useExisting: LibHeaderComponent}
+
 ]
+
 &hellip;,
+
 })
+
 class LibHeaderComponent extends LibHeaderToken {
+
 doSomething(): void {
-// Concrete implementation of `doSomething`
-}
+
+// Конкретная реализация `doSomething`.
+
 }
 
-&commat;Component({
-selector: 'lib-card',
+}
+
+&commat;Component({ selector: 'lib-card',
+
 &hellip;,
-})
-class LibCardComponent implement AfterContentInit {
-&commat;ContentChild(LibHeaderToken)
-header: LibHeaderToken|null = null;
 
-ngAfterContentInit(): void {
-this.header &amp;&amp; this.header.doSomething();
+})
+
+class LibCardComponent implement AfterContentInit {
+
+&commat;ContentChild(LibHeaderToken)
+
+заголовок: LibHeaderToken|null = null;
+
+ngAfterContentInit(): void { this.header &amp;&amp; this.header.doSomething();
+
 }
+
 }
 
 </code-example>
 
-In this example the parent queries the token to get the child component, and stores the resulting component reference if it is present.
-Before calling a method in the child, the parent component checks to see if the child component is present.
-If the child component has been tree-shaken, there is no runtime reference to it, and no call to its method.
+В этом примере родительский компонент запрашивает маркер, чтобы получить дочерний компонент, и сохраняет полученную ссылку на компонент, если она присутствует. Перед вызовом метода в дочернем компоненте родительский компонент проверяет, присутствует ли дочерний компонент.
+Если дочерний компонент был встряхнут, то на него нет ссылки во время выполнения, и вызов его метода невозможен.
 
-### Naming your lightweight injection token
+### Именование вашего легковесного маркера инъекции
 
-Lightweight injection tokens are only useful with components.
-The Angular style guide suggests that you name components using the "Component" suffix.
-The example "LibHeaderComponent" follows this convention.
+Легкие инъекционные маркеры полезны только для компонентов. Руководство по стилю Angular предлагает называть компоненты с помощью суффикса "Component".
 
-You should maintain the relationship between the component and its token while still distinguishing between them. The recommended style is to use the component base name with the suffix "`Token`" to name your lightweight injection tokens: "`LibHeaderToken`."
+Пример "LibHeaderComponent" следует этому соглашению.
+
+Вы должны поддерживать связь между компонентом и его токеном, но при этом различать их. Рекомендуемый стиль - использовать базовое имя компонента с суффиксом "`Token`" для названия ваших облегченных инъекционных токенов: "`LibHeaderToken`".
 
 <!-- links -->
 
@@ -211,4 +231,4 @@ You should maintain the relationship between the component and its token while s
 
 <!-- end links -->
 
-:date: 28.02.2022
+:дата: 28.02.2022
