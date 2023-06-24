@@ -1,205 +1,201 @@
 # Angular Signals
 
-**Angular Signals** is a system that granularly tracks how and where your state is used throughout an application, allowing the framework to optimize
-rendering updates.
+**Angular Signals** - это система, которая детально отслеживает, как и где ваше состояние используется в приложении, позволяя фреймворку оптимизировать обновления рендеринга.
 
 <div class="alert is-important">
 
-Angular signals are available for [developer preview](/guide/releases#developer-preview). They're ready for you to try, but may change before they are stable.
+Сигналы Angular доступны для [предварительного просмотра разработчиком](/guide/releases#developer-preview). Они готовы к тому, чтобы вы попробовали их, но могут измениться до того, как они станут стабильными.
 
 </div>
 
-## What are signals?
+## Что такое сигналы?
 
-A **signal** is a wrapper around a value that can notify interested consumers when that value changes. Signals can contain any value, from simple primitives to complex data structures.
+**сигнал** - это обертка вокруг значения, которая может уведомлять заинтересованных потребителей об изменении этого значения. Сигналы могут содержать любое значение, от простых примитивов до сложных структур данных.
 
-A signal's value is always read through a getter function, which allows Angular to track where the signal is used.
+Значение сигнала всегда считывается через функцию getter, что позволяет Angular отслеживать, где используется сигнал.
 
-Signals may be either _writable_ or _read-only_.
+Сигналы могут быть либо _записываемыми_, либо _только для чтения_.
 
-### Writable signals
+### Записываемые сигналы
 
-Writable signals provide an API for updating their values directly. You create writable signals by calling the `signal` function with the signal's initial value:
+Записываемые сигналы предоставляют API для обновления их значений напрямую. Вы создаете записываемые сигналы, вызывая функцию `signal` с начальным значением сигнала:
 
-```ts
-const count = signal(0);
-
+```ts const count = signal(0);
 // Signals are getter functions - calling them reads their value.
 console.log('The count is: ' + count());
 ```
 
-To change the value of a writable signal, you can either `.set()` it directly:
+Чтобы изменить значение записываемого сигнала, вы можете либо `.set()` его непосредственно:
 
-```ts
-count.set(3);
+```ts count.set(3);
+
 ```
 
-or use the `.update()` operation to compute a new value from the previous one:
+или использовать операцию `.update()` для вычисления нового значения на основе предыдущего:
 
-```ts
-// Increment the count by 1.
-count.update(value => value + 1);
+```ts // Increment the count by 1.
+count.update((value) => value + 1);
 ```
 
-When working with signals that contain objects, it's sometimes useful to mutate that object directly. For example, if the object is an array, you may want to push a new value without replacing the array entirely. To make an internal change like this, use the `.mutate` method:
+При работе с сигналами, содержащими объекты, иногда полезно мутировать объект напрямую. Например, если объект представляет собой массив, вы можете захотеть вставить новое значение, не заменяя массив полностью. Для такого внутреннего изменения используйте метод `.mutate`:
 
-```ts
-const todos = signal([{title: 'Learn signals', done: false}]);
-
-todos.mutate(value => {
-  // Change the first TODO in the array to 'done: true' without replacing it.
-  value[0].done = true;
+```ts const todos = signal([{title: 'Learn signals', done: false}]);
+todos.mutate((value) => {
+    // Change the first TODO in the array to 'done: true' without replacing it.
+    value[0].done = true;
 });
 ```
 
-Writable signals have the type `WritableSignal`.
+Записываемые сигналы имеют тип `WritableSignal`.
 
-### Computed signals
+### Вычисляемые сигналы
 
-A **computed signal** derives its value from other signals. Define one using `computed` and specifying a derivation function:
+Сигнал **вычисляемый** получает свое значение от других сигналов. Определите его, используя `computed` и указав функцию вычисления:
 
-```typescript
-const count: WritableSignal<number> = signal(0);
-const doubleCount: Signal<number> = computed(() => count() * 2);
+```typescript const count: WritableSignal<number> = signal(0);
+const doubleCount: Signal<number> = computed(
+    () => count() * 2
+);
 ```
 
-The `doubleCount` signal depends on `count`. Whenever `count` updates, Angular knows that anything which depends on either `count` or `doubleCount` needs to update as well.
+Сигнал `doubleCount` зависит от `count`. Когда `count` обновляется, Angular знает, что все, что зависит от `count` или `doubleCount`, также должно обновиться.
 
-#### Computeds are both lazily evaluated and memoized
+#### Вычисления как лениво оцениваются, так и мемоизируются.
 
-`doubleCount`'s derivation function does not run to calculate its value until the first time `doubleCount` is read. Once calculated, this value is cached, and future reads of `doubleCount` will return the cached value without recalculating.
+Функция вычисления `doubleCount` не запускается для вычисления своего значения до тех пор, пока `doubleCount` не будет прочитан в первый раз. После вычисления это значение кэшируется, и последующие чтения `doubleCount` будут возвращать кэшированное значение без пересчета.
 
-When `count` changes, it tells `doubleCount` that its cached value is no longer valid, and the value is only recalculated on the next read of `doubleCount`.
+Когда `count` изменяется, он сообщает `doubleCount`, что его кэшированное значение больше не действительно, и значение пересчитывается только при следующем чтении `doubleCount`.
 
-As a result, it's safe to perform computationally expensive derivations in computed signals, such as filtering arrays.
+В результате, в вычисляемых сигналах можно безопасно выполнять вычислительно дорогие производные, такие как фильтрация массивов.
 
-#### Computed signals are not writable signals
+#### Вычислимые сигналы не являются сигналами, доступными для записи.
 
-You cannot directly assign values to a computed signal. That is,
+Вы не можете напрямую присваивать значения вычисляемому сигналу. То есть,
 
-```ts
-doubleCount.set(3);
+```ts doubleCount.set(3);
+
 ```
 
-produces a compilation error, because `doubleCount` is not a `WritableSignal`.
+выдает ошибку компиляции, поскольку `doubleCount` не является `WritableSignal`.
 
-#### Computed signal dependencies are dynamic
+#### Вычисленные зависимости сигналов являются динамическими.
 
-Only the signals actually read during the derivation are tracked. For example, in this computed the `count` signal is only read conditionally:
+Отслеживаются только те сигналы, которые действительно считываются во время вычисления. Например, в этом вычислении сигнал `count` читается только условно:
 
-```ts
-const showCount = signal(false);
+```ts const showCount = signal(false);
 const count = signal(0);
 const conditionalCount = computed(() => {
-  if (showCount()) {
-    return `The count is ${count()}.`;
-  } else {
-    return 'Nothing to see here!';
-  }
+    if (showCount()) {
+        return `The count is ${count()}.`;
+    } else {
+        return 'Nothing to see here!';
+    }
 });
 ```
 
-When reading `conditionalCount`, if `showCount` is `false` the "Nothing to see here!" message is returned _without_ reading the `count` signal. This means that updates to `count` will not result in a recomputation.
+При чтении `conditionalCount`, если `showCount` равно `false`, сообщение "Nothing to see here!" возвращается _без_ чтения сигнала `count`. Это означает, что обновление `count` не приведет к повторному вычислению.
 
-If `showCount` is later set to `true` and `conditionalCount` is read again, the derivation will re-execute and take the branch where `showCount` is `true`, returning the message which shows the value of `count`. Changes to `count` will then invalidate `conditionalCount`'s cached value.
+Если позже `showCount` будет установлен в `true` и `conditionalCount` будет прочитан снова, деривация будет выполнена заново и возьмет ветвь, где `showCount` будет `true`, возвращая сообщение, которое показывает значение `count`. Изменения в `count` затем аннулируют кэшированное значение `conditionalCount`.
 
-Note that dependencies can be removed as well as added. If `showCount` is later set to `false` again, then `count` will no longer be considered a dependency of `conditionalCount`.
+Обратите внимание, что зависимости могут быть как удалены, так и добавлены. Если позже `showCount` снова будет установлен в `false`, то `count` больше не будет считаться зависимостью `conditionalCount`.
 
-## Reading signals in `OnPush` components
+## Чтение сигналов в компонентах `OnPush`.
 
-When an `OnPush` component uses a signal's value in its template, Angular will track the signal as a dependency of that component. When that signal is updated, Angular automatically [marks](/api/core/ChangeDetectorRef#markforcheck) the component to ensure it gets updated the next time change detection runs. Refer to the [Skipping component subtrees](/guide/change-detection-skipping-subtrees) guide for more information about `OnPush` components.
+Когда компонент `OnPush` использует значение сигнала в своем шаблоне, Angular будет отслеживать сигнал как зависимость этого компонента. Когда сигнал обновляется, Angular автоматически [помечает](/api/core/ChangeDetectorRef#markforcheck) компонент, чтобы обеспечить его обновление при следующем запуске обнаружения изменений. Дополнительную информацию о компонентах `OnPush` см. в руководстве [Skipping component subtrees](/guide/change-detection-skipping-subtrees).
 
-## Effects
+## Эффекты
 
-Signals are useful because they can notify interested consumers when they change. An **effect** is an operation that runs whenever one or more signal values change. You can create an effect with the `effect` function:
+Сигналы полезны тем, что они могут уведомлять заинтересованных потребителей об изменениях. **эффект** - это операция, которая выполняется всякий раз, когда одно или несколько значений сигнала изменяются. Вы можете создать эффект с помощью функции `effect`:
 
-```ts
-effect(() => {
+```ts effect(() => {
   console.log(`The current count is: ${count()}`);
 });
 ```
 
-Effects always run **at least once.** When an effect runs, it tracks any signal value reads. Whenever any of these signal values change, the effect runs again. Similar to computed signals, effects keep track of their dependencies dynamically, and only track signals which were read in the most recent execution.
+Эффекты всегда запускаются **по крайней мере один раз.** Когда эффект запускается, он отслеживает все считанные значения сигнала. Когда любое из этих значений сигнала изменяется, эффект запускается снова. Подобно вычисляемым сигналам, эффекты отслеживают свои зависимости динамически и отслеживают только те сигналы, которые были прочитаны при последнем выполнении.
 
-Effects always execute **asynchronously**, during the change detection process.
+Эффекты всегда выполняются **асинхронно**, во время процесса обнаружения изменений.
 
-### Uses for effects
+### Применение эффектов
 
-Effects are rarely needed in most application code, but may be useful in specific circumstances. Here are some examples of situations where an `effect` might be a good solution:
+Эффекты редко нужны в большинстве прикладных программ, но могут быть полезны в определенных обстоятельствах. Вот несколько примеров ситуаций, в которых `эффект` может быть хорошим решением:
 
-* Logging data being displayed and when it changes, either for analytics or as a debugging tool
-* Keeping data in sync with `window.localStorage`
-* Adding custom DOM behavior that can't be expressed with template syntax
-* Performing custom rendering to a `<canvas>`, charting library, or other third party UI library
+-   Протоколирование отображаемых данных и их изменения, либо для аналитики, либо в качестве инструмента отладки.
 
-#### When not to use effects
+-   синхронизация данных с `window.localStorage`.
 
-Avoid using effects for propagation of state changes. This can result in `ExpressionChangedAfterItHasBeenChecked` errors, infinite circular updates, or unnecessary change detection cycles.
+-   Добавление пользовательского поведения DOM, которое не может быть выражено с помощью синтаксиса шаблонов.
 
-Because of these risks, setting signals is disallowed by default in effects, but can be enabled if absolutely necessary.
+-   Выполнение пользовательского рендеринга в `<canvas>`, библиотеку диаграмм или другую стороннюю библиотеку пользовательского интерфейса.
 
-### Injection context
+#### Когда не следует использовать эффекты
 
-By default, registering a new effect with the `effect()` function requires an "injection context" (access to the `inject` function). The easiest way to provide this is to call `effect` within a component, directive, or service `constructor`:
+Избегайте использования эффектов для распространения изменений состояния. Это может привести к ошибкам `ExpressionChangedAfterItHasBeenChecked`, бесконечным циклическим обновлениям или ненужным циклам обнаружения изменений.
 
-```ts
-@Component({...})
+Из-за этих рисков установка сигналов в эффектах запрещена по умолчанию, но может быть разрешена в случае крайней необходимости.
+
+### Контекст инъекции
+
+По умолчанию для регистрации нового эффекта с помощью функции `effect()` требуется "контекст инъекции" (доступ к функции `inject`). Самый простой способ обеспечить это - вызвать `effect` в компоненте, директиве или `конструкторе` сервиса:
+
+```ts @Component({...})
 export class EffectiveCounterCmp {
-  readonly count = signal(0);
-  constructor() {
-    // Register a new effect.
-    effect(() => {
-      console.log(`The count is: ${this.count()})`);
+    readonly count = signal(0);
+    constructor() {
+        // Register a new effect.
+        effect(() => {
+            console.log(`The count is: ${this.count()})`);
+        });
+    }
+}
+```
+
+В качестве альтернативы эффект может быть назначен полю (что также дает ему описательное имя).
+
+```ts @Component({...})
+export class EffectiveCounterCmp {
+    readonly count = signal(0);
+
+    private loggingEffect = effect(() => {
+        console.log(`The count is: ${this.count()})`);
     });
-  }
 }
 ```
 
-Alternatively, the effect can be assigned to a field (which also gives it a descriptive name).
+Чтобы создать эффект вне конструктора, вы можете передать `Injector` в `effect` через его опции:
 
-```ts
-@Component({...})
+```ts @Component({...})
 export class EffectiveCounterCmp {
-  readonly count = signal(0);
-  
-  private loggingEffect = effect(() => {
-    console.log(`The count is: ${this.count()})`);
-  });
+    readonly count = signal(0);
+    constructor(private injector: Injector) {}
+
+    initializeLogging(): void {
+        effect(
+            () => {
+                console.log(
+                    `The count is: ${this.count()})`
+                );
+            },
+            { injector: this.injector }
+        );
+    }
 }
 ```
 
-To create an effect outside of the constructor, you can pass an `Injector` to `effect` via its options:
+### Уничтожение эффектов
 
-```ts
-@Component({...})
-export class EffectiveCounterCmp {
-  readonly count = signal(0);
-  constructor(private injector: Injector) {}
+Когда вы создаете эффект, он автоматически уничтожается, когда уничтожается его объемлющий контекст. Это означает, что эффекты, созданные внутри компонентов, уничтожаются при уничтожении компонента. То же самое относится к эффектам внутри директив, сервисов и т.д.
 
-  initializeLogging(): void {
-    effect(() => {
-      console.log(`The count is: ${this.count()})`);
-    }, {injector: this.injector});
-  }
-}
-```
+Эффекты возвращают `EffectRef`, который можно использовать для их уничтожения вручную, с помощью операции `.destroy()`. Это также можно совместить с опцией `manualCleanup`, чтобы создать эффект, который будет действовать до тех пор, пока его не уничтожат вручную. Будьте осторожны, чтобы действительно очистить такие эффекты, когда они больше не нужны.
 
-### Destroying effects
+## Расширенные темы
 
-When you create an effect, it is automatically destroyed when its enclosing context is destroyed. This means that effects created within components are destroyed when the component is destroyed. The same goes for effects within directives, services, etc.
+### Функции равенства сигналов
 
-Effects return an `EffectRef` that can be used to destroy them manually, via the `.destroy()` operation. This can also be combined with the `manualCleanup` option to create an effect that lasts until it is manually destroyed. Be careful to actually clean up such effects when they're no longer required.
+При создании сигнала вы можете опционально указать функцию равенства, которая будет использоваться для проверки того, действительно ли новое значение отличается от предыдущего.
 
-## Advanced topics
-
-### Signal equality functions
-
-When creating a signal, you can optionally provide an equality function, which will be used to check whether the new value is actually different than the previous one.
-
-```ts
-import _ from 'lodash';
-
-const data = signal(['test'], {equal: _.isEqual});
+```ts import _ from 'lodash';
+const data = signal(['test'], { equal: _.isEqual });
 
 // Even though this is a different array instance, the deep equality
 // function will consider the values to be equal, and the signal won't
@@ -207,36 +203,33 @@ const data = signal(['test'], {equal: _.isEqual});
 data.set(['test']);
 ```
 
-Equality functions can be provided to both writable and computed signals.
+Функции равенства могут быть предоставлены как для записываемых, так и для вычисляемых сигналов.
 
-For writable signals, `.mutate()` does not check for equality because it mutates the current value without producing a new reference.
+Для записываемых сигналов функция `.mutate()` не проверяет равенство, поскольку она изменяет текущее значение без создания новой ссылки.
 
-### Reading without tracking dependencies
+### Чтение без отслеживания зависимостей
 
-Rarely, you may want to execute code which may read signals in a reactive function such as `computed` or `effect` _without_ creating a dependency.
+В редких случаях вы можете захотеть выполнить код, который может читать сигналы в реактивной функции, такой как `computed` или `effect`, _без_ создания зависимости.
 
-For example, suppose that when `currentUser` changes, the value of a `counter` should be logged. Creating an `effect` which reads both signals:
+Например, предположим, что когда `currentUser` меняется, значение `counter` должно быть зарегистрировано. Создайте `effect`, который считывает оба сигнала:
 
-```ts
-effect(() => {
+```ts effect(() => {
   console.log(`User set to `${currentUser()}` and the counter is ${counter()}`);
 });
 ```
 
-This example logs a message when _either_ `currentUser` or `counter` changes. However, if the effect should only run when `currentUser` changes, then the read of `counter` is only incidental and changes to `counter` shouldn't log a new message.
+Этот пример регистрирует сообщение, когда изменяется либо `currentUser`, либо `counter`. Однако, если эффект должен выполняться только при изменении `currentUser`, то чтение `counter` является случайным и изменения `counter` не должны регистрировать новое сообщение.
 
-You can prevent a signal read from being tracked by calling its getter with `untracked`:
+Вы можете предотвратить отслеживание чтения сигнала, вызвав его геттер с `untracked`:
 
-```ts
-effect(() => {
+```ts effect(() => {
   console.log(`User set to `${currentUser()}` and the counter is ${untracked(counter)}`);
 });
 ```
 
-`untracked` is also useful when an effect needs to invoke some external code which shouldn't be treated as a dependency:
+`untracked` также полезен, когда эффект должен вызвать внешний код, который не должен рассматриваться как зависимость:
 
-```ts
-effect(() => {
+```ts effect(() => {
   const user = currentUser();
   untracked(() => {
     // If the `loggingService` reads signals, they won't be counted as
@@ -246,12 +239,11 @@ effect(() => {
 });
 ```
 
-### Effect cleanup functions
+### Функции очистки эффектов
 
-Effects might start long-running operations, which should be cancelled if the effect is destroyed or runs again before the first operation finished. When you create an effect, your function can optionally accept an `onCleanup` function as its first parameter. This `onCleanup` function lets you register a callback that is invoked before the next run of the effect begins, or when the effect is destroyed.
+Эффекты могут запускать длительные операции, которые должны быть отменены, если эффект уничтожен или запущен снова до завершения первой операции. Когда вы создаете эффект, ваша функция может опционально принимать функцию `onCleanup` в качестве первого параметра. Эта функция `onCleanup` позволяет вам зарегистрировать обратный вызов, который будет вызван перед началом следующего запуска эффекта или когда эффект будет уничтожен.
 
-```ts
-effect((onCleanup) => {
+```ts effect((onCleanup) => {
   const user = currentUser();
 
   const timer = setTimeout(() => {

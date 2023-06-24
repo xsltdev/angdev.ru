@@ -1,23 +1,24 @@
-# Generating code using schematics
+# Генерация кода с помощью схем
 
-A schematic is a template-based code generator that supports complex logic.
-It is a set of instructions for transforming a software project by generating or modifying code.
-Schematics are packaged into [collections](guide/glossary#collection) and installed with npm.
+Схема - это генератор кода на основе шаблона, который поддерживает сложную логику. Это набор инструкций для преобразования программного проекта путем генерации или модификации кода.
 
-The schematic collection can be a powerful tool for creating, modifying, and maintaining any software project, but is particularly useful for customizing Angular projects to suit the particular needs of your own organization.
-You might use schematics, for example, to generate commonly-used UI patterns or specific components, using predefined templates or layouts.
-Use schematics to enforce architectural rules and conventions, making your projects consistent and interoperative.
+Схемы упаковываются в [коллекции](guide/glossary#collection) и устанавливаются с помощью npm.
 
-## Schematics for the Angular CLI
+Коллекция схем может стать мощным инструментом для создания, изменения и поддержки любого программного проекта, но особенно полезна для настройки проектов Angular под конкретные нужды вашей организации. Например, вы можете использовать схемы для создания часто используемых шаблонов пользовательского интерфейса или конкретных компонентов, используя предопределенные шаблоны или макеты.
 
-Schematics are part of the Angular ecosystem.
-The [Angular CLI](guide/glossary#cli) uses schematics to apply transforms to a web-app project.
-You can modify these schematics, and define new ones to do things like update your code to fix breaking changes in a dependency, for example, or to add a new configuration option or framework to an existing project.
+Используйте схемы для обеспечения соблюдения архитектурных правил и соглашений, делая ваши проекты последовательными и взаимодействующими.
 
-Schematics that are included in the `@schematics/angular` collection are run by default by the commands `ng generate` and `ng add`.
-The package contains named schematics that configure the options that are available to the CLI for `ng generate` sub-commands, such as `ng generate component` and `ng generate service`.
-The sub-commands for `ng generate` are shorthand for the corresponding schematic.
-To specify and generate a particular schematic, or a collection of schematics, using the long form:
+## Схемы для Angular CLI
+
+Схемы являются частью экосистемы Angular. В [Angular CLI](guide/glossary#cli) используются схемы для применения преобразований к проекту веб-приложения.
+
+Вы можете изменять эти схемы и определять новые, чтобы, например, обновить свой код, чтобы исправить разрушающие изменения в зависимостях, или добавить новый параметр конфигурации или фреймворк в существующий проект.
+
+Схемы, включенные в коллекцию `@schematics/angular`, запускаются по умолчанию командами `ng generate` и `ng add`. Пакет содержит именованные схемы, которые настраивают опции, доступные в CLI для подкоманд `ng generate`, таких как `ng generate component` и `ng generate service`.
+
+Подкоманды для `ng generate` являются сокращением для соответствующей схемы.
+
+Чтобы указать и сгенерировать конкретную схему или набор схем, используйте длинную форму:
 
 <code-example format="shell" language="shell">
 
@@ -25,7 +26,7 @@ ng generate my-schematic-collection:my-schematic-name
 
 </code-example>
 
-or
+или
 
 <code-example format="shell" language="shell">
 
@@ -33,49 +34,45 @@ ng generate my-schematic-name --collection collection-name
 
 </code-example>
 
-### Configuring CLI schematics
+### Конфигурирование схем CLI
 
-A JSON schema associated with a schematic tells the Angular CLI what options are available to commands and sub-commands, and determines the defaults.
-These defaults can be overridden by providing a different value for an option on the command line.
-See [Workspace Configuration](guide/workspace-config) for information about how to change the generation option defaults for your workspace.
+JSON-схема, связанная со схемой, сообщает Angular CLI, какие опции доступны командам и подкомандам, и определяет значения по умолчанию. Эти значения по умолчанию можно отменить, задав другое значение опции в командной строке.
 
-The JSON schemas for the default schematics used by the CLI to generate projects and parts of projects are collected in the package [`@schematics/angular`](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular).
-The schema describes the options available to the CLI for each of the `ng generate` sub-commands, as shown in the `--help` output.
+См. раздел [Конфигурация рабочего пространства](guide/workspace-config) для получения информации о том, как изменить параметры генерации по умолчанию для вашего рабочего пространства.
 
-## Developing schematics for libraries
+JSON-схемы для схем по умолчанию, используемых CLI для генерации проектов и частей проектов, собраны в пакете [`@schematics/angular`](https://github.com/angular/angular-cli/tree/main/packages/schematics/angular). Схема описывает опции, доступные CLI для каждой из подкоманд `ng generate`, как показано в выводе `--help`.
 
-As a library developer, you can create your own collections of custom schematics to integrate your library with the Angular CLI.
+## Разработка схем для библиотек
 
--   An _add schematic_ lets developers install your library in an Angular workspace using `ng add`
--   _Generation schematics_ can tell the `ng generate` sub-commands how to modify projects, add configurations and scripts, and scaffold artifacts that are defined in your library
--   An _update schematic_ can tell the `ng update` command how to update your library's dependencies and adjust for breaking changes when you release a new version
+Как разработчик библиотек, вы можете создавать собственные коллекции пользовательских схем для интеграции вашей библиотеки с Angular CLI.
 
-For more details of what these look like and how to create them, see:
+-   Схема \_add позволяет разработчикам установить вашу библиотеку в рабочее пространство Angular с помощью `ng add`.
+
+-   Схема _генерации_ может указать подкомандам `ng generate`, как изменять проекты, добавлять конфигурации и скрипты, а также создавать артефакты, определенные в вашей библиотеке.
+
+-   Схема _update_ может указать команде `ng update`, как обновить зависимости вашей библиотеки и скорректировать изменения при выпуске новой версии.
+
+Подробнее о том, как они выглядят и как их создавать, см:
 
 -   [Authoring Schematics](guide/schematics-authoring)
+
 -   [Schematics for Libraries](guide/schematics-for-libraries)
 
-### Add schematics
+### Добавление схем
 
-An _add schematic_ is typically supplied with a library, so that the library can be added to an existing project with `ng add`.
-The `add` command uses your package manager to download new dependencies, and invokes an installation script that is implemented as a schematic.
+_add schematic_ обычно поставляется вместе с библиотекой, чтобы библиотека могла быть добавлена в существующий проект с помощью `ng add`. Команда `add` использует ваш менеджер пакетов для загрузки новых зависимостей и вызывает сценарий установки, который реализован в виде схемы.
 
-For example, the [`@angular/material`](https://material.angular.io/guide/schematics) schematic tells the `add` command to install and set up Angular Material and theming, and register new starter components that can be created with `ng generate`.
-Look at this one as an example and model for your own add schematic.
+Например, схема [`@angular/material`](https://material.angular.io/guide/schematics) указывает команде `add` установить и настроить Angular Material и тематизацию, а также зарегистрировать новые стартовые компоненты, которые могут быть созданы с помощью `ng generate`. Посмотрите на эту схему как на пример и образец для вашей собственной схемы add.
 
-Partner and third party libraries also support the Angular CLI with add schematics.
-For example, `@ng-bootstrap/schematics` adds [ng-bootstrap](https://ng-bootstrap.github.io) to an app, and `@clr/angular` installs and sets up [Clarity from VMWare](https://clarity.design/documentation/get-started).
+Партнерские и сторонние библиотеки также поддерживают Angular CLI со схемами добавления. Например, `@ng-bootstrap/schematics` добавляет [ng-bootstrap](https://ng-bootstrap.github.io) в приложение, а `@clr/angular` устанавливает и настраивает [Clarity from VMWare](https://clarity.design/documentation/get-started).
 
-An _add schematic_ can also update a project with configuration changes, add additional dependencies \(such as polyfills\), or scaffold package-specific initialization code.
-For example, the `@angular/pwa` schematic turns your application into a PWA by adding an application manifest and service worker.
+Схема \_add может также обновлять проект с изменениями конфигурации, добавлять дополнительные зависимости\(например, полифиллы\), или размещать код инициализации, специфичный для пакета. Например, схема `@angular/pwa` превращает ваше приложение в PWA, добавляя манифест приложения и рабочий сервис.
 
-### Generation schematics
+### Схемы генерации
 
-Generation schematics are instructions for the `ng generate` command.
-The documented sub-commands use the default Angular generation schematics, but you can specify a different schematic \(in place of a sub-command\) to generate an artifact defined in your library.
+Схемы генерации - это инструкции для команды `ng generate`. Документированные подкоманды используют схемы генерации Angular по умолчанию, но вы можете указать другую схему \(вместо подкоманды\) для генерации артефакта, определенного в вашей библиотеке.
 
-Angular Material, for example, supplies generation schematics for the UI components that it defines.
-The following command uses one of these schematics to render an Angular Material `<mat-table>` that is pre-configured with a datasource for sorting and pagination.
+Angular Material, например, предоставляет схемы генерации для компонентов пользовательского интерфейса, которые он определяет. Следующая команда использует одну из этих схем для создания таблицы Angular Material `<mat-table>`, которая предварительно настроена с источником данных для сортировки и пагинации.
 
 <code-example format="shell" language="shell">
 
@@ -83,18 +80,15 @@ ng generate &commat;angular/material:table &lt;component-name&gt;
 
 </code-example>
 
-### Update schematics
+### Обновление схем
 
-The `ng update` command can be used to update your workspace's library dependencies.
-If you supply no options or use the help option, the command examines your workspace and suggests libraries to update.
+Команда `ng update` может быть использована для обновления зависимостей библиотек вашего рабочего пространства. Если вы не указываете никаких параметров или используете опцию help, команда исследует ваше рабочее пространство и предложит библиотеки для обновления.
 
 <code-example format="shell" language="shell">
 
-ng update
-We analyzed your package.json, there are some packages to update:
+ng update Мы проанализировали ваш package.json, есть несколько пакетов, которые необходимо обновить:
 
-    Name                                      Version                     Command to update
-    &hyphen;-------------------------------------------------------------------------------
+    Name                                      Version                     Command to update     &hyphen;-------------------------------------------------------------------------------
     &commat;angular/cdk                       7.2.2 -&gt; 7.3.1           ng update &commat;angular/cdk
     &commat;angular/cli                       7.2.3 -&gt; 7.3.0           ng update &commat;angular/cli
     &commat;angular/core                      7.2.2 -&gt; 7.2.3           ng update &commat;angular/core
@@ -106,29 +100,26 @@ We analyzed your package.json, there are some packages to update:
 
 </code-example>
 
-If you pass the command a set of libraries to update \(or the `--all` flag\), it updates those libraries, their peer dependencies, and the peer dependencies that depend on them.
+Если вы передадите команде набор библиотек для обновления\(или флаг `--all`\), она обновит эти библиотеки, их одноранговые зависимости и одноранговые зависимости, которые зависят от них.
 
 <div class="alert is-helpful">
 
-If there are inconsistencies \(for example, if peer dependencies cannot be matched by a simple [semver](https://semver.io) range\), the command generates an error and does not change anything in the workspace.
+Если есть несоответствия \(например, если одноранговые зависимости не могут быть сопоставлены простым [semver](https://semver.io) range\), команда выдает ошибку и ничего не меняет в рабочей области.
 
-We recommend that you do not force an update of all dependencies by default.
-Try updating specific dependencies first.
+Мы не рекомендуем принудительно обновлять все зависимости по умолчанию. Попробуйте сначала обновить конкретные зависимости.
 
-For more about how the `ng update` command works, see [Update Command](https://github.com/angular/angular-cli/blob/main/docs/specifications/update.md).
+Подробнее о том, как работает команда `ng update`, смотрите [Команда обновления](https://github.com/angular/angular-cli/blob/main/docs/specifications/update.md).
 
 </div>
 
-If you create a new version of your library that introduces potential breaking changes, you can provide an _update schematic_ to enable the `ng update` command to automatically resolve any such changes in the project being updated.
+Если вы создаете новую версию вашей библиотеки, которая вносит потенциально разрушающие изменения, вы можете предоставить _update schematic_, чтобы команда `ng update` автоматически устранила все такие изменения в обновляемом проекте.
 
-For example, suppose you want to update the Angular Material library.
+Например, предположим, вы хотите обновить библиотеку Angular Material.
 
-<code-example format="shell" language="shell">
-ng update &commat;angular/material
+<code-example format="shell" language="shell"> ng update &commat;angular/material
 </code-example>
 
-This command updates both `@angular/material` and its dependency `@angular/cdk` in your workspace's `package.json`.
-If either package contains an update schematic that covers migration from the existing version to a new version, the command runs that schematic on your workspace.
+Эта команда обновляет как `@angular/material`, так и его зависимость `@angular/cdk` в файле `package.json` вашего рабочего пространства. Если оба пакета содержат схему обновления, которая охватывает миграцию с существующей версии на новую, команда запускает эту схему на вашем рабочем пространстве.
 
 <!-- links -->
 

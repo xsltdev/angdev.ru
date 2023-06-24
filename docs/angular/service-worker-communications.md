@@ -1,81 +1,80 @@
-# Service worker communication
+# Взаимодействие с сервисным работником
 
-Importing `ServiceWorkerModule` into your `AppModule` doesn't just register the service worker, it also provides a few services you can use to interact with the service worker and control the caching of your application.
+Импорт `ServiceWorkerModule` в ваш `AppModule` не просто регистрирует сервисный работник, он также предоставляет несколько сервисов, которые вы можете использовать для взаимодействия с сервисным работником и управления кэшированием вашего приложения.
 
-## Prerequisites
+## Предварительные условия
 
-A basic understanding of the following:
+Базовое понимание следующего:
 
 -   [Getting Started with Service Workers](guide/service-worker-getting-started)
 
-## `SwUpdate` service
+## Служба `SwUpdate`.
 
-The `SwUpdate` service gives you access to events that indicate when the service worker discovers and installs an available update for your application.
+Служба `SwUpdate` предоставляет вам доступ к событиям, которые указывают, когда работник службы обнаруживает и устанавливает доступное обновление для вашего приложения.
 
-The `SwUpdate` service supports three separate operations:
+Служба `SwUpdate` поддерживает три отдельные операции:
 
--   Get notified when an updated version is _detected_ on the server, _installed and ready_ to be used locally or when an _installation fails_
--   Ask the service worker to check the server for new updates
--   Ask the service worker to activate the latest version of the application for the current tab
+-   Получить уведомление, когда обновленная версия _обнаружена_ на сервере, _установлена и готова_ к локальному использованию или когда _установка не удалась_.
 
-### Version updates
+-   Попросить работника службы проверить сервер на наличие новых обновлений
 
-The `versionUpdates` is an `Observable` property of `SwUpdate` and emits four event types:
+-   Попросите работника службы активировать последнюю версию приложения для текущей вкладки
 
-| Event types                      | Details                                                                                                                                                                     |
-| :------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `VersionDetectedEvent`           | Emitted when the service worker has detected a new version of the app on the server and is about to start downloading it.                                                   |
-| `NoNewVersionDetectedEvent`      | Emitted when the service worker has checked the version of the app on the server and did not find a new version.                                                            |
-| `VersionReadyEvent`              | Emitted when a new version of the app is available to be activated by clients. It may be used to notify the user of an available update or prompt them to refresh the page. |
-| `VersionInstallationFailedEvent` | Emitted when the installation of a new version failed. It may be used for logging/monitoring purposes.                                                                      |
+### Обновления версий
 
-<code-example header="log-update.service.ts" path="service-worker-getting-started/src/app/log-update.service.ts" region="sw-update"></code-example>
+`versionUpdates` является `Observable` свойством `SwUpdate` и испускает четыре типа событий:
 
-### Checking for updates
+| Типы событий | Подробности | | :------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | |
+| `VersionDetectedEvent` | Вызывается, когда сервисный работник обнаружил новую версию приложения на сервере и собирается начать ее загрузку. |
 
-It's possible to ask the service worker to check if any updates have been deployed to the server.
-The service worker checks for updates during initialization and on each navigation request &mdash;that is, when the user navigates from a different address to your application.
-However, you might choose to manually check for updates if you have a site that changes frequently or want updates to happen on a schedule.
+| `NoNewVersionDetectedEvent` | Выдается, когда работник службы проверил версию приложения на сервере и не обнаружил новой версии. |
 
-Do this with the `checkForUpdate()` method:
+| | `VersionReadyEvent` | Вызывается, когда новая версия приложения доступна для активации клиентами. Оно может быть использовано для уведомления пользователя о доступном обновлении или для того, чтобы попросить его обновить страницу. |
 
-<code-example header="check-for-update.service.ts" path="service-worker-getting-started/src/app/check-for-update.service.ts"></code-example>
+| `VersionInstallationFailedEvent` | Вызывается, когда установка новой версии не удалась. Может использоваться для регистрации/мониторинга. |
 
-This method returns a `Promise<boolean>` which indicates if an update is available for activation.
-The check might fail, which will cause a rejection of the `Promise`.
+<code-example header="log-update.service.ts" path="service-worker-getting-started/src/app/log-update.service.ts" region="sw-update"></code-example>.
+
+### Проверка наличия обновлений
+
+Можно попросить работника службы проверить, были ли развернуты обновления на сервере. Работник службы проверяет наличие обновлений во время инициализации и при каждом навигационном запросе &mdash; то есть, когда пользователь переходит с другого адреса на ваше приложение.
+
+Однако вы можете вручную проверять наличие обновлений, если у вас сайт, который часто меняется, или если вы хотите, чтобы обновления происходили по расписанию.
+
+Это можно сделать с помощью метода `checkForUpdate()`:
+
+<code-example header="check-for-update.service.ts" path="service-worker-getting-started/src/app/check-for-update.service.ts"></code-example>.
+
+Этот метод возвращает `Promise<boolean>`, который указывает, доступно ли обновление для активации. Проверка может закончиться неудачей, что приведет к отказу от `Promise`.
 
 <div class="alert is-important">
 
-In order to avoid negatively affecting the initial rendering of the page, `ServiceWorkerModule` waits for up to 30 seconds by default for the application to stabilize, before registering the ServiceWorker script.
-Constantly polling for updates, for example, with [setInterval()](https://developer.mozilla.org/docs/Web/API/WindowOrWorkerGlobalScope/setInterval) or RxJS' [interval()](https://rxjs.dev/api/index/function/interval), prevents the application from stabilizing and the ServiceWorker script is not registered with the browser until the 30 seconds upper limit is reached.
+Чтобы избежать негативного влияния на начальный рендеринг страницы, `ServiceWorkerModule` по умолчанию ждет до 30 секунд, пока приложение стабилизируется, прежде чем зарегистрировать скрипт ServiceWorker. Постоянный опрос обновлений, например, с помощью [setInterval()](https://developer.mozilla.org/docs/Web/API/WindowOrWorkerGlobalScope/setInterval) или [interval()](https://rxjs.dev/api/index/function/interval) RxJS, не позволяет приложению стабилизироваться, и скрипт ServiceWorker не регистрируется в браузере до достижения верхнего предела в 30 секунд.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-This is true for any kind of polling done by your application.
+**NOTE**: <br /> This is true for any kind of polling done by your application.
 Check the [isStable](api/core/ApplicationRef#isStable) documentation for more information.
 
 </div>
 
-Avoid that delay by waiting for the application to stabilize first, before starting to poll for updates, as shown in the preceding example.
-Alternatively, you might want to define a different [registration strategy](api/service-worker/SwRegistrationOptions#registrationStrategy) for the ServiceWorker.
+Чтобы избежать этой задержки, сначала дождитесь стабилизации приложения, прежде чем начать опрашивать обновления, как показано в предыдущем примере. В качестве альтернативы вы можете определить другую [стратегию регистрации] (api/service-worker/SwRegistrationOptions#registrationStrategy) для ServiceWorker.
 
 </div>
 
-### Updating to the latest version
+### Обновление до последней версии
 
-You can update an existing tab to the latest version by reloading the page as soon as a new version is ready.
-To avoid disrupting the user's progress, it is generally a good idea to prompt the user and let them confirm that it is OK to reload the page and update to the latest version:
+Вы можете обновить существующую вкладку до последней версии, перезагрузив страницу, как только будет готова новая версия. Чтобы не прерывать работу пользователя, как правило, целесообразно запросить у него подтверждение, что он согласен перезагрузить страницу и обновить ее до последней версии:
 
-<code-example header="prompt-update.service.ts" path="service-worker-getting-started/src/app/prompt-update.service.ts" region="sw-version-ready"></code-example>
+<code-example header="prompt-update.service.ts" path="service-worker-getting-started/src/app/prompt-update.service.ts" region="sw-version-ready"></code-example>.
 
 <div class="alert is-important">
 
-Calling {@link SwUpdate#activateUpdate SwUpdate#activateUpdate()} updates a tab to the latest version without reloading the page, but this could break the application.
+Вызов {@link SwUpdate#activateUpdate SwUpdate#activateUpdate()} обновляет вкладку до последней версии без перезагрузки страницы, но это может нарушить работу приложения.
 
-Updating without reloading can create a version mismatch between the [application shell](guide/glossary#app-shell) and other page resources, such as [lazy-loaded chunks](guide/glossary#lazy-loading), whose filenames may change between versions.
+Обновление без перезагрузки может создать несоответствие версий между [оболочкой приложения](guide/glossary#app-shell) и другими ресурсами страницы, такими как [куски с ленивой загрузкой](guide/glossary#lazy-loading), имена файлов которых могут меняться между версиями.
 
-You should only use `activateUpdate()`, if you are certain it is safe for your specific use case.
+Вы должны использовать `activateUpdate()`, только если вы уверены, что это безопасно для вашего конкретного случая использования.
 
 </div>
 
@@ -86,41 +85,49 @@ In some cases, the version of the application used by the service worker to serv
 For example, imagine the following scenario:
 
 -   A user opens the application for the first time and the service worker caches the latest version of the application.
+
     Assume the application's cached assets include `index.html`, `main.<main-hash-1>.js` and `lazy-chunk.<lazy-hash-1>.js`.
 
 -   The user closes the application and does not open it for a while.
+
 -   After some time, a new version of the application is deployed to the server.
+
     This newer version includes the files `index.html`, `main.<main-hash-2>.js` and `lazy-chunk.<lazy-hash-2>.js`.
 
-    <div class="alert is-helpful">
+      <div class="alert is-helpful">
 
     **NOTE**: <br />
+
     The hashes are different now, because the content of the files changed.
 
-    </div>
+      </div>
 
     The old version is no longer available on the server.
 
 -   In the meantime, the user's browser decides to evict `lazy-chunk.<lazy-hash-1>.js` from its cache.
+
     Browsers might decide to evict specific \(or all\) resources from a cache in order to reclaim disk space.
 
 -   The user opens the application again.
-    The service worker serves the latest version known to it at this point, namely the old version \(`index.html` and `main.<main-hash-1>.js`\).
 
--   At some later point, the application requests the lazy bundle, `lazy-chunk.<lazy-hash-1>.js`.
--   The service worker is unable to find the asset in the cache \(remember that the browser evicted it\).
-    Nor is it able to retrieve it from the server \(because the server now only has `lazy-chunk.<lazy-hash-2>.js` from the newer version\).
+    Рабочий сервис обслуживает последнюю версию, известную ему на данный момент, а именно старую версию \(`index.html` и `main.<main-hash-1>.js`\).
 
-In the preceding scenario, the service worker is not able to serve an asset that would normally be cached.
-That particular application version is broken and there is no way to fix the state of the client without reloading the page.
-In such cases, the service worker notifies the client by sending an `UnrecoverableStateEvent` event.
-Subscribe to `SwUpdate#unrecoverable` to be notified and handle these errors.
+-   Позже приложение запрашивает ленивый пакет, `lazy-chunk.<lazy-hash-1>.js`.
 
-<code-example header="handle-unrecoverable-state.service.ts" path="service-worker-getting-started/src/app/handle-unrecoverable-state.service.ts" region="sw-unrecoverable-state"></code-example>
+-   Сервисный работник не может найти актив в кэше\(помните, что браузер изгнал его\).
 
-## More on Angular service workers
+    Он также не может получить его с сервера\\(потому что на сервере теперь есть только `lazy-chunk.<lazy-hash-2>.js` из более новой версии\).
 
-You might also be interested in the following:
+В предыдущем сценарии работник службы не может обслужить актив, который обычно кэшируется. Эта конкретная версия приложения сломана, и нет способа исправить состояние клиента без перезагрузки страницы.
+В таких случаях работник службы уведомляет клиента, отправляя событие `UnrecoverableStateEvent`.
+
+Подпишитесь на `SwUpdate#unrecoverable`, чтобы получать уведомления и обрабатывать эти ошибки.
+
+<code-example header="handle-unrecoverable-state.service.ts" path="service-worker-getting-started/src/app/handle-unrecoverable-state.service.ts" region="sw-unrecoverable-state"></code-example>.
+
+## Больше о рабочих службах Angular
+
+Вас также может заинтересовать следующее:
 
 -   [Service Worker Notifications](guide/service-worker-notifications)
 

@@ -2,71 +2,70 @@
 
 <div class="alert is-important">
 
-The RxJS Interop package is available for [developer preview](/guide/releases#developer-preview). It's ready for you to try, but it might change before it is stable.
+Пакет RxJS Interop доступен для [предварительного просмотра разработчиком](/guide/releases#developer-preview). Он готов для того, чтобы вы могли попробовать, но он может измениться до того, как станет стабильным.
 
 </div>
 
-Angular's `@angular/core/rxjs-interop` package which provides useful utilities to integrate [Angular Signals](/guide/signals) with RxJS Observables.
+Пакет `@angular/core/rxjs-interop` от Angular, который предоставляет полезные утилиты для интеграции [Angular Signals](/guide/signals) с RxJS Observables.
 
-## `toSignal`
+## `toSignal`.
 
-The `toSignal` function creates a signal which tracks the value of an Observable. It behaves similarly to the `async` pipe in templates, but is more flexible and can be used anywhere in an application.
+Функция `toSignal` создает сигнал, который отслеживает значение Observable. Она ведет себя аналогично трубе `async` в шаблонах, но является более гибкой и может быть использована в любом месте приложения.
 
-```ts
-import { Component } from '@angular/core';
+```ts import { Component } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { interval } from 'rxjs';
 
 @Component({
-  template: `{{ counter() }}`,
+    template: `{{ counter() }}`,
 })
 export class Ticker {
-  counterObservable = interval(1000);
+    counterObservable = interval(1000);
 
-  // Get a `Signal` representing the `counterObservable`'s value.
-  counter = toSignal(this.counterObservable, {initialValue: 0});
+    // Get a `Signal` representing the `counterObservable`'s value.
+    counter = toSignal(this.counterObservable, {
+        initialValue: 0,
+    });
 }
 ```
 
-Like the `async` pipe, `toSignal` subscribes to the Observable immediately, which may trigger side effects. The subscription created by
-`toSignal` automatically unsubscribes from the given Observable upon destruction of the component in which `toSignal` is called.
+Как и труба `async`, `toSignal` подписывается на Observable немедленно, что может вызвать побочные эффекты. Подписка, созданная `toSignal`, автоматически отписывается от данной Observable при уничтожении компонента, в котором вызван `toSignal`.
 
-### Initial values
+### Начальные значения
 
-Observables may not produce a value synchronously on subscription, but signals always require a current value. There are several ways to deal with this "initial" value of `toSignal` signals.
+Наблюдаемые могут не выдавать значение синхронно при подписке, но сигналы всегда требуют текущего значения. Существует несколько способов работы с этим "начальным" значением сигналов `toSignal`.
 
-#### The `initialValue` option
+#### Опция `initialValue`.
 
-As in the example above, the `initialValue` option specifies the value the signal should return before the Observable emits for the first time.
+Как и в примере выше, опция `initialValue` определяет значение, которое сигнал должен вернуть перед первым испусканием Observable.
 
-#### `undefined` initial values
+#### `неопределенные` начальные значения
 
-If `initialValue` is omitted, the signal returned by `toSignal` returns `undefined` until the Observable emits. This is similar to the `async` pipe's behavior of returning `null`.
+Если опция `initialValue` опущена, сигнал, возвращаемый `toSignal`, возвращает `неопределенное` значение до тех пор, пока Observable не испустит сигнал. Это похоже на поведение трубы `async`, возвращающей `null`.
 
-#### The `requireSync` option
+#### Опция `requireSync`.
 
-Some Observables are known to emit synchronously, such as `BehaviorSubject`. In those cases, you can specify the `requireSync: true` option.
+Известно, что некоторые наблюдаемые испускаются синхронно, например, `BehaviorSubject`. В этих случаях вы можете указать опцию `requireSync: true`.
 
-When `requiredSync` is `true`, `toSignal` enforces that the Observable emits synchronously on subscription. This guarantees that the signal always has a value, and no `undefined` type or initial value is required.
+Когда `requiredSync` имеет значение `true`, `toSignal` принудительно обеспечивает синхронное испускание наблюдаемого сигнала при подписке. Это гарантирует, что сигнал всегда имеет значение, и не требуется никакого `неопределенного` типа или начального значения.
 
-### `manualCleanup`
+### `manualCleanup`.
 
-By default, `toSignal` automatically unsubscribes from the Observable upon destruction of the context in which it's created. For example, if `toSignal` is called during creation of a component, it cleans up its subscription when the component is destroyed.
+По умолчанию `toSignal` автоматически отписывается от Observable при разрушении контекста, в котором он был создан. Например, если `toSignal` вызывается во время создания компонента, он очистит подписку, когда компонент будет уничтожен.
 
-The `manualCleanup` option disables this automatic cleanup. You can use this setting for Observables that complete themselves naturally.
+Опция `manualCleanup` отключает эту автоматическую очистку. Вы можете использовать эту настройку для Observables, которые завершают себя естественным образом.
 
-### Error and Completion
+### Ошибка и завершение
 
-If an Observable used in `toSignal` produces an error, that error is thrown when the signal is read.
+Если Observable, используемая в `toSignal`, выдает ошибку, эта ошибка будет выброшена при чтении сигнала.
 
-If an Observable used in `toSignal` completes, the signal continues to return the most recently emitted value before completion.
+Если Observable, используемая в `toSignal`, завершается, сигнал продолжает возвращать последнее выданное перед завершением значение.
 
 ## `toObservable`
 
-The `toObservable` utility creates an `Observable` which tracks the value of a signal. The signal's value is monitored with an `effect`, which emits the value to the Observable when it changes.
+Утилита `toObservable` создает `Observable`, который отслеживает значение сигнала. Значение сигнала отслеживается с помощью `effect`, который выдает значение Observable при его изменении.
 
-```ts
-import { Component, signal } from '@angular/core';
+```ts import { Component, signal } from '@angular/core';
 
 @Component(...)
 export class SearchResults {
@@ -79,25 +78,24 @@ export class SearchResults {
 }
 ```
 
-As the `query` signal changes, the `query$` Observable emits the latest query and triggers a new HTTP request.
+При изменении сигнала `query` наблюдаемая `query$` выдает последний запрос и запускает новый HTTP-запрос.
 
-### Injection context
+### Контекст инъекции
 
-`toObservable` by default needs to run in an injection context, such as during construction of a component or service. If an injection context is not available, an `Injector` can instead be explicitly specified.
+`toObservable` по умолчанию должен выполняться в контексте инъекции, например, во время создания компонента или сервиса. Если контекст инъекции недоступен, вместо него можно явно указать `инжектор`.
 
-### Timing of `toObservable`
+### Время выполнения `toObservable`.
 
-`toObservable` uses an effect to track the value of the signal in a `ReplaySubject`. On subscription, the first value (if available) may be emitted synchronously, and all subsequent values will be asynchronous.
+`toObservable` использует эффект для отслеживания значения сигнала в `ReplaySubject`. При подписке первое значение (если оно доступно) может быть испущено синхронно, а все последующие значения будут асинхронными.
 
-Unlike Observables, signals never provide a synchronous notification of changes. Even if your code updates a signal's value multiple times, effects which depend on its value run only after the signal has "settled".
+В отличие от Observables, сигналы никогда не предоставляют синхронного уведомления об изменениях. Даже если ваш код обновляет значение сигнала несколько раз, эффекты, зависящие от его значения, выполняются только после того, как сигнал "успокоится".
 
-```ts
-const obs$ = toObservable(mySignal);
-obs$.subscribe(value => console.log(value));
+```ts const obs$ = toObservable(mySignal);
+obs$.subscribe((value) => console.log(value));
 
 mySignal.set(1);
 mySignal.set(2);
 mySignal.set(3);
 ```
 
-Here, only the last value (3) will be logged.
+Здесь будет зарегистрировано только последнее значение (3).
