@@ -1,40 +1,38 @@
-# Server-side rendering (SSR) with Angular Universal
+# Рендеринг на стороне сервера (SSR) с помощью Angular Universal
 
-This guide describes **Angular Universal**, a technology that allows Angular to render applications on the server.
+Это руководство описывает **Angular Universal**, технологию, которая позволяет Angular рендерить приложения на сервере.
 
-By default, Angular renders applications only in a _browser_. Angular Universal allows Angular to render an application on the _server_, generating _static_ HTML contents, which represents an application state. Once the HTML contents is rendered in a browser, Angular bootstraps an application and reuses the information available in the server-generated HTML.
+По умолчанию Angular отображает приложения только в _браузере_. Angular Universal позволяет Angular рендерить приложение на _сервере_, генерируя _статическое_ содержимое HTML, которое представляет собой состояние приложения. Когда содержимое HTML отображается в браузере, Angular загружает приложение и повторно использует информацию, имеющуюся в HTML, сгенерированном на сервере.
 
-With server-side rendering an application generally renders in a browser faster, giving users a chance to view the application UI before it becomes fully interactive. See ([the "Why use Server-Side Rendering?" section](#why-do-it)) below for addition information.
+При серверном рендеринге приложение обычно быстрее отображается в браузере, давая пользователям возможность просмотреть пользовательский интерфейс приложения до того, как оно станет полностью интерактивным. Дополнительную информацию см. ниже ([раздел "Зачем использовать рендеринг на стороне сервера?"](#why-do-it)).
 
-Also for a more detailed look at different techniques and concepts surrounding SSR, check out this [article](https://developers.google.com/web/updates/2019/02/rendering-on-the-web).
+Также для более детального рассмотрения различных техник и концепций, связанных с SSR, ознакомьтесь с этой [статьей](https://developers.google.com/web/updates/2019/02/rendering-on-the-web).
 
-You can enable server-side rendering in your Angular application using the `@nguniversal/express-engine` schematic as described below.
+Вы можете включить рендеринг на стороне сервера в вашем приложении Angular, используя схему `@nguniversal/express-engine`, как описано ниже.
 
 <div class="alert is-helpful">
 
-Angular Universal requires an [active LTS or maintenance LTS](https://nodejs.org/about/releases) version of Node.js.
-For information see the [version compatibility](guide/versions) guide to learn about the currently supported versions.
+Для Angular Universal требуется [активная LTS или maintenance LTS](https://nodejs.org/about/releases) версия Node.js. Для получения информации смотрите руководство [совместимость версий](guide/versions), чтобы узнать о поддерживаемых в настоящее время версиях.
 
 </div>
 
 <a id="the-example"></a>
 
-## Universal tutorial
+## Универсальный учебник
 
-The [Tour of Heroes tutorial](tutorial/tour-of-heroes) is the foundation for this walkthrough.
+Учебник [Tour of Heroes](tutorial/tour-of-heroes) является основой для этого руководства.
 
-In this example, the Angular CLI compiles and bundles the Universal version of the application with the [Ahead-of-Time (AOT) compiler](guide/aot-compiler).
-A Node.js Express web server compiles HTML pages with Universal based on client requests.
+В этом примере Angular CLI компилирует и собирает универсальную версию приложения с помощью [Ahead-of-Time (AOT) compiler](guide/aot-compiler). Веб-сервер Node.js Express компилирует HTML-страницы с Universal на основе запросов клиентов.
 
 <div class="alert is-helpful">
 
-<live-example downloadOnly>Download the finished sample code</live-example>, which runs in a [Node.js® Express](https://expressjs.com) server.
+<live-example downloadOnly>Скачайте готовый код примера</live-example>, который запускается на сервере [Node.js® Express](https://expressjs.com).
 
 </div>
 
-### Step 1. Enable Server-Side Rendering
+### Шаг 1. Включите рендеринг на стороне сервера
 
-Run the following command to add SSR support into your application:
+Выполните следующую команду, чтобы добавить поддержку SSR в ваше приложение:
 
 <code-example format="shell" language="shell">
 
@@ -42,10 +40,9 @@ ng add &commat;nguniversal/express-engine
 
 </code-example>
 
-The command updates the application code to enable SSR and adds extra files to the project structure (files that are marked with the `*` symbol).
+Команда обновляет код приложения для включения SSR и добавляет дополнительные файлы в структуру проекта (файлы, отмеченные символом `*`).
 
-<div class='filetree'>
-    <div class='file'>
+<div class='filetree'>     <div class='file'>
         src
     </div>
     <div class='children'>
@@ -98,20 +95,19 @@ The command updates the application code to enable SSR and adds extra files to t
     </div>
 </div>
 
-### Step 2. Enable Client Hydration
+### Шаг 2. Включите гидратацию клиента
 
 <div class="alert is-important">
 
-The hydration feature is available for [developer preview](/guide/releases#developer-preview). It's ready for you to try, but it might change before it is stable.
+Функция гидратации доступна для [предварительного просмотра разработчиком](/guide/releases#developer-preview). Она готова к тому, чтобы вы попробовали ее, но она может измениться до того, как станет стабильной.
 
 </div>
 
-Hydration is the process that restores the server side rendered application on the client. This includes things like reusing the server rendered DOM structures, persisting the application state, transferring application data that was retrieved already by the server, and other processes. Learn more about hydration in [this guide](guide/hydration).
+Гидратация - это процесс, который восстанавливает отрисованное на стороне сервера приложение на клиенте. Сюда входят такие вещи, как повторное использование серверных DOM-структур, сохранение состояния приложения, передача данных приложения, которые уже были получены сервером, и другие процессы. Узнайте больше о гидратации в [этом руководстве](guide/hydration).
 
-You can enable hydration by updating the `app.module.ts` file. Import the `provideClientHydration` function from `@angular/platform-browser` and add the function call to the `providers` section of the `AppModule` as shown below.
+Вы можете включить гидратацию, обновив файл `app.module.ts`. Импортируйте функцию `provideClientHydration` из `@angular/platform-browser` и добавьте вызов функции в секцию `providers` модуля `AppModule`, как показано ниже.
 
-```typescript
-import { provideClientHydration } from '@angular/platform-browser';
+```typescript import { provideClientHydration } from '@angular/platform-browser';
 // ...
 
 @NgModule({
@@ -124,9 +120,9 @@ export class AppModule {
 }
 ```
 
-### Step 3. Start the server
+### Шаг 3. Запустите сервер
 
-To start rendering your application with Universal on your local system, use the following command.
+Чтобы начать рендеринг вашего приложения с помощью Universal на вашей локальной системе, используйте следующую команду.
 
 <code-example format="shell" language="shell">
 
@@ -136,17 +132,18 @@ npm run dev:ssr
 
 ### Step 4. Run your application in a browser
 
-Once the web server starts, open a browser and navigate to `http://localhost:4200`.
-You should see the familiar Tour of Heroes dashboard page.
+Once the web server starts, open a browser and navigate to `http://localhost:4200`. You should see the familiar Tour of Heroes dashboard page.
 
-Navigation using `routerLinks` works correctly because they use the built-in anchor \(`<a>`\) elements.
-You can go from the Dashboard to the Heroes page and back.
+Navigation using `routerLinks` works correctly because they use the built-in anchor \(`<a>`\) elements. You can go from the Dashboard to the Heroes page and back.
+
 Click a hero on the Dashboard page to display its Details page.
 
 If you throttle your network speed so that the client-side scripts take longer to download \(instructions following\), you'll notice:
 
 -   You can't add or delete a hero
+
 -   The search box on the Dashboard page is ignored
+
 -   The _Back_ and _Save_ buttons on the Details page don't work
 
 The transition from the server-rendered application to the client application happens quickly on a development machine, but you should always test your applications in real-world scenarios.
@@ -154,212 +151,204 @@ The transition from the server-rendered application to the client application ha
 You can simulate a slower network to see the transition more clearly as follows:
 
 1.  Open the Chrome Dev Tools and go to the Network tab.
-1.  Find the [Network Throttling](https://developers.google.com/web/tools/chrome-devtools/network-performance/reference#throttling) dropdown on the far right of the menu bar.
-1.  Try one of the "3G" speeds.
 
-The server-rendered application still launches quickly but the full client application might take seconds to load.
+1.  Find the [Network Throttling](https://developers.google.com/web/tools/chrome-devtools/network-performance/reference#throttling) dropdown on the far right of the menu bar.
+
+1.  Попробуйте одну из скоростей "3G".
+
+Приложение с рендерингом сервера по-прежнему запускается быстро, но полная загрузка клиентского приложения может занять несколько секунд.
 
 <a id="why-do-it"></a>
 
-## Why use Server-Side Rendering?
+## Зачем использовать рендеринг на стороне сервера?
 
-There are three main reasons to create a Universal version of your application.
+Есть три основные причины для создания универсальной версии вашего приложения.
 
--   Facilitate web crawlers through [search engine optimization (SEO)](https://static.googleusercontent.com/media/www.google.com/en//webmasters/docs/search-engine-optimization-starter-guide.pdf)
--   Improve performance on mobile and low-powered devices
--   Show the first page quickly with a [first-contentful paint (FCP)](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint)
+-   Облегчить работу веб-гусениц благодаря [поисковой оптимизации (SEO)](https://static.googleusercontent.com/media/www.google.com/en//webmasters/docs/search-engine-optimization-starter-guide.pdf)
 
-<a id="seo"></a>
-<a id="web-crawlers"></a>
+-   Улучшить производительность на мобильных и маломощных устройствах
 
-### Facilitate web crawlers (SEO)
+-   Быстро показывать первую страницу с помощью [first-contentful paint (FCP)](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint)
 
-Google, Bing, Facebook, Twitter, and other social media sites rely on web crawlers to index your application content and make that content searchable on the web.
-These web crawlers might be unable to navigate and index your highly interactive Angular application as a human user could do.
+<a id="seo"></a> <a id="web-crawlers"></a>
 
-Angular Universal can generate a static version of your application that is easily searchable, linkable, and navigable without JavaScript.
-Universal also makes a site preview available because each URL returns a fully rendered page.
+### Облегчение работы веб-ползунков (SEO)
+
+Google, Bing, Facebook, Twitter и другие сайты социальных сетей полагаются на веб-гусеницы для индексации содержимого вашего приложения и обеспечения возможности поиска по нему в Интернете. Эти веб-гусеницы могут быть не в состоянии перемещаться и индексировать ваше высокоинтерактивное приложение Angular так, как это может сделать пользователь.
+
+Angular Universal может генерировать статическую версию вашего приложения, которая легко доступна для поиска, ссылок и навигации без JavaScript. Universal также делает доступным предварительный просмотр сайта, поскольку каждый URL возвращает полностью отрисованную страницу.
 
 <a id="no-javascript"></a>
 
-### Improve performance on mobile and low-powered devices
+### Улучшение производительности на мобильных и маломощных устройствах
 
-Some devices don't support JavaScript or execute JavaScript so poorly that the user experience is unacceptable.
-For these cases, you might require a server-rendered, no-JavaScript version of the application.
-This version, however limited, might be the only practical alternative for people who otherwise couldn't use the application at all.
+Некоторые устройства не поддерживают JavaScript или выполняют его настолько плохо, что пользовательское восприятие становится неприемлемым. В таких случаях вам может потребоваться серверная версия приложения без JavaScript.
+
+Эта версия, пусть и ограниченная, может быть единственной практической альтернативой для людей, которые иначе не смогут использовать приложение вообще.
 
 <a id="startup-performance"></a>
 
-### Show the first page quickly
+### Быстрое отображение первой страницы
 
-Displaying the first page quickly can be critical for user engagement.
-Pages that load faster perform better, [even with changes as small as 100ms](https://web.dev/shopping-for-speed-on-ebay).
-Your application might have to launch faster to engage these users before they decide to do something else.
+Быстрый показ первой страницы может иметь решающее значение для вовлечения пользователей. Страницы, которые загружаются быстрее, работают лучше [даже при изменениях размером в 100 мс] (https://web.dev/shopping-for-speed-on-ebay).
 
-With Angular Universal, you can generate landing pages for the application that look like the complete application.
-The pages are pure HTML, and can display even if JavaScript is disabled.
-The pages don't handle browser events, but they _do_ support navigation through the site using [`routerLink`](guide/router-reference#router-link).
+Возможно, ваше приложение должно запускаться быстрее, чтобы привлечь пользователей до того, как они решат заняться чем-то другим.
 
-In practice, you'll serve a static version of the landing page to hold the user's attention.
-At the same time, you'll load the full Angular application behind it.
-The user perceives near-instant performance from the landing page and gets the full interactive experience after the full application loads.
+С помощью Angular Universal вы можете создавать целевые страницы для приложения, которые выглядят как полноценное приложение. Страницы представляют собой чистый HTML и могут отображаться даже при отключенном JavaScript.
+
+Страницы не обрабатывают события браузера, но они _до_ поддерживают навигацию по сайту с помощью [`routerLink`](guide/router-reference#router-link).
+
+На практике вы будете обслуживать статическую версию целевой страницы, чтобы удержать внимание пользователя. В то же время, вы загрузите полное приложение Angular, расположенное за ней.
+
+Пользователь воспринимает практически мгновенную производительность целевой страницы и получает полный интерактивный опыт после полной загрузки приложения.
 
 <a id="how-does-it-work"></a>
 
-## Universal web servers
+## Универсальные веб-серверы
 
-A Universal web server responds to application page requests with static HTML rendered by the [Universal template engine](#universal-engine).
-The server receives and responds to HTTP requests from clients \(usually browsers\), and serves static assets such as scripts, CSS, and images.
-It might respond to data requests, either directly or as a proxy to a separate data server.
+Универсальный веб-сервер отвечает на запросы страниц приложений статическим HTML, отображаемым [универсальным шаблонизатором](#universal-engine). Сервер получает и отвечает на HTTP-запросы от клиентов\(обычно браузеров\), и обслуживает статические активы, такие как скрипты, CSS и изображения.
 
-The sample web server for this guide is based on the popular [Express](https://expressjs.com) framework.
+Он может отвечать на запросы данных, либо напрямую, либо как прокси на отдельный сервер данных.
+
+Образец веб-сервера для данного руководства основан на популярном фреймворке [Express](https://expressjs.com).
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-_Any_ web server technology can serve a Universal application as long as it can call Angular `platform-server` package [`renderModule`](api/platform-server/renderModule) or [`renderApplication`](api/platform-server/renderApplication) functions.
+**NOTE**: <br /> _Any_ web server technology can serve a Universal application as long as it can call Angular `platform-server` package [`renderModule`](api/platform-server/renderModule) or [`renderApplication`](api/platform-server/renderApplication) functions.
 The principles and decision points discussed here apply to any web server technology.
 
 </div>
 
-Universal applications use the Angular `platform-server` package \(as opposed to `platform-browser`\), which provides
-server implementations of the DOM, `XMLHttpRequest`, and other low-level features that don't rely on a browser.
+Универсальные приложения используют пакет Angular `platform-server` \(в отличие от `platform-browser`\), который предоставляет серверные реализации DOM, `XMLHttpRequest` и других низкоуровневых функций, которые не зависят от браузера.
 
-The server \([Node.js Express](https://expressjs.com) in this guide's example\) passes client requests for application pages to the NgUniversal `ngExpressEngine`.
-Under the hood, the render functions, while providing caching and other helpful utilities.
+Сервер \([Node.js Express](https://expressjs.com) в примере этого руководства\) передает клиентские запросы на страницы приложения в NgUniversal `ngExpressEngine`. Под капотом находятся функции рендеринга, обеспечивающие кэширование и другие полезные утилиты.
 
-The render functions takes as inputs a _template_ HTML page \(usually `index.html`\), and Angular _module_ containing components or a function that when invoked returns a `Promise` that resolves to an `ApplicationRef`, and a _route_ that determines which components to display. The route comes from the client's request to the server.
+Функция рендеринга принимает в качестве входных данных _шаблон_ HTML страницы\ (обычно `index.html`\), и *модуль Angular, содержащий компоненты или функцию, которая при вызове возвращает `Promise`, разрешающуюся в `ApplicationRef`, и *маршрут\_, определяющий, какие компоненты отображать. Маршрут формируется из запроса клиента к серверу.
 
-Each request results in the appropriate view for the requested route.
-The render function renders the view within the `<app>` tag of the template, creating a finished HTML page for the client.
+Каждый запрос приводит к появлению соответствующего представления для запрошенного маршрута. Функция render рендерит представление внутри тега `<app>` шаблона, создавая готовую HTML-страницу для клиента.
 
-Finally, the server returns the rendered page to the client.
+Наконец, сервер возвращает клиенту отрисованную страницу.
 
-### Working around the browser APIs
+### Работа вокруг API браузера
 
-Because a Universal application doesn't execute in the browser, some of the browser APIs and capabilities might be missing on the server.
+Поскольку универсальное приложение не выполняется в браузере, некоторые API и возможности браузера могут отсутствовать на сервере.
 
-For example, server-side applications can't reference browser-only global objects such as `window`, `document`, `navigator`, or `location`.
+Например, серверные приложения не могут ссылаться на глобальные объекты браузера, такие как `window`, `document`, `navigator` или `location`.
 
-Angular provides some injectable abstractions over these objects, such as [`Location`](api/common/Location) or [`DOCUMENT`](api/common/DOCUMENT); it might substitute adequately for these APIs.
-If Angular doesn't provide it, it's possible to write new abstractions that delegate to the browser APIs while in the browser and to an alternative implementation while on the server \(also known as shimming\).
+Angular предоставляет некоторые инжектируемые абстракции над этими объектами, такие как [`Location`](api/common/Location) или [`DOCUMENT`](api/common/DOCUMENT); это может адекватно заменить эти API. Если Angular не предоставляет такой возможности, можно написать новые абстракции, которые делегируют API браузера в браузере и альтернативную реализацию на сервере\(также известную как шимминг\).
 
-Similarly, without mouse or keyboard events, a server-side application can't rely on a user clicking a button to show a component.
-The application must determine what to render based solely on the incoming client request.
-This is a good argument for making the application [routable](guide/router).
+Аналогично, без событий мыши или клавиатуры приложение на стороне сервера не может полагаться на то, что пользователь нажмет на кнопку, чтобы показать компонент. Приложение должно определить, что отобразить, основываясь исключительно на входящем запросе клиента.
+Это хороший аргумент в пользу того, чтобы сделать приложение [маршрутизируемым] (guide/router).
 
 <a id="service-worker"></a>
 
-### Universal and the Angular Service Worker
+### Universal и Angular Service Worker
 
-If you are using Universal in conjunction with the Angular service worker, the behavior is different than the normal server side rendering behavior. The initial server request will be rendered on the server as expected. However, after that initial request, subsequent requests are handled by the service worker. For subsequent requests, the `index.html` file is served statically and bypasses server side rendering.
+Если вы используете Universal в сочетании с Angular service worker, поведение будет отличаться от обычного рендеринга на стороне сервера. Первоначальный запрос к серверу будет отрисован на сервере, как и ожидалось. Однако после этого первоначального запроса последующие запросы обрабатываются работником службы. При последующих запросах файл `index.html` обслуживается статически и обходится без рендеринга на стороне сервера.
 
 <a id="universal-engine"></a>
 
-### Universal template engine
+### Универсальный шаблонизатор
 
-The important bit in the `server.ts` file is the `ngExpressEngine()` function.
+Важный бит в файле `server.ts` - это функция `ngExpressEngine()`.
 
-<code-example header="server.ts" path="universal/server.ts" region="ngExpressEngine"></code-example>
+<code-example header="server.ts" path="universal/server.ts" region="ngExpressEngine"></code-example>.
 
-The `ngExpressEngine()` function is a wrapper around the Angular `platform-server` package [`renderModule`](api/platform-server/renderModule) and [`renderApplication`](api/platform-server/renderApplication) functions which turns a client's requests into server-rendered HTML pages.
+Функция `ngExpressEngine()` является оберткой вокруг функций [`renderModule`](api/platform-server/renderModule) и [`renderApplication`](api/platform-server/renderApplication) пакета Angular `platform-server`, которые превращают запросы клиента в отрисованные сервером HTML-страницы.
 
-It accepts an object with the following properties:
+Она принимает объект со следующими свойствами:
 
-| Properties       | Details                                                                                                                                                                                                                                                                                                   |
-| :--------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bootstrap`      | The root `NgModule` or function that when invoked returns a `Promise` that resolves to an `ApplicationRef` of the application when rendering on the server. For the example application, it is `AppServerModule`. It's the bridge between the Universal server-side renderer and the Angular application. |
-| `extraProviders` | This property is optional and lets you specify dependency providers that apply only when rendering the application on the server. Do this when your application needs information that can only be determined by the currently running server instance.                                                   |
+| Properties | Details | | :--------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-The `ngExpressEngine()` function returns a `Promise` callback that resolves to the rendered page.
-It's up to the engine to decide what to do with that page.
-This engine's `Promise` callback returns the rendered page to the web server, which then forwards it to the client in the HTTP response.
+| `bootstrap` | Корневой `NgModule` или функция, которая при вызове возвращает `Promise`, который разрешается в `ApplicationRef` приложения при рендеринге на сервере. Для примера приложения это `AppServerModule`. Это мост между серверным рендерером Universal и приложением Angular. |
 
-### Filtering request URLs
+| `extraProviders` | Это свойство необязательно и позволяет вам указать провайдеры зависимостей, которые применяются только при рендеринге приложения на сервере. Делайте это, когда вашему приложению нужна информация, которая может быть определена только текущим запущенным экземпляром сервера. |
+
+Функция `ngExpressEngine()` возвращает обратный вызов `Promise`, который разрешается на отрисованную страницу. Движок сам решает, что делать с этой страницей.
+Обратный вызов `Promise` этого движка возвращает отрисованную страницу веб-серверу, который затем передает ее клиенту в HTTP-ответе.
+
+### Фильтрация URL-адресов запросов
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-The basic behavior described below is handled automatically when using the NgUniversal Express schematic.
+**NOTE**: <br /> The basic behavior described below is handled automatically when using the NgUniversal Express schematic.
 This is helpful when trying to understand the underlying behavior or replicate it without using the schematic.
 
 </div>
 
-The web server must distinguish _app page requests_ from other kinds of requests.
+Веб-сервер должен отличать _запросы страниц приложения_ от других видов запросов.
 
-It's not as simple as intercepting a request to the root address `/`.
-The browser could ask for one of the application routes such as `/dashboard`, `/heroes`, or `/detail:12`.
-In fact, if the application were only rendered by the server, _every_ application link clicked would arrive at the server as a navigation URL intended for the router.
+Это не так просто, как перехватить запрос к корневому адресу `/`. Браузер может запросить один из маршрутов приложения, например `/dashboard`, `/heroes` или `/detail:12`.
 
-Fortunately, application routes have something in common: their URLs lack file extensions.
-\(Data requests also lack extensions but they can be recognized because they always begin with `/api`.\)
-All static asset requests have a file extension \(such as `main.js` or `/node_modules/zone.js/bundles/zone.umd.js`\).
+На самом деле, если бы приложение отображалось только на сервере, _каждая_ ссылка приложения, на которую нажимают, приходила бы на сервер как навигационный URL, предназначенный для маршрутизатора.
 
-Because you use routing, you can recognize the three types of requests and handle them differently.
+К счастью, у маршрутов приложений есть кое-что общее: в их URL отсутствуют расширения файлов. \(Запросы данных также не имеют расширений, но их можно распознать, потому что они всегда начинаются с `/api`.\)
 
-| Routing request types | Details                             |
-| :-------------------- | :---------------------------------- |
-| Data request          | Request URL that begins `/api`.     |
-| App navigation        | Request URL with no file extension. |
-| Static asset          | All other requests.                 |
+Все запросы статических активов имеют расширение файла \(например, `main.js` или `/node_modules/zone.js/bundles/zone.umd.js`\).
 
-A Node.js Express server is a pipeline of middleware that filters and processes requests one after the other.
-You configure the Node.js Express server pipeline with calls to `server.get()` like this one for data requests.
+Поскольку вы используете маршрутизацию, вы можете распознать три типа запросов и обрабатывать их по-разному.
 
-<code-example header="server.ts (data URL)" path="universal/server.ts" region="data-request"></code-example>
+Типы запросов маршрутизации | Подробности | | | :-------------------- | :---------------------------------- |
+
+| Запрос данных | URL запроса, начинающийся с `/api`. |
+
+| Навигация по приложениям | Запрос URL без расширения файла. |
+
+| Статический актив | Все остальные запросы. |
+
+Экспресс-сервер Node.js - это конвейер промежуточного программного обеспечения, которое фильтрует и обрабатывает запросы один за другим. Вы настраиваете конвейер Node.js Express-сервера с помощью вызовов `server.get()`, как, например, в данном случае для запросов данных.
+
+<code-example header="server.ts (URL данных)" path="universal/server.ts" region="data-request"></code-example>.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-This sample server doesn't handle data requests.
+**NOTE**: <br /> This sample server doesn't handle data requests.
 
-The tutorial's "in-memory web API" module, a demo and development tool, intercepts all HTTP calls and simulates the behavior of a remote data server.
-In practice, you would remove that module and register your web API middleware on the server here.
+The tutorial's "in-memory web API" module, a demo and development tool, intercepts all HTTP calls and simulates the behavior of a remote data server. In practice, you would remove that module and register your web API middleware on the server here.
 
 </div>
 
-The following code filters for request URLs with no extensions and treats them as navigation requests.
+Следующий код фильтрует URL запроса без расширений и рассматривает их как навигационные запросы.
 
 <code-example header="server.ts (navigation)" path="universal/server.ts" region="navigation-request"></code-example>
 
-### Serving static files safely
+### Безопасное обслуживание статических файлов
 
-A single `server.use()` treats all other URLs as requests for static assets such as JavaScript, image, and style files.
+Единственный `server.use()` рассматривает все остальные URL как запросы на статические активы, такие как JavaScript, изображения и файлы стилей.
 
-To ensure that clients can only download the files that they are permitted to see, put all client-facing asset files in the `/dist` folder and only honor requests for files from the `/dist` folder.
+Чтобы гарантировать, что клиенты могут загружать только те файлы, которые им разрешено видеть, поместите все файлы активов для клиентов в папку `/dist` и выполняйте запросы на файлы только из папки `/dist`.
 
-The following Node.js Express code routes all remaining requests to `/dist`, and returns a `404 - NOT FOUND` error if the
-file isn't found.
+Следующий код Node.js Express направляет все остальные запросы в папку `/dist` и возвращает ошибку `404 - NOT FOUND`, если файл не найден.
 
-<code-example header="server.ts (static files)" path="universal/server.ts" region="static"></code-example>
+<code-example header="server.ts (статические файлы)" path="universal/server.ts" region="static"></code-example>
 
-### Using absolute URLs for HTTP (data) requests on the server
+### Использование абсолютных URL для HTTP (данных) запросов на сервере
 
-The tutorial's `HeroService` and `HeroSearchService` delegate to the Angular `HttpClient` module to fetch application data.
-These services send requests to _relative_ URLs such as `api/heroes`.
-In a server-side rendered app, HTTP URLs must be _absolute_ \(for example, `https://my-server.com/api/heroes`\).
-This means that the URLs must be somehow converted to absolute when running on the server and be left relative when running in the browser.
+В учебнике `HeroService` и `HeroSearchService` делегируют модулю Angular `HttpClient` для получения данных приложения. Эти сервисы отправляют запросы на _относительные_ URL, такие как `api/heroes`.
 
-If you are using one of the `@nguniversal/*-engine` packages \(such as `@nguniversal/express-engine`\), this is taken care for you automatically.
-You don't need to do anything to make relative URLs work on the server.
+В приложении с рендерингом на стороне сервера, HTTP URL должны быть _абсолютными_\ (например, `https://my-server.com/api/heroes`\).
 
-If, for some reason, you are not using an `@nguniversal/*-engine` package, you might need to handle it yourself.
+Это означает, что URL должны быть каким-то образом преобразованы в абсолютные при работе на сервере и оставлены относительными при работе в браузере.
 
-The recommended solution is to pass the full request URL to the `options` argument of [renderModule](api/platform-server/renderModule).
-This option is the least intrusive as it does not require any changes to the application.
-Here, "request URL" refers to the URL of the request as a response to which the application is being rendered on the server.
-For example, if the client requested `https://my-server.com/dashboard` and you are rendering the application on the server to respond to that request, `options.url` should be set to `https://my-server.com/dashboard`.
+Если вы используете один из пакетов `@nguniversal/*-engine`\ (например, `@nguniversal/express-engine`\), это будет сделано автоматически. Вам не нужно ничего делать для того, чтобы относительные URL работали на сервере.
 
-Now, on every HTTP request made as part of rendering the application on the server, Angular can correctly resolve the request URL to an absolute URL, using the provided `options.url`.
+Если по какой-то причине вы не используете пакет `@nguniversal/*-engine`, вам может понадобиться сделать это самостоятельно.
 
-### Useful scripts
+Рекомендуемое решение - передавать полный URL запроса в аргумент `options` в [renderModule](api/platform-server/renderModule). Этот вариант является наименее навязчивым, так как не требует изменений в приложении.
 
-| Scripts                                                                                                   | Details                                                                                                                                                                                                                                                                                                                                                                                                       |
-| :-------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <code-example format="shell" language="shell"> npm run dev:ssr </code-example>                            | Similar to [`ng serve`](cli/serve), which offers live reload during development, but uses server-side rendering. The application runs in watch mode and refreshes the browser after every change. This command is slower than the actual `ng serve` command.                                                                                                                                                  |
-| <code-example format="shell" language="shell"> ng build &amp;&amp; ng run app-name:server </code-example> | Builds both the server script and the application in production mode. Use this command when you want to build the project for deployment.                                                                                                                                                                                                                                                                     |
-| <code-example format="shell" language="shell"> npm run serve:ssr </code-example>                          | Starts the server script for serving the application locally with server-side rendering. It uses the build artifacts created by `ng run build:ssr`, so make sure you have run that command as well. <div class="alert is-helpful"> **NOTE**: <br /> `serve:ssr` is not intended to be used to serve your application in production, but only for testing the server-side rendered application locally. </div> |
-| <code-example format="shell" language="shell"> npm run prerender </code-example>                          | Used to prerender an application's pages. Read more about prerendering [here](guide/prerendering).                                                                                                                                                                                                                                                                                                            |
+Здесь "URL запроса" относится к URL запроса, в ответ на который приложение рендерится на сервере.
+
+Например, если клиент запросил `https://my-server.com/dashboard` и вы отображаете приложение на сервере в ответ на этот запрос, `options.url` должен быть установлен в `https://my-server.com/dashboard`.
+
+Теперь при каждом HTTP-запросе, выполняемом в процессе рендеринга приложения на сервере, Angular сможет правильно преобразовать URL запроса в абсолютный URL, используя предоставленный `options.url`.
+
+### Полезные скрипты
+
+| Scripts | Details | | :-------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| <code-example format="shell" language="shell"> npm run dev:ssr </code-example> | Similar to [`ng serve`](cli/serve), which offers live reload during development, but uses server-side rendering. The application runs in watch mode and refreshes the browser after every change. This command is slower than the actual `ng serve` command. |
+| <code-example format="shell" language="shell"> ng build &amp;&amp; ng run app-name:server </code-example> | Builds both the server script and the application in production mode. Use this command when you want to build the project for deployment. |
+| <code-example format="shell" language="shell"> npm run serve:ssr </code-example> | Starts the server script for serving the application locally with server-side rendering. It uses the build artifacts created by `ng run build:ssr`, so make sure you have run that command as well. <div class="alert is-helpful"> **NOTE**: <br /> `serve:ssr` is not intended to be used to serve your application in production, but only for testing the server-side rendered application locally. </div> |
+| <code-example format="shell" language="shell"> npm run prerender </code-example> | Used to prerender an application's pages. Read more about prerendering [here](guide/prerendering). |
 
 <!-- links -->
 

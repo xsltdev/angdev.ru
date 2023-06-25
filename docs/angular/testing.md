@@ -1,64 +1,67 @@
 <a id="top"></a>
 
-{@searchKeywords test testing karma jasmine coverage}
+{@searchKeywords test тестирование karma jasmine coverage}
 
-# Testing
+# Тестирование
 
-Testing your Angular application helps you check that your application is working as you expect.
+Тестирование вашего приложения Angular поможет вам проверить, что ваше приложение работает так, как вы ожидаете.
 
-## Prerequisites
+## Предварительные условия
 
-Before writing tests for your Angular application, you should have a basic understanding of the following concepts:
+Прежде чем писать тесты для вашего приложения Angular, вы должны иметь базовое представление о следующих концепциях:
 
--   [Angular fundamentals](guide/architecture)
+-   [Основы Angular](руководство/архитектура)
+
 -   [JavaScript](https://javascript.info/)
+
 -   HTML
+
 -   CSS
+
 -   [Angular CLI](cli)
 
-The testing documentation offers tips and techniques for unit and integration testing Angular applications through a sample application created with the [Angular CLI](cli).
-This sample application is much like the one in the [_Tour of Heroes_ tutorial](tutorial/tour-of-heroes).
+Документация по тестированию предлагает советы и методы модульного и интеграционного тестирования приложений Angular на примере приложения, созданного с помощью [Angular CLI](cli). Этот пример приложения очень похож на пример из учебника [_Tour of Heroes_](tutorial/tour-of-heroes).
 
 <div class="alert is-helpful">
 
-If you'd like to experiment with the application that this guide describes, <live-example name="testing" noDownload>run it in your browser</live-example> or <live-example name="testing" downloadOnly>download and run it locally</live-example>.
+Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, <live-example name="testing" noDownload>запустите его в браузере</live-example> или <live-example name="testing" downloadOnly>скачайте и запустите его локально</live-example>.
 
 </div>
 
 <a id="setup"></a>
 
-## Set up testing
+## Настройка тестирования
 
-The Angular CLI downloads and installs everything you need to test an Angular application with [Jasmine testing framework](https://jasmine.github.io).
+Angular CLI загружает и устанавливает все необходимое для тестирования приложения Angular с помощью [Jasmine testing framework](https://jasmine.github.io).
 
-The project you create with the CLI is immediately ready to test.
-Just run the [`ng test`](cli/test) CLI command:
+Проект, который вы создаете с помощью CLI, сразу же готов к тестированию. Просто выполните команду CLI [`ng test`](cli/test):
 
 <code-example format="shell" language="shell">
 
-ng test
+нг-тест
 
 </code-example>
 
-The `ng test` command builds the application in _watch mode_,
-and launches the [Karma test runner](https://karma-runner.github.io).
+Команда `ng test` создает приложение в режиме _watch mode_ и запускает [Karma test runner](https://karma-runner.github.io).
 
-The console output looks the below:
+Вывод консоли выглядит следующим образом:
 
 <code-example format="shell" language="shell">
 
-02 11 2022 09:08:28.605:INFO [karma-server]: Karma v6.4.1 server started at http://localhost:9876/
-02 11 2022 09:08:28.607:INFO [launcher]: Launching browsers Chrome with concurrency unlimited
-02 11 2022 09:08:28.620:INFO [launcher]: Starting browser Chrome
+02 11 2022 09:08:28.605:INFO [karma-server]: Karma v6.4.1 server started at http://localhost:9876/ 02 11 2022 09:08:28.607:INFO [launcher]: Запуск браузера Chrome с неограниченным параллелизмом
+02 11 2022 09:08:28.620:INFO [launcher]: Запуск браузера Chrome
+
 02 11 2022 09:08:31.312:INFO [Chrome]: Connected on socket -LaEYvD2R7MdcS0-AAAB with id 31534482
-Chrome: Executed 3 of 3 SUCCESS (0.193 secs / 0.172 secs)
-TOTAL: 3 SUCCESS
+
+Chrome: Выполнено 3 из 3 УСПЕХОВ (0,193 сек / 0,172 сек)
+
+ИТОГО: 3 УСПЕХА
 
 </code-example>
 
-The last line of the log shows that Karma ran three tests that all passed.
+Последняя строка журнала показывает, что Karma выполнила три теста, которые все прошли.
 
-The test output is displayed in the browser using [Karma Jasmine HTML Reporter](https://github.com/dfederm/karma-jasmine-html-reporter).
+Результаты тестирования отображаются в браузере с помощью [Karma Jasmine HTML Reporter](https://github.com/dfederm/karma-jasmine-html-reporter).
 
 <div class="lightbox">
 
@@ -66,18 +69,17 @@ The test output is displayed in the browser using [Karma Jasmine HTML Reporter](
 
 </div>
 
-Click on a test row to re-run just that test or click on a description to re-run the tests in the selected test group \("test suite"\).
+Щелкните на строке теста для повторного выполнения только этого теста или щелкните на описании для повторного выполнения тестов в выбранной группе тестов \("test suite"\).
 
-Meanwhile, the `ng test` command is watching for changes.
+Тем временем команда `ng test` следит за изменениями.
 
-To see this in action, make a small change to `app.component.ts` and save.
-The tests run again, the browser refreshes, and the new test results appear.
+Чтобы увидеть это в действии, внесите небольшое изменение в `app.component.ts` и сохраните. Тесты запускаются снова, браузер обновляется, и появляются новые результаты тестирования.
 
-## Configuration
+## Конфигурация
 
-The Angular CLI takes care of Jasmine and Karma configuration for you. It constructs the full configuration in memory, based on options specified in the `angular.json` file.
+Angular CLI позаботится о конфигурации Jasmine и Karma за вас. Он создает полную конфигурацию в памяти, основываясь на опциях, указанных в файле `angular.json`.
 
-If you want to customize Karma, you can create a `karma.conf.js` by running the following command:
+Если вы хотите настроить Karma, вы можете создать файл `karma.conf.js`, выполнив следующую команду:
 
 <code-example format="shell" language="shell">
 
@@ -87,66 +89,67 @@ ng generate config karma
 
 <div class="alert is-helpful">
 
-Read more about Karma configuration in the [Karma configuration guide](http://karma-runner.github.io/6.4/config/configuration-file.html).
+Подробнее о конфигурации Karma читайте в [Руководстве по конфигурации Karma](http://karma-runner.github.io/6.4/config/configuration-file.html).
 
 </div>
 
-### Other test frameworks
+### Другие тестовые фреймворки
 
-You can also unit test an Angular application with other testing libraries and test runners.
-Each library and runner has its own distinctive installation procedures, configuration, and syntax.
+Вы также можете проводить модульное тестирование приложения Angular с помощью других библиотек тестирования и программ запуска тестов. Каждая библиотека и программа тестирования имеет свои собственные процедуры установки, конфигурации и синтаксис.
 
-### Test file name and location
+### Имя и расположение тестового файла
 
-Inside the `src/app` folder the Angular CLI generated a test file for the `AppComponent` named `app.component.spec.ts`.
+Внутри папки `src/app` Angular CLI создал тестовый файл для `AppComponent` под названием `app.component.spec.ts`.
 
 <div class="alert is-important">
 
-The test file extension **must be `.spec.ts`** so that tooling can identify it as a file with tests \(also known as a _spec_ file\).
+Расширение тестового файла **должно быть `.spec.ts`**, чтобы инструментарий мог идентифицировать его как файл с тестами\ (также известный как *спец*файл\).
 
 </div>
 
-The `app.component.ts` and `app.component.spec.ts` files are siblings in the same folder.
-The root file names \(`app.component`\) are the same for both files.
+Файлы `app.component.ts` и `app.component.spec.ts` являются родными в одной папке. Имена корневых файлов \(`app.component`\) одинаковы для обоих файлов.
 
-Adopt these two conventions in your own projects for _every kind_ of test file.
+Примите эти два соглашения в ваших собственных проектах для _любого вида_ тестовых файлов.
 
 <a id="q-spec-file-location"></a>
 
-#### Place your spec file next to the file it tests
+#### Поместите файл спецификации рядом с файлом, который он тестирует.
 
-It's a good idea to put unit test spec files in the same folder
-as the application source code files that they test:
+Хорошей идеей является размещение файлов спецификаций модульных тестов в той же папке, что и файлы исходного кода приложения, которое они тестируют:
 
--   Such tests are painless to find
--   You see at a glance if a part of your application lacks tests
--   Nearby tests can reveal how a part works in context
--   When you move the source \(inevitable\), you remember to move the test
--   When you rename the source file \(inevitable\), you remember to rename the test file
+-   Такие тесты легко найти.
+
+-   Вы сразу видите, если в какой-то части вашего приложения отсутствуют тесты.
+
+-   Находящиеся рядом тесты могут показать, как часть работает в контексте.
+
+-   Когда вы перемещаете исходный файл \(неизбежно\), вы не забываете переместить тест
+
+-   Когда вы переименовываете исходный файл \(неизбежно\), вы помните, что нужно переименовать тестовый файл
 
 <a id="q-specs-in-test-folder"></a>
 
-#### Place your spec files in a test folder
+#### Поместите файлы спецификаций в тестовую папку.
 
-Application integration specs can test the interactions of multiple parts
-spread across folders and modules.
-They don't really belong to any part in particular, so they don't have a
-natural home next to any one file.
+Спецификации интеграции приложений могут тестировать взаимодействие нескольких частей, распределенных по папкам и модулям.
 
-It's often better to create an appropriate folder for them in the `tests` directory.
+На самом деле они не относятся к какой-либо конкретной части, поэтому у них нет
 
-Of course specs that test the test helpers belong in the `test` folder,
-next to their corresponding helper files.
+естественного места рядом с каким-либо одним файлом.
+
+Часто лучше создать для них соответствующую папку в каталоге `tests`.
+
+Конечно, спецификации, которые тестируют помощников тестов, должны находиться в папке `test`, рядом с соответствующими файлами-помощниками.
 
 <a id="ci"></a>
 
-## Testing in continuous integration
+## Тестирование в непрерывной интеграции
 
-One of the best ways to keep your project bug-free is through a test suite, but you might forget to run tests all the time.
+Один из лучших способов сохранить проект без ошибок - это набор тестов, но вы можете постоянно забывать запускать тесты.
 
-Continuous integration \(CI\) servers let you set up your project repository so that your tests run on every commit and pull request.
+Серверы непрерывной интеграции \(CI\) позволяют настроить репозиторий проекта таким образом, чтобы тесты запускались при каждом коммите и запросе на извлечение.
 
-To test your Angular CLI application in Continuous integration \(CI\) run the following command:
+Чтобы протестировать ваше приложение Angular CLI в режиме непрерывной интеграции \(CI\), выполните следующую команду:
 
 <code-example format="shell" language="shell">
 
@@ -154,20 +157,27 @@ ng test --no-watch --no-progress
 
 </code-example>
 
-## More information on testing
+## Дополнительная информация о тестировании
 
-After you've set up your application for testing, you might find the following testing guides useful.
+После того, как вы настроили свое приложение для тестирования, вам могут быть полезны следующие руководства по тестированию.
 
-|                                                                    | Details                                                                           |
-| :----------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| [Code coverage](guide/testing-code-coverage)                       | How much of your app your tests are covering and how to specify required amounts. |
-| [Testing services](guide/testing-services)                         | How to test the services your application uses.                                   |
-| [Basics of testing components](guide/testing-components-basics)    | Basics of testing Angular components.                                             |
-| [Component testing scenarios](guide/testing-components-scenarios)  | Various kinds of component testing scenarios and use cases.                       |
-| [Testing attribute directives](guide/testing-attribute-directives) | How to test your attribute directives.                                            |
-| [Testing pipes](guide/testing-pipes)                               | How to test pipes.                                                                |
-| [Debugging tests](guide/test-debugging)                            | Common testing bugs.                                                              |
-| [Testing utility APIs](guide/testing-utility-apis)                 | Angular testing features.                                                         |
+| | Подробности | | | :----------------------------------------------------------------- | :-------------------------------------------------------------------------------- | |
+
+| [Покрытие кода](guide/testing-code-coverage) | Какую часть вашего приложения покрывают тесты и как определить необходимые объемы. |
+
+| [Тестирование сервисов](guide/testing-services) | Как тестировать сервисы, используемые вашим приложением. |
+
+| | [Основы тестирования компонентов](guide/testing-components-basics) | Основы тестирования компонентов Angular. |
+
+| | [Сценарии тестирования компонентов](guide/testing-components-scenarios) | Различные виды сценариев тестирования компонентов и сценарии использования. |
+
+| | [Тестирование директив атрибутов](guide/testing-attribute-directives) | Как тестировать директивы атрибутов. |
+
+| | [Тестирование труб](guide/testing-pipes) | Как тестировать трубы. |
+
+| | [Отладка тестов](guide/test-debugging) | Общие ошибки тестирования. |
+
+| | [Тестирование API утилит](guide/testing-utility-apis) | Особенности тестирования Angular. |
 
 <!-- links -->
 

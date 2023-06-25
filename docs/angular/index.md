@@ -12,7 +12,7 @@
 
     Пройдите полное руководство, чтобы создать свое первое приложение.
 
-    **[:octicons-arrow-right-24: Руководство по созданию приложения](tutorial/first-app.md)**
+    [:octicons-arrow-right-24: Руководство по созданию приложения](tutorial/first-app.md)
 
 -   :simple-angular:{ .lg .middle } **Что такое Angular**
 
@@ -20,7 +20,7 @@
 
     Получите общее представление о платформе Angular.
 
-    **[:octicons-arrow-right-24: Обзор платформы](guide/what-is-angular.md)**
+    [:octicons-arrow-right-24: Обзор платформы](guide/what-is-angular.md)
 
 -   :simple-angular:{ .lg .middle } **Учись и исследуй**
 
@@ -28,7 +28,7 @@
 
     Узнайте о фундаментальных концепциях проектирования и архитектуре приложений Angular.
 
-    **[:octicons-arrow-right-24: Введение в концепции Angular](guide/architecture.md)**
+    [:octicons-arrow-right-24: Введение в концепции Angular](guide/architecture.md)
 
 -   :simple-angular:{ .lg .middle } **Настройка вашей среды.**
 
@@ -36,7 +36,7 @@
 
     Настройте вашу локальную среду для разработки с помощью Angular CLI.
 
-    **[:octicons-arrow-right-24: Локальная настройка](guide/setup-local.md)**
+    [:octicons-arrow-right-24: Локальная настройка](guide/setup-local.md)
 
 </div>
 

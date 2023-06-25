@@ -1,155 +1,160 @@
-# Create a new project
+# Создайте новый проект
 
-Use the `ng new` command to start creating your **Tour of Heroes** application.
+Используйте команду `ng new`, чтобы начать создание приложения **Tour of Heroes**.
 
-This tutorial:
+В этом руководстве:
 
-1.  Sets up your environment.
-2.  Creates a new workspace and initial application project.
-3.  Serves the application.
-4.  Makes changes to the new application.
+1.  Устанавливает ваше окружение.
+
+2.  Создает новое рабочее пространство и начальный проект приложения.
+
+3.  Обслуживает приложение.
+
+4.  Вносит изменения в новое приложение.
 
 <div class="alert is-helpful">
 
-To view the application's code, see the <live-example></live-example>.
+Для просмотра кода приложения смотрите <live-example></live-example>.
 
 </div>
 
-## Set up your environment
+## Настройка среды
 
-To set up your development environment, follow the instructions in [Local Environment Setup](guide/setup-local 'Setting up for Local Development').
+Чтобы настроить среду разработки, следуйте инструкциям в [Local Environment Setup](guide/setup-local 'Setting up for Local Development').
 
-## Create a new workspace and an initial application
+## Создайте новое рабочее пространство и начальное приложение
 
-You develop applications in the context of an Angular [workspace](guide/glossary#workspace).
-A _workspace_ contains the files for one or more [projects](guide/glossary#project).
-A _project_ is the set of files that make up an application or a library.
+Вы разрабатываете приложения в контексте Angular [workspace](guide/glossary#workspace). Рабочее пространство\_ содержит файлы для одного или нескольких [проектов](guide/glossary#project).
 
-To create a new workspace and an initial project:
+_Проект_ - это набор файлов, составляющих приложение или библиотеку.
 
-1.  Ensure that you aren't already in an Angular workspace directory.
-    For example, if you're in the Getting Started workspace from an earlier exercise, navigate to its parent.
+Чтобы создать новое рабочее пространство и начальный проект, выполните следующие действия:
 
-2.  Run `ng new` followed by the application name as shown here:
+1.  Убедитесь, что вы еще не находитесь в каталоге рабочего пространства Angular.
+
+    Например, если вы находитесь в рабочей области "Начало работы" из предыдущего упражнения, перейдите в ее родительскую директорию.
+
+2.  Выполните команду `ng new`, за которой следует имя приложения, как показано здесь:
 
     <code-example format="shell" language="shell">
 
     ng new angular-tour-of-heroes
 
-    </code-example>
+    </code-example>.
 
-3.  `ng new` prompts you for information about features to include in the initial project.
-    Accept the defaults by pressing the Enter or Return key.
+3.  Функция `ng new` запрашивает информацию о функциях, которые необходимо включить в начальный проект.
 
-`ng new` installs the necessary `npm` packages and other dependencies that Angular requires.
-This can take a few minutes.
+    Примите значения по умолчанию, нажав клавишу Enter или Return.
 
-`ng new` also creates the following workspace and starter project files:
+`ng new` устанавливает необходимые пакеты `npm` и другие зависимости, которые требуются Angular. Это может занять несколько минут.
 
--   A new workspace, with a root directory named `angular-tour-of-heroes`
--   An initial skeleton application project in the `src/app` subdirectory
--   Related configuration files
+`ng new` также создает следующее рабочее пространство и файлы начального проекта:
 
-The initial application project contains a simple application that's ready to run.
+-   Новое рабочее пространство с корневым каталогом `angular-tour-of-heroes`.
 
-## Serve the application
+-   Начальный скелетный проект приложения в подкаталоге `src/app`.
 
-Go to the workspace directory and launch the application.
+-   Связанные конфигурационные файлы
+
+Начальный проект приложения содержит простое приложение, готовое к запуску.
+
+## Запуск приложения
+
+Перейдите в каталог рабочей области и запустите приложение.
 
 <code-example format="shell" language="shell">
 
-cd angular-tour-of-heroes
-ng serve --open
+cd angular-tour-of-heroes ng serve --open
 
 </code-example>
 
 <div class="alert is-helpful">
 
-The `ng serve` command:
+Команда `ng serve`:
 
--   Builds the application
--   Starts the development server
--   Watches the source files
--   Rebuilds the application as you make changes
+-   Создает приложение
 
-The `--open` flag opens a browser to `http://localhost:4200`.
+-   Запускает сервер разработки
+
+-   Следит за исходными файлами
+
+-   Пересоздает приложение по мере внесения изменений.
+
+Флаг `--open` открывает браузер на `http://localhost:4200`.
 
 </div>
 
-You should see the application running in your browser.
+Вы должны увидеть запущенное приложение в браузере.
 
-## Angular components
+## компоненты Angular
 
-The page you see is the _application shell_.
-The shell is controlled by an Angular **component** named `AppComponent`.
+Страница, которую вы видите, - это _оболочка приложения_. Оболочка управляется компонентом Angular **component** с именем `AppComponent`.
 
-_Components_ are the fundamental building blocks of Angular applications.
-They display data on the screen, listen for user input, and take action based on that input.
+_Компоненты_ - это фундаментальные строительные блоки приложений Angular. Они отображают данные на экране, слушают ввод пользователя и выполняют действия на основе этого ввода.
 
-## Make changes to the application
+## Внесение изменений в приложение
 
-Open the project in your favorite editor or IDE. Navigate to the `src/app` directory to edit the starter application.
-In the IDE, locate these files, which make up the `AppComponent` that you just created:
+Откройте проект в вашем любимом редакторе или IDE. Перейдите в каталог `src/app` для редактирования стартового приложения. В IDE найдите эти файлы, которые составляют `AppComponent`, который вы только что создали:
 
-| Files                | Details                                          |
-| :------------------- | :----------------------------------------------- |
-| `app.component.ts`   | The component class code, written in TypeScript. |
-| `app.component.html` | The component template, written in HTML.         |
-| `app.component.css`  | The component's private CSS styles.              |
+| Files | Details | | :------------------- | :----------------------------------------------- | |
+
+| `app.component.ts` | Код класса компонента, написанный на TypeScript. |
+
+| `app.component.html` | Шаблон компонента, написанный на HTML. |
+
+| | `app.component.css` | Частные CSS стили компонента. |
 
 <div class="alert is-important">
 
-When you ran `ng new`, Angular created test specifications for your new application.
-Unfortunately, making these changes breaks your newly created specifications.
+Когда вы запустили `ng new`, Angular создал тестовые спецификации для вашего нового приложения. К сожалению, внесение этих изменений нарушает только что созданные спецификации.
 
-That won't be a problem because Angular testing is outside the scope of this tutorial and won't be used.
+Это не будет проблемой, потому что тестирование Angular выходит за рамки данного руководства и не будет использоваться.
 
-To learn more about testing with Angular, see [Testing](guide/testing).
+Чтобы узнать больше о тестировании с помощью Angular, смотрите [Тестирование](руководство/тестирование).
 
 </div>
 
-### Change the application title
+### Измените заголовок приложения
 
-Open the `app.component.ts` and change the `title` property value to 'Tour of Heroes'.
+Откройте файл `app.component.ts` и измените значение свойства `title` на "Tour of Heroes".
 
-<code-example header="app.component.ts (class title property)" path="toh-pt0/src/app/app.component.ts" region="set-title"></code-example>
+<code-example header="app.component.ts (свойство title класса)" path="toh-pt0/src/app/app.component.ts" region="set-title"></code-example>.
 
-Open `app.component.html` and delete the default template that `ng new` created.
-Replace it with the following line of HTML.
+Откройте `app.component.html` и удалите шаблон по умолчанию, который создал `ng new`. Замените его следующей строкой HTML.
 
-<code-example header="app.component.html (template)" path="toh-pt0/src/app/app.component.html"></code-example>
+<code-example header="app.component.html (template)" path="toh-pt0/src/app/app.component.html"></code-example>.
 
-The double curly braces are Angular's _interpolation binding_ syntax.
-This interpolation binding presents the component's `title` property value inside the HTML header tag.
+Двойные фигурные скобки - это синтаксис _интерполяционного связывания_ в Angular. Эта интерполяционная привязка представляет значение свойства компонента `title` внутри тега заголовка HTML.
 
-The browser refreshes and displays the new application title.
+Браузер обновляется и отображает новый заголовок приложения.
 
 <a id="app-wide-styles"></a>
 
-### Add application styles
+### Добавить стили приложения
 
-Most apps strive for a consistent look across the application.
-`ng new` created an empty `styles.css` for this purpose.
-Put your application-wide styles there.
+Большинство приложений стремятся к единообразному внешнему виду всего приложения. Для этого `ng new` создал пустой файл `styles.css`.
 
-Open `src/styles.css` and add the code below to the file.
+Поместите туда свои стили для всего приложения.
 
-<code-example header="src/styles.css (excerpt)" path="toh-pt0/src/styles.1.css"></code-example>
+Откройте `src/styles.css` и добавьте в файл приведенный ниже код.
 
-## Final code review
+<code-example header="src/styles.css (excerpt)" path="toh-pt0/src/styles.1.css"></code-example>.
 
-Here are the code files discussed on this page.
+## Окончательный обзор кода
 
-<code-tabs>
-    <code-pane header="src/app/app.component.ts" path="toh-pt0/src/app/app.component.ts"></code-pane>
-    <code-pane header="src/app/app.component.html" path="toh-pt0/src/app/app.component.html"></code-pane>
-    <code-pane header="src/styles.css (excerpt)" path="toh-pt0/src/styles.1.css"></code-pane>
+Вот файлы кода, рассмотренные на этой странице.
+
+<code-tabs> <code-pane header="src/app/app.component.ts" path="toh-pt0/src/app/app.component.ts"></code-pane>
+<code-pane header="src/app/app.component.html" path="toh-pt0/src/app/app.component.html"></code-pane>
+<code-pane header="src/styles.css (excerpt)" path="toh-pt0/src/styles.1.css"></code-pane>
 </code-tabs>
 
-## Summary
+## Резюме
 
--   You created the initial application structure using `ng new`.
--   You learned that Angular components display data
--   You used the double curly braces of interpolation to display the application title
+-   Вы создали начальную структуру приложения с помощью `ng new`.
+
+-   Вы узнали, что компоненты Angular отображают данные
+
+-   Вы использовали двойные фигурные скобки интерполяции для отображения заголовка приложения
 
 :date: 28.02.2022

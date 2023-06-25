@@ -1,18 +1,24 @@
-# Debugging tests
+# Отладка тестов
 
-If your tests aren't working as you expect them to, you can inspect and debug them in the browser.
+Если ваши тесты работают не так, как вы ожидаете, вы можете проверить и отладить их в браузере.
 
-Debug specs in the browser in the same way that you debug an application.
+Отладка тестов в браузере осуществляется так же, как и отладка приложения.
 
-1.  Reveal the Karma browser window.
-    See [Set up testing](guide/testing#set-up-testing) if you need help with this step.
+1.  Раскройте окно браузера Karma.
 
-1.  Click the **DEBUG** button to open a new browser tab and re-run the tests.
-1.  Open the browser's **Developer Tools**. On Windows, press `Ctrl-Shift-I`. On macOS, press `Command-Option-I`.
-1.  Pick the **Sources** section.
-1.  Press `Control/Command-P`, and then start typing the name of your test file to open it.
-1.  Set a breakpoint in the test.
-1.  Refresh the browser, and notice how it stops at the breakpoint.
+    Смотрите [Настройка тестирования](guide/testing#set-up-testing), если вам нужна помощь с этим шагом.
+
+1.  Нажмите кнопку **DEBUG**, чтобы открыть новую вкладку браузера и повторно запустить тесты.
+
+1.  Откройте **Инструменты разработчика** в браузере. В Windows нажмите `Ctrl-Shift-I`. В macOS нажмите `Command-Option-I`.
+
+1.  Выберите раздел **Источники**.
+
+1.  Нажмите `Control/Command-P`, а затем начните вводить имя вашего тестового файла, чтобы открыть его.
+
+1.  Установите точку останова в тесте.
+
+1.  Обновите браузер и обратите внимание, что он остановился на точке останова.
 
 <div class="lightbox">
 

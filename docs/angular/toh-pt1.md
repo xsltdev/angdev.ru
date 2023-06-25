@@ -1,17 +1,16 @@
-# The hero editor
+# Редактор героев
 
-The application now has a basic title.
-Next, create a new component to display hero information and place that component in the application shell.
+Теперь у приложения есть базовый заголовок. Далее создайте новый компонент для отображения информации о герое и поместите этот компонент в оболочку приложения.
 
 <div class="alert is-helpful">
 
-For the sample application that this page describes, see the <live-example></live-example>.
+Пример приложения, которое описывается на этой странице, см. в <live-example></live-example>.
 
 </div>
 
-## Create the heroes component
+## Создание компонента heroes
 
-Use `ng generate` to create a new component named `heroes`.
+Используйте `ng generate` для создания нового компонента с именем `heroes`.
 
 <code-example format="shell" language="shell">
 
@@ -19,86 +18,83 @@ ng generate component heroes
 
 </code-example>
 
-`ng generate` creates a new directory , `src/app/heroes/`, and generates the three files of the `HeroesComponent` along with a test file.
+`ng generate` создает новый каталог `src/app/heroes/` и генерирует три файла `HeroesComponent` вместе с тестовым файлом.
 
-The `HeroesComponent` class file is as follows:
+Файл класса `HeroesComponent` выглядит следующим образом:
 
-<code-example header="app/heroes/heroes.component.ts (initial version)" path="toh-pt1/src/app/heroes/heroes.component.ts" region="v1"></code-example>
+<code-example header="app/heroes/heroes.component.ts (initial version)" path="toh-pt1/src/app/heroes/heroes.component.ts" region="v1"></code-example
 
-You always import the `Component` symbol from the Angular core library and annotate the component class with `@Component`.
+Вы всегда импортируете символ `Component` из библиотеки ядра Angular и аннотируете класс компонента с помощью `@Component`.
 
-`@Component` is a decorator function that specifies the Angular metadata for the component.
+`@Component` - это функция-декоратор, которая определяет метаданные Angular для компонента.
 
-`ng generate` created three metadata properties:
+Функция `ng generate` создала три свойства метаданных:
 
-| Properties    | Details                                             |
-| :------------ | :-------------------------------------------------- |
-| `selector`    | The component's CSS element selector.               |
-| `templateUrl` | The location of the component's template file.      |
-| `styleUrls`   | The location of the component's private CSS styles. |
+| Properties | Details | | :------------ | :-------------------------------------------------- |.
+
+| `selector` | Селектор CSS элементов компонента. |
+
+| | `templateUrl` | Расположение файла шаблона компонента. |
+
+| | `styleUrls` | Расположение частных стилей CSS компонента. |
 
 <a id="selector"></a>
 
-The [CSS element selector](https://developer.mozilla.org/docs/Web/CSS/Type_selectors), `'app-heroes'`, matches the name of the HTML element that identifies this component within a parent component's template.
+Селектор [CSS элемента](https://developer.mozilla.org/docs/Web/CSS/Type_selectors), `'app-heroes'`, соответствует имени HTML элемента, который идентифицирует этот компонент в шаблоне родительского компонента.
 
-Always `export` the component class so you can `import` it elsewhere &hellip; like in the `AppModule`.
+Всегда `экспортируйте` класс компонента, чтобы вы могли `импортировать` его в другое место &hellip; например, в `AppModule`.
 
-### Add a `hero` property
+### Добавить свойство `герой`
 
-Add a `hero` property to the `HeroesComponent` for a hero named, `Windstorm`.
+Добавьте свойство `hero` в `HeroesComponent` для героя по имени `Windstorm`.
 
-<code-example header="heroes.component.ts (hero property)" path="toh-pt1/src/app/heroes/heroes.component.ts" region="add-hero"></code-example>
+<code-example header="heroes.component.ts (свойство героя)" path="toh-pt1/src/app/heroes/heroes.component.ts" region="add-hero"></code-example>.
 
-### Show the hero
+### Показать героя
 
-Open the `heroes.component.html` template file.
-Delete the default text that `ng generate` created and replace it with a data binding to the new `hero` property.
+Откройте файл шаблона `heroes.component.html`. Удалите текст по умолчанию, созданный `ng generate`, и замените его привязкой данных к новому свойству `hero`.
 
-<code-example header="heroes.component.html" path="toh-pt1/src/app/heroes/heroes.component.1.html" region="show-hero-1"></code-example>
+<code-example header="heroes.component.html" path="toh-pt1/src/app/heroes/heroes.component.1.html" region="show-hero-1"></code-example>.
 
-## Show the `HeroesComponent` view
+## Показать представление `HeroesComponent`
 
-To display the `HeroesComponent`, you must add it to the template of the shell `AppComponent`.
+Чтобы отобразить `HeroesComponent`, вы должны добавить его в шаблон оболочки `AppComponent`.
 
-Remember that `app-heroes` is the [element selector](#selector) for the `HeroesComponent`.
-Add an `<app-heroes>` element to the `AppComponent` template file, just below the title.
+Помните, что `app-heroes` является [селектором элемента](#selector) для `HeroesComponent`. Добавьте элемент `<app-heroes>` в файл шаблона `AppComponent`, чуть ниже заголовка.
 
-<code-example header="src/app/app.component.html" path="toh-pt1/src/app/app.component.html"></code-example>
+<code-example header="src/app/app.component.html" path="toh-pt1/src/app/app/app.component.html"></code-example>.
 
-If `ng serve` is still running,
-the browser should refresh and display both the application title and the hero's name.
+Если `ng serve` все еще запущен, браузер должен обновиться и отобразить заголовок приложения и имя героя.
 
-## Create a `Hero` interface
+## Создание интерфейса `героя
 
-A real hero is more than a name.
+Настоящий герой - это больше, чем имя.
 
-Create a `Hero` interface in its own file in the `src/app` directory .
-Give it `id` and `name` properties.
+Создайте интерфейс `Hero` в собственном файле в каталоге `src/app`. Дайте ему свойства `id` и `name`.
 
-<code-example path="toh-pt1/src/app/hero.ts"  header="src/app/hero.ts"></code-example>
+<code-example path="toh-pt1/src/app/hero.ts" header="src/app/hero.ts"></code-example>.
 
-Return to the `HeroesComponent` class and import the `Hero` interface.
+Вернитесь к классу `HeroesComponent` и импортируйте интерфейс `Hero`.
 
-Refactor the component's `hero` property to be of type `Hero`.
-Initialize it with an `id` of `1` and the name `Windstorm`.
+Переделайте свойство `hero` компонента так, чтобы оно имело тип `Hero`. Инициализируйте его с `id` равным `1` и именем `Windstorm`.
 
-The revised `HeroesComponent` class file should look like this:
+Измененный файл класса `HeroesComponent` должен выглядеть следующим образом:
 
-<code-example header="src/app/heroes/heroes.component.ts" path="toh-pt1/src/app/heroes/heroes.component.ts"></code-example>
+<code-example header="src/app/heroes/heroes.component.ts" path="toh-pt1/src/app/heroes/heroes.component.ts"></code-example>.
 
-The page no longer displays properly because you changed the hero from a string to an object.
+Страница больше не отображается должным образом, потому что вы изменили героя со строки на объект.
 
-## Show the hero object
+## Показать объект героя
 
-Update the binding in the template to announce the hero's name and show both `id` and `name` in a details display like this:
+Обновите привязку в шаблоне, чтобы объявить имя героя и показать и `id`, и `name` в подробном отображении, как показано ниже:
 
-<code-example header="heroes.component.html (HeroesComponent template)" path="toh-pt1/src/app/heroes/heroes.component.1.html" region="show-hero-2"></code-example>
+<code-example header="heroes.component.html (шаблон HeroesComponent)" path="toh-pt1/src/app/heroes/heroes.component.1.html" region="show-hero-2"></code-example>.
 
-The browser refreshes and displays the hero's information.
+Браузер обновляется и отображает информацию о герое.
 
-## Format with the `UppercasePipe`
+## Форматирование с помощью `UppercasePipe`
 
-Edit the `hero.name` binding like this:
+Отредактируйте привязку `hero.name` следующим образом:
 
 <code-example header="src/app/heroes/heroes.component.html" path="toh-pt1/src/app/heroes/heroes.component.html" region="pipe"></code-example>
 
@@ -106,15 +102,13 @@ The browser refreshes and now the hero's name is displayed in capital letters.
 
 The word `uppercase` in the interpolation binding after the pipe <code>&verbar;</code> character, activates the built-in `UppercasePipe`.
 
-[Pipes](guide/pipes) are a good way to format strings, currency amounts, dates, and other display data.
-Angular ships with several built-in pipes and you can create your own.
+[Pipes](guide/pipes) are a good way to format strings, currency amounts, dates, and other display data. Angular ships with several built-in pipes and you can create your own.
 
 ## Edit the hero
 
 Users should be able to edit the hero's name in an `<input>` text box.
 
-The text box should both _display_ the hero's `name` property and _update_ that property as the user types.
-That means data flows from the component class _out to the screen_ and from the screen _back to the class_.
+The text box should both _display_ the hero's `name` property and _update_ that property as the user types. That means data flows from the component class _out to the screen_ and from the screen _back to the class_.
 
 To automate that data flow, set up a two-way data binding between the `<input>` form element and the `hero.name` property.
 
@@ -122,103 +116,98 @@ To automate that data flow, set up a two-way data binding between the `<input>` 
 
 Refactor the details area in the `HeroesComponent` template so it looks like this:
 
-<code-example header="src/app/heroes/heroes.component.html (HeroesComponent's template)" path="toh-pt1/src/app/heroes/heroes.component.1.html" region="name-input"></code-example>
+<code-example header="src/app/heroes/heroes.component.html (шаблон HeroesComponent)" path="toh-pt1/src/app/heroes/heroes.component.1.html" region="name-input"></code-example>.
 
-`[(ngModel)]` is Angular's two-way data binding syntax.
+`[(ngModel)]` - это синтаксис двустороннего связывания данных Angular.
 
-Here it binds the `hero.name` property to the HTML text box so that data can flow _in both directions_.
-Data can flow from the `hero.name` property to the text box and from the text box back to the `hero.name`.
+Здесь он связывает свойство `hero.name` с текстовым полем HTML, чтобы данные могли поступать _в обоих направлениях_. Данные могут поступать из свойства `hero.name` в текстовое поле и из текстового поля обратно в `hero.name`.
 
-### The missing `FormsModule`
+### Отсутствующий `FormsModule`.
 
-Notice that the application stopped working when you added `[(ngModel)]`.
+Обратите внимание, что приложение перестало работать, когда вы добавили `[(ngModel)]`.
 
-To see the error, open the browser development tools and look in the console
-for a message like
+Чтобы увидеть ошибку, откройте средства разработки браузера и найдите в консоли сообщение вида
 
 <code-example format="output" hideCopy language="shell">
 
-Template parse errors:
-Can't bind to 'ngModel' since it isn't a known property of 'input'.
+Ошибки разбора шаблона: Невозможно привязать к 'ngModel', так как это неизвестное свойство 'input'.
 
 </code-example>
 
-Although `ngModel` is a valid Angular directive, it isn't available by default.
+Хотя `ngModel` является действительной директивой Angular, она не доступна по умолчанию.
 
-It belongs to the optional `FormsModule` and you must _opt in_ to using it.
+Она относится к дополнительному модулю `FormsModule`, и вы должны _оптировать_ ее использование.
 
 ## `AppModule`
 
-Angular needs to know how the pieces of your application fit together and what other files and libraries the application requires.
-This information is called _metadata_.
+Angular необходимо знать, как части вашего приложения сочетаются друг с другом и какие другие файлы и библиотеки требуются приложению. Эта информация называется _метаданные_.
 
-Some of the metadata is in the `@Component` decorators that you added to your component classes.
-Other critical metadata is in [`@NgModule`](guide/ngmodules) decorators.
+Часть метаданных находится в декораторах `@Component`, которые вы добавили в классы компонентов. Другие важные метаданные находятся в декораторах [`@NgModule`](guide/ngmodules).
 
-The most important `@NgModule` decorator annotates the top-level **AppModule** class.
+Самый важный декоратор `@NgModule` аннотирует класс верхнего уровня **AppModule**.
 
-`ng new` created an `AppModule` class in `src/app/app.module.ts` when it created the project.
-This is where you _opt in_ to the `FormsModule`.
+При создании проекта `ng new` создал класс `AppModule` в `src/app/app.module.ts`. Именно здесь вы _входите_ в `FormsModule`.
 
-### Import `FormsModule`
+### Импортируйте `FormsModule`.
 
-Open `app.module.ts` and import the `FormsModule` symbol from the `@angular/forms` library.
+Откройте `app.module.ts` и импортируйте символ `FormsModule` из библиотеки `@angular/forms`.
 
-<code-example path="toh-pt1/src/app/app.module.ts" header="app.module.ts (FormsModule symbol import)"
- region="formsmodule-js-import"></code-example>
+<code-example path="toh-pt1/src/app/app.module.ts" header="app.module.ts (импорт символа FormsModule)" region="formsmodule-js-import"></code-example>.
 
-Add `FormsModule` to the `imports` array in `@NgModule`.
-The `imports` array contains the list of external modules that the application needs.
+Добавьте `FormsModule` в массив `imports` в `@NgModule`. Массив `imports` содержит список внешних модулей, которые необходимы приложению.
 
-<code-example header="app.module.ts (@NgModule imports)" path="toh-pt1/src/app/app.module.ts" region="ng-imports"></code-example>
+<code-example header="app.module.ts (@NgModule imports)" path="toh-pt1/src/app/app.module.ts" region="ng-imports"></code-example>.
 
-When the browser refreshes, the application should work again.
-You can edit the hero's name and see the changes reflected immediately in the `<h2>` above the text box.
+Когда браузер обновится, приложение должно снова работать. Вы можете отредактировать имя героя и увидеть изменения, отраженные сразу же в `<h2>` над текстовым полем.
 
-### Declare `HeroesComponent`
+### Объявление `HeroesComponent`.
 
-Every component must be declared in _exactly one_ [NgModule](guide/ngmodules).
+Каждый компонент должен быть объявлен в _только одном_ [NgModule](guide/ngmodules).
 
-_You_ didn't declare the `HeroesComponent`.
-Why did the application work?
+Вы не объявили `HeroesComponent`. Почему приложение сработало?
 
-It worked because the `ng generate` declared `HeroesComponent` in `AppModule` when it created that component.
+Оно заработало, потому что `ng generate` объявил `HeroesComponent` в `AppModule`, когда создавал этот компонент.
 
-Open `src/app/app.module.ts` and find `HeroesComponent` imported near the top.
+Откройте `src/app/app.module.ts` и найдите импортированный `HeroesComponent` в самом верху.
 
-<code-example path="toh-pt1/src/app/app.module.ts" header="src/app/app.module.ts" region="heroes-import" ></code-example>
+<code-example path="toh-pt1/src/app/app.module.ts" header="src/app/app.module.ts" region="heroes-import"></code-example>.
 
-The `HeroesComponent` is declared in the `@NgModule.declarations` array.
+Компонент `HeroesComponent` объявлен в массиве `@NgModule.declarations`.
 
-<code-example header="src/app/app.module.ts" path="toh-pt1/src/app/app.module.ts" region="declarations"></code-example>
+<code-example header="src/app/app.module.ts" path="toh-pt1/src/app/app/app.module.ts" region="declarations"></code-example>
 
 <div class="alert is-helpful">
 
-`AppModule` declares both application components, `AppComponent` and `HeroesComponent`.
+`AppModule` объявляет оба компонента приложения, `AppComponent` и `HeroesComponent`.
 
 </div>
 
-## Final code review
+## Окончательный обзор кода
 
-Here are the code files discussed on this page.
+Вот файлы кода, обсуждаемые на этой странице.
 
-<code-tabs>
-    <code-pane header="src/app/heroes/heroes.component.ts" path="toh-pt1/src/app/heroes/heroes.component.ts"></code-pane>
-    <code-pane header="src/app/heroes/heroes.component.html" path="toh-pt1/src/app/heroes/heroes.component.html"></code-pane>
-    <code-pane header="src/app/app.module.ts" path="toh-pt1/src/app/app.module.ts"></code-pane>
-    <code-pane header="src/app/app.component.ts" path="toh-pt1/src/app/app.component.ts"></code-pane>
-    <code-pane header="src/app/app.component.html" path="toh-pt1/src/app/app.component.html"></code-pane>
-    <code-pane header="src/app/hero.ts" path="toh-pt1/src/app/hero.ts"></code-pane>
+<code-tabs> <code-pane header="src/app/heroes/heroes.component.ts" path="toh-pt1/src/app/heroes/heroes.component.ts"></code-pane>
+<code-pane header="src/app/heroes/heroes.component.html" path="toh-pt1/src/app/heroes/heroes.component.html"></code-pane>
+<code-pane header="src/app/app.module.ts" path="toh-pt1/src/app/app.module.ts"></code-pane>
+<code-pane header="src/app/app.component.ts" path="toh-pt1/src/app/app.component.ts"></code-pane>
+<code-pane header="src/app/app.component.html" path="toh-pt1/src/app/app.component.html"></code-pane>
+<code-pane header="src/app/hero.ts" path="toh-pt1/src/app/hero.ts"></code-pane>
 </code-tabs>
 
-## Summary
+## Резюме
 
--   You used `ng generate` to create a second `HeroesComponent`.
--   You displayed the `HeroesComponent` by adding it to the `AppComponent` shell.
--   You applied the `UppercasePipe` to format the name.
--   You used two-way data binding with the `ngModel` directive.
--   You learned about the `AppModule`.
--   You imported the `FormsModule` in the `AppModule` so that Angular would recognize and apply the `ngModel` directive.
--   You learned the importance of declaring components in the `AppModule`.
+-   Вы использовали `ng generate` для создания второго `HeroesComponent`.
+
+-   Вы отобразили `HeroesComponent`, добавив его в оболочку `AppComponent`.
+
+-   Вы применили `UppercasePipe` для форматирования имени.
+
+-   Вы использовали двустороннее связывание данных с помощью директивы `ngModel`.
+
+-   Вы узнали о модуле `AppModule`.
+
+-   Вы импортировали `FormsModule` в `AppModule`, чтобы Angular распознал и применил директиву `ngModel`.
+
+-   Вы узнали о важности объявления компонентов в `AppModule`.
 
 :date: 28.02.2022

@@ -1,17 +1,16 @@
 <a id="code-coverage"></a>
 
-# Find out how much code you're testing
+# Узнайте, какой объем кода вы тестируете
 
-The Angular CLI can run unit tests and create code coverage reports.
-Code coverage reports show you any parts of your code base that might not be properly tested by your unit tests.
+Angular CLI может запускать модульные тесты и создавать отчеты о покрытии кода. Отчеты о покрытии кода покажут вам все части вашей кодовой базы, которые не могут быть должным образом проверены вашими модульными тестами.
 
 <div class="alert is-helpful">
 
-If you'd like to experiment with the application that this guide describes, <live-example name="testing" noDownload>run it in your browser</live-example> or <live-example name="testing" downloadOnly>download and run it locally</live-example>.
+Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, <live-example name="testing" noDownload>запустите его в браузере</live-example> или <live-example name="testing" downloadOnly>скачайте и запустите его локально</live-example>.
 
 </div>
 
-To generate a coverage report run the following command in the root of your project.
+Чтобы сгенерировать отчет о покрытии, выполните следующую команду в корне вашего проекта.
 
 <code-example format="shell" language="shell">
 
@@ -19,59 +18,69 @@ ng test --no-watch --code-coverage
 
 </code-example>
 
-When the tests are complete, the command creates a new `/coverage` directory in the project.
-Open the `index.html` file to see a report with your source code and code coverage values.
+После завершения тестов команда создает в проекте новый каталог `/coverage`. Откройте файл `index.html`, чтобы увидеть отчет с вашим исходным кодом и значениями покрытия кода.
 
-If you want to create code-coverage reports every time you test, set the following option in the Angular CLI configuration file, `angular.json`:
+Если вы хотите создавать отчеты о покрытии кода при каждом тестировании, установите следующий параметр в файле конфигурации Angular CLI, `angular.json`:
 
 <code-example format="json" language="json">
 
-"test": {
-"options": {
+"test": { "options": {
 "codeCoverage": true
+
 }
+
 }
 
 </code-example>
 
-## Code coverage enforcement
+## Обеспечение покрытия кода
 
-The code coverage percentages let you estimate how much of your code is tested.
-If your team decides on a set minimum amount to be unit tested, enforce this minimum with the Angular CLI.
+Проценты покрытия кода позволяют вам оценить, какая часть вашего кода протестирована. Если ваша команда решила установить минимальный объем, который должен быть протестирован, обеспечьте соблюдение этого минимума с помощью Angular CLI.
 
-For example, suppose you want the code base to have a minimum of 80% code coverage.
-To enable this, open the [Karma](https://karma-runner.github.io) test platform configuration file, `karma.conf.js`, and add the `check` property in the `coverageReporter:` key.
+Например, предположим, вы хотите, чтобы кодовая база имела минимум 80% покрытия кода. Чтобы это обеспечить, откройте файл конфигурации тестовой платформы [Karma](https://karma-runner.github.io), `karma.conf.js`, и добавьте свойство `check` в ключ `coverageReporter:`.
 
 <code-example format="javascript" language="javascript">
 
-coverageReporter: {
-dir: require('path').join(\_\_dirname, './coverage/&lt;project-name&gt;'),
+coverageReporter: { dir: require('path').join(\_\_dirname, './coverage/&lt;project-name&gt;'),
 subdir: '.',
-reporters: [
-{ type: 'html' },
-{ type: 'text-summary' }
+
+репортеры: [
+
+{ type: 'html' }
+
+{ { type: 'text-summary' }
+
 ],
+
 check: {
-global: {
+
+глобальный: {
+
 statements: 80,
-branches: 80,
-functions: 80,
-lines: 80
+
+ветви: 80,
+
+функции: 80,
+
+линии: 80
+
 }
+
 }
+
 }
 
 </code-example>
 
 <div class="alert is-helpful">
 
-Read more about creating and fine tunning Karma configuration in the [testing guide](guide/testing#configuration).
+Подробнее о создании и тонкой настройке конфигурации Karma читайте в [руководстве по тестированию](guide/testing#configuration).
 
 </div>
 
-The `check` property causes the tool to enforce a minimum of 80% code coverage when the unit tests are run in the project.
+Свойство `check` заставляет инструмент обеспечивать покрытие кода не менее 80% при выполнении модульных тестов в проекте.
 
-Read more on coverage configuration options in the [karma coverage documentation](https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md).
+Подробнее о параметрах конфигурации покрытия читайте в [документации по покрытию кармы](https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md).
 
 <!-- links -->
 

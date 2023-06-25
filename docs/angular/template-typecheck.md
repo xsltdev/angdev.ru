@@ -2,8 +2,7 @@
 
 ## Overview of template type checking
 
-Just as TypeScript catches type errors in your code, Angular checks the expressions and bindings within the templates of your application and can report any type errors it finds.
-Angular currently has three modes of doing this, depending on the value of the `fullTemplateTypeCheck` and `strictTemplates` flags in the [TypeScript configuration file](guide/typescript-configuration).
+Just as TypeScript catches type errors in your code, Angular checks the expressions and bindings within the templates of your application and can report any type errors it finds. Angular currently has three modes of doing this, depending on the value of the `fullTemplateTypeCheck` and `strictTemplates` flags in the [TypeScript configuration file](guide/typescript-configuration).
 
 ### Basic mode
 
@@ -12,7 +11,9 @@ In the most basic type-checking mode, with the `fullTemplateTypeCheck` flag set 
 If you write `<map [city]="user.address.city">`, the compiler verifies the following:
 
 -   `user` is a property on the component class
+
 -   `user` is an object with an address property
+
 -   `user.address` is an object with a city property
 
 The compiler does not verify that the value of `user.address.city` is assignable to the city input of the `<map>` component.
@@ -20,263 +21,294 @@ The compiler does not verify that the value of `user.address.city` is assignable
 The compiler also has some major limitations in this mode:
 
 -   Importantly, it doesn't check embedded views, such as `*ngIf`, `*ngFor`, other `<ng-template>` embedded view.
+
 -   It doesn't figure out the types of `#refs`, the results of pipes, or the type of `$event` in event bindings.
 
-In many cases, these things end up as type `any`, which can cause subsequent parts of the expression to go unchecked.
+Во многих случаях эти вещи имеют тип `any`, что может привести к тому, что последующие части выражения останутся без проверки.
 
-### Full mode
+### Полный режим
 
-If the `fullTemplateTypeCheck` flag is set to `true`, Angular is more aggressive in its type-checking within templates.
-In particular:
+Если флаг `fullTemplateTypeCheck` установлен в `true`, Angular более агрессивно проверяет типы в шаблонах. В частности:
 
--   Embedded views \(such as those within an `*ngIf` or `*ngFor`\) are checked
--   Pipes have the correct return type
--   Local references to directives and pipes have the correct type \(except for any generic parameters, which will be `any`\)
+-   Проверяются встроенные представления\ (например, внутри `*ngIf` или `*ngFor`\).
 
-The following still have type `any`.
+-   Трубы имеют правильный тип возврата
 
--   Local references to DOM elements
--   The `$event` object
--   Safe navigation expressions
+-   Локальные ссылки на директивы и трубы имеют правильный тип\\(за исключением любых общих параметров, которые будут иметь тип `любой`\)
+
+Следующие параметры все еще имеют тип `any`.
+
+-   Локальные ссылки на элементы DOM
+
+-   Объект `$event`
+
+-   Выражения безопасной навигации
 
 <div class="alert is-important">
 
-The `fullTemplateTypeCheck` flag has been deprecated in Angular 13.
-The `strictTemplates` family of compiler options should be used instead.
+Флаг `fullTemplateTypeCheck` был устаревшим в Angular 13. Вместо него следует использовать семейство опций компилятора `strictTemplates`.
 
 </div>
 
 <a id="strict-mode"></a>
 
-### Strict mode
+### Строгий режим
 
-Angular maintains the behavior of the `fullTemplateTypeCheck` flag, and introduces a third "strict mode".
-Strict mode is a superset of full mode, and is accessed by setting the `strictTemplates` flag to true.
-This flag supersedes the `fullTemplateTypeCheck` flag.
-In strict mode, Angular uses checks that go beyond the version 8 type-checker.
+Angular сохраняет поведение флага `fullTemplateTypeCheck` и вводит третий "строгий режим". Строгий режим является супермножеством полного режима, и доступ к нему осуществляется путем установки флага `strictTemplates` в true.
+
+Этот флаг заменяет флаг `fullTemplateTypeCheck`.
+
+В строгом режиме Angular использует проверки, которые выходят за рамки проверки типов версии 8.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-Strict mode is only available if using Ivy.
+**NOTE**: <br /> Strict mode is only available if using Ivy.
 
 </div>
 
-In addition to the full mode behavior, Angular does the following:
+В дополнение к поведению в полном режиме, Angular делает следующее:
 
--   Verifies that component/directive bindings are assignable to their `@Input()`s
--   Obeys TypeScript's `strictNullChecks` flag when validating the preceding mode
--   Infers the correct type of components/directives, including generics
--   Infers template context types where configured \(for example, allowing correct type-checking of `NgFor`\)
--   Infers the correct type of `$event` in component/directive, DOM, and animation event bindings
--   Infers the correct type of local references to DOM elements, based on the tag name \(for example, the type that `document.createElement` would return for that tag\)
+-   Проверяет, что привязки компонентов/директив могут быть назначены на их `@Input()`.
 
-## Checking of `*ngFor`
+-   Подчиняется флагу TypeScript `strictNullChecks` при проверке предшествующего режима
 
-The three modes of type-checking treat embedded views differently.
-Consider the following example.
+-   Определяет правильный тип компонентов/директив, включая дженерики
+
+-   Определяет типы контекста шаблона, если это настроено\(например, позволяет правильно проверить тип `NgFor`\)
+
+-   Определяет правильный тип `$event` в привязках компонентов/директив, DOM и анимационных событий
+
+-   Определяет правильный тип локальных ссылок на элементы DOM, основываясь на имени тега\(например, тип, который `document.createElement` вернет для этого тега\)
+
+## Проверка `*ngFor`.
+
+Три режима проверки типов по-разному относятся к встроенным представлениям. Рассмотрим следующий пример.
 
 <code-example language="typescript" header="User interface">
 
-interface User {
-name: string;
-address: {
-city: string;
-state: string;
+интерфейс User { имя: строка;
+адрес: {
+
+город: строка;
+
+штат: string;
+
 }
+
 }
 
 </code-example>
 
 <code-example format="html" language="html">
 
-&lt;div \*ngFor="let user of users"&gt;
-&lt;h2&gt;{{config.title}}&lt;/h2&gt;
-&lt;span&gt;City: {{user.address.city}}&lt;/span&gt;
+&lt;div \*ngFor="let user of users"&gt; &lt;h2&gt;{{config.title}}&lt;/h2&gt;
+&lt;span&gt;Город: {{user.address.city}}&lt;/span&gt;
+
 &lt;/div&gt;
 
 </code-example>
 
-The `<h2>` and the `<span>` are in the `*ngFor` embedded view.
-In basic mode, Angular doesn't check either of them.
+The `<h2>` and the `<span>` are in the `*ngFor` embedded view. In basic mode, Angular doesn't check either of them.
 However, in full mode, Angular checks that `config` and `user` exist and assumes a type of `any`.
+
 In strict mode, Angular knows that the `user` in the `<span>` has a type of `User`, and that `address` is an object with a `city` property of type `string`.
 
 <a id="troubleshooting-template-errors"></a>
 
-## Troubleshooting template errors
+## Устранение ошибок шаблонов
 
-With strict mode, you might encounter template errors that didn't arise in either of the previous modes.
-These errors often represent genuine type mismatches in the templates that were not caught by the previous tooling.
-If this is the case, the error message should make it clear where in the template the problem occurs.
+В строгом режиме вы можете столкнуться с ошибками шаблонов, которые не возникали ни в одном из предыдущих режимов. Эти ошибки часто представляют собой настоящие несоответствия типов в шаблонах, которые не были пойманы предыдущими инструментами.
 
-There can also be false positives when the typings of an Angular library are either incomplete or incorrect, or when the typings don't quite line up with expectations as in the following cases.
+В этом случае в сообщении об ошибке должно быть ясно, в каком месте шаблона возникла проблема.
 
--   When a library's typings are wrong or incomplete \(for example, missing `null | undefined` if the library was not written with `strictNullChecks` in mind\)
--   When a library's input types are too narrow and the library hasn't added appropriate metadata for Angular to figure this out.
-    This usually occurs with disabled or other common Boolean inputs used as attributes, for example, `<input disabled>`.
+Также возможны ложные срабатывания, когда типизация библиотеки Angular неполная или неправильная, или когда типизация не совсем соответствует ожиданиям, как в следующих случаях.
 
--   When using `$event.target` for DOM events \(because of the possibility of event bubbling, `$event.target` in the DOM typings doesn't have the type you might expect\)
+-   Когда типизация библиотеки неверна или неполна\ (например, отсутствует `null | undefined`, если библиотека не была написана с `strictNullChecks` в уме\).
 
-In case of a false positive like these, there are a few options:
+-   Когда типы ввода библиотеки слишком узкие, и библиотека не добавила соответствующие метаданные, чтобы Angular мог это понять.
 
--   Use the [`$any()` type-cast function](guide/template-expression-operators#any-type-cast-function) in certain contexts to opt out of type-checking for a part of the expression
--   Disable strict checks entirely by setting `strictTemplates: false` in the application's TypeScript configuration file, `tsconfig.json`
--   Disable certain type-checking operations individually, while maintaining strictness in other aspects, by setting a _strictness flag_ to `false`
--   If you want to use `strictTemplates` and `strictNullChecks` together, opt out of strict null type checking specifically for input bindings using `strictNullInputTypes`
+    Обычно это происходит при использовании атрибутов disabled или других распространенных булевых входов, например, `<input disabled>`.
 
-Unless otherwise commented, each following option is set to the value for `strictTemplates` \(`true` when `strictTemplates` is `true` and conversely, the other way around\).
+-   При использовании `$event.target` для событий DOM\ (из-за возможности пузырения событий, `$event.target` в типизации DOM не имеет того типа, который вы могли бы ожидать\).
 
-| Strictness flag              | Effect                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `strictInputTypes`           | Whether the assignability of a binding expression to the `@Input()` field is checked. Also affects the inference of directive generic types.                                                                                                                                                                                                                                                                                                |
-| `strictInputAccessModifiers` | Whether access modifiers such as `private`/`protected`/`readonly` are honored when assigning a binding expression to an `@Input()`. If disabled, the access modifiers of the `@Input` are ignored; only the type is checked. This option is `false` by default, even with `strictTemplates` set to `true`.                                                                                                                                  |
-| `strictNullInputTypes`       | Whether `strictNullChecks` is honored when checking `@Input()` bindings \(per `strictInputTypes`\). Turning this off can be useful when using a library that was not built with `strictNullChecks` in mind.                                                                                                                                                                                                                                 |
-| `strictAttributeTypes`       | Whether to check `@Input()` bindings that are made using text attributes. For example, <code-example format="html" hideCopy language="html"> &lt;input matInput disabled="true"&gt; </code-example> \(setting the `disabled` property to the string `'true'`\) vs <code-example format="html" hideCopy language="html"> &lt;input matInput [disabled]="true"&gt; </code-example> \(setting the `disabled` property to the boolean `true`\). |
-| `strictSafeNavigationTypes`  | Whether the return type of safe navigation operations \(for example, `user?.name` will be correctly inferred based on the type of `user`\). If disabled, `user?.name` will be of type `any`.                                                                                                                                                                                                                                                |
-| `strictDomLocalRefTypes`     | Whether local references to DOM elements will have the correct type. If disabled `ref` will be of type `any` for `<input #ref>`.                                                                                                                                                                                                                                                                                                            |
-| `strictOutputEventTypes`     | Whether `$event` will have the correct type for event bindings to component/directive an `@Output()`, or to animation events. If disabled, it will be `any`.                                                                                                                                                                                                                                                                                |
-| `strictDomEventTypes`        | Whether `$event` will have the correct type for event bindings to DOM events. If disabled, it will be `any`.                                                                                                                                                                                                                                                                                                                                |
-| `strictContextGenerics`      | Whether the type parameters of generic components will be inferred correctly \(including any generic bounds\). If disabled, any type parameters will be `any`.                                                                                                                                                                                                                                                                              |
-| `strictLiteralTypes`         | Whether object and array literals declared in the template will have their type inferred. If disabled, the type of such literals will be `any`. This flag is `true` when _either_ `fullTemplateTypeCheck` or `strictTemplates` is set to `true`.                                                                                                                                                                                            |
+В случае ложных срабатываний, подобных этим, есть несколько вариантов:
 
-If you still have issues after troubleshooting with these flags, fall back to full mode by disabling `strictTemplates`.
+-   Использовать функцию [`$any()` type-cast function](guide/template-expression-operators#any-type-cast-function) в определенных контекстах, чтобы отказаться от проверки типов для части выражения.
 
-If that doesn't work, an option of last resort is to turn off full mode entirely with `fullTemplateTypeCheck: false`.
+-   Отключить строгую проверку полностью, установив `strictTemplates: false` в конфигурационном файле TypeScript приложения, `tsconfig.json`.
 
-A type-checking error that you cannot resolve with any of the recommended methods can be the result of a bug in the template type-checker itself.
-If you get errors that require falling back to basic mode, it is likely to be such a bug.
-If this happens, [file an issue](https://github.com/angular/angular/issues) so the team can address it.
+-   Отключить определенные операции проверки типов по отдельности, сохраняя строгость в других аспектах, установив флаг _строгости_ в `false`.
 
-## Inputs and type-checking
+-   Если вы хотите использовать `strictTemplates` и `strictNullChecks` вместе, откажитесь от строгой проверки нулевого типа специально для входных привязок, используя `strictNullInputTypes`.
 
-The template type checker checks whether a binding expression's type is compatible with that of the corresponding directive input.
-As an example, consider the following component:
+Если не указано иное, каждый следующий параметр устанавливается в значение для `strictTemplates` \(`true`, когда `strictTemplates` - `true` и наоборот\).
+
+| Strictness flag | Effect | | :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `strictInputTypes` | Whether the assignability of a binding expression to the `@Input()` field is checked. Also affects the inference of directive generic types. |
+| `strictInputAccessModifiers` | Whether access modifiers such as `private`/`protected`/`readonly` are honored when assigning a binding expression to an `@Input()`. If disabled, the access modifiers of the `@Input` are ignored; only the type is checked. This option is `false` by default, even with `strictTemplates` set to `true`. |
+| `strictNullInputTypes` | Whether `strictNullChecks` is honored when checking `@Input()` bindings \(per `strictInputTypes`\). Turning this off can be useful when using a library that was not built with `strictNullChecks` in mind. |
+| `strictAttributeTypes` | Whether to check `@Input()` bindings that are made using text attributes. For example, <code-example format="html" hideCopy language="html"> &lt;input matInput disabled="true"&gt; </code-example> \(setting the `disabled` property to the string `'true'`\) vs <code-example format="html" hideCopy language="html"> &lt;input matInput [disabled]="true"&gt; </code-example> \(setting the `disabled` property to the boolean `true`\). |
+| `strictSafeNavigationTypes` | Whether the return type of safe navigation operations \(for example, `user?.name` will be correctly inferred based on the type of `user`\). If disabled, `user?.name` will be of type `any`. |
+| `strictDomLocalRefTypes` | Whether local references to DOM elements will have the correct type. If disabled `ref` will be of type `any` for `<input #ref>`. |
+| `strictOutputEventTypes` | Whether `$event` will have the correct type for event bindings to component/directive an `@Output()`, or to animation events. If disabled, it will be `any`. |
+| `strictDomEventTypes` | Whether `$event` will have the correct type for event bindings to DOM events. If disabled, it will be `any`. |
+| `strictContextGenerics` | Whether the type parameters of generic components will be inferred correctly \(including any generic bounds\). If disabled, any type parameters will be `any`. |
+| `strictLiteralTypes` | Whether object and array literals declared in the template will have their type inferred. If disabled, the type of such literals will be `any`. This flag is `true` when _either_ `fullTemplateTypeCheck` or `strictTemplates` is set to `true`. |
+
+Если после устранения неполадок с помощью этих флагов у вас все еще возникают проблемы, вернитесь к полному режиму, отключив `strictTemplates`.
+
+Если это не сработает, то в крайнем случае можно полностью отключить полный режим с помощью `fullTemplateTypeCheck: false`.
+
+Ошибка проверки типов, которую вы не можете устранить ни одним из рекомендуемых методов, может быть результатом ошибки в самой системе проверки типов шаблонов. Если вы получаете ошибки, требующие возврата в базовый режим, то, скорее всего, это именно такая ошибка.
+
+Если это произошло, [file an issue](https://github.com/angular/angular/issues), чтобы команда могла решить эту проблему.
+
+## Вводы и проверка типов
+
+Средство проверки типов шаблонов проверяет, совместим ли тип выражения привязки с типом соответствующего входа директивы. В качестве примера рассмотрим следующий компонент:
 
 <code-example format="typescript" language="typescript">
 
-export interface User {
-name: string;
+export interface User { name: string;
 }
 
-&commat;Component({
-selector: 'user-detail',
-template: '{{ user.name }}',
+&commat;Component({ selector: 'user-detail',
+
+template: '{ { user.name }}',
+
 })
+
 export class UserDetailComponent {
+
 &commat;Input() user: User;
+
 }
 
 </code-example>
 
-The `AppComponent` template uses this component as follows:
+Шаблон `AppComponent` использует этот компонент следующим образом:
 
 <code-example format="typescript" language="typescript">
 
-&commat;Component({
-selector: 'app-root',
+&commat;Component({ selector: 'app-root',
 template: '&lt;user-detail [user]="selectedUser"&gt;&lt;/user-detail&gt;',
+
 })
+
 export class AppComponent {
+
 selectedUser: User &verbar; null = null;
+
 }
 
 </code-example>
 
-Here, during type checking of the template for `AppComponent`, the `[user]="selectedUser"` binding corresponds with the `UserDetailComponent.user` input.
-Therefore, Angular assigns the `selectedUser` property to `UserDetailComponent.user`, which would result in an error if their types were incompatible.
-TypeScript checks the assignment according to its type system, obeying flags such as `strictNullChecks` as they are configured in the application.
+Здесь, во время проверки типа шаблона для `AppComponent`, привязка `[user]="selectedUser"` соответствует входу `UserDetailComponent.user`. Поэтому Angular присваивает свойство `selectedUser` свойству `UserDetailComponent.user`, что привело бы к ошибке, если бы их типы были несовместимы.
+TypeScript проверяет присвоение в соответствии со своей системой типов, подчиняясь таким флагам, как `strictNullChecks`, поскольку они настроены в приложении.
 
-Avoid run-time type errors by providing more specific in-template type requirements to the template type checker.
-Make the input type requirements for your own directives as specific as possible by providing template-guard functions in the directive definition.
-See [Improving template type checking for custom directives](guide/structural-directives#directive-type-checks) in this guide.
+Избегайте ошибок типа во время выполнения, предоставляя более конкретные требования к типу в шаблоне для проверки типа шаблона. Сделайте требования к входным типам для ваших собственных директив как можно более конкретными, предоставив функции защиты шаблона в определении директивы.
 
-### Strict null checks
+Смотрите [Улучшение проверки типов шаблонов для пользовательских директив](guide/structural-directives#directive-type-checks) в этом руководстве.
 
-When you enable `strictTemplates` and the TypeScript flag `strictNullChecks`, typecheck errors might occur for certain situations that might not easily be avoided.
-For example:
+### Строгие проверки нуля
 
--   A nullable value that is bound to a directive from a library which did not have `strictNullChecks` enabled.
+Когда вы включаете `strictTemplates` и флаг TypeScript `strictNullChecks`, в некоторых ситуациях могут возникать ошибки проверки типов, которых нелегко избежать. Например:
 
-    For a library compiled without `strictNullChecks`, its declaration files will not indicate whether a field can be `null` or not.
-    For situations where the library handles `null` correctly, this is problematic, as the compiler will check a nullable value against the declaration files which omit the `null` type.
-    As such, the compiler produces a type-check error because it adheres to `strictNullChecks`.
+-   Нулевое значение, связанное с директивой из библиотеки, в которой не включена `strictNullChecks`.
 
--   Using the `async` pipe with an Observable which you know will emit synchronously.
+    Для библиотеки, скомпилированной без `strictNullChecks`, ее файлы объявлений не будут указывать, может ли поле быть `null` или нет.
 
-    The `async` pipe currently assumes that the Observable it subscribes to can be asynchronous, which means that it's possible that there is no value available yet.
-    In that case, it still has to return something &mdash;which is `null`.
-    In other words, the return type of the `async` pipe includes `null`, which might result in errors in situations where the Observable is known to emit a non-nullable value synchronously.
+    Для ситуаций, когда библиотека корректно обрабатывает `null`, это проблематично, так как компилятор будет проверять значение с нулевым значением на соответствие файлам объявления, в которых тип `null` опущен.
 
-There are two potential workarounds to the preceding issues:
+    Таким образом, компилятор выдает ошибку проверки типов, поскольку он придерживается `strictNullChecks`.
 
--   In the template, include the non-null assertion operator `!` at the end of a nullable expression, such as
+-   Использование трубы `async` с Observable, который, как вы знаете, будет испускаться синхронно.
 
-    <code-example format="html" hideCopy language="html">
+    Труба `async` в настоящее время предполагает, что Observable, на которую она подписывается, может быть асинхронной, что означает, что возможно, что значение еще не доступно.
+
+    В этом случае она все равно должна возвращать что-то &mdash; это `null`.
+
+    Другими словами, тип возврата трубы `async` включает `null`, что может привести к ошибкам в ситуациях, когда известно, что Observable синхронно выдает значение, не являющееся nullable.
+
+Существует два возможных обходных пути решения вышеупомянутых проблем:
+
+-   В шаблоне включите оператор утверждения `!` в конце выражения с нулевым значением, например
+
+      <code-example format="html" hideCopy language="html">
 
     &lt;user-detail [user]="user!"&gt;&lt;/user-detail&gt;
 
-    </code-example>
+      </code-example>
 
-    In this example, the compiler disregards type incompatibilities in nullability, just as in TypeScript code.
-    In the case of the `async` pipe, notice that the expression needs to be wrapped in parentheses, as in
+    В этом примере компилятор игнорирует несовместимость типов в nullability, как и в коде TypeScript.
 
-    <code-example format="html" hideCopy language="html">
+    В случае с трубой `async` обратите внимание, что выражение необходимо обернуть круглыми скобками, как в примере
+
+      <code-example format="html" hideCopy language="html">
 
     &lt;user-detail [user]="(user\$ &verbar; async)!"&gt;&lt;/user-detail&gt;
 
-    </code-example>
+      </code-example>
 
--   Disable strict null checks in Angular templates completely.
+-   Полностью отключить строгую проверку нуля в шаблонах Angular.
 
-    When `strictTemplates` is enabled, it is still possible to disable certain aspects of type checking.
-    Setting the option `strictNullInputTypes` to `false` disables strict null checks within Angular templates.
-    This flag applies for all components that are part of the application.
+    Когда включена опция `strictTemplates`, все еще можно отключить некоторые аспекты проверки типов.
 
-### Advice for library authors
+    Установка опции `strictNullInputTypes` в `false` отключает строгую проверку нулевых типов в шаблонах Angular.
 
-As a library author, you can take several measures to provide an optimal experience for your users.
-First, enabling `strictNullChecks` and including `null` in an input's type, as appropriate, communicates to your consumers whether they can provide a nullable value or not.
-Additionally, it is possible to provide type hints that are specific to the template type checker.
-See [Improving template type checking for custom directives](guide/structural-directives#directive-type-checks), and [Input setter coercion](#input-setter-coercion).
+    Этот флаг применяется для всех компонентов, которые являются частью приложения.
+
+### Советы для авторов библиотек
+
+Как автор библиотеки, вы можете предпринять несколько мер, чтобы обеспечить оптимальный опыт для ваших пользователей. Во-первых, включение `strictNullChecks` и включение `null` в тип ввода, по мере необходимости, сообщает вашим потребителям, могут ли они предоставить значение с нулевым значением или нет.
+
+Кроме того, можно предоставлять подсказки типов, специфичные для проверки типов шаблонов.
+
+Смотрите [Улучшение проверки типов шаблонов для пользовательских директив](guide/structural-directives#directive-type-checks), и [Коэрцитивность входных сеттеров](#input-setter-coercion).
 
 <a id="input-setter-coercion"></a>
 
-## Input setter coercion
+## Принуждение входного сеттера
 
-Occasionally it is desirable for the `@Input()` of a directive or component to alter the value bound to it, typically using a getter/setter pair for the input.
-As an example, consider this custom button component:
+Иногда желательно, чтобы `@Input()` директивы или компонента изменял привязанное к нему значение, обычно используя пару getter/setter для ввода. В качестве примера рассмотрим компонент пользовательской кнопки:
 
-Consider the following directive:
+Рассмотрим следующую директиву:
 
 <code-example format="typescript" language="typescript">
 
-&commat;Component({
-selector: 'submit-button',
+&commat;Component({ selector: 'submit-button',
 template: &grave;
+
 &lt;div class="wrapper"&gt;
+
 &lt;button [disabled]="disabled"&gt;Submit&lt;/button&gt;
+
 &lt;/div&gt;
+
 &grave;,
+
 })
+
 class SubmitButton {
+
 private \_disabled: boolean;
 
-&commat;Input()
-get disabled(): boolean {
+&commat;Input() get disabled(): boolean {
+
 return this.\_disabled;
+
 }
 
-set disabled(value: boolean) {
-this.\_disabled = value;
+set disabled(value: boolean) { this.\_disabled = value;
+
 }
+
 }
 
 </code-example>
 
-Here, the `disabled` input of the component is being passed on to the `<button>` in the template.
-All of this works as expected, as long as a `boolean` value is bound to the input.
-But, suppose a consumer uses this input in the template as an attribute:
+Здесь вход `disabled` компонента передается на `<button>` в шаблоне. Все это работает, как и ожидалось, пока к входу привязано значение `boolean`.
+Но, предположим, потребитель использует этот вход в шаблоне в качестве атрибута:
 
 <code-example format="html" language="html">
 
@@ -284,7 +316,7 @@ But, suppose a consumer uses this input in the template as an attribute:
 
 </code-example>
 
-This has the same effect as the binding:
+Это имеет тот же эффект, что и связывание:
 
 <code-example format="html" language="html">
 
@@ -292,72 +324,67 @@ This has the same effect as the binding:
 
 </code-example>
 
-At runtime, the input will be set to the empty string, which is not a `boolean` value.
-Angular component libraries that deal with this problem often "coerce" the value into the right type in the setter:
+Во время выполнения входное значение будет установлено в пустую строку, которая не является значением типа `boolean`. Библиотеки компонентов Angular, которые решают эту проблему, часто "принуждают" значение к нужному типу в сеттере:
 
 <code-example format="typescript" language="typescript">
 
-set disabled(value: boolean) {
-this.\_disabled = (value === '') &verbar;&verbar; value;
+set disabled(value: boolean) { this.\_disabled = (value === '')&verbar;&verbar; value;
 }
 
 </code-example>
 
-It would be ideal to change the type of `value` here, from `boolean` to `boolean|''`, to match the set of values which are actually accepted by the setter.
-TypeScript prior to version 4.3 requires that both the getter and setter have the same type, so if the getter should return a `boolean` then the setter is stuck with the narrower type.
+Идеально было бы изменить здесь тип `value` с `boolean` на `boolean|''`, чтобы соответствовать набору значений, которые фактически принимаются сеттером. TypeScript до версии 4.3 требует, чтобы и геттер, и сеттер имели одинаковый тип, поэтому если геттер должен вернуть `boolean`, то сеттер будет иметь более узкий тип.
 
-If the consumer has Angular's strictest type checking for templates enabled, this creates a problem: the empty string \(`''`\) is not actually assignable to the `disabled` field, which creates a type error when the attribute form is used.
+Если у потребителя включена самая строгая проверка типов шаблонов Angular, это создает проблему: пустая строка \(````\) не может быть присвоена полю `disabled`, что создает ошибку типа при использовании формы атрибута.
 
-As a workaround for this problem, Angular supports checking a wider, more permissive type for `@Input()` than is declared for the input field itself.
-Enable this by adding a static property with the `ngAcceptInputType_` prefix to the component class:
+В качестве обходного пути решения этой проблемы Angular поддерживает проверку более широкого, более допустимого типа для `@Input()`, чем объявлено для самого поля ввода. Включите эту возможность, добавив в класс компонента статическое свойство с префиксом `ngAcceptInputType_`:
 
 <code-example format="typescript" language="typescript">
 
-class SubmitButton {
-private \_disabled: boolean;
+class SubmitButton { private \_disabled: boolean;
 
-&commat;Input()
-get disabled(): boolean {
+&commat;Input() get disabled(): boolean {
+
 return this.\_disabled;
+
 }
 
-set disabled(value: boolean) {
-this.\_disabled = (value === '') &verbar;&verbar; value;
+set disabled(value: boolean) { this.\_disabled = (value === '') &verbar;&verbar; value;
+
 }
 
-static ngAcceptInputType_disabled: boolean&verbar;'';
-}
+static ngAcceptInputType_disabled: boolean&verbar;''; }
 
 </code-example>
 
 <div class="alert is-important">
 
-Since TypeScript 4.3, the setter could have been declared to accept `boolean|''` as type, making the input setter coercion field obsolete.
-As such, input setters coercion fields have been deprecated.
+Начиная с TypeScript 4.3, сеттер может быть объявлен как принимающий `boolean|''` в качестве типа, что делает поле принуждения входного сеттера устаревшим. Таким образом, поля принуждения входных сеттеров были устаревшими.
 
 </div>
 
-This field does not need to have a value.
-Its existence communicates to the Angular type checker that the `disabled` input should be considered as accepting bindings that match the type `boolean|''`.
-The suffix should be the `@Input` _field_ name.
+Это поле не обязательно должно иметь значение. Его существование сообщает системе проверки типов Angular, что вход `disabled` следует рассматривать как принимающий привязки, соответствующие типу `boolean|''`.
+Суффиксом должно быть имя _поля_ `@Input`.
 
-Care should be taken that if an `ngAcceptInputType_` override is present for a given input, then the setter should be able to handle any values of the overridden type.
+Следует обратить внимание на то, что если для данного входа существует переопределение `ngAcceptInputType_`, то сеттер должен быть способен обрабатывать любые значения переопределенного типа.
 
-## Disabling type checking using `$any()`
+## Отключение проверки типов с помощью `$any()`.
 
-Disable checking of a binding expression by surrounding the expression in a call to the [`$any()` cast pseudo-function](guide/template-expression-operators).
-The compiler treats it as a cast to the `any` type just like in TypeScript when a `<any>` or `as any` cast is used.
+Отключите проверку выражения привязки, окружив выражение вызовом псевдофункции [`$any()` cast pseudo-function](guide/template-expression-operators). Компилятор рассматривает это как приведение к типу `any`, как в TypeScript, когда используется приведение `<any>` или `as any`.
 
-In the following example, casting `person` to the `any` type suppresses the error `Property address does not exist`.
+В следующем примере приведение `person` к типу `any` подавляет ошибку `Property address does not exist`.
 
 <code-example format="typescript" language="typescript">
 
-&commat;Component({
-selector: 'my-component',
-template: '{{&dollar;any(person).address.street}}'
+&commat;Component({ selector: 'my-component',
+template: '{ {\$any(person).address.street}}'
+
 })
+
 class MyComponent {
-person?: Person;
+
+person? Person;
+
 }
 
 </code-example>

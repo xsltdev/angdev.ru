@@ -1,158 +1,151 @@
-# Testing services
+# Тестирование сервисов
 
-To check that your services are working as you intend, you can write tests specifically for them.
+Чтобы проверить, что ваши сервисы работают так, как вы задумали, вы можете написать тесты специально для них.
 
 <div class="alert is-helpful">
 
-If you'd like to experiment with the application that this guide describes, <live-example name="testing" noDownload>run it in your browser</live-example> or <live-example name="testing" downloadOnly>download and run it locally</live-example>.
+Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, <live-example name="testing" noDownload>запустите его в браузере</live-example> или <live-example name="testing" downloadOnly>скачайте и запустите его локально</live-example>.
 
 </div>
 
-Services are often the smoothest files to unit test.
-Here are some synchronous and asynchronous unit tests of the `ValueService` written without assistance from Angular testing utilities.
+Сервисы часто являются самыми гладкими файлами для модульного тестирования. Вот несколько синхронных и асинхронных модульных тестов `ValueService`, написанных без помощи утилит тестирования Angular.
 
-<code-example header="app/demo/demo.spec.ts" path="testing/src/app/demo/demo.spec.ts" region="ValueService"></code-example>
+<code-example header="app/demo/demo.spec.ts" path="testing/src/app/demo/demo.spec.ts" region="ValueService"></code-example>.
 
 <a id="services-with-dependencies"></a>
 
-## Services with dependencies
+## Сервисы с зависимостями
 
-Services often depend on other services that Angular injects into the constructor.
-In many cases, you can create and _inject_ these dependencies by hand while calling the service's constructor.
+Сервисы часто зависят от других сервисов, которые Angular инжектирует в конструктор. Во многих случаях вы можете создать и _инжектировать_ эти зависимости вручную при вызове конструктора сервиса.
 
-The `MasterService` is a simple example:
+Простым примером является `MasterService`:
 
-<code-example header="app/demo/demo.ts" path="testing/src/app/demo/demo.ts" region="MasterService"></code-example>
+<code-example header="app/demo/demo.ts" path="testing/src/app/demo/demo.ts" region="MasterService"></code-example>.
 
-`MasterService` delegates its only method, `getValue`, to the injected `ValueService`.
+`MasterService` делегирует свой единственный метод, `getValue`, инжектированному `ValueService`.
 
-Here are several ways to test it.
+Вот несколько способов проверить это.
 
-<code-example header="app/demo/demo.spec.ts" path="testing/src/app/demo/demo.spec.ts" region="MasterService"></code-example>
+<code-example header="app/demo/demo.spec.ts" path="testing/src/app/demo/demo.spec.ts" region="MasterService"></code-example>.
 
-The first test creates a `ValueService` with `new` and passes it to the `MasterService` constructor.
+Первый тест создает `ValueService` с `new` и передает его в конструктор `MasterService`.
 
-However, injecting the real service rarely works well as most dependent services are difficult to create and control.
+Однако инжектирование реального сервиса редко работает хорошо, поскольку большинство зависимых сервисов сложно создавать и контролировать.
 
-Instead, mock the dependency, use a dummy value, or create a [spy](https://jasmine.github.io/tutorials/your_first_suite#section-Spies) on the pertinent service method.
+Вместо этого высмеивайте зависимость, используйте фиктивное значение или создайте [spy](https://jasmine.github.io/tutorials/your_first_suite#section-Spies) на соответствующем методе сервиса.
 
 <div class="alert is-helpful">
 
-Prefer spies as they are usually the best way to mock services.
+Предпочитает шпионов, так как они, как правило, лучший способ поиздеваться над службами.
 
 </div>
 
-These standard testing techniques are great for unit testing services in isolation.
+Эти стандартные методы тестирования отлично подходят для модульного тестирования сервисов в изоляции.
 
-However, you almost always inject services into application classes using Angular dependency injection and you should have tests that reflect that usage pattern.
-Angular testing utilities make it straightforward to investigate how injected services behave.
+Однако вы почти всегда внедряете сервисы в классы приложения, используя инъекцию зависимостей Angular, и у вас должны быть тесты, отражающие эту модель использования. Утилиты тестирования Angular позволяют легко исследовать поведение внедренных сервисов.
 
-## Testing services with the `TestBed`
+## Тестирование сервисов с помощью `TestBed`.
 
-Your application relies on Angular [dependency injection (DI)](guide/dependency-injection) to create services.
-When a service has a dependent service, DI finds or creates that dependent service.
-And if that dependent service has its own dependencies, DI finds-or-creates them as well.
+Ваше приложение полагается на Angular [dependency injection (DI)](guide/dependency-injection) для создания сервисов. Когда у сервиса есть зависимый сервис, DI находит или создает этот зависимый сервис.
 
-As service _consumer_, you don't worry about any of this.
-You don't worry about the order of constructor arguments or how they're created.
+А если у этого зависимого сервиса есть свои собственные зависимости, DI находит или создает и их.
 
-As a service _tester_, you must at least think about the first level of service dependencies but you _can_ let Angular DI do the service creation and deal with constructor argument order when you use the `TestBed` testing utility to provide and create services.
+Как _потребитель_ сервиса, вы не беспокоитесь ни о чем из этого. Вас не волнует порядок аргументов конструктора или то, как они создаются.
+
+Как _тестер_ сервисов, вы должны, по крайней мере, думать о первом уровне зависимостей сервисов, но вы _можете_ позволить Angular DI сделать создание сервиса и разобраться с порядком аргументов конструктора, если используете утилиту тестирования `TestBed` для предоставления и создания сервисов.
 
 <a id="testbed"></a>
 
 ## Angular `TestBed`
 
-The `TestBed` is the most important of the Angular testing utilities.
-The `TestBed` creates a dynamically-constructed Angular _test_ module that emulates an Angular [@NgModule](guide/ngmodules).
+`TestBed` является наиболее важной из утилит тестирования Angular. В `TestBed` создается динамически конструируемый модуль Angular _test_, который эмулирует модуль Angular [@NgModule](guide/ngmodules).
 
-The `TestBed.configureTestingModule()` method takes a metadata object that can have most of the properties of an [@NgModule](guide/ngmodules).
+Метод `TestBed.configureTestingModule()` принимает объект метаданных, который может иметь большинство свойств [@NgModule](guide/ngmodules).
 
-To test a service, you set the `providers` metadata property with an array of the services that you'll test or mock.
+Чтобы протестировать сервис, вы задаете свойство метаданных `providers` с массивом сервисов, которые вы будете тестировать или имитировать.
 
-<code-example header="app/demo/demo.testbed.spec.ts (provide ValueService in beforeEach)" path="testing/src/app/demo/demo.testbed.spec.ts" region="value-service-before-each"></code-example>
+<code-example header="app/demo/demo.testbed.spec.ts (provide ValueService in beforeEach)" path="testing/src/app/demo/demo.testbed.spec.ts" region="value-service-before-each"></code-example>.
 
-Then inject it inside a test by calling `TestBed.inject()` with the service class as the argument.
+Затем внедрите его внутрь теста, вызвав `TestBed.inject()` с классом сервиса в качестве аргумента.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br />
-`TestBed.get()` was deprecated as of Angular version 9.
+**NOTE**: <br /> `TestBed.get()` was deprecated as of Angular version 9.
 To help minimize breaking changes, Angular introduces a new function called `TestBed.inject()`, which you should use instead.
+
 For information on the removal of `TestBed.get()`, see its entry in the [Deprecations index](guide/deprecations#index).
 
 </div>
 
-<code-example path="testing/src/app/demo/demo.testbed.spec.ts" region="value-service-inject-it"></code-example>
+<code-example path="testing/src/app/demo/demo.testbed.spec.ts" region="value-service-inject-it"></code-example>.
 
-Or inside the `beforeEach()` if you prefer to inject the service as part of your setup.
+Или внутри `beforeEach()`, если вы предпочитаете инжектировать сервис как часть вашей установки.
 
-<code-example path="testing/src/app/demo/demo.testbed.spec.ts" region="value-service-inject-before-each"> </code-example>
+<code-example path="testing/src/app/demo/demo.testbed.spec.ts" region="value-service-inject-before-each"> </code-example>.
 
-When testing a service with a dependency, provide the mock in the `providers` array.
+При тестировании сервиса с зависимостью, предоставьте макет в массиве `providers`.
 
-In the following example, the mock is a spy object.
+В следующем примере имитатором является объект spy.
 
-<code-example path="testing/src/app/demo/demo.testbed.spec.ts" region="master-service-before-each"></code-example>
+<code-example path="testing/src/app/demo/demo.testbed.spec.ts" region="master-service-before-each"></code-example>.
 
-The test consumes that spy in the same way it did earlier.
+Тест потребляет этого шпиона тем же способом, что и ранее.
 
-<code-example path="testing/src/app/demo/demo.testbed.spec.ts" region="master-service-it"></code-example>
+<code-example path="testing/src/app/demo/demo.testbed.spec.ts" region="master-service-it"></code-example>.
 
 <a id="no-before-each"></a>
 
-## Testing without `beforeEach()`
+## Тестирование без `beforeEach()`
 
-Most test suites in this guide call `beforeEach()` to set the preconditions for each `it()` test and rely on the `TestBed` to create classes and inject services.
+Большинство тестовых наборов в этом руководстве вызывают `beforeEach()` для установки предварительных условий для каждого теста `it()` и полагаются на `TestBed` для создания классов и внедрения сервисов.
 
-There's another school of testing that never calls `beforeEach()` and prefers to create classes explicitly rather than use the `TestBed`.
+Существует и другая школа тестирования, которая никогда не вызывает `beforeEach()` и предпочитает создавать классы явно, а не использовать `TestBed`.
 
-Here's how you might rewrite one of the `MasterService` tests in that style.
+Вот как можно переписать один из тестов `MasterService` в этом стиле.
 
-Begin by putting re-usable, preparatory code in a _setup_ function instead of `beforeEach()`.
+Начните с размещения повторно используемого, подготовительного кода в функции _setup_ вместо `beforeEach()`.
 
-<code-example header="app/demo/demo.spec.ts (setup)" path="testing/src/app/demo/demo.spec.ts" region="no-before-each-setup"></code-example>
+<code-example header="app/demo/demo.spec.ts (setup)" path="testing/src/app/demo/demo.spec.ts" region="no-before-each-setup"></code-example>.
 
-The `setup()` function returns an object literal with the variables, such as `masterService`, that a test might reference.
-You don't define _semi-global_ variables \(for example, `let masterService: MasterService`\) in the body of the `describe()`.
+Функция `setup()` возвращает литерал объекта с переменными, такими как `masterService`, на которые может ссылаться тест. Вы не определяете _полуглобальные_ переменные\(например, `let masterService: MasterService`\) в теле `describe()`.
 
-Then each test invokes `setup()` in its first line, before continuing with steps that manipulate the test subject and assert expectations.
+Затем каждый тест вызывает `setup()` в своей первой строке, прежде чем продолжить шаги, которые манипулируют объектом тестирования и утверждают ожидания.
 
-<code-example path="testing/src/app/demo/demo.spec.ts" region="no-before-each-test"></code-example>
+<code-example path="testing/src/app/demo/demo.spec.ts" region="no-before-each-test"></code-example>.
 
-Notice how the test uses [_destructuring assignment_](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) to extract the setup variables that it needs.
+Обратите внимание, как тест использует [_деструктурирующее назначение_](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) для извлечения необходимых ему переменных настройки.
 
-<code-example path="testing/src/app/demo/demo.spec.ts" region="no-before-each-setup-call"></code-example>
+<code-example path="testing/src/app/demo/demo.spec.ts" region="no-before-each-setup-call"></code-example>.
 
-Many developers feel this approach is cleaner and more explicit than the traditional `beforeEach()` style.
+Многие разработчики считают этот подход более чистым и явным, чем традиционный стиль `beforeEach()`.
 
-Although this testing guide follows the traditional style and the default [CLI schematics](https://github.com/angular/angular-cli) generate test files with `beforeEach()` and `TestBed`, feel free to adopt _this alternative approach_ in your own projects.
+Хотя это руководство по тестированию следует традиционному стилю, и по умолчанию [CLI схемы](https://github.com/angular/angular-cli) генерируют тестовые файлы с `beforeEach()` и `TestBed`, не стесняйтесь использовать _этот альтернативный подход_ в ваших собственных проектах.
 
-## Testing HTTP services
+## Тестирование HTTP-сервисов
 
-Data services that make HTTP calls to remote servers typically inject and delegate to the Angular [`HttpClient`](guide/http) service for XHR calls.
+Сервисы данных, выполняющие HTTP-вызовы к удаленным серверам, обычно инжектируют и делегируют службу Angular [`HttpClient`](guide/http) для XHR-вызовов.
 
-You can test a data service with an injected `HttpClient` spy as you would test any service with a dependency.
+Вы можете протестировать сервис данных с инжектированным `HttpClient` шпионом, как вы тестировали бы любой сервис с зависимостью.
 
-<code-example header="app/model/hero.service.spec.ts (tests with spies)" path="testing/src/app/model/hero.service.spec.ts" region="test-with-spies"></code-example>
+<code-example header="app/model/hero.service.spec.ts (тесты со шпионами)" path="testing/src/app/model/hero.service.spec.ts" region="test-with-spies"></code-example>.
 
 <div class="alert is-important">
 
-The `HeroService` methods return `Observables`.
-You must _subscribe_ to an observable to \(a\) cause it to execute and \(b\) assert that the method succeeds or fails.
+Методы `HeroService` возвращают `Observables`. Вы должны _подписаться_ на наблюдаемую переменную, чтобы \(a\) вызвать ее выполнение и \(b\) подтвердить успех или неудачу метода.
 
-The `subscribe()` method takes a success \(`next`\) and fail \(`error`\) callback.
-Make sure you provide _both_ callbacks so that you capture errors.
-Neglecting to do so produces an asynchronous uncaught observable error that the test runner will likely attribute to a completely different test.
+Метод `subscribe()` принимает обратный вызов успеха \(`next`\) и отказа \(`error`\). Убедитесь, что вы предоставили _обои_ обратные вызовы, чтобы перехватить ошибки.
+
+Пренебрежение этим приводит к асинхронной не пойманной наблюдаемой ошибке, которую программа запуска тестов, скорее всего, отнесет к совершенно другому тесту.
 
 </div>
 
-## `HttpClientTestingModule`
+## `HttpClientTestingModule`.
 
-Extended interactions between a data service and the `HttpClient` can be complex and difficult to mock with spies.
+Расширенные взаимодействия между сервисом данных и `HttpClient` могут быть сложными и их трудно имитировать с помощью шпионов.
 
-The `HttpClientTestingModule` can make these testing scenarios more manageable.
+Модуль `HttpClientTestingModule` может сделать эти сценарии тестирования более управляемыми.
 
-While the _code sample_ accompanying this guide demonstrates `HttpClientTestingModule`, this page defers to the [Http guide](guide/http#testing-http-requests), which covers testing with the `HttpClientTestingModule` in detail.
+Хотя _пример кода_, сопровождающий данное руководство, демонстрирует `HttpClientTestingModule`, эта страница отсылает к [Http guide](guide/http#testing-http-requests), где подробно рассматривается тестирование с помощью `HttpClientTestingModule`.
 
 <!-- links -->
 

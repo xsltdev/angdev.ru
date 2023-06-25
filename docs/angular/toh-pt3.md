@@ -1,24 +1,24 @@
-# Create a feature component
+# Создайте компонент характеристик
 
-At the moment, the `HeroesComponent` displays both the list of heroes and the selected hero's details.
+На данный момент компонент `HeroesComponent` отображает как список героев, так и подробную информацию о выбранном герое.
 
-Keeping all features in one component as the application grows won't be maintainable.
-This tutorial splits up large components into smaller subcomponents, each focused on a specific task or workflow.
+Держать все функции в одном компоненте по мере роста приложения будет невозможно. В этом руководстве крупные компоненты разбиваются на более мелкие подкомпоненты, каждый из которых ориентирован на выполнение определенной задачи или рабочего процесса.
 
-The first step is to move the hero details into a separate, reusable `HeroDetailComponent` and end up with:
+Первым шагом будет перемещение деталей героя в отдельный, многократно используемый `HeroDetailComponent`, и в итоге мы получим:
 
-* A `HeroesComponent` that presents the list of heroes.
-* A `HeroDetailComponent` that presents the details of a selected hero.
+-   `HeroesComponent`, который представляет список героев.
+
+-   Компонент `HeroDetailComponent`, который представляет детали выбранного героя.
 
 <div class="alert is-helpful">
 
-  For the sample application that this page describes, see the <live-example></live-example>.
+Пример приложения, которое описывается на этой странице, см. в <live-example></live-example>.
 
 </div>
 
-## Make the `HeroDetailComponent`
+## Создайте компонент `HeroDetailComponent`.
 
-Use this `ng generate` command to create a new component named `hero-detail`.
+Используйте эту команду `ng generate` для создания нового компонента с именем `hero-detail`.
 
 <code-example format="shell" language="shell">
 
@@ -26,137 +26,136 @@ ng generate component hero-detail
 
 </code-example>
 
-The command scaffolds the following:
+Команда выполняет следующее:
 
-*   Creates a directory `src/app/hero-detail`.
+-   Создает каталог `src/app/hero-detail`.
 
-Inside that directory, four files are created:
+Внутри этого каталога создаются четыре файла:
 
-*   A CSS file for the component styles.
-*   An HTML file for the component template.
-*   A TypeScript file with a component class named `HeroDetailComponent`.
-*   A test file for the `HeroDetailComponent` class.
+-   CSS-файл для стилей компонента.
 
-The command also adds the `HeroDetailComponent` as a declaration in the `@NgModule` decorator of the `src/app/app.module.ts` file.
+-   HTML-файл для шаблона компонента.
 
-### Write the template
+-   TypeScript-файл с классом компонента с именем `HeroDetailComponent`.
 
-Cut the HTML for the hero detail from the bottom of the `HeroesComponent` template and paste it over the boilerplate content in the `HeroDetailComponent` template.
+-   Тестовый файл для класса `HeroDetailComponent`.
 
-The pasted HTML refers to a `selectedHero`.
-The new `HeroDetailComponent` can present *any* hero, not just a selected hero.
-Replace `selectedHero` with `hero` everywhere in the template.
+Команда также добавляет `HeroDetailComponent` в качестве объявления в декораторе `@NgModule` файла `src/app/app.module.ts`.
 
-When you're done, the `HeroDetailComponent` template should look like this:
+### Написать шаблон
 
-<code-example header="src/app/hero-detail/hero-detail.component.html" path="toh-pt3/src/app/hero-detail/hero-detail.component.html"></code-example>
+Вырежьте HTML для детализации героя из нижней части шаблона `HeroesComponent` и вставьте его поверх содержимого шаблона в шаблоне `HeroDetailComponent`.
 
-### Add the `@Input()` hero property
+Вставленный HTML ссылается на `selectedHero`. Новый `HeroDetailComponent` может представлять _любого_ героя, а не только выбранного.
 
-The `HeroDetailComponent` template binds to the component's `hero` property
-which is of type `Hero`.
+Замените `selectedHero` на `hero` везде в шаблоне.
 
-Open the `HeroDetailComponent` class file and import the `Hero` symbol.
+Когда вы закончите, шаблон `HeroDetailComponent` должен выглядеть следующим образом:
 
-<code-example path="toh-pt3/src/app/hero-detail/hero-detail.component.ts"
-region="import-hero" header="src/app/hero-detail/hero-detail.component.ts (import Hero)"></code-example>
+<code-example header="src/app/hero-detail/hero-detail.component.html" path="toh-pt3/src/app/hero-detail/hero-detail.component.html"></code-example>.
 
-The `hero` property
-[must be an `Input` property](guide/inputs-outputs "Input and Output properties"),
-annotated with the `@Input()` decorator,
-because the *external* `HeroesComponent` [binds to it](#heroes-component-template) like this.
+### Добавьте свойство `@Input()` героя
 
-<code-example path="toh-pt3/src/app/heroes/heroes.component.html" region="hero-detail-binding"></code-example>
+Шаблон `HeroDetailComponent` привязывается к свойству `hero` компонента, которое имеет тип `Hero`.
 
-Amend the `@angular/core` import statement to include the `Input` symbol.
+Откройте файл класса `HeroDetailComponent` и импортируйте символ `Hero`.
 
-<code-example header="src/app/hero-detail/hero-detail.component.ts (import Input)" path="toh-pt3/src/app/hero-detail/hero-detail.component.ts" region="import-input"></code-example>
+<code-example path="toh-pt3/src/app/hero-detail/hero-detail.component.ts" region="import-hero" header="src/app/hero-detail/hero-detail.component.ts (import Hero)"></code-example>.
 
-Add a `hero` property, preceded by the `@Input()` decorator.
+Свойство `hero` [должно быть свойством `Input`] (guide/inputs-outputs "Свойства ввода и вывода"),
 
-<code-example header="src/app/hero-detail/hero-detail.component.ts" path="toh-pt3/src/app/hero-detail/hero-detail.component.ts" region="input-hero"></code-example>
+аннотированным с помощью декоратора `@Input()`,
 
-That's the only change you should make to the `HeroDetailComponent` class.
-There are no more properties. There's no presentation logic.
-This component only receives a hero object through its `hero` property and displays it.
+поскольку _внешний_ `HeroesComponent` [привязывается к нему](#heroes-component-template) следующим образом.
 
-## Show the `HeroDetailComponent`
+<code-example path="toh-pt3/src/app/heroes/heroes.component.html" region="hero-detail-binding"></code-example>.
 
-The `HeroesComponent` used to display the hero details on its own, before you removed that part of the template.
-This section guides you through delegating logic to the `HeroDetailComponent`.
+Измените оператор импорта `@angular/core`, чтобы включить символ `Input`.
 
-The two components have a parent/child relationship.
-The parent, `HeroesComponent`, controls the child, `HeroDetailComponent` by
-sending it a new hero to display whenever the user selects a hero from the list.
+<code-example header="src/app/hero-detail/hero-detail.component.ts (import Input)" path="toh-pt3/src/app/hero-detail/hero-detail.component.ts" region="import-input"></code-example>.
 
-You don't need to change the `HeroesComponent` *class*, instead change its *template*.
+Добавьте свойство `hero`, которому предшествует декоратор `@Input()`.
+
+<code-example header="src/app/hero-detail/hero-detail.component.ts" path="toh-pt3/src/app/hero-detail/hero-detail.component.ts" region="input-hero"></code-example>.
+
+Это единственное изменение, которое вы должны внести в класс `HeroDetailComponent`. Больше нет никаких свойств. Нет никакой логики представления.
+
+Этот компонент только получает объект героя через свойство `hero` и отображает его.
+
+## Показать `HeroDetailComponent`.
+
+Компонент `HeroesComponent` использовался для самостоятельного отображения деталей героя, до того как вы удалили эту часть шаблона. Этот раздел поможет вам делегировать логику компоненту `HeroDetailComponent`.
+
+Эти два компонента находятся в отношениях родитель/потомок. Родительский компонент, `HeroesComponent`, управляет дочерним компонентом `HeroDetailComponent` путем
+
+посылая ему нового героя для отображения всякий раз, когда пользователь выбирает героя из списка.
+
+Вам не нужно изменять _класс_ `HeroesComponent`, вместо этого измените его _шаблон_.
 
 <a id="heroes-component-template"></a>
 
-### Update the `HeroesComponent` template
+### Обновите шаблон `HeroesComponent`.
 
-The `HeroDetailComponent` selector is `'app-hero-detail'`.
-Add an `<app-hero-detail>` element near the bottom of the `HeroesComponent` template, where the hero detail view used to be.
+Селектором `HeroDetailComponent` является `'app-hero-detail'`. Добавьте элемент `<app-hero-detail>` в нижней части шаблона `HeroesComponent`, там, где раньше находилось детальное представление героя.
 
-Bind the `HeroesComponent.selectedHero` to the element's `hero` property like this.
+Привяжите `HeroesComponent.selectedHero` к свойству `hero` элемента следующим образом.
 
-<code-example header="heroes.component.html (HeroDetail binding)" path="toh-pt3/src/app/heroes/heroes.component.html" region="hero-detail-binding"></code-example>
+<code-example header="heroes.component.html (привязка HeroDetail)" path="toh-pt3/src/app/heroes/heroes.component.html" region="hero-detail-binding"></code-example>.
 
-`[hero]="selectedHero"` is an Angular [property binding](guide/property-binding).
+`[hero]="selectedHero"` - это привязка [свойства] (guide/property-binding) Angular.
 
-It's a *one-way* data binding from
-the `selectedHero` property of the `HeroesComponent` to the `hero` property of the target element, which maps to the `hero` property of the `HeroDetailComponent`.
+Это _односторонняя_ привязка данных от свойства `selectedHero` компонента `HeroesComponent` к свойству `hero` целевого элемента, которое отображается на свойство `hero` компонента `HeroDetailComponent`.
 
-Now when the user clicks a hero in the list, the `selectedHero` changes.
-When the `selectedHero` changes, the *property binding* updates `hero` and
-the `HeroDetailComponent` displays the new hero.
+Теперь, когда пользователь нажимает на героя в списке, `selectedHero` изменяется. Когда `selectedHero` изменяется, _привязка свойств_ обновляет `hero` и
 
-The revised `HeroesComponent` template should look like this:
+компонент `HeroDetailComponent` отображает нового героя.
 
-<code-example path="toh-pt3/src/app/heroes/heroes.component.html"
-  header="heroes.component.html"></code-example>
+Переработанный шаблон `HeroesComponent` должен выглядеть следующим образом:
 
-The browser refreshes and the application starts working again as it did before.
+<code-example path="toh-pt3/src/app/heroes/heroes.component.html" header="heroes.component.html"></code-example>.
 
-## What changed?
+Браузер обновляется, и приложение начинает работать, как и раньше.
 
-As [before](tutorial/tour-of-heroes/toh-pt2), whenever a user clicks on a hero name,
-the hero detail appears below the hero list.
-Now the `HeroDetailComponent` is presenting those details instead of the `HeroesComponent`.
+## Что изменилось?
 
-Refactoring the original `HeroesComponent` into two components yields benefits, both now and in the future:
+Как и [ранее] (tutorial/tour-of-heroes/toh-pt2), когда пользователь нажимает на имя героя, подробная информация о герое появляется под списком героев.
 
-1. You reduced the `HeroesComponent` responsibilities.
+Теперь `HeroDetailComponent` представляет эти детали вместо `HeroesComponent`.
 
-1. You can evolve the `HeroDetailComponent` into a rich hero editor
-without touching the parent `HeroesComponent`.
+Рефакторинг оригинального `HeroesComponent` на два компонента дает преимущества, как сейчас, так и в будущем:
 
-1. You can evolve the `HeroesComponent` without touching the hero detail view.
+1. Вы сократили обязанности `HeroesComponent`.
 
-1. You can re-use the `HeroDetailComponent` in the template of some future component.
+1. Вы можете развивать `HeroDetailComponent` в богатый редактор героев
 
-## Final code review
+не трогая родительский `HeroesComponent`.
 
-Here are the code files discussed on this page.
+1. Вы можете развивать `HeroesComponent`, не трогая детальное представление героя.
+
+1. Вы можете повторно использовать `HeroDetailComponent` в шаблоне будущего компонента.
+
+## Окончательный обзор кода
+
+Вот файлы кода, рассмотренные на этой странице.
 
 <code-tabs>
 
-  <code-pane header="src/app/hero-detail/hero-detail.component.ts" path="toh-pt3/src/app/hero-detail/hero-detail.component.ts"></code-pane>
+<code-pane header="src/app/hero-detail/hero-detail.component.ts" path="toh-pt3/src/app/hero-detail/hero-detail.component.ts"></code-pane>
 
-  <code-pane header="src/app/hero-detail/hero-detail.component.html" path="toh-pt3/src/app/hero-detail/hero-detail.component.html"></code-pane>
+<code-pane header="src/app/hero-detail/hero-detail.component.html" path="toh-pt3/src/app/hero-detail/hero-detail.component.html"></code-pane>
 
-  <code-pane header="src/app/heroes/heroes.component.html" path="toh-pt3/src/app/heroes/heroes.component.html"></code-pane>
+<code-pane header="src/app/heroes/heroes.component.html" path="toh-pt3/src/app/heroes/heroes.component.html"></code-pane>
 
-  <code-pane header="src/app/app.module.ts" path="toh-pt3/src/app/app.module.ts"></code-pane>
+<code-pane header="src/app/app.module.ts" path="toh-pt3/src/app/app/app.module.ts"></code-pane>
 
 </code-tabs>
 
-## Summary
+## Резюме
 
-*   You created a separate, reusable `HeroDetailComponent`.
+-   Вы создали отдельный, многократно используемый `HeroDetailComponent`.
 
-*   You used a [property binding](guide/property-binding) to give the parent `HeroesComponent` control over the child `HeroDetailComponent`.
+-   Вы использовали [связывание свойств](guide/property-binding), чтобы дать родительскому `HeroesComponent` контроль над дочерним `HeroDetailComponent`.
 
-*   You used the [`@Input` decorator](guide/inputs-outputs)
-to make the `hero` property available for binding
-by the external `HeroesComponent`.
+-   Вы использовали декоратор [`@Input`](guide/inputs-outputs)
+
+чтобы сделать свойство `hero` доступным для привязки внешним `HeroesComponent`.

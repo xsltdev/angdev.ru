@@ -1,60 +1,70 @@
-# Tour of Heroes application and tutorial
+# Тур Героев приложение и учебник
 
 <div class="callout is-helpful">
 
 <header>Getting Started</header>
 
-In this tutorial, you build your own Angular application from the start.
-This is a good way to experience a typical development process as you learn Angular application-design concepts, tools, and terminology.
+В этом учебном пособии вы создадите собственное приложение Angular с самого начала. Это хороший способ познакомиться с типичным процессом разработки и изучить концепции, инструменты и терминологию проектирования приложений Angular.
 
-If you're new to Angular, try the [**Try it now**](start) quick-start application first.
-**Try it now** is based on a ready-made partially completed project.
-You can edit the application in StackBlitz and see the results in real time.
+Если вы новичок в Angular, сначала попробуйте приложение [**Try it now**](start) быстрого запуска. Приложение **Try it now** основано на готовом частично завершенном проекте.
 
-**Try it now** covers the same major topics &mdash;components, template syntax, routing, services, and accessing data using HTTP&mdash; in a condensed format, following best practices.
+Вы можете редактировать приложение в StackBlitz и видеть результаты в реальном времени.
+
+**Try it now** охватывает те же основные темы &mdash; компоненты, синтаксис шаблонов, маршрутизация, сервисы и доступ к данным с помощью HTTP&mdash; в сжатом формате, следуя лучшим практикам.
 
 </div>
 
-This _Tour of Heroes_ tutorial provides an introduction to the fundamentals of Angular and shows you how to:
+Этот учебник _Тур героев_ содержит введение в основы Angular и показывает, как:
 
--   Set up your local Angular development environment.
--   Use the [Angular CLI](cli 'CLI command reference') to develop an application.
+-   Настроить локальную среду разработки Angular.
 
-The _Tour of Heroes_ application that you build helps a staffing agency manage its stable of heroes.
-The application has many of the features that you'd expect to find in any data-driven application.
+-   Использовать [Angular CLI] (cli 'Справочник команд CLI') для разработки приложения.
 
-The finished application:
+Приложение _Tour of Heroes_, которое вы создадите, поможет кадровому агентству управлять своим штатом героев. Приложение обладает многими функциями, которые вы ожидаете найти в любом приложении, управляемом данными.
 
--   Gets a list of heroes
--   Displays the heroes in a list
--   Edits a selected hero's details
--   Navigates between different views of heroic data
+Готовое приложение:
 
-This tutorial helps you gain confidence that Angular can do whatever you need it to do by showing you how to:
+-   Получает список героев
 
--   Use Angular [directives](guide/glossary#directive 'Directives definition') to show and hide elements and display lists of hero data.
--   Create Angular [components](guide/glossary#component 'Components definition') to display hero details and show an array of heroes.
--   Use one-way [data binding](guide/glossary#data-binding 'Data binding definition') for read-only data.
--   Add editable fields to update a model with two-way data binding.
--   Bind component methods to user events, like keystrokes and clicks.
--   Enable users to select a hero from a list and edit that hero in the details view.
--   Format data with [pipes](guide/glossary#pipe 'Pipe definition').
--   Create a shared [service](guide/glossary#service 'Service definition') to assemble the heroes.
--   Use [routing](guide/glossary#router 'Router definition') to navigate among different views and their components.
+-   Отображает героев в списке
+
+-   Редактирует информацию о выбранном герое
+
+-   Перемещается между различными представлениями данных о героях.
+
+Этот учебник поможет вам обрести уверенность в том, что Angular может делать все, что вам нужно, показав вам, как:
+
+-   Использовать [директивы] (guide/glossary#directive 'Directives definition') для показа и скрытия элементов и отображения списков данных героев.
+
+-   Создавать компоненты Angular [components](guide/glossary#component 'Components definition') для отображения данных о героях и показа массива героев.
+
+-   Используйте одностороннее [связывание данных](guide/glossary#data-binding 'Data binding definition') для данных, доступных только для чтения.
+
+-   Добавьте редактируемые поля для обновления модели с помощью двусторонней привязки данных.
+
+-   Привязка методов компонентов к событиям пользователя, таким как нажатие клавиш и клики.
+
+-   Предоставление пользователям возможности выбирать героя из списка и редактировать его в представлении подробностей.
+
+-   Форматируйте данные с помощью [труб] (guide/glossary#pipe 'Определение трубы').
+
+-   Создайте общую [службу](guide/glossary#service 'Service definition') для сборки героев.
+
+-   Используйте [routing](guide/glossary#router 'Router definition') для навигации между различными представлениями и их компонентами.
 
 <div class="callout is-helpful">
 
 <header>Solution</header>
 
-After you complete all tutorial steps, the final application looks like this example.
+После выполнения всех шагов учебника конечное приложение будет выглядеть так, как показано в этом примере.
 
 <live-example name="toh-pt6"></live-example>.
 
 </div>
 
-## Design your new application
+## Создайте свое новое приложение
 
-Here's an image of where this tutorial leads, showing the Dashboard view and the most heroic heroes:
+Вот изображение того, к чему ведет этот учебник, показывающее вид Dashboard и самых героических героев:
 
 <div class="lightbox">
 
@@ -62,9 +72,9 @@ Here's an image of where this tutorial leads, showing the Dashboard view and the
 
 </div>
 
-You can click the **Dashboard** and **Heroes** links in the dashboard to navigate between the views.
+Для перехода между представлениями можно нажать на ссылки **Приборная панель** и **Герои** на приборной панели.
 
-If you click the dashboard hero "Magneta," the router opens a "Hero Details" view where you can change the hero's name.
+Если вы нажмете на героя приборной панели "Магнета", маршрутизатор откроет представление "Сведения о герое", где вы можете изменить имя героя.
 
 <div class="lightbox">
 
@@ -72,9 +82,8 @@ If you click the dashboard hero "Magneta," the router opens a "Hero Details" vie
 
 </div>
 
-Clicking the "Back" button returns you to the Dashboard.
-Links at the top take you to either of the main views.
-If you click "Heroes," the application displays the "Heroes" list view.
+Нажатие кнопки "Назад" возвращает вас на приборную панель. Ссылки, расположенные в верхней части, позволяют перейти к любому из основных видов.
+Если вы нажмете "Герои", приложение отобразит представление списка "Герои".
 
 <div class="lightbox">
 
@@ -82,11 +91,11 @@ If you click "Heroes," the application displays the "Heroes" list view.
 
 </div>
 
-When you click a different hero name, the read-only mini detail beneath the list reflects the new choice.
+Когда вы щелкаете по имени другого героя, в мини-подробностях под списком, доступных только для чтения, отражается новый выбор.
 
-You can click the "View Details" button to drill into the editable details of the selected hero.
+Вы можете нажать кнопку "Просмотр деталей", чтобы перейти к редактируемым деталям выбранного героя.
 
-The following diagram illustrates the navigation options.
+На следующей схеме показаны варианты навигации.
 
 <div class="lightbox">
 
@@ -94,7 +103,7 @@ The following diagram illustrates the navigation options.
 
 </div>
 
-Here's the application in action:
+Вот приложение в действии:
 
 <div class="lightbox">
 
