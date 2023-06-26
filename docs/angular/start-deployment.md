@@ -1,121 +1,90 @@
 # Развертывание приложения
 
-Развертывание приложения - это процесс компиляции, или сборки, вашего кода и размещения JavaScript, CSS и HTML на веб-сервере.
+Развертывание приложения — это процесс компиляции, или сборки, вашего кода и размещения JavaScript, CSS и HTML на веб-сервере.
 
-Этот раздел основывается на предыдущих шагах в руководстве [Начало работы](начало 'Попробуйте: базовое приложение') и показывает, как развернуть ваше приложение.
+Этот раздел основывается на предыдущих шагах в руководстве [Начало работы](start.md) и показывает, как развернуть ваше приложение.
 
 ## Предварительные условия
 
 Лучшей практикой является локальный запуск проекта перед его развертыванием. Чтобы запустить проект локально, на вашем компьютере должно быть установлено следующее:
 
 -   [Node.js](https://nodejs.org/en).
-
 -   [Angular CLI](https://cli.angular.io).
 
-    В терминале установите Angular CLI глобально, используя:
+В терминале установите Angular CLI глобально, используя:
 
-    <code-example format="shell" language="shell">.
+```shell
+npm install -g &commat;angular/cli
+```
 
-    npm install -g &commat;angular/cli
-
-    </code-example>.
-
-    С помощью Angular CLI вы можете использовать команду `ng` для создания новых рабочих пространств, новых проектов, обслуживания вашего приложения во время разработки или создания сборок для совместного использования или распространения.
+С помощью Angular CLI вы можете использовать команду `ng` для создания новых рабочих пространств, новых проектов, обслуживания вашего приложения во время разработки или создания сборок для совместного использования или распространения.
 
 ## Запуск приложения локально
 
-1.  Download the source code from your StackBlitz project by clicking the `Download Project` icon in the left menu, across from `Project`, to download your project as a zip archive.
+**1.** Загрузите исходный код вашего проекта StackBlitz, нажав на иконку `Download Project` в левом меню, напротив `Project`, чтобы загрузить ваш проект в виде zip-архива.
 
-    <div class="lightbox">
+![Скачать проект stackblitz](download-project.png)
 
-    <img alt="Download the stackblitz project" src="generated/images/guide/start/download-project.png">
+**2.** Распакуйте архив и измените каталог на вновь созданный проект. Например:
 
-    </div>
+```shell
+cd angular-ynqttp
+```
 
-1.  Unzip the archive and change directory to the newly created project. For example:
+**3.** Чтобы загрузить и установить пакеты npm, используйте следующую команду npm CLI:
 
-    <code-example format="shell" language="shell">
+```shell
+npm install
+```
 
-    cd angular-ynqttp
+**4.** Используйте следующую команду CLI для локального запуска приложения:
 
-    </code-example>
+```shell
+ng serve
+```
 
-1.  To download and install npm packages, use the following npm CLI command:
+**5.** Чтобы увидеть свое приложение в браузере, перейдите по адресу [http://localhost:4200/](http://localhost:4200/). Если порт по умолчанию 4200 недоступен, вы можете указать другой порт с помощью флага port, как в следующем примере:
 
-    <code-example format="shell" language="shell">
+```shell
+ng serve --port 4201
+```
 
-    npm install
+Во время обслуживания приложения вы можете редактировать свой код и видеть, как изменения автоматически обновляются в браузере. Чтобы остановить команду `ng serve`, нажмите ++ctrl+c++.
 
-    </code-example>
+## Создание и размещение вашего приложения
 
-1.  Use the following CLI command to run your application locally:
+**1.** Чтобы собрать приложение для производства, используйте команду `build`. По умолчанию эта команда использует конфигурацию сборки `production`.
 
-    <code-example format="shell" language="shell">
+```shell
+ng build
+```
 
-    ng serve
+Эта команда создает в корневом каталоге приложения папку `dist` со всеми файлами, которые необходимы службе хостинга для обслуживания вашего приложения.
 
-    </code-example>
+!!!warning ""
 
-1.  To see your application in the browser, go to http://localhost:4200/.
+    Если команда `ng build` выдает ошибку об отсутствии пакетов, добавьте отсутствующие зависимости в файл `package.json` вашего локального проекта, чтобы они совпадали с теми, что находятся в загруженном проекте StackBlitz.
 
-    If the default port 4200 is not available, you can specify another port with the port flag as in the following example:
+**2.** Скопируйте содержимое папки `dist/my-project-name` на ваш веб-сервер.
 
-    <code-example format="shell" language="shell">.
+Поскольку эти файлы статичны, вы можете разместить их на любом веб-сервере, способном обслуживать файлы; например, `Node.js`, Java, .NET или любом бэкенде, таком как [Firebase](https://firebase.google.com/docs/hosting), [Google Cloud](https://cloud.google.com/solutions/web-hosting) или [App Engine](https://cloud.google.com/appengine/docs/standard/python/getting-started/hosting-a-static-website).
 
-    ng serve --port 4201
+Для получения дополнительной информации смотрите [Создание и обслуживание приложений Angular](build.md) и [Руководство по развертыванию](deployment.md).
 
-    </code-example>.
-
-    Во время обслуживания приложения вы можете редактировать свой код и видеть, как изменения автоматически обновляются в браузере.
-
-    Чтобы остановить команду `ng serve`, нажмите `Ctrl`+`c`.
-
-<a id="building"></a>
-
-## Building and hosting your application
-
-1.  To build your application for production, use the `build` command. By default, this command uses the `production` build configuration.
-
-    <code-example format="shell" language="shell">
-
-    ng build
-
-    </code-example>
-
-    This command creates a `dist` folder in the application root directory with all the files that a hosting service needs for serving your application.
-
-    <div class="alert is-helpful">
-
-    If the above `ng build` command throws an error about missing packages, append the missing dependencies in your local project's `package.json` file to match the one in the downloaded StackBlitz project.
-
-    </div>
-
-1.  Copy the contents of the `dist/my-project-name` folder to your web server.
-
-    Because these files are static, you can host them on any web server capable of serving files; such as `Node.js`, Java, .NET, or any backend such as [Firebase](https://firebase.google.com/docs/hosting), [Google Cloud](https://cloud.google.com/solutions/web-hosting), or [App Engine](https://cloud.google.com/appengine/docs/standard/python/getting-started/hosting-a-static-website).
-
-    For more information, see [Building & Serving](guide/build 'Building and Serving Angular Apps') and [Deployment](guide/deployment 'Deployment guide').
-
-## What's next
+## Что дальше
 
 В этом руководстве вы заложили основу для изучения мира Angular в таких областях, как мобильная разработка, разработка UX/UI и рендеринг на стороне сервера. Вы можете углубиться, изучая больше возможностей Angular, взаимодействуя с активным сообществом и исследуя мощную экосистему.
 
 ### Узнать больше об Angular
 
-Более подробное руководство, которое поможет вам создать приложение на локальном уровне и изучить многие из наиболее популярных функций Angular, смотрите в [Tour of Heroes](tutorial).
+Более подробное руководство, которое поможет вам создать приложение на локальном уровне и изучить многие из наиболее популярных функций Angular, смотрите в [Tour of Heroes](tutorial.md).
 
-Чтобы изучить основные концепции Angular, обратитесь к руководствам в разделе "Понимание Angular", таким как [Обзор компонентов Angular] (guide/component-overview) или [Синтаксис шаблонов] (guide/template-syntax).
-
-### Присоединиться к сообществу
-
-[Напишите в Twitter, что вы прошли этот учебник](https://twitter.com/intent/tweet?url=https://angular.io/start&text=I%20just%20finished%20the%20Angular%20Getting%20Started%20Tutorial 'Angular on Twitter'), расскажите нам, что вы думаете, или отправьте [предложения для будущих выпусков](https://github.com/angular/angular/issues/new/choose 'Angular GitHub repository new issue form').
-
-Следите за новостями в [блоге Angular](https://blog.angular.io/ 'Angular blog').
+Чтобы изучить основные концепции Angular, обратитесь к руководствам в разделе "Понимание Angular", таким как [Обзор компонентов Angular](component-overview.md) или [Синтаксис шаблонов](template-syntax.md).
 
 ### Изучение экосистемы Angular
 
-Для поддержки разработки UX/UI смотрите [Angular Material](https://material.angular.io/ 'Angular Material web site').
+Для поддержки разработки UX/UI смотрите [Angular Material](https://material.angular.io/).
 
-Сообщество Angular также имеет обширную [сеть сторонних инструментов и библиотек](ресурсы 'Список ресурсов Angular').
+Сообщество Angular также имеет обширную [сеть сторонних инструментов и библиотек](https://angular.io/resources).
 
 :date: 15.09.2021

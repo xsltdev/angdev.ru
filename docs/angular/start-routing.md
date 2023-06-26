@@ -1,6 +1,6 @@
 # Добавление навигации
 
-Это руководство основывается на первом шаге учебника "Начало работы с базовым приложением Angular" (начните "Начало работы с базовым приложением Angular").
+Это руководство основывается на первом шаге учебника "[Начало работы с базовым приложением Angular](start.md)".
 
 На данном этапе разработки приложение интернет-магазина имеет базовый каталог товаров.
 
@@ -65,21 +65,21 @@ ng generate component product-details
 
 Директива `RouterLink` помогает вам настроить элемент якоря.
 
-In this case, the route, or URL, contains one fixed segment, `/products`.
+В данном случае маршрут, или URL, содержит один фиксированный сегмент, `/products`.
 
-The final segment is variable, inserting the `id` property of the current product.
+Последний сегмент является переменным и вставляет свойство `id` текущего продукта.
 
-For example, the URL for a product with an `id` of 1 would be similar to `https://getting-started-myfork.stackblitz.io/products/1`.
+Например, URL для продукта с `id`, равным 1, будет выглядеть так: `https://getting-started-myfork.stackblitz.io/products/1`.
 
-**5.** Verify that the router works as intended by clicking the product name.
+**5.** Убедитесь, что маршрутизатор работает так, как задумано, щелкнув по названию продукта.
 
-The application should display the `ProductDetailsComponent`, which currently says "product-details works!"
+Приложение должно отобразить `ProductDetailsComponent`, который в настоящее время говорит "product-details works!".
 
-Notice that the URL in the preview window changes.
+Обратите внимание, что URL в окне предварительного просмотра меняется.
 
-The final segment is `products/#` where `#` is the number of the route you clicked.
+Конечным сегментом является `products/#`, где `#` - это номер маршрута, на который вы нажали.
 
-![Product details view with updated URL](product-details-works.png)
+![Просмотр сведений о продукте с обновленным URL](product-details-works.png)
 
 ## Просмотр информации о продукте
 
@@ -123,7 +123,7 @@ export class ProductDetailsComponent implements OnInit {
 
 Шаг [Управление данными](start-data.md) более подробно рассматривает сервисы.
 
-**4.** In the `ngOnInit()` method, extract the `productId` from the route parameters and find the corresponding product in the `products` array.
+**4.** В методе `ngOnInit()` извлеките `productId` из параметров маршрута и найдите соответствующий продукт в массиве `products`.
 
 ```ts
 ngOnInit() {
@@ -132,21 +132,23 @@ ngOnInit() {
   const productIdFromRoute = Number(routeParams.get('productId'));
 
   // Find the product that correspond with the id provided in route.
-  this.product = products.find(product => product.id === productIdFromRoute);
+  this.product = products.find(
+	product => product.id === productIdFromRoute
+  );
 }
 ```
 
-The route parameters correspond to the path variables you define in the route.
+Параметры маршрута соответствуют переменным пути, которые вы определяете в маршруте.
 
-To access the route parameters, we use `route.snapshot`, which is the `ActivatedRouteSnapshot` that contains information about the active route at that particular moment in time.
+Для доступа к параметрам маршрута используется `route.snapshot`, который представляет собой `ActivatedRouteSnapshot`, содержащий информацию об активном маршруте в данный момент времени.
 
-The URL that matches the route provides the `productId` .
+URL, соответствующий маршруту, содержит `productId`.
 
-Angular uses the `productId` to display the details for each unique product.
+Angular использует `productId` для отображения подробностей о каждом уникальном продукте.
 
-**5.** Update the `ProductDetailsComponent` template to display product details with an `*ngIf`.
+**5.** Обновите шаблон `ProductDetailsComponent` для отображения информации о товаре с помощью `*ngIf`.
 
-If a product exists, the `<div>` renders with a name, price, and description.
+Если товар существует, `<div>` отображается с названием, ценой и описанием.
 
 ```html
 <h2>Product Details</h2>
@@ -158,17 +160,15 @@ If a product exists, the `<div>` renders with a name, price, and description.
 </div>
 ```
 
-Строка `<h4>{{ product.price | currency }}</h4>` использует трубу `currency` для преобразования `product.price` из числа в строку валюты.
+Строка `<h4>{{ product.price | currency }}</h4>` использует пайп `currency` для преобразования `product.price` из числа в строку валюты.
 
-`Pipe` - это способ преобразования данных в шаблоне HTML.
+`Pipe` — это способ преобразования данных в шаблоне HTML.
 
-Для получения дополнительной информации о трубах Angular смотрите [Pipes](pipes.md).
-
----
+Для получения дополнительной информации о пайпах Angular смотрите [Пайпы](pipes.md).
 
 Когда пользователи нажимают на название в списке продуктов, маршрутизатор переводит их на отдельный URL-адрес продукта, показывает компонент `ProductDetailsComponent` и отображает подробную информацию о продукте.
 
-![Product details page with updated URL and full details displayed](product-details-routed.png)
+![Страница подробной информации о продукте с обновленным URL и отображением полной информации](product-details-routed.png)
 
 Для получения дополнительной информации о маршрутизаторе Angular Router смотрите [Маршрутизация и навигация](router.md).
 
@@ -179,6 +179,6 @@ If a product exists, the `<div>` renders with a name, price, and description.
 Чтобы продолжить знакомство с Angular:
 
 -   Перейдите к разделу [Управление данными](start-data.md), чтобы добавить функцию корзины, управлять данными корзины и получать внешние данные для цен доставки.
--   Перейдите к [Deployment](start-deployment.md), чтобы развернуть ваше приложение на Firebase или перейти к локальной разработке.
+-   Перейдите к [Развертывание](start-deployment.md), чтобы развернуть ваше приложение на Firebase или перейти к локальной разработке.
 
 :date: 28.02.2022
