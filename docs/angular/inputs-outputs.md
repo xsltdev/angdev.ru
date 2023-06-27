@@ -2,20 +2,17 @@
 
 Распространенным паттерном в Angular является обмен данными между родительским компонентом и одним или несколькими дочерними компонентами. Реализуйте этот паттерн с помощью декораторов `@Input()` и `@Output()`.
 
-<div class="alert is-helpful">
+!!!info ""
 
-Смотрите <live-example></live-example> для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
-
-</div>
+    Смотрите [код](https://angular.io/generated/live-examples/inputs-outputs/stackblitz.html) для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
 
 Рассмотрим следующую иерархию:
 
-<code-example format="html" language="html">
-
-&lt;parent-component&gt; &lt;child-component&gt;&lt;/child-component&gt;
-&lt;/parent-component&gt;
-
-</code-example>
+```html
+<parent-component>
+    <child-component></child-component>
+</parent-component>
+```
 
 Компонент `<родительский компонент>` служит контекстом для компонента `<детский компонент>`.
 
@@ -23,17 +20,11 @@
 
 И наоборот, `@Output()` позволяет дочернему компоненту отправлять данные в родительский компонент.
 
-<a id="input"></a>
-
 ## Отправка данных в дочерний компонент
 
 Декоратор `@Input()` в дочернем компоненте или директиве означает, что свойство может получать свое значение от родительского компонента.
 
-<div class="lightbox">
-
-<img alt="Input data flow diagram of data flowing from parent to child" src="generated/images/guide/inputs-outputs/input.svg">
-
-</div>
+![Диаграмма потока входных данных, передаваемых от родителя к ребенку](input.svg)
 
 Чтобы использовать `@Input()`, вы должны настроить родительский и дочерний компоненты.
 
@@ -41,13 +32,20 @@
 
 Чтобы использовать декоратор `@Input()` в классе дочернего компонента, сначала импортируйте `Input`, а затем украсьте свойство с помощью `@Input()`, как показано в следующем примере.
 
-<code-example header="src/app/item-detail/item-detail.component.ts" path="inputs-outputs/src/app/item-detail/item-detail.component.ts" region="use-input"></code-example>
+```ts title="src/app/item-detail/item-detail.component.ts"
+import { Component, Input } from '@angular/core'; // First, import Input
+export class ItemDetailComponent {
+    @Input() item = ''; // decorate the property with @Input()
+}
+```
 
-In this case, `@Input()` decorates the property <code class="no-auto-link">item</code>, which has a type of `string`, however, `@Input()` properties can have any type, such as `number`, `string`, `boolean`, or `object`. The value for `item` comes from the parent component.
+В данном случае `@Input()` украшает свойство `item`, которое имеет тип `string`, однако свойства `@Input()` могут иметь любой тип, такой как `number`, `string`, `boolean` или `object`. Значение для `item` берется из родительского компонента.
 
-Next, in the child component template, add the following:
+Далее, в шаблоне дочернего компонента добавьте следующее:
 
-<code-example header="src/app/item-detail/item-detail.component.html" path="inputs-outputs/src/app/item-detail/item-detail.component.html" region="property-in-template"></code-example>.
+```html title="src/app/item-detail/item-detail.component.html"
+<p>Today's item: {{item}}</p>
+```
 
 ### Настройка родительского компонента
 
@@ -55,161 +53,171 @@ Next, in the child component template, add the following:
 
 1.  Используйте селектор дочернего компонента, здесь `<app-item-detail>`, как директиву в шаблоне родительского компонента.
 
-1.  Используйте [property binding](guide/property-binding) для привязки свойства `item` в дочернем компоненте к свойству `currentItem` родительского компонента.
+2.  Используйте [property binding](property-binding.md) для привязки свойства `item` в дочернем компоненте к свойству `currentItem` родительского компонента.
 
-    <code-example header="src/app/app.component.html" path="inputs-outputs/src/app/app/app.component.html" region="input-parent"></code-example>.
+    ```html title="src/app/app.component.html"
+    <app-item-detail [item]="currentItem"></app-item-detail>
+    ```
 
-1.  В классе родительского компонента определите значение для `currentItem`:
+3.  В классе родительского компонента определите значение для `currentItem`:
 
-    <code-example header="src/app/app.component.ts" path="inputs-outputs/src/app/app/app.component.ts" region="parent-property"></code-example>.
+    ```ts title="src/app/app.component.ts"
+    export class AppComponent {
+        currentItem = 'Television';
+    }
+    ```
 
 С помощью `@Input()`, Angular передает значение `currentItem` дочернему элементу, так что `item` отображается как `Television`.
 
 На следующей диаграмме показана эта структура:
 
-<div class="lightbox">
-
-<img alt="Property binding diagram of the target, item, in square brackets set to the source, currentItem, on the right of an equal sign" src="generated/images/guide/inputs-outputs/input-diagram-target-source.svg">
-
-</div>
+![Диаграмма привязки свойств цели, item, в квадратных скобках, установленной на источник, currentItem, справа от знака равенства](input-diagram-target-source.svg)
 
 Цель в квадратных скобках, `[]`, - это свойство, которое вы украшаете с помощью `@Input()` в дочернем компоненте. Источник привязки, часть справа от знака равенства, - это данные, которые родительский компонент передает вложенному компоненту.
 
 ### Наблюдение за изменениями `@Input()`.
 
-Чтобы следить за изменениями свойства `@Input()`, используйте `OnChanges`, один из [хуков жизненного цикла Angular](guide/lifecycle-hooks). Более подробную информацию и примеры смотрите в разделе [`OnChanges`](guide/lifecycle-hooks#onchanges) руководства [Lifecycle Hooks](guide/lifecycle-hooks).
-
-<a id="output"></a>
+Чтобы следить за изменениями свойства `@Input()`, используйте `OnChanges`, один из [хуков жизненного цикла Angular](lifecycle-hooks.md). Более подробную информацию и примеры смотрите в разделе [`OnChanges`](lifecycle-hooks.md#onchanges) руководства [Lifecycle Hooks](lifecycle-hooks.md).
 
 ## Отправка данных в родительский компонент
 
 Декоратор `@Output()` в дочернем компоненте или директиве позволяет передавать данные от дочернего компонента к родительскому.
 
-<div class="lightbox">
+![Диаграмма потока данных, идущего от ребенка к родителю](output.svg)
 
-<img alt="Output diagram of the data flow going from child to parent" src="generated/images/guide/inputs-outputs/output.svg">
+`@Output()` помечает свойство в дочернем компоненте как дверной проем, через который данные могут перемещаться от дочернего компонента к родительскому.
 
-</div>
+Дочерний компонент использует свойство `@Output()`, чтобы вызвать событие, уведомляющее родителя об изменении. Чтобы поднять событие, `@Output()` должен иметь тип `EventEmitter`, который является классом в `@angular/core`, который вы используете для создания пользовательских событий.
 
-`@Output()` marks a property in a child component as a doorway through which data can travel from the child to the parent.
+В следующем примере показано, как настроить `@Output()` в дочернем компоненте, который передает данные из HTML `<input>` в массив в родительском компоненте.
 
-The child component uses the `@Output()` property to raise an event to notify the parent of the change. To raise an event, an `@Output()` must have the type of `EventEmitter`, which is a class in `@angular/core` that you use to emit custom events.
+Чтобы использовать `@Output()`, необходимо настроить родительский и дочерний компоненты.
 
-The following example shows how to set up an `@Output()` in a child component that pushes data from an HTML `<input>` to an array in the parent component.
+### Настройка дочернего компонента
 
-To use `@Output()`, you must configure the parent and child.
-
-### Configuring the child component
-
-The following example features an `<input>` where a user can enter a value and click a `<button>` that raises an event. The `EventEmitter` then relays the data to the parent component.
+В следующем примере имеется `<input>`, где пользователь может ввести значение и нажать `<button>`, что вызывает событие. Затем `EventEmitter` передает данные родительскому компоненту.
 
 1.  Импортируйте `Output` и `EventEmitter` в класс дочернего компонента:
 
-    <code-example format="javascript" language="javascript">.
+    ```js
+    import { Output, EventEmitter } from '@angular/core';
+    ```
 
-    import { Output, EventEmitter } from '&commat;angular/core';
-
-    </code-example>.
-
-1.  В классе компонента украсьте свойство `@Output()`.
+2.  В классе компонента украсьте свойство `@Output()`.
 
     Следующий пример `newItemEvent` `@Output()` имеет тип `EventEmitter`, что означает, что это событие.
 
-    <code-example header="src/app/item-output/item-output.component.ts" path="inputs-outputs/src/app/item-output/item-output.component.ts" region="item-output"></code-example>.
+    ```ts title="src/app/item-output/item-output.component.ts"
+    @Output() newItemEvent = new EventEmitter<string>();
+    ```
 
     Различные части предыдущей декларации выглядят следующим образом:
 
-    | Части декларации | Детали |
+    | Части декларации             | Детали                                                                                                           |
+    | :--------------------------- | :--------------------------------------------------------------------------------------------------------------- |
+    | `@Output()`                  | Функция-декоратор, помечающая свойство как способ передачи данных от дочернего компонента к родительскому.       |
+    | `newItemEvent`               | Имя `@Output()`.                                                                                                 |
+    | `EventEmitter<string>`       | Тип `@Output()`.                                                                                                 |
+    | `new EventEmitter<string>()` | Сообщает Angular о создании нового эмиттера события и о том, что данные, которые он эмитирует, имеют тип string. |
 
-    |:--- |:--- |
+    Для получения дополнительной информации о `EventEmitter` смотрите документацию [EventEmitter API documentation](https://angular.io/api/core/EventEmitter).
 
-    | `@Output()` | Функция-декоратор, помечающая свойство как способ передачи данных от дочернего компонента к родительскому. |
+3.  Create an `addNewItem()` method in the same component class:
 
-    | | `newItemEvent` | Имя `@Output()`. |
+    ```ts title="src/app/item-output/item-output.component.ts"
+    export class ItemOutputComponent {
+        @Output() newItemEvent = new EventEmitter<string>();
 
-    | | `EventEmitter<string>` | Тип `@Output()`. |
+        addNewItem(value: string) {
+            this.newItemEvent.emit(value);
+        }
+    }
+    ```
 
-    | | `new EventEmitter<string>()` | Сообщает Angular о создании нового эмиттера события и о том, что данные, которые он эмитирует, имеют тип string. |
+    Функция `addNewItem()` использует `@Output()`, `newItemEvent`, чтобы вызвать событие со значением, которое пользователь вводит в `<input>`.
 
-    Для получения дополнительной информации о `EventEmitter` смотрите документацию [EventEmitter API documentation](api/core/EventEmitter).
+### Настройка шаблона ребенка
 
-1.  Create an `addNewItem()` method in the same component class:
+В дочернем шаблоне есть два элемента управления. Первый - это HTML `input` с переменной [template reference variable](template-reference-variables.md), `#newItem`, где пользователь вводит имя элемента.
 
-    <code-example header="src/app/item-output/item-output.component.ts" path="inputs-outputs/src/app/item-output/item-output.component.ts" region="item-output-class"></code-example>
+Свойство `value` переменной `#newItem` хранит то, что пользователь вводит в `input`.
 
-    The `addNewItem()` function uses the `@Output()`, `newItemEvent`, to raise an event with the value the user types into the `<input>`.
+```html title="src/app/item-output/item-output.component.html"
+<label for="item-input">Add an item:</label>
+<input type="text" id="item-input" #newItem />
+<button type="button" (click)="addNewItem(newItem.value)">
+    Add to parent's list
+</button>
+```
 
-### Configuring the child's template
+Второй элемент — это `<кнопка>` с привязкой события `click` [event-binding](event-binding.md).
 
-The child's template has two controls. The first is an HTML `<input>` with a [template reference variable](guide/template-reference-variables), `#newItem`, where the user types in an item name.
-The `value` property of the `#newItem` variable stores what the user types into the `<input>`.
+Событие `(click)` привязано к методу `addNewItem()` в классе дочернего компонента. Метод `addNewItem()` принимает в качестве аргумента значение свойства `#newItem.value`.
 
-<code-example header="src/app/item-output/item-output.component.html" path="inputs-outputs/src/app/item-output/item-output.component.html" region="child-output"></code-example>
+### Настройка родительского компонента
 
-The second element is a `<button>` with a `click` [event binding](guide/event-binding).
+В этом примере `AppComponent` содержит список `элементов` в массиве и метод для добавления новых элементов в массив.
 
-The `(click)` event is bound to the `addNewItem()` method in the child component class. The `addNewItem()` method takes as its argument the value of the `#newItem.value` property.
+```ts title="src/app/app.component.ts"
+export class AppComponent {
+    items = ['item1', 'item2', 'item3', 'item4'];
 
-### Configuring the parent component
+    addItem(newItem: string) {
+        this.items.push(newItem);
+    }
+}
+```
 
-The `AppComponent` in this example features a list of `items` in an array and a method for adding more items to the array.
+Метод `addItem()` принимает аргумент в виде строки и затем добавляет эту строку в массив `items`.
 
-<code-example header="src/app/app.component.ts" path="inputs-outputs/src/app/app.component.ts" region="add-new-item"></code-example>
+### Настройка шаблона родителя
 
-The `addItem()` method takes an argument in the form of a string and then adds that string to the `items` array.
+1.  В шаблоне родителя привяжите метод родителя к событию ребенка.
 
-### Configuring the parent's template
+2.  Поместите дочерний селектор, здесь `<app-item-output>`, в шаблон родительского компонента, `app.component.html`.
 
-1.  In the parent's template, bind the parent's method to the child's event.
+    ```html title="src/app/app.component.html"
+    <app-item-output
+        (newItemEvent)="addItem($event)"
+    ></app-item-output>
+    ```
 
-1.  Put the child selector, here `<app-item-output>`, within the parent component's template, `app.component.html`.
+    Привязка события, `(newItemEvent)='addItem($event)'`, связывает событие в дочернем шаблоне, `newItemEvent`, с методом в родительском шаблоне, `addItem()`.
 
-    <code-example header="src/app/app.component.html" path="inputs-outputs/src/app/app.component.html" region="output-parent"></code-example>
+    Событие `$event` содержит данные, которые пользователь вводит в `<input>` в пользовательском интерфейсе дочернего шаблона.
 
-    The event binding, `(newItemEvent)='addItem($event)'`, connects the event in the child, `newItemEvent`, to the method in the parent, `addItem()`.
+    Чтобы увидеть, как работает `@Output()`, добавьте следующее в родительский шаблон:
 
-    The `$event` contains the data that the user types into the `<input>` in the child template UI.
+    ```html
+    <ul>
+        <li *ngFor="let item of items">{{item}}</li>
+    </ul>
+    ```
 
-    To see the `@Output()` working, add the following to the parent's template:
+    Метод `*ngFor` выполняет итерацию по элементам в массиве `items`.
 
-    <code-example format="html" language="html">
+    Когда вы вводите значение в дочерний `<input>` и нажимаете кнопку, дочерний элемент испускает событие, а родительский метод `addItem()` помещает значение в массив `items` и новый элемент отображается в списке.
 
-    &lt;ul&gt;
+## Использование `@Input()` и `@Output()` вместе
 
-    &lt;li \*ngFor="let item of items"&gt;{{item}}&lt;/li&gt;
+Используйте `@Input()` и `@Output()` на одном и том же дочернем компоненте следующим образом:
 
-    &lt;/ul&gt;
+```html title="src/app/app.component.html"
+<app-input-output
+    [item]="currentItem"
+    (deleteRequest)="crossOffItem($event)"
+>
+</app-input-output>
+```
 
-    </code-example>
-
-    The `*ngFor` iterates over the items in the `items` array.
-
-    When you enter a value in the child's `<input>` and click the button, the child emits the event and the parent's `addItem()` method pushes the value to the `items` array and new item renders in the list.
-
-## Using `@Input()` and `@Output()` together
-
-Use `@Input()` and `@Output()` on the same child component as follows:
-
-<code-example header="src/app/app.component.html" path="inputs-outputs/src/app/app/app.component.html" region="together"></code-example>.
-
-Цель, `item`, которая является свойством `@Input()` в классе дочернего компонента, получает свое значение из свойства родителя, `currentItem`. Когда вы нажимаете кнопку delete, дочерний компонент вызывает событие `deleteRequest`, которое является аргументом для родительского метода `crossOffItem()`.
+Цель, `item`, которая является свойством `@Input()` в классе дочернего компонента, получает свое значение из свойства родителя, `currentItem`. Когда вы нажимаете кнопку Delete, дочерний компонент вызывает событие `deleteRequest`, которое является аргументом для родительского метода `crossOffItem()`.
 
 На следующей схеме показаны различные части `@Input()` и `@Output()` на дочернем компоненте `<app-input-output>`.
 
-<div class="lightbox">
-
-<img alt="Diagram of an input target and an output target each bound to a source." src="generated/images/guide/inputs-outputs/input-output-diagram.svg">
-
-</div>
+![Диаграмма входной цели и выходной цели, каждая из которых связана с источником.](input-output-diagram.svg)
 
 Дочерний селектор - `<app-input-output>`, при этом `item` и `deleteRequest` являются свойствами `@Input()` и `@Output()` в классе дочернего компонента. Свойство `currentItem` и метод `crossOffItem()` находятся в классе родительского компонента.
 
-Чтобы объединить привязки свойств и событий с помощью синтаксиса "банана в коробке", `[()]`, смотрите [Двусторонняя привязка](guide/two-way-binding).
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
+Чтобы объединить привязки свойств и событий с помощью синтаксиса "банана в коробке", `[()]`, смотрите [Двусторонняя привязка](two-way-binding.md).
 
 :date: 28.02.2022

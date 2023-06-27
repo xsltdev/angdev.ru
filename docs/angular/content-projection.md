@@ -2,25 +2,19 @@
 
 В этой теме описывается, как использовать проекцию содержимого для создания гибких, многократно используемых компонентов.
 
-<div class="alert is-helpful">
+!!!info ""
 
-Для просмотра или загрузки кода примера, использованного в этой теме, см. <live-example></live-example>.
-
-</div>
+    Для просмотра или загрузки кода примера, использованного в этой теме, см. [пример](https://angular.io/generated/live-examples/content-projection/stackblitz.html).
 
 Проекция содержимого - это шаблон, в котором вы вставляете, или _проектируете_, содержимое, которое хотите использовать, внутрь другого компонента. Например, у вас может быть компонент `Card`, который принимает содержимое, предоставленное другим компонентом.
 
 В следующих разделах описываются общие реализации проекции содержимого в Angular, включая:
 
-| Проекция контента | Подробности | |:--- |:--- |:---.
-
-| [Single-slot content projection](#single-slot) | При этом типе проекции контента компонент принимает контент из одного источника. |
-
-| [Multi-slot content projection](#multi-slot) | В этом сценарии компонент принимает содержимое из нескольких источников. |
-
-| | [Условная проекция контента](#conditional) | Компоненты, использующие условную проекцию контента, отображают контент только при выполнении определенных условий. |
-
-<a id="single-slot"></a>
+| Проекция контента                          | Подробности                                                                                                         |
+| :----------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| Проекция содержимого с одним слотом        | При этом типе проекции контента компонент принимает контент из одного источника.                                    |
+| Проекция содержимого с несколькими слотами | В этом сценарии компонент принимает содержимое из нескольких источников.                                            |
+| Условная проекция контента                 | Компоненты, использующие условную проекцию контента, отображают контент только при выполнении определенных условий. |
 
 ## Однослотовая проекция контента
 
@@ -28,25 +22,36 @@
 
 Чтобы создать компонент, использующий однослотовую проекцию содержимого, выполните следующие действия:
 
-1.  [Создать компонент] (guide/component-overview#creating-a-component).
+1.  [Создать компонент](component-overview.md#creating-a-component).
 
-1.  В шаблоне компонента добавьте элемент `<ng-content>` в то место, где должно отображаться проецируемое содержимое.
+2.  В шаблоне компонента добавьте элемент `<ng-content>` в то место, где должно отображаться проецируемое содержимое.
 
 Например, следующий компонент использует элемент `<ng-content>` для отображения сообщения.
 
-<code-example header="content-projection/src/app/zippy-basic/zippy-basic.component.ts" path="content-projection/src/app/zippy-basic/zippy-basic.component.ts"></code-example>.
+```ts title="content-projection/src/app/zippy-basic/zippy-basic.component.ts"
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-zippy-basic',
+    template: `
+        <h2>Single-slot content projection</h2>
+        <ng-content></ng-content>
+    `,
+})
+export class ZippyBasicComponent {}
+```
 
 С установленным элементом `<ng-content>` пользователи этого компонента теперь могут проецировать свое собственное сообщение в компонент. Например:
 
-<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="single-slot"></code-example>
+```html title="content-projection/src/app/app.component.html"
+<app-zippy-basic>
+    <p>Is content projection cool?</p>
+</app-zippy-basic>
+```
 
-<div class="alert is-helpful">
+!!!info ""
 
-Элемент `<ng-content>` - это заполнитель, который не создает реального элемента DOM. Пользовательские атрибуты, применяемые к `<ng-content>`, игнорируются.
-
-</div>
-
-<a id="multi-slot"></a>
+    Элемент `<ng-content>` - это заполнитель, который не создает реального элемента DOM. Пользовательские атрибуты, применяемые к `<ng-content>`, игнорируются.
 
 ## Проекция содержимого на несколько слотов
 
@@ -60,33 +65,48 @@
 
 Чтобы создать компонент, использующий многослотовую проекцию содержимого, выполните следующие действия:
 
-1.  [Создать компонент](guide/component-overview#creating-a-component).
+1.  [Создать компонент](component-overview.md#creating-a-component).
 
-1.  В шаблоне компонента добавьте элемент `<ng-content>`, в котором должно отображаться проецируемое содержимое.
+2.  В шаблоне компонента добавьте элемент `<ng-content>`, в котором должно отображаться проецируемое содержимое.
 
-1.  Добавьте атрибут `select` к элементам `<ng-content>`.
+3.  Добавьте атрибут `select` к элементам `<ng-content>`.
 
     Angular поддерживает [selectors](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) для любой комбинации имени тега, атрибута, CSS-класса и псевдокласса `:not`.
 
     Например, следующий компонент использует два элемента `<ng-content>`.
 
-    <code-example header="content-projection/src/app/zippy-multislot/zippy-multislot.component.ts" path="content-projection/src/app/zippy-multislot/zippy-multislot.component.ts"></code-example>.
+    ```ts title="content-projection/src/app/zippy-multislot/zippy-multislot.component.ts"
+    import { Component } from '@angular/core';
+
+    @Component({
+        selector: 'app-zippy-multislot',
+        template: `
+            <h2>Multi-slot content projection</h2>
+
+            Default:
+            <ng-content></ng-content>
+
+            Question:
+            <ng-content select="[question]"></ng-content>
+        `,
+    })
+    export class ZippyMultislotComponent {}
+    ```
 
 Содержимое, использующее атрибут `question`, проецируется в элемент `<ng-content>` с атрибутом `select=[question]`.
 
-<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="multi-slot"></code-example>.
+```html title="content-projection/src/app/app.component.html"
+<app-zippy-multislot>
+    <p question>Is content projection cool?</p>
+    <p>Let's learn about content projection!</p>
+</app-zippy-multislot>
+```
 
-<div class="callout is-helpful">
+!!!note "`ng-content` без атрибута select"
 
-<header>ng-content without a select attribute</header>
+    Если ваш компонент включает элемент `<ng-content>` без атрибута `select`, этот экземпляр получает все спроецированные компоненты, которые не соответствуют ни одному из других элементов `<ng-content>`.
 
-Если ваш компонент включает элемент `<ng-content>` без атрибута `select`, этот экземпляр получает все спроецированные компоненты, которые не соответствуют ни одному из других элементов `<ng-content>`.
-
-В предыдущем примере только второй элемент `<ng-content>` определяет атрибут `select`. В результате первый элемент `<ng-content>` получает любое другое содержимое, проецируемое в компонент.
-
-</div>
-
-<a id="conditional"></a>
+    В предыдущем примере только второй элемент `<ng-content>` определяет атрибут `select`. В результате первый элемент `<ng-content>` получает любое другое содержимое, проецируемое в компонент.
 
 ## Условное проецирование содержимого
 
@@ -98,58 +118,77 @@
 
 Следующие шаги демонстрируют типичную реализацию условного проецирования содержимого с использованием `<ng-template>`.
 
-1.  [Create a component](guide/component-overview#creating-a-component).
-1.  In the component that accepts an `<ng-template>` element, use an `<ng-container>` element to render that template, such as:
+1.  [Создайте компонент](component-overview.md#creating-a-component).
 
-    <code-example header="content-projection/src/app/example-zippy.template.html" path="content-projection/src/app/example-zippy.template.html" region="ng-container"></code-example>
+2.  В компоненте, который принимает элемент `<ng-template>`, используйте элемент `<ng-container>` для визуализации этого шаблона, например:
 
-    This example uses the `ngTemplateOutlet` directive to render a given `<ng-template>` element, which you will define in a later step.
-    You can apply an `ngTemplateOutlet` directive to any type of element.
-    This example assigns the directive to an `<ng-container>` element because the component does not need to render a real DOM element.
+    ```html title="content-projection/src/app/example-zippy.template.html"
+    <ng-container
+        [ngTemplateOutlet]="content.templateRef"
+    ></ng-container>
+    ```
 
-1.  Wrap the `<ng-container>` element in another element, such as a `div` element, and apply your conditional logic.
+    Этот пример использует директиву `ngTemplateOutlet` для рендеринга заданного элемента `<ng-template>`, который вы определите на следующем этапе. Вы можете применить директиву `ngTemplateOutlet` к любому типу элемента.
 
-    <code-example header="content-projection/src/app/example-zippy.template.html" path="content-projection/src/app/example-zippy.template.html" region="ngif"></code-example>
+    В данном примере директива назначается элементу `<ng-container>`, поскольку компоненту не нужно отображать реальный элемент DOM.
 
-1.  In the template where you want to project content, wrap the projected content in an `<ng-template>` element, such as:
+3.  Заверните элемент `<ng-container>` в другой элемент, например, в элемент `div`, и примените свою условную логику.
 
-    <code-example header="content-projection/src/app/app.component.html"  region="ng-template" path="content-projection/src/app/app.component.html"></code-example>
-
-    The `<ng-template>` element defines a block of content that a component can render based on its own logic.
-    A component can get a reference to this template content, or `TemplateRef`, by using either the `@ContentChild` or `@ContentChildren` decorators.
-    The preceding example creates a custom directive, `appExampleZippyContent`, as an API to mark the `<ng-template>` for the component's content.
-    With the `TemplateRef`, the component can render the referenced content by using either the `ngTemplateOutlet` directive, or with the `ViewContainerRef` method `createEmbeddedView()`.
-
-1.  [Create an attribute directive](guide/attribute-directives#building-an-attribute-directive) with a selector that matches the custom attribute for your template.
-    In this directive, inject a `TemplateRef` instance.
-
-    <code-example header="content-projection/src/app/example-zippy.component.ts" path="content-projection/src/app/example-zippy.component.ts" region="zippycontentdirective"></code-example>
-
-    In the previous step, you added an `<ng-template>` element with a custom attribute, `appExampleZippyContent`.
-    This code provides the logic that Angular will use when it encounters that custom attribute.
-    In this case, that logic instructs Angular to instantiate a template reference.
-
-1.  In the component you want to project content into, use `@ContentChild` to get the template of the projected content.
-
-    <code-example header="content-projection/src/app/example-zippy.component.ts" path="content-projection/src/app/example-zippy.component.ts" region="contentchild"></code-example>
-
-    Prior to this step, your application has a component that instantiates a template when certain conditions are met.
-    You've also created a directive that provides a reference to that template.
-    In this last step, the `@ContentChild` decorator instructs Angular to instantiate the template in the designated component.
-
-    <div class="alert is-helpful">
-
-    In the case of multi-slot content projection, use `@ContentChildren` to get a `QueryList` of projected elements.
-
+    ```html
+    <div *ngIf="expanded" [id]="contentId">
+        <ng-container
+            [ngTemplateOutlet]="content.templateRef"
+        ></ng-container>
     </div>
+    ```
 
-<a id="ngprojectas"></a>
+4.  В шаблоне, в который вы хотите спроецировать содержимое, оберните спроецированное содержимое в элемент `<ng-template>`, например:
+
+    ```html
+    <ng-template appExampleZippyContent>
+        It depends on what you do with it.
+    </ng-template>
+    ```
+
+    Элемент `<ng-template>` определяет блок содержимого, который компонент может отобразить на основе своей собственной логики. Компонент может получить ссылку на содержимое шаблона, или `TemplateRef`, используя декораторы `@ContentChild` или `@ContentChildren`. В предыдущем примере создается пользовательская директива `appExampleZippyContent` в качестве API для обозначения `<ng-template>` для содержимого компонента. С помощью `TemplateRef` компонент может выводить содержимое, на которое ссылается, используя либо директиву `ngTemplateOutlet`, либо метод `ViewContainerRef` `createEmbeddedView()`.
+
+5.  [Создайте директиву атрибутов](attribute-directives.md#building-an-attribute-directive) с селектором, который соответствует пользовательскому атрибуту для вашего шаблона. В эту директиву введите экземпляр `TemplateRef`.
+
+    ```ts title="content-projection/src/app/example-zippy.component.ts"
+    @Directive({
+        selector: '[appExampleZippyContent]',
+    })
+    export class ZippyContentDirective {
+        constructor(
+            public templateRef: TemplateRef<unknown>
+        ) {}
+    }
+    ```
+
+    В предыдущем шаге вы добавили элемент `<ng-template>` с пользовательским атрибутом `appExampleZippyContent`. Этот код предоставляет логику, которую Angular будет использовать, когда встретит этот пользовательский атрибут. В данном случае эта логика предписывает Angular создать ссылку на шаблон.
+
+6.  В компоненте, на который вы хотите спроецировать содержимое, используйте `@ContentChild` для получения шаблона проецируемого содержимого.
+
+    ```ts title="content-projection/src/app/example-zippy.component.ts"
+    @ContentChild(ZippyContentDirective) content!: ZippyContentDirective;
+    ```
+
+    До этого шага в вашем приложении есть компонент, который создает шаблон при выполнении определенных условий. Вы также создали директиву, которая предоставляет ссылку на этот шаблон. На этом последнем шаге декоратор `@ContentChild` инструктирует Angular инстанцировать шаблон в указанном компоненте.
+
+    !!!info ""
+
+        В случае многослотовой проекции содержимого используйте `@ContentChildren`, чтобы получить `QueryList` проецируемых элементов.
 
 ## Проецирование содержимого в более сложных средах
 
-Как описано в [Многослотовое проецирование содержимого](#multi-slot), вы обычно используете либо атрибут, либо элемент, либо CSS-класс, либо некоторую комбинацию всех трех для определения места проецирования содержимого. Например, в следующем шаблоне HTML тег абзаца использует пользовательский атрибут `question` для проецирования содержимого в компонент `app-zippy-multislot`.
+Как описано в "Многослотовое проецирование содержимого", вы обычно используете либо атрибут, либо элемент, либо CSS-класс, либо некоторую комбинацию всех трех для определения места проецирования содержимого. Например, в следующем шаблоне HTML тег абзаца использует пользовательский атрибут `question` для проецирования содержимого в компонент `app-zippy-multislot`.
 
-<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="multi-slot"></code-example>.
+```html title="content-projection/src/app/app.component.html"
+<app-zippy-multislot>
+    <p question>Is content projection cool?</p>
+    <p>Let's learn about content projection!</p>
+</app-zippy-multislot>
+```
 
 В некоторых случаях вы можете захотеть спроецировать содержимое как другой элемент. Например, содержимое, которое вы хотите спроецировать, может быть дочерним элементом другого элемента.
 
@@ -157,25 +196,19 @@
 
 Например, рассмотрим следующий фрагмент HTML:
 
-<code-example header="content-projection/src/app/app.component.html" path="content-projection/src/app/app.component.html" region="ngprojectas"></code-example>.
+```html title="content-projection/src/app/app.component.html"
+<ng-container ngProjectAs="[question]">
+    <p>Is content projection cool?</p>
+</ng-container>
+```
 
 В этом примере используется атрибут `<ng-container>` для имитации проецирования компонента в более сложную структуру.
 
-<div class="callout is-helpful">
+!!!info "Напоминание"
 
-<header>Reminder</header>
-
-Элемент `ng-container` - это логическая конструкция, которая используется для группировки других элементов DOM; однако сам `ng-container` не отображается в дереве DOM.
-
-</div>
+    Элемент `ng-container` - это логическая конструкция, которая используется для группировки других элементов DOM; однако сам `ng-container` не отображается в дереве DOM.
 
 В данном примере содержимое, которое мы хотим спроецировать, находится внутри другого элемента. Чтобы спроецировать это содержимое, шаблон использует атрибут `ngProjectAs`.
 С помощью `ngProjectAs` весь элемент `<ng-container>` проецируется в компонент с помощью селектора `[question]`.
 
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-:date: 28.02.2022s
+:date: 28.02.2022
