@@ -4,112 +4,116 @@
 
 ## Предварительные условия
 
--   [Property binding](guide/property-binding)
+-   [Привязка свойств](property-binding.md)
 
-## Привязка к одному CSS `class`.
+## Привязка к одному CSS `class`
 
 Чтобы создать привязку к одному классу, введите следующее:
 
-`[class.sale]="onSale"`.
+`[class.sale]="onSale"`
 
-Angular добавляет класс, когда связанное выражение `onSale` истинно, и удаляет класс, когда выражение ложно&mdash; за исключением `undefined`. Дополнительную информацию смотрите в [делегирование стилей](guide/style-precedence#styling-delegation).
+Angular добавляет класс, когда связанное выражение `onSale` истинно, и удаляет класс, когда выражение ложно &mdash; за исключением `undefined`. Дополнительную информацию смотрите в [делегирование стилей](style-precedence.md#styling-delegation).
 
 ## Привязка к нескольким классам CSS
 
 Чтобы привязать несколько классов, введите следующее:
 
-`[class]="classExpression"`.
+`[class]="classExpression"`
 
 Выражение может быть одним из:
 
 -   Строка имен классов, ограниченная пробелами.
-
 -   Объект с именами классов в качестве ключей и истинными или ложными выражениями в качестве значений.
-
 -   Массив имен классов.
 
 При использовании объектного формата Angular добавляет класс, только если его связанное значение истинно.
 
-<div class="alert is-important">
+!!!warning ""
 
-При использовании любого объектоподобного выражения &mdash; такого как `object`, `Array`, `Map` или `Set` &mdash; идентификатор объекта должен измениться, чтобы Angular обновил список классов. Обновление свойства без изменения идентичности объекта не имеет эффекта.
+    При использовании любого объектоподобного выражения &mdash; такого как `object`, `Array`, `Map` или `Set` &mdash; идентификатор объекта должен измениться, чтобы Angular обновил список классов. Обновление свойства без изменения идентичности объекта не имеет эффекта.
 
-</div>
+Если существует несколько привязок к одному и тому же имени класса, Angular использует [style precedence](style-precedence.md), чтобы определить, какую привязку использовать.
 
-If there are multiple bindings to the same class name, Angular uses [styling precedence](guide/style-precedence) to determine which binding to use.
+В следующей таблице приведен синтаксис привязки класса.
 
-The following table summarizes class binding syntax.
+| Тип привязки             | Синтаксис                   | Тип инпута              | Пример значений                      |
+| :----------------------- | :-------------------------- | :---------------------- | :----------------------------------- |
+| Привязка к одному классу | `[class.sale]="onSale"`     | `boolean                | undefined                            | null` | `true`, `false` |
+| Многоклассовая привязка  | `[class]="classExpression"` | `string`                | `"my-class-1 my-class-2 my-class-3"` |
+| Многоклассовая привязка  | `[class]="classExpression"` | `Record<string, boolean | undefined                            | null>` | `{foo: true, bar: false}` |
+| Многоклассовая привязка  | `[class]="classExpression"` | `Array<string>`         | `['foo', 'bar']`                     |
 
-| Binding Type | Syntax | Input Type | Example Input Values | |:--- |:--- |:--- |:--- |
+## Привязка к одному стилю
 
-| Single class binding | `[class.sale]="onSale"` | <code>boolean &verbar; undefined &verbar; null</code> | `true`, `false` |
+Чтобы создать привязку к одному стилю, используйте префикс `style`, за которым следует точка и имя стиля CSS.
 
-| Multi-class binding | `[class]="classExpression"` | `string` | `"my-class-1 my-class-2 my-class-3"` |
+Например, чтобы установить стиль `width`, введите следующее: `[style.width]="width"`.
 
-| Multi-class binding | `[class]="classExpression"` | <code>Record&lt;string, boolean &verbar; undefined &verbar; null&gt;</code> | `{foo: true, bar: false}` |
+Angular устанавливает свойство в значение связанного выражения, которое обычно является строкой. По желанию вы можете добавить расширение единицы, например `em` или `%`, которое требует числового типа.
 
-| Multi-class binding | `[class]="classExpression"` | <code>Array&lt;string&gt;</code> | `['foo', 'bar']` |
+1.  Чтобы написать стиль в тире, введите следующее:
 
-## Binding to a single style
+    ```html
+    <nav [style.background-color]="expression"></nav>
+    ```
 
-To create a single style binding, use the prefix `style` followed by a dot and the name of the CSS style.
+2.  Чтобы написать стиль в camelCase, введите следующее:
 
-For example, to set the `width` style, type the following: `[style.width]="width"`
-
-Angular sets the property to the value of the bound expression, which is usually a string. Optionally, you can add a unit extension like `em` or `%`, which requires a number type.
-
-1. Чтобы написать стиль в тире, введите следующее:
-
-    <code-example language="html">&lt;nav [style.background-color]="expression"&gt;&lt;/nav&gt;</code-example>.
-
-2. Чтобы написать стиль в camelCase, введите следующее:
-
-    <code-example language="html">&lt;nav [style.backgroundColor]="expression"&gt;&lt;/nav&gt;</code-example>.
+    ```html
+    <nav [style.backgroundColor]="expression"></nav>
+    ```
 
 ## Привязка к нескольким стилям
 
 Чтобы переключить несколько стилей, привяжитесь к атрибуту `[style]`&mdash; например, `[style]="styleExpression"`. Выражение `styleExpression` может быть одним из:
 
 -   Строковый список стилей, например, `ширина: 100px; высота: 100px; background-color: cornflowerblue;`.
-
 -   Объект с именами стилей в качестве ключей и значениями стилей в качестве значений, например `{width: '100px', height: '100px', backgroundColor: 'cornflowerblue'}`.
 
 Обратите внимание, что привязка массива к `[style]` не поддерживается.
 
-<div class="alert is-important">
+!!!warning ""
 
-При привязке `[style]` к выражению объекта, идентификатор объекта должен измениться, чтобы Angular обновил список классов. Обновление свойства без изменения идентичности объекта не имеет эффекта.
-
-</div>
+    При привязке `[style]` к выражению объекта, идентификатор объекта должен измениться, чтобы Angular обновил список классов. Обновление свойства без изменения идентичности объекта не имеет эффекта.
 
 ### Пример связывания в одном и нескольких стилях
 
-<code-example path="attribute-binding/src/app/single-and-multiple-style-binding.component.ts" header="nav-bar.component.ts"></code-example>
+```ts
+@Component({
+    selector: 'app-nav-bar',
+    template: ` <nav [style]="navStyle">
+        <a [style.text-decoration]="activeLinkStyle"
+            >Home Page</a
+        >
+        <a [style.text-decoration]="linkStyle">Login</a>
+    </nav>`,
+})
+export class NavBarComponent {
+    navStyle = 'font-size: 1.2rem; color: cornflowerblue;';
+    linkStyle = 'underline';
+    activeLinkStyle = 'overline';
+    /* . . . */
+}
+```
 
-If there are multiple bindings to the same style attribute, Angular uses [styling precedence](guide/style-precedence) to determine which binding to use.
+Если существует несколько привязок к одному и тому же атрибуту стиля, Angular использует [styling precedence](style-precedence.md), чтобы определить, какую привязку использовать.
 
-The following table summarizes style binding syntax.
+В следующей таблице приведен синтаксис привязки стиля.
 
-| Binding Type | Syntax | Input Type | Example Input Values | |:--- |:--- |:--- |:--- |
+| Тип привязки             | Синтаксис                   | Тип входа                                                                  | Пример входных значений             |
+| :----------------------- | :-------------------------- | :------------------------------------------------------------------------- | :---------------------------------- |
+| Привязка к одному стилю  | `[style.width]="width"`     | <code>string &verbar; undefined &verbar; null</code>                       | `"100px"`                           |
+| Привязка к одному стилю  | `[style.width.px]="width"`  | <code>number &verbar; undefined &verbar; null</code>                       | `100`                               |
+| Привязка к многим стилям | `[style]="styleExpression"` | `string`                                                                   | `"width: 100px; height: 100px"`     |
+| Привязка к многим стилям | `[style]="styleExpression"` | <code>Record&lt;string, string &verbar; undefined &verbar; null&gt;</code> | `{width: '100px', height: '100px'}` |
 
-| Single style binding | `[style.width]="width"` | <code>string &verbar; undefined &verbar; null</code> | `"100px"` |
+## Приоритет стилей
 
-| Single style binding with units | `[style.width.px]="width"` | <code>number &verbar; undefined &verbar; null</code> | `100` |
+У одного элемента HTML список классов CSS и значения стилей могут быть привязаны к нескольким источникам (например, привязка к хосту из нескольких директив).
 
-| Multi-style binding | `[style]="styleExpression"` | `string` | `"width: 100px; height: 100px"` |
+## Что дальше
 
-| Multi-style binding | `[style]="styleExpression"` | <code>Record&lt;string, string &verbar; undefined &verbar; null&gt;</code> | `{width: '100px', height: '100px'}` |
-
-{@a styling-precedence}
-
-## Styling precedence
-
-A single HTML element can have its CSS class list and style values bound to multiple sources (for example, host bindings from multiple directives).
-
-## What’s next
-
--   [Component styles](/guide/component-styles)
-
--   [Введение в анимации Angular](/guide/animations)
+-   [Стили компонентов](component-styles.md)
+-   [Введение в анимации Angular](animations.md)
 
 :date: 9.05.2022

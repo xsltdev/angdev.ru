@@ -2,34 +2,36 @@
 
 ## Предварительные условия
 
--   [Основы компонентов](guide/architecture-components)
+-   [Основы компонентов](architecture-components.md)
+-   [Основы шаблонов](glossary.md#template)
+-   [Синтаксис связывания](binding-syntax.md)
 
--   [Основы шаблонов](guide/glossary#template)
-
--   [Синтаксис связывания](guide/binding-syntax)
-
-<!--todo: needs a level 2 heading for info below -->
-
-Интерполяция - это вставка выражений в размеченный текст. По умолчанию интерполяция использует двойные фигурные скобки `{{` и `}}` в качестве разделителей.
+**Интерполяция** - это вставка выражений в размеченный текст. По умолчанию интерполяция использует двойные фигурные скобки `{{` и `}}` в качестве разделителей.
 
 Чтобы проиллюстрировать работу интерполяции, рассмотрим компонент Angular, содержащий переменную `currentCustomer`:
 
-<code-example path="interpolation/src/app/app.component.ts" region="customer"></code-example>.
+```ts
+currentCustomer = 'Maria';
+```
 
 Используйте интерполяцию для отображения значения этой переменной в соответствующем шаблоне компонента:
 
-<code-example path="interpolation/src/app/app.component.html" region="interpolation-example1"></code-example>.
+```html
+<h3>Current customer: {{ currentCustomer }}</h3>
+```
 
 Angular заменяет `currentCustomer` строковым значением соответствующего свойства компонента. В данном случае это значение `Maria`.
 
 В следующем примере Angular оценивает свойства `title` и `itemImageUrl` для отображения текста заголовка и изображения.
 
-<code-example path="interpolation/src/app/app.component.html" region="component-property"></code-example>
+```html
+<p>{{title}}</p>
+<div><img alt="item" src="{{itemImageUrl}}" /></div>
+```
 
 ## Что дальше
 
--   [Привязка свойств](guide/property-binding)
-
--   [Связывание событий](guide/event-binding)
+-   [Привязка свойств](property-binding.md)
+-   [Связывание событий](event-binding.md)
 
 :date: 14.04.2022

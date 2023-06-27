@@ -2,31 +2,25 @@
 
 Привязка свойств в Angular помогает задавать значения для свойств HTML-элементов или директив. Используйте привязку свойств для таких задач, как переключение функций кнопки, программная установка путей и обмен значениями между компонентами.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Смотрите <live-example></live-example> для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
-
-</div>
+    Смотрите [код](https://angular.io/generated/live-examples/property-binding/stackblitz.html) для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
 
 ## Предварительные условия
 
--   [Основы компонентов](guide/architecture-components)
-
--   [Основы шаблонов](guide/glossary#template)
-
--   [Синтаксис связывания](guide/binding-syntax)
+-   [Основы компонентов](architecture-components.md)
+-   [Основы шаблонов](glossary.md#template)
+-   [Синтаксис связывания](binding-syntax.md)
 
 ## Понимание потока данных
 
 Привязка свойств перемещает значение в одном направлении, из свойства компонента в свойство целевого элемента.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Для получения дополнительной информации о прослушивании событий смотрите [Event binding](guide/event-binding).
+    Для получения дополнительной информации о прослушивании событий смотрите [Event binding](event-binding.md).
 
-</div>
-
-Чтобы прочитать свойство целевого элемента или вызвать один из его методов, см. справку API для [ViewChild](api/core/ViewChild) и [ContentChild](api/core/ContentChild).
+Чтобы прочитать свойство целевого элемента или вызвать один из его методов, см. справку API для [ViewChild](https://angular.io/api/core/ViewChild) и [ContentChild](https://angular.io/api/core/ContentChild).
 
 ## Привязка к свойству
 
@@ -36,84 +30,102 @@
 
 Чтобы присвоить значение целевому свойству `src` элемента image, введите следующий код:
 
-<code-example path="property-binding/src/app/app.component.html" region="property-binding" header="src/app/app.component.html"></code-example>
+```html
+<img alt="item" [src]="itemImageUrl" />
+```
 
-In most cases, the target name is the name of a property, even when it appears to be the name of an attribute.
+В большинстве случаев целевое имя - это имя свойства, даже если оно кажется именем атрибута.
 
-In this example, `src` is the name of the `<img>` element property.
-
-<!-- vale Angular.Google_WordListSuggestions = NO -->
+В данном примере `src` - это имя свойства элемента `<img>`.
 
 Скобки `[]` заставляют Angular оценивать правую часть присваивания как динамическое выражение.
-
-<!-- vale Angular.Google_WordListSuggestions = NO -->
 
 Без скобок Angular рассматривает правую часть как строковый литерал и устанавливает свойству это статическое значение.
 
 Чтобы присвоить свойству строку, введите следующий код:
 
-<code-example path="property-binding/src/app/app.component.html" region="no-evaluation" header="src/app.component.html"></code-example>
+```html
+<app-item-detail childItem="parentItem"></app-item-detail>
+```
 
-Omitting the brackets renders the string `parentItem`, not the value of `parentItem`.
+Если опустить скобки, то будет отображаться строка `parentItem`, а не значение `parentItem`.
 
-## Setting an element property to a component property value
+## Установка свойства элемента в значение свойства компонента
 
-To bind the `src` property of an `<img>` element to a component's property, place `src` in square brackets followed by an equal sign and then the property.
+Чтобы связать свойство `src` элемента `<img>` со свойством компонента, поместите `src` в квадратные скобки, за которыми следует знак равенства, а затем свойство.
 
-Using the property `itemImageUrl`, type the following code:
+Используя свойство `itemImageUrl`, введите следующий код:
 
-<code-example path="property-binding/src/app/app.component.html" region="property-binding" header="src/app/app.component.html"></code-example>.
+```html
+<img alt="item" [src]="itemImageUrl" />
+```
 
 Объявите свойство `itemImageUrl` в классе, в данном случае `AppComponent`.
 
-<code-example path="property-binding/src/app/app.component.ts" region="item-image" header="src/app/app.component.ts"></code-example>
+```ts
+itemImageUrl = '../assets/phone.svg';
+```
 
-{@a colspan}
-
-#### `colspan` и `colSpan`.
+### `colspan` и `colSpan`
 
 Часто возникает путаница между атрибутом `colspan` и свойством `colSpan`. Обратите внимание, что эти два имени отличаются всего одной буквой.
 
 Чтобы использовать связывание свойств с помощью `colSpan`, введите следующее:
 
-<code-example path="attribute-binding/src/app/app.component.html" region="colSpan" header="src/app/app.component.html"></code-example>.
+```html
+<!-- Notice the colSpan property is camel case -->
+<tr>
+    <td [colSpan]="1 + 1">Three-Four</td>
+</tr>
+```
 
 Чтобы отключить кнопку, пока свойство `isUnchanged` компонента равно `true`, введите следующее:
 
-<code-example path="property-binding/src/app/app.component.html" region="disabled-button" header="src/app/app.component.html"></code-example>.
+```html
+<!-- Bind button disabled state to `isUnchanged` property -->
+<button type="button" [disabled]="isUnchanged">
+    Disabled Button
+</button>
+```
 
 Чтобы установить свойство директивы, введите следующее:
 
-<code-example path="property-binding/src/app/app.component.html" region="class-binding" header="src/app/app.component.html"></code-example>.
+```html
+<p [ngClass]="classes">
+    [ngClass] binding to the classes property making this
+    blue
+</p>
+```
 
-Чтобы установить свойство model пользовательского компонента для связи родительского и дочернего компонентов друг с другом, введите следующее:
+Чтобы установить свойство `model` пользовательского компонента для связи родительского и дочернего компонентов друг с другом, введите следующее:
 
-<code-example path="property-binding/src/app/app.component.html" region="model-property-binding" header="src/app/app.component.html"></code-example>
+```html
+<app-item-detail [childItem]="parentItem"></app-item-detail>
+```
 
 ## Переключение свойств кнопки
 
-<!-- vale Angular.Google_WordListSuggestions = NO -->
-
 Чтобы использовать булево значение для отключения функций кнопки, привяжите DOM-атрибут `disabled` к булеву свойству класса.
 
-<!-- vale Angular.Google_WordListSuggestions = YES -->
-
-<code-example path="property-binding/src/app/app.component.html" region="disabled-button" header="src/app/app.component.html"></code-example>.
+```html
+<!-- Bind button disabled state to `isUnchanged` property -->
+<button type="button" [disabled]="isUnchanged">
+    Disabled Button
+</button>
+```
 
 Поскольку значение свойства `isUnchanged` в `AppComponent` равно `true`, Angular отключает кнопку.
 
-<code-example path="property-binding/src/app/app.component.ts" region="boolean" header="src/app/app.component.ts"></code-example>
+```ts
+isUnchanged = true;
+```
 
 ## Что дальше
 
--   [Лучшие практики связывания свойств](guide/property-binding-best-practices)
-
--   [Привязка событий](guide/event-binding)
-
--   [Интерполяция текста](guide/interpolation)
-
--   [Привязка классов и стилей](guide/class-binding)
-
--   [Привязка атрибутов](guide/attribute-binding)
+-   [Лучшие практики связывания свойств](property-binding-best-practices.md)
+-   [Привязка событий](event-binding.md)
+-   [Интерполяция текста](interpolation.md)
+-   [Привязка классов и стилей](class-binding.md)
+-   [Привязка атрибутов](attribute-binding.md)
 
 :date: 14.04.2022
