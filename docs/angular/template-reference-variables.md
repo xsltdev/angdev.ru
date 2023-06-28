@@ -1,114 +1,140 @@
-# Understanding template variables
+# Понимание переменных шаблона
 
-Template variables help you use data from one part of a template in another part of the template. Use template variables to perform tasks such as respond to user input or finely tune your application's forms.
+:date: 12.05.2022
 
-A template variable can refer to the following:
+Переменные шаблона помогают вам использовать данные из одной части шаблона в другой его части. Используйте переменные шаблона для выполнения таких задач, как реагирование на ввод данных пользователем или тонкая настройка форм вашего приложения.
 
--   a DOM element within a template
+Переменная шаблона может относиться к следующему:
 
--   a directive or component
+-   элемент DOM в шаблоне
+-   директива или компонент
+-   [TemplateRef](https://angular.io/api/core/TemplateRef) из [ng-шаблона](https://angular.io/api/core/ng-template)
+-   [веб-компонент](https://developer.mozilla.org/docs/Web/Web_Components)
 
--   a [TemplateRef](api/core/TemplateRef) from an [ng-template](api/core/ng-template)
+!!!note ""
 
--   a <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components" title="MDN: Web Components">web component</a>
+    Смотрите [код](https://angular.io/generated/live-examples/template-reference-variables/stackblitz.html) для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
 
-<div class="alert is-helpful">
+## Предварительные условия
 
-Смотрите <live-example></live-example> для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
+-   [Понимание шаблонов](template-overview.md)
 
-</div>
+## Синтаксис
 
-## Prerequisites
+В шаблоне для объявления переменной шаблона используется хэш-символ `#`. Следующая переменная шаблона, `#phone`, объявляет переменную `phone` с элементом `<input>` в качестве значения.
 
--   [Understanding templates](guide/template-overview)
+```html
+<input #phone placeholder="phone number" />
+```
 
-## Syntax
+Ссылка на переменную шаблона в любом месте шаблона компонента. Здесь `<button>` далее по шаблону ссылается на переменную `phone`.
 
-In the template, you use the hash symbol, `#`, to declare a template variable. The following template variable, `#phone`, declares a `phone` variable with the `<input>` element as its value.
+```html
+<input #phone placeholder="phone number" />
 
-<code-example path="template-reference-variables/src/app/app.component.html" region="ref-var" header="src/app/app.component.html"></code-example>
+<!-- lots of other elements -->
 
-Refer to a template variable anywhere in the component's template. Here, a `<button>` further down the template refers to the `phone` variable.
-
-<code-example path="template-reference-variables/src/app/app.component.html" region="ref-phone" header="src/app/app.component.html"></code-example>.
+<!-- phone refers to the input element;
+     pass its `value` to an event handler -->
+<button type="button" (click)="callPhone(phone.value)">
+    Call
+</button>
+```
 
 ## Как Angular присваивает значения переменным шаблона
 
 Angular присваивает переменной шаблона значение в зависимости от того, где вы объявили переменную:
 
 -   Если вы объявляете переменную в компоненте, то переменная ссылается на экземпляр компонента.
-
 -   Если вы объявите переменную в стандартном HTML-теге, переменная будет ссылаться на элемент.
-
 -   Если вы объявляете переменную в элементе `<ng-template>`, переменная ссылается на экземпляр `TemplateRef`, который представляет шаблон.
 
-    Дополнительную информацию о `<ng-template>` смотрите в [Как Angular использует синтаксис звездочки, `*`,](guide/structural-directives#asterisk) в [Structural directives](guide/structural-directives).
+    Дополнительную информацию о `<ng-template>` смотрите в [Как Angular использует синтаксис звездочки, `*`,](structural-directives.md#asterisk) в [Структурные директивы](structural-directives.md).
 
 ## Переменная, задающая имя
 
 -   Если переменная указывает имя в правой части, например `#var="ngModel"`, переменная ссылается на директиву или компонент на элементе с соответствующим именем `exportAs`.
 
-<!-- What does the second half of this mean?^^ Can we explain this more fully? Could I see a working example? -kw -->
+### Использование `NgForm` с переменными шаблона
 
-### Using `NgForm` with template variables
+В большинстве случаев Angular устанавливает значение переменной шаблона на элемент, на котором она встречается. В предыдущем примере `phone` относится к номеру телефона `<input>`.
 
-In most cases, Angular sets the template variable's value to the element on which it occurs. In the previous example, `phone` refers to the phone number `<input>`.
+Обработчик нажатия кнопки передает значение `<input>` в метод `callPhone()` компонента.
 
-The button's click handler passes the `<input>` value to the component's `callPhone()` method.
+Директива `NgForm` демонстрирует получение ссылки на другое значение путем обращения к имени директивы `exportAs`. В следующем примере переменная шаблона, `itemForm`, появляется три раза, разделенные HTML.
 
-The `NgForm` directive demonstrates getting a reference to a different value by referencing a directive's `exportAs` name. In the following example, the template variable, `itemForm`, appears three times separated by HTML.
+```html
+<form #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)">
+    <label for="name">Name</label>
+    <input
+        type="text"
+        id="name"
+        class="form-control"
+        name="name"
+        ngModel
+        required
+    />
+    <button type="submit">Submit</button>
+</form>
 
-<code-example path="template-reference-variables/src/app/app.component.html" region="ngForm" header="src/app/hero-form.component.html"></code-example>.
+<div [hidden]="!itemForm.form.valid">
+    <p>{{ submitMessage }}</p>
+</div>
+```
 
-Без значения атрибута `ngForm`, ссылочным значением `itemForm` будет [HTMLFormElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement), `<form>`.
+Без значения атрибута `ngForm`, ссылочным значением `itemForm` будет [HTMLFormElement](https://developer.mozilla.org/docs/Web/API/HTMLFormElement), `<form>`.
 
 Если элемент является компонентом Angular, то ссылка без значения атрибута будет автоматически ссылаться на экземпляр компонента. В противном случае ссылка без значения будет ссылаться на элемент DOM, даже если к элементу применены одна или несколько директив.
-
-<!-- What is the train of thought from talking about a form element to the difference between a component and a directive? Why is the component directive conversation relevant here?  -kw I agree -alex -->
 
 ## Область видимости шаблонных переменных
 
 Подобно переменным в коде JavaScript или TypeScript, переменные шаблона привязаны к шаблону, который их объявляет.
 
-Аналогично, [структурные директивы](guide/built-in-directives), такие как `*ngIf` и `*ngFor`, или объявления `<ng-template>` создают новую вложенную область видимости шаблона, подобно тому, как операторы потока управления JavaScript, такие как `if` и `for`, создают новые лексические области видимости. Вы не можете получить доступ к переменным шаблона внутри одной из этих структурных директив извне ее границ.
+Аналогично, [структурные директивы](built-in-directives.md), такие как `*ngIf` и `*ngFor`, или объявления `<ng-template>` создают новую вложенную область видимости шаблона, подобно тому, как операторы потока управления JavaScript, такие как `if` и `for`, создают новые лексические области видимости. Вы не можете получить доступ к переменным шаблона внутри одной из этих структурных директив извне ее границ.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Определите переменную только один раз в шаблоне, чтобы ее значение во время выполнения оставалось предсказуемым.
+    Определите переменную только один раз в шаблоне, чтобы ее значение во время выполнения оставалось предсказуемым.
 
-</div>
+### Доступ во вложенном шаблоне
 
-### Accessing in a nested template
+Внутренний шаблон может обращаться к переменным шаблона, которые определяет внешний шаблон.
 
-An inner template can access template variables that the outer template defines.
+В следующем примере изменение текста в `<input>` изменяет значение в `<span>`, поскольку Angular немедленно обновляет изменения через переменную шаблона, `ref1`.
 
-In the following example, changing the text in the `<input>` changes the value in the `<span>` because Angular immediately updates changes through the template variable, `ref1`.
+```html
+<input #ref1 type="text" [(ngModel)]="firstExample" />
+<span *ngIf="true">Value: {{ ref1.value }}</span>
+```
 
-<code-example path="template-reference-variables/src/app/app.component.html" region="template-ref-vars-scope1" header="src/app/app.component.html"></code-example>
+В данном случае `*ngIf` на `<span>` создает новую область видимости шаблона, которая включает переменную `ref1` из ее родительской области видимости.
 
-In this case, the `*ngIf` on `<span>` creates a new template scope, which includes the `ref1` variable from its parent scope.
+Однако обращение к переменной шаблона из дочерней области видимости в родительском шаблоне не работает:
 
-However, accessing a template variable from a child scope in the parent template doesn't work:
-
-```html <input *ngIf="true" #ref2 type="text" [(ngModel)]="secondExample" />
+```html
+<input
+    *ngIf="true"
+    #ref2
+    type="text"
+    [(ngModel)]="secondExample"
+/>
 <span>Value: {{ ref2?.value }}</span>
 <!-- doesn't work -->
 ```
 
 Здесь `ref2` объявлена в дочерней области видимости, созданной `*ngIf`, и недоступна из родительского шаблона.
 
-{@a template-input-variable} {@a template-input-variables}
-
 ## Входная переменная шаблона
 
-Входная переменная _шаблона_ - это переменная со значением, которое устанавливается при создании экземпляра этого шаблона. См: [Написание структурных директив](/guide/structural-directives)
+Входная переменная _шаблона_ - это переменная со значением, которое устанавливается при создании экземпляра этого шаблона. См: [Написание структурных директив](structural-directives.md)
 
 Входные переменные шаблона можно увидеть в действии в длинной форме использования `NgFor`:
 
-```html <ul>
-  <ng-template ngFor let-hero [ngForOf]="heroes">
-    <li>{{hero.name}}
-  </ng-template>
+```html
+<ul>
+    <ng-template ngFor let-hero [ngForOf]="heroes">
+        <li>{{hero.name}}</li></ng-template
+    >
 </ul>
 ```
 
@@ -118,15 +144,21 @@ However, accessing a template variable from a child scope in the parent template
 
 Например, `NgFor` также предоставляет доступ к `index` каждого героя в массиве:
 
-```html <ul>
-  <ng-template ngFor let-hero let-i="index" [ngForOf]="heroes">
-    <li>Hero number {{i}}: {{hero.name}}
-  </ng-template>
+```html
+<ul>
+    <ng-template
+        ngFor
+        let-hero
+        let-i="index"
+        [ngForOf]="heroes"
+    >
+        <li>
+            Hero number {{i}}: {{hero.name}}
+        </li></ng-template
+    >
 </ul>
 ```
 
 ## Что дальше
 
-[Написание структурных директив](/guide/structural-directives)
-
-:date: 12.05.2022
+-   [Написание структурных директив](structural-directives.md)
