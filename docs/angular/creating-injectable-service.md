@@ -1,6 +1,8 @@
 # Создание инжектируемой службы
 
-Сервис - это широкая категория, охватывающая любые ценности, функции или возможности, необходимые приложению. Обычно сервис - это класс с узкой, четко определенной целью. Компонент - это один из типов классов, который может использовать DI.
+:date: 2.08.2022
+
+**Сервис** - это широкая категория, охватывающая любые ценности, функции или возможности, необходимые приложению. Обычно сервис - это класс с узкой, четко определенной целью. Компонент - это один из типов классов, который может использовать DI.
 
 Angular отличает компоненты от сервисов для повышения модульности и возможности повторного использования. Отделяя функции компонента, связанные с представлением, от других видов обработки, вы можете сделать свои классы компонентов компактными и эффективными.
 
@@ -14,13 +16,44 @@ Angular не навязывает эти принципы. Angular помога�
 
 Вот пример класса сервиса, который ведет журнал в консоль браузера.
 
-<code-example header="src/app/logger.service.ts (class)" path="architecture/src/app/logger.service.ts" region="class"></code-example>.
+```ts
+export class Logger {
+    log(msg: any) {
+        console.log(msg);
+    }
+    error(msg: any) {
+        console.error(msg);
+    }
+    warn(msg: any) {
+        console.warn(msg);
+    }
+}
+```
 
 Сервисы могут зависеть от других сервисов. Например, вот `HeroService`, который зависит от сервиса `Logger`, а также использует `BackendService` для получения героев.
 
 Этот сервис, в свою очередь, может зависеть от сервиса `HttpClient` для асинхронного получения героев с сервера.
 
-<code-example header="src/app/hero.service.ts (class)" path="architecture/src/app/hero.service.ts" region="class"></code-example>
+```ts
+export class HeroService {
+    private heroes: Hero[] = [];
+
+    constructor(
+        private backend: BackendService,
+        private logger: Logger
+    ) {}
+
+    getHeroes() {
+        this.backend.getAll(Hero).then((heroes: Hero[]) => {
+            this.logger.log(
+                `Fetched ${heroes.length} heroes.`
+            );
+            this.heroes.push(...heroes); // fill cache
+        });
+        return this.heroes;
+    }
+}
+```
 
 ## Создание инжектируемого сервиса
 
@@ -28,32 +61,52 @@ Angular CLI предоставляет команду для создания н
 
 Чтобы создать новый класс `HeroService` в папке `src/app/heroes`, выполните следующие шаги:
 
-1. Выполните эту команду [Angular CLI](cli):
+1.  Выполните эту команду Angular CLI:
 
-<code-example language="sh">
- ng generate service heroes/hero
-</code-example>
+    ```shell
+    ng generate service heroes/hero
+    ```
 
-Эта команда создает следующую службу по умолчанию `HeroService`.
+    Эта команда создает следующую службу по умолчанию `HeroService`.
 
-<code-example path="dependency-injection/src/app/heroes/hero.service.0.ts" header="src/app/heroes/hero.service.ts (CLI-generated)">
- </code-example>
+    ```ts
+    import { Injectable } from '@angular/core';
 
-Декоратор `@Injectable()` указывает, что Angular может использовать этот класс в системе DI. Метаданные `providedIn: 'root'` означают, что `HeroService` виден во всем приложении.
+    @Injectable({
+        providedIn: 'root',
+    })
+    export class HeroService {}
+    ```
 
-2. Добавьте метод `getHeroes()`, который возвращает героев из `mock.heroes.ts` для получения имитационных данных героев:
+    Декоратор `@Injectable()` указывает, что Angular может использовать этот класс в системе DI. Метаданные `providedIn: 'root'` означают, что `HeroService` виден во всем приложении.
 
-<code-example path="dependency-injection/src/app/heroes/hero.service.3.ts" header="src/app/heroes/hero.service.ts">
- </code-example>
+2.  Добавьте метод `getHeroes()`, который возвращает героев из `mock.heroes.ts` для получения имитационных данных героев:
 
-Для ясности и удобства сопровождения рекомендуется определять компоненты и сервисы в отдельных файлах.
+    ```ts
+    import { Injectable } from '@angular/core';
+    import { HEROES } from './mock-heroes';
+
+    @Injectable({
+        // declares that this service should be created
+        // by the root application injector.
+        providedIn: 'root',
+    })
+    export class HeroService {
+        getHeroes() {
+            return HEROES;
+        }
+    }
+    ```
+
+    Для ясности и удобства сопровождения рекомендуется определять компоненты и сервисы в отдельных файлах.
 
 ## Инжектирование сервисов
 
 Чтобы внедрить сервис в качестве зависимости в компонент, вы можете использовать функцию `constructor()` компонента и указать в аргументе конструктора тип зависимости. Следующий пример указывает `HeroService` в конструкторе `HeroListComponent`. Тип `heroService` - `HeroService`. Angular распознает `HeroService` как зависимость, поскольку этот класс был ранее аннотирован декоратором `@Injectable`.
 
-<code-example header="src/app/heroes/hero-list.component (подпись конструктора)" path="dependency-injection/src/app/heroes/hero-list.component.ts" region="ctor-signature">
-</code-example>
+```ts
+constructor(heroService: HeroService)
+```
 
 ## Инжектирование сервисов в другие сервисы
 
@@ -65,27 +118,64 @@ Angular CLI предоставляет команду для создания н
 
 В следующих вкладках кода представлены сервис `Logger` и две версии `HeroService`. Первая версия `HeroService` не зависит от сервиса `Logger`. Переработанная вторая версия зависит от службы `Logger`.
 
-<code-tabs>
+=== "src/app/heroes/hero.service (v2)"
 
-  <code-pane header="src/app/heroes/hero.service (v2)" path="dependency-injection/src/app/heroes/hero.service.2.ts">
-   </code-pane>
+    ```ts
+    import { Injectable } from '@angular/core';
+    import { HEROES } from './mock-heroes';
+    import { Logger } from '../logger.service';
 
-  <code-pane header="src/app/heroes/hero.service (v1)" path="dependency-injection/src/app/heroes/hero.service.1.ts">
-   </code-pane>
+    @Injectable({
+    	providedIn: 'root',
+    })
+    export class HeroService {
+    	constructor(private logger: Logger) {}
 
-<code-pane header="src/app/logger.service" path="dependency-injection/src/app/logger.service.ts">
-  </code-pane>
+    	getHeroes() {
+    		this.logger.log('Getting heroes ...');
+    		return HEROES;
+    	}
+    }
+    ```
 
-</code-tabs>
+=== "src/app/heroes/hero.service (v1)"
+
+    ```ts
+    import { Injectable } from '@angular/core';
+    import { HEROES } from './mock-heroes';
+
+    @Injectable({
+    	providedIn: 'root',
+    })
+    export class HeroService {
+    	getHeroes() {
+    		return HEROES;
+    	}
+    }
+    ```
+
+=== "src/app/logger.service"
+
+    ```ts
+    import { Injectable } from '@angular/core';
+
+    @Injectable({
+    	providedIn: 'root',
+    })
+    export class Logger {
+    	logs: string[] = []; // capture logs for testing
+
+    	log(message: string) {
+    		this.logs.push(message);
+    		console.log(message);
+    	}
+    }
+    ```
 
 В этом примере метод `getHeroes()` использует службу `Logger`, записывая в журнал сообщение при получении героев.
 
 ## Что дальше
 
--   [Как настроить зависимости в DI](guide/dependency-injection-providers)
-
--   [Как использовать `InjectionTokens` для предоставления и инъекции значений, отличных от сервисов/классов](guide/dependency-injection-providers#configuring-dependency-providers)
-
--   [Dependency Injection in Action](guide/dependency-injection-in-action)
-
-:date: 2.08.2022
+-   [Как настроить зависимости в DI](dependency-injection-providers.md)
+-   [Как использовать `InjectionTokens` для предоставления и инъекции значений, отличных от сервисов/классов](dependency-injection-providers.md#configuring-dependency-providers)
+-   [Инъекция зависимостей в действии](dependency-injection-in-action.md)

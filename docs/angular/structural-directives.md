@@ -1,18 +1,16 @@
 # Структурные директивы
 
+:date: 28.02.2022
+
 Это руководство посвящено структурным директивам и содержит концептуальную информацию о том, как работают такие директивы, как Angular интерпретирует их сокращенный синтаксис, и как добавить свойства защиты шаблона для отлова ошибок типа шаблона.
 
-Структурные директивы - это директивы, которые изменяют макет DOM путем добавления и удаления элементов DOM.
+**Структурные директивы** - это директивы, которые изменяют макет DOM путем добавления и удаления элементов DOM.
 
-Angular предоставляет набор встроенных структурных директив (таких как `NgIf`, `NgForOf`, `NgSwitch` и другие), которые часто используются во всех проектах Angular. Более подробную информацию можно найти в [Built-in directives](guide/built-in-directives).
+Angular предоставляет набор встроенных структурных директив (таких как `NgIf`, `NgForOf`, `NgSwitch` и другие), которые часто используются во всех проектах Angular. Более подробную информацию можно найти в [Встроенные директивы](built-in-directives.md).
 
-<div class="alert is-helpful">
+!!!note ""
 
-Пример приложения, которое описывается на этой странице, смотрите в <live-example name="structural-directives"></live-example>.
-
-</div>
-
-<a id="shorthand"></a> <a id="asterisk"></a>
+    Пример [приложения](https://angular.io/generated/live-examples/structural-directives/stackblitz.html), которое описывается на этой странице.
 
 ## Сокращение структурных директив
 
@@ -20,55 +18,73 @@ Angular предоставляет набор встроенных структ�
 
 Например, возьмем следующий код, который использует `*ngIf` для отображения имени героя, если `hero` существует:
 
-<code-example path="structural-directives/src/app/app.component.html" header="src/app/app.component.html (asterisk)" region="asterisk"></code-example>
+```html
+<div *ngIf="hero" class="name">{{hero.name}}</div>
+```
 
-Angular creates an `<ng-template>` element and applies the `*ngIf` directive onto it where it becomes a property binding in square brackets, `[ngIf]`. The rest of the `<div>`, including its class attribute, is then moved inside the `<ng-template>`:
+В Angular создается элемент `<ng-template>` и к нему применяется директива `*ngIf`, где она становится свойством, заключенным в квадратные скобки, `[ngIf]`. Затем остальная часть `<div>`, включая его атрибут class, перемещается внутрь `<ng-template>`:
 
-<code-example path="structural-directives/src/app/app.component.html" header="src/app/app.component.html (ngif-template)" region="ngif-template"></code-example>
+```html
+<ng-template [ngIf]="hero">
+    <div class="name">{{hero.name}}</div>
+</ng-template>
+```
 
-Note that Angular does not actually create a real `<ng-template>` element, but instead only renders the `<div>` element.
+Обратите внимание, что Angular не создает реальный элемент `<ng-template>`, а вместо этого только отображает элемент `<div>`.
 
-```html <div _ngcontent-c0>Mr. Nice</div>
-
+```html
+<div _ngcontent-c0>Mr. Nice</div>
 ```
 
 В следующем примере сравнивается сокращенное использование звездочки в `*ngFor` с длинной формой `<ng-template>`:
 
-<code-example path="structural-directives/src/app/app.component.html" header="src/app/app.component.html (inside-ngfor)" region="inside-ngfor"></code-example>
+```html
+<div
+    *ngFor="let hero of heroes; let i=index; let odd=odd; trackBy: trackById"
+    [class.odd]="odd"
+>
+    ({{i}}) {{hero.name}}
+</div>
 
-Here, everything related to the `ngFor` structural directive is moved to the `<ng-template>`. All other bindings and attributes on the element apply to the `<div>` element within the `<ng-template>`.
+<ng-template
+    ngFor
+    let-hero
+    [ngForOf]="heroes"
+    let-i="index"
+    let-odd="odd"
+    [ngForTrackBy]="trackById"
+>
+    <div [class.odd]="odd">({{i}}) {{hero.name}}</div>
+</ng-template>
+```
 
-Other modifiers on the host element, in addition to the `ngFor` string, remain in place as the element moves inside the `<ng-template>`.
+Здесь все, что связано со структурной директивой `ngFor`, переносится в `<ng-template>`. Все остальные привязки и атрибуты элемента применяются к элементу `<div>` внутри `<ng-template>`.
 
-In this example, the `[class.odd]="odd"` stays on the `<div>`.
+Другие модификаторы принимающего элемента, помимо строки `ngFor`, остаются на месте по мере перемещения элемента внутрь `<ng-template>`.
 
-The `let` keyword declares a template input variable that you can reference within the template. The input variables in this example are `hero`, `i`, and `odd`.
+В этом примере `[class.odd]="odd"` остается на `<div>`.
 
-The parser translates `let hero`, `let i`, and `let odd` into variables named `let-hero`, `let-i`, and `let-odd`.
+Ключевое слово `let` объявляет входную переменную шаблона, на которую вы можете ссылаться внутри шаблона. В данном примере входными переменными являются `hero`, `i` и `odd`.
 
-The `let-i` and `let-odd` variables become `let i=index` and `let odd=odd`.
+Парсер переводит `let hero`, `let i` и `let odd` в переменные с именами `let-hero`, `let-i` и `let-odd`.
 
-Angular sets `i` and `odd` to the current value of the context's `index` and `odd` properties.
+Переменные `let-i` и `let-odd` становятся `let i=index` и `let odd=odd`.
 
-The parser applies PascalCase to all directives and prefixes them with the directive's attribute name, such as ngFor. For example, the `ngFor` input properties, `of` and `trackBy`, map to `ngForOf` and `ngForTrackBy`.
+Angular устанавливает `i` и `odd` в текущее значение свойств контекста `index` и `odd`.
 
-As the `NgFor` directive loops through the list, it sets and resets properties of its own context object. Эти свойства могут включать, но не ограничиваться, `index`, `odd` и специальное свойство
+Парсер применяет PascalCase ко всем директивам и префиксирует их именем атрибута директивы, например, ngFor. Например, входные свойства `ngFor`, `of` и `trackBy`, отображаются на `ngForOf` и `ngForTrackBy`.
 
-под названием `$implicit`.
+По мере того, как директива `NgFor` проходит по списку, она устанавливает и сбрасывает свойства своего контекстного объекта. Эти свойства могут включать, но не ограничиваться, `index`, `odd` и специальное свойство под названием `$implicit`.
 
 Angular устанавливает `let-hero` в значение свойства контекста `$implicit`, которое `NgFor` инициализировал героем для текущей итерации.
 
-Для получения дополнительной информации смотрите документацию [NgFor API](api/common/NgFor 'API: NgFor') и [NgForOf API](api/common/NgForOf).
+Для получения дополнительной информации смотрите документацию [NgFor API](https://angular.io/api/common/NgFor) и [NgForOf API](https://angular.io/api/common/NgForOf).
 
-<div class="alert is-helpful">
+!!!note ""
 
-Обратите внимание, что элемент `<ng-template>` в Angular определяет шаблон, который по умолчанию ничего не отображает, если вы просто обернете элементы в `<ng-template>` без применения структурной директивы, эти элементы не будут отображены.
+    Обратите внимание, что элемент `<ng-template>` в Angular определяет шаблон, который по умолчанию ничего не отображает, если вы просто обернете элементы в `<ng-template>` без применения структурной директивы, эти элементы не будут отображены.
 
-Для получения дополнительной информации смотрите документацию [ng-template API](api/core/ng-template).
-
-</div>
-
-<a id="one-per-element"></a>
+    Для получения дополнительной информации смотрите документацию [ng-template API](https://angular.io/api/core/ng-template).
 
 ## Одна структурная директива на элемент
 
@@ -82,8 +98,6 @@ Angular устанавливает `let-hero` в значение свойств
 
 На эти вопросы нет простых ответов. Запрет на использование нескольких структурных директив делает их спорными. Есть простое решение для этого случая использования: поместите `*ngIf` в элемент-контейнер, который обертывает элемент `*ngFor`. Один или оба элемента могут быть `<ng-container>`, чтобы не создавать лишних элементов DOM.
 
-<a id="unless"></a>
-
 ## Создание структурной директивы
 
 В этом разделе вы узнаете, как создать `UnlessDirective` и как задать значения `condition`. Директива `UnlessDirective` делает противоположное `NgIf`, а значения `condition` могут быть установлены в `true` или `false`.
@@ -92,131 +106,273 @@ Angular устанавливает `let-hero` в значение свойств
 
 `UnlessDirective` отображает содержимое, когда условие равно `false`.
 
-Ниже приведен селектор `UnlessDirective`, `appUnless`, примененный к элементу paragraph. Когда `условие` равно `false`, браузер отображает предложение.
+Ниже приведен селектор `UnlessDirective`, `appUnless`, примененный к элементу paragraph. Когда `condition` равно `false`, браузер отображает предложение.
 
-<code-example header="src/app/app.component.html (appUnless-1)" path="structural-directives/src/app/app/app.component.html" region="appUnless-1"></code-example>.
+```html
+<p *appUnless="condition">
+    Show this sentence unless the condition is true.
+</p>
+```
 
 1.  Используя Angular CLI, выполните следующую команду, где `unless` - имя директивы:
 
-    <code-example format="shell" language="shell">.
-
-    ng generate директива unless
-
-    </code-example>.
+    ```shell
+    ng generate directive unless
+    ```
 
     Angular создает класс директивы и определяет CSS-селектор `appUnless`, который идентифицирует директиву в шаблоне.
 
-1.  Импортируйте `Input`, `TemplateRef` и `ViewContainerRef`.
+2.  Импортируйте `Input`, `TemplateRef` и `ViewContainerRef`.
 
-    <code-example header="src/app/unless.directive.ts (skeleton)" path="structural-directives/src/app/unless.directive.ts" region="skeleton"></code-example>.
+    ```ts
+    import {
+        Directive,
+        Input,
+        TemplateRef,
+        ViewContainerRef,
+    } from '@angular/core';
 
-1.  Вставьте `TemplateRef` и `ViewContainerRef` в конструктор директивы как приватные переменные.
+    @Directive({ selector: '[appUnless]' })
+    export class UnlessDirective {}
+    ```
 
-    <code-example header="src/app/unless.directive.ts (ctor)" path="structural-directives/src/app/unless.directive.ts" region="ctor"></code-example>.
+3.  Вставьте `TemplateRef` и `ViewContainerRef` в конструктор директивы как приватные переменные.
 
-    Директива `UnlessDirective` создает [встроенное представление](api/core/EmbeddedViewRef 'API: EmbeddedViewRef') из сгенерированного Angular `<ng-template>` и вставляет это представление в [контейнер представления](api/core/ViewContainerRef 'API: ViewContainerRef') рядом с исходным элементом директивы `<p>`.
+    ```ts
+    constructor(
+    	private templateRef: TemplateRef<any>,
+    	private viewContainer: ViewContainerRef
+    ) { }
+    ```
 
-    [`TemplateRef`](api/core/TemplateRef 'API: TemplateRef') помогает добраться до содержимого `<ng-template>`, а [`ViewContainerRef`](api/core/ViewContainerRef 'API: ViewContainerRef') открывает доступ к контейнеру представления.
+    Директива `UnlessDirective` создает [встроенное представление](https://angular.io/api/core/EmbeddedViewRef) из сгенерированного Angular `<ng-template>` и вставляет это представление в [контейнер представления](https://angular.io/api/core/ViewContainerRef) рядом с исходным элементом директивы `<p>`.
 
-1.  Добавьте свойство `appUnless` `@Input()` с сеттером.
+    [`TemplateRef`](https://angular.io/api/core/TemplateRef) помогает добраться до содержимого `<ng-template>`, а [`ViewContainerRef`](https://angular.io/api/core/ViewContainerRef) открывает доступ к контейнеру представления.
 
-    <code-example header="src/app/unless.directive.ts (set)" path="structural-directives/src/app/unless.directive.ts" region="set"></code-example>.
+4.  Добавьте свойство `appUnless` `@Input()` с сеттером.
+
+    ```ts
+    @Input() set appUnless(condition: boolean) {
+    	if (!condition && !this.hasView) {
+    		this.viewContainer.createEmbeddedView(this.templateRef);
+    		this.hasView = true;
+    	} else if (condition && this.hasView) {
+    		this.viewContainer.clear();
+    		this.hasView = false;
+    	}
+    }
+    ```
 
     Angular устанавливает свойство `appUnless` всякий раз, когда значение условия изменяется.
 
     -   Если условие ложно и Angular не создал представление ранее, то сеттер заставляет контейнер представления создать встроенное представление из шаблона.
-
     -   Если условие истинно, и представление отображается в данный момент, сеттер очищает контейнер, который утилизирует представление.
 
 Полный текст директивы выглядит следующим образом:
 
-<code-example header="src/app/unless.directive.ts (excerpt)" path="structural-directives/src/app/unless.directive.ts" region="no-docs"></code-example>.
+```ts
+import {
+    Directive,
+    Input,
+    TemplateRef,
+    ViewContainerRef,
+} from '@angular/core';
+
+/**
+ * Add the template content to the DOM unless the condition is true.
+ */
+@Directive({ selector: '[appUnless]' })
+export class UnlessDirective {
+    private hasView = false;
+
+    constructor(
+        private templateRef: TemplateRef<any>,
+        private viewContainer: ViewContainerRef
+    ) {}
+
+    @Input() set appUnless(condition: boolean) {
+        if (!condition && !this.hasView) {
+            this.viewContainer.createEmbeddedView(
+                this.templateRef
+            );
+            this.hasView = true;
+        } else if (condition && this.hasView) {
+            this.viewContainer.clear();
+            this.hasView = false;
+        }
+    }
+}
+```
 
 ### Тестирование директивы
 
 В этом разделе вы обновите свое приложение, чтобы протестировать `UnlessDirective`.
 
-1.  Добавьте `условие`, установленное в `false` в `AppComponent`.
+1.  Добавьте `condition`, установленное в `false` в `AppComponent`.
 
-    <code-example header="src/app/app.component.ts (excerpt)" path="structural-directives/src/app/app/app.component.ts" region="condition"></code-example>.
+    ```ts
+    condition = false;
+    ```
 
-1.  Обновите шаблон для использования директивы.
+2.  Обновите шаблон для использования директивы.
 
     Здесь `*appUnless` находится на двух тегах `<p>` с противоположными значениями `condition`, одно `true` и одно `false`.
 
-    <code-example header="src/app/app.component.html (appUnless)" path="structural-directives/src/app/app/app.component.html" region="appUnless"></code-example>.
+    ```html
+    <p *appUnless="condition" class="unless a">
+        (A) This paragraph is displayed because the
+        condition is false.
+    </p>
+
+    <p *appUnless="!condition" class="unless b">
+        (B) Although the condition is true, this paragraph
+        is displayed because appUnless is set to false.
+    </p>
+    ```
 
     Звездочка - это сокращение, обозначающее `appUnless` как структурную директиву.
 
-    Когда `условие` ложно, верхний \(A\) параграф появляется, а нижний \(B\) параграф исчезает.
+    Когда `condition` ложно, верхний (A) параграф появляется, а нижний (B) параграф исчезает.
 
-    Когда `условие` истинно, верхний \(A\) параграф исчезает, а нижний (B) параграф появляется.
+    Когда `condition` истинно, верхний (A) параграф исчезает, а нижний (B) параграф появляется.
 
-1.  Чтобы изменить и отобразить значение `условия` в браузере, добавьте разметку, отображающую статус и кнопку.
+3.  Чтобы изменить и отобразить значение `условия` в браузере, добавьте разметку, отображающую статус и кнопку.
 
-    <code-example header="src/app/app.component.html" path="structural-directives/src/app/app/app.component.html" region="toggle-info"></code-example>.
+    ```html
+    <p>
+        The condition is currently
+        <span
+            [ngClass]="{ 'a': !condition, 'b': condition, 'unless': true }"
+            >{{condition}}</span
+        >.
+        <button
+            type="button"
+            (click)="condition = !condition"
+            [ngClass]="{ 'a': condition, 'b': !condition }"
+        >
+            Toggle condition to {{condition ? 'false' :
+            'true'}}
+        </button>
+    </p>
+    ```
 
 Чтобы убедиться, что директива работает, нажмите на кнопку, чтобы изменить значение `condition`.
 
-<div class="lightbox">
-
-<img alt="UnlessDirective in action" src="generated/images/guide/structural-directives/unless-anim.gif">
-
-</div>
+![UnlessDirective in action](unless-anim.gif)
 
 ## Справочник по синтаксису структурных директив
 
 Когда вы пишете свои собственные структурные директивы, используйте следующий синтаксис:
 
-<code-example format="typescript" hideCopy language="typescript">
-
-\*:prefix=""( :let &verbar; :expression ) (';' &verbar; ',')? ( :let &verbar; :as &verbar; :keyExp )\*".
-
-</code-example>
+```
+*:prefix="( :let | :expression ) (';' | ',')? ( :let | :as | :keyExp )*"
+```
 
 В следующих таблицах описана каждая часть грамматики структурной директивы:
 
-<code-tabs> <code-pane format="typescript" header="as" hideCopy language="typescript"> as = :export "as" :local ";"? </code-pane>
-<code-pane format="typescript" header="keyExp" hideCopy language="typescript"> keyExp = :key ":"? :expression ("as" :local)? ";"? </code-pane>
-<code-pane format="typescript" header="let" hideCopy language="typescript"> let = "let" :local "=" :export ";"? </code-pane>
-</code-tabs>
+=== "as"
 
-| Keyword | Details | |:--- |:--- |
-| `prefix` | HTML attribute key |
+    ```
+    as = :export "as" :local ";"?
+    ```
 
-| `key` | HTML attribute key |
+=== "keyExp"
 
-| `local` | Local variable name used in the template |
+    ```
+    keyExp = :key ":"? :expression ("as" :local)? ";"?
+    ```
 
-| `export` | Value exported by the directive under a given name |
+=== "let"
 
-| `expression` | Standard Angular expression |
+    ```
+    let = "let" :local "=" :export ";"?
+    ```
 
-### How Angular translates shorthand
+| Keyword      | Details                                                 |
+| :----------- | :------------------------------------------------------ |
+| `prefix`     | Ключ атрибута HTML                                      |
+| `key`        | Ключ атрибута HTML                                      |
+| `local`      | Имя локальной переменной, используемой в шаблоне        |
+| `export`     | Значение, экспортируемое директивой под заданным именем |
+| `expression` | Стандартное угловое выражение                           |
 
-Angular translates structural directive shorthand into the normal binding syntax as follows:
+### Как Angular переводит стенографические директивы
 
-| Shorthand | Translation | |:--- |:--- |
+Angular переводит сокращение структурных директив в обычный синтаксис связывания следующим образом:
 
-| `prefix` and naked `expression` | <code-example format="typescript" hideCopy language="typescript"> [prefix]="expression" </code-example> |
+| Сокращение                      | Translation                                                                      |
+| :------------------------------ | :------------------------------------------------------------------------------- |
+| `prefix` and naked `expression` | `[prefix]="expression"`                                                          |
+| `keyExp`                        | `[prefixKey] "expression" (let-prefixKey="export")` `prefix` добавляется к `key` |
+| `let`                           | `let-local="export"`                                                             |
 
-| `keyExp` | <code-example format="typescript" hideCopy language="typescript"> [prefixKey] "expression" (let-prefixKey="export") </code-example> <div class="alert is-helpful"> **NOTE**: <br /> The `prefix` is added to the `key` </div> |
+### Примеры сокращений
 
-| `let` | <code-example format="typescript" hideCopy language="typescript"> let-local="export" </code-example> |
+В следующей таблице приведены примеры сокращений:
 
-### Shorthand examples
-
-The following table provides shorthand examples:
-
-| Shorthand | How Angular interprets the syntax | |:--- |:--- |
-| <code-example format="typescript" hideCopy language="typescript"> \*ngFor="let item of [1,2,3]" </code-example> | <code-example format="html" hideCopy language="html"> &lt;ng-template ngFor &NewLine;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let-item &NewLine;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ngForOf]="[1,2,3]"&gt; </code-example> |
-| <code-example format="typescript" hideCopy language="typescript"> \*ngFor="let item of [1,2,3] as items; &NewLine;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; trackBy: myTrack; index as i" </code-example> | <code-example format="html" hideCopy language="html"> &lt;ng-template ngFor &NewLine;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let-item &NewLine;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ngForOf]="[1,2,3]" &NewLine;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let-items="ngForOf" &NewLine;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ngForTrackBy]="myTrack" &NewLine;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let-i="index"&gt; </code-example> |
-| <code-example format="typescript" hideCopy language="typescript"> \*ngIf="exp" </code-example> | <code-example format="html" hideCopy language="html"> &lt;ng-template [ngIf]="exp"&gt; </code-example> |
-| <code-example format="typescript" hideCopy language="typescript"> \*ngIf="exp as value" </code-example> | <code-example format="html" hideCopy language="html"> &lt;ng-template [ngIf]="exp" &NewLine;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let-value="ngIf"&gt; </code-example> |
-
-<a id="directive-type-checks"></a>
-
-<!--todo: To do follow up PR: move this section to a more general location because it also applies to attribute directives. -->
+<table>
+<tr>
+<th>Сокращение</th>
+<th>Как Angular интерпретирует синтаксис</th>
+</tr>
+<tr>
+<td>
+``` linenums="0"
+*ngFor="let item of [1,2,3]"
+```
+</td>
+<td>
+``` linenums="0"
+<ng-template ngFor
+             let-item
+             [ngForOf]="[1,2,3]">
+```
+</td>
+</tr>
+<tr>
+<td>
+```
+*ngFor="let item of [1,2,3] as items;
+        trackBy: myTrack; index as i"
+```
+</td>
+<td>
+```
+<ng-template ngFor
+             let-item
+             [ngForOf]="[1,2,3]"
+             let-items="ngForOf"
+             [ngForTrackBy]="myTrack"
+             let-i="index">
+```
+</td>
+</tr>
+<tr>
+<td>
+```
+*ngIf="exp"
+```
+</td>
+<td>
+```
+<ng-template [ngIf]="exp">
+```
+</td>
+</tr>
+<tr>
+<td>
+```
+*ngIf="exp as value"
+```
+</td>
+<td>
+```
+<ng-template [ngIf]="exp"
+             let-value="ngIf">
+```
+</td>
+</tr>
+</table>
 
 ## Улучшение проверки типов шаблонов для пользовательских директив
 
@@ -225,12 +381,9 @@ The following table provides shorthand examples:
 Эти свойства выглядят следующим образом:
 
 -   Свойство `ngTemplateGuard_(someInputProperty)` позволяет вам указать более точный тип для входного выражения в шаблоне.
-
 -   Статическое свойство `ngTemplateContextGuard` объявляет тип контекста шаблона.
 
-В этом разделе приведены примеры обоих типов свойств защиты типа. Для получения дополнительной информации смотрите [Проверка типов шаблонов](guide/template-typecheck 'Руководство по проверке типов шаблонов').
-
-<a id="narrowing-input-types"></a>
+В этом разделе приведены примеры обоих типов свойств защиты типа. Для получения дополнительной информации смотрите [Проверка типов шаблонов](template-typecheck.md).
 
 ### Уточнение требований к типам в шаблоне с помощью защит шаблона
 
@@ -238,7 +391,7 @@ The following table provides shorthand examples:
 
 Функция защиты типа сужает ожидаемый тип входного выражения до подмножества типов, которые могут быть переданы директиве внутри шаблона во время выполнения. Вы можете предоставить такую функцию, чтобы помочь программе проверки типов вывести правильный тип для выражения во время компиляции.
 
-Например, реализация `NgIf` использует сужение типов, чтобы гарантировать, что шаблон будет инстанцирован только в том случае, если входное выражение `*ngIf` истинно. Для обеспечения конкретного требования к типу, директива `NgIf` определяет [статическое свойство `ngTemplateGuard_ngIf: 'binding'`] (api/common/NgIf#static-properties).
+Например, реализация `NgIf` использует сужение типов, чтобы гарантировать, что шаблон будет инстанцирован только в том случае, если входное выражение `*ngIf` истинно. Для обеспечения конкретного требования к типу, директива `NgIf` определяет [статическое свойство `ngTemplateGuard_ngIf: 'binding'`](https://angular.io/api/common/NgIf#static-properties).
 
 Значение `binding` является особым случаем для распространенного вида сужения типа, когда входное выражение оценивается для того, чтобы удовлетворить требованию типа.
 
@@ -246,19 +399,94 @@ The following table provides shorthand examples:
 
 Например, рассмотрим следующую структурную директиву, которая принимает результат шаблонного выражения в качестве входных данных:
 
-<code-tabs linenums="true"> <code-pane
-    header="src/app/if-loaded.directive.ts"
-    path="structural-directives/src/app/if-loaded.directive.ts">
-</code-pane>
-<code-pane
-    header="src/app/loading-state.ts"
-    path="structural-directives/src/app/loading-state.ts">
-</code-pane>
-<code-pane
-    header="src/app/hero.component.ts"
-    path="structural-directives/src/app/hero.component.ts">
-</code-pane>
-</code-tabs>
+=== "src/app/if-loaded.directive.ts"
+
+    ```ts
+    import {
+    	Directive,
+    	Input,
+    	TemplateRef,
+    	ViewContainerRef,
+    } from '@angular/core';
+
+    import { Loaded, LoadingState } from './loading-state';
+
+    @Directive({ selector: '[appIfLoaded]' })
+    export class IfLoadedDirective<T> {
+    	private isViewCreated = false;
+
+    	@Input('appIfLoaded') set state(
+    		state: LoadingState<T>
+    	) {
+    		if (
+    			!this.isViewCreated &&
+    			state.type === 'loaded'
+    		) {
+    			this.viewContainerRef.createEmbeddedView(
+    				this.templateRef
+    			);
+    			this.isViewCreated = true;
+    		} else if (
+    			this.isViewCreated &&
+    			state.type !== 'loaded'
+    		) {
+    			this.viewContainerRef.clear();
+    			this.isViewCreated = false;
+    		}
+    	}
+
+    	constructor(
+    		private readonly viewContainerRef: ViewContainerRef,
+    		private readonly templateRef: TemplateRef<unknown>
+    	) {}
+
+    	static ngTemplateGuard_appIfLoaded<T>(
+    		dir: IfLoadedDirective<T>,
+    		state: LoadingState<T>
+    	): state is Loaded<T> {
+    		return true;
+    	}
+    }
+    ```
+
+=== "src/app/loading-state.ts"
+
+    ```ts
+    export type Loaded<T> = { type: 'loaded'; data: T };
+    export type Loading = { type: 'loading' };
+    export type LoadingState<T> = Loaded<T> | Loading;
+    ```
+
+=== "src/app/hero.component.ts"
+
+    ```ts
+    import { Component } from '@angular/core';
+
+    import { LoadingState } from './loading-state';
+    import { Hero, heroes } from './hero';
+
+    @Component({
+    	selector: 'app-hero',
+    	template: `
+    		<button (click)="onLoadHero()">Load Hero</button>
+    		<p *appIfLoaded="heroLoadingState">
+    			{{ heroLoadingState.data | json }}
+    		</p>
+    	`,
+    })
+    export class HeroComponent {
+    	heroLoadingState: LoadingState<Hero> = {
+    		type: 'loading',
+    	};
+
+    	onLoadHero(): void {
+    		this.heroLoadingState = {
+    			type: 'loaded',
+    			data: heroes[0],
+    		};
+    	}
+    }
+    ```
 
 В данном примере тип `LoadingState<T>` допускает одно из двух состояний, `Loaded<T>` или `Loading`. Выражение, используемое в качестве входного `state` директивы (псевдоним `appIfLoaded`), имеет зонтичный тип `LoadingState`, поскольку неизвестно, в каком состоянии находится загрузка в данный момент.
 
@@ -266,27 +494,76 @@ The following table provides shorthand examples:
 
 Защита типа позволяет программе проверки типов сделать вывод, что допустимым типом `state` в шаблоне является `Loaded<T>`, и далее сделать вывод, что `T` должен быть экземпляром `Hero`.
 
-<a id="narrowing-context-type"></a>
-
 ### Типизация контекста директивы
 
 Если ваша структурная директива предоставляет контекст инстанцированному шаблону, вы можете правильно типизировать его внутри шаблона, предоставив статическую функцию `ngTemplateContextGuard`. В следующем фрагменте показан пример такой функции.
 
-<code-tabs linenums="true"> <code-pane
-    header="src/app/trigonometry.directive.ts"
-    path="structural-directives/src/app/trigonometry.directive.ts">
-</code-pane>
-<code-pane
-    header="src/app/app.component.html (appTrigonometry)"
-    path="structural-directives/src/app/app.component.html"
-    region="appTrigonometry">
-</code-pane>
-</code-tabs>
+=== "src/app/trigonometry.directive.ts"
 
-<!-- links -->
+    ```ts
+    import {
+    	Directive,
+    	Input,
+    	TemplateRef,
+    	ViewContainerRef,
+    } from '@angular/core';
 
-<!-- external links -->
+    @Directive({ selector: '[appTrigonometry]' })
+    export class TrigonometryDirective {
+    	private isViewCreated = false;
+    	private readonly context = new TrigonometryContext();
 
-<!-- end links -->
+    	@Input('appTrigonometry') set angle(
+    		angleInDegrees: number
+    	) {
+    		const angleInRadians = toRadians(angleInDegrees);
+    		this.context.sin = Math.sin(angleInRadians);
+    		this.context.cos = Math.cos(angleInRadians);
+    		this.context.tan = Math.tan(angleInRadians);
 
-:date: 28.02.2022
+    		if (!this.isViewCreated) {
+    			this.viewContainerRef.createEmbeddedView(
+    				this.templateRef,
+    				this.context
+    			);
+    			this.isViewCreated = true;
+    		}
+    	}
+
+    	constructor(
+    		private readonly viewContainerRef: ViewContainerRef,
+    		private readonly templateRef: TemplateRef<
+    			TrigonometryContext
+    		>
+    	) {}
+
+    	// Make sure the template checker knows the type of the context with which the
+    	// template of this directive will be rendered
+    	static ngTemplateContextGuard(
+    		directive: TrigonometryDirective,
+    		context: unknown
+    	): context is TrigonometryContext {
+    		return true;
+    	}
+    }
+
+    class TrigonometryContext {
+    	sin = 0;
+    	cos = 0;
+    	tan = 0;
+    }
+
+    function toRadians(degrees: number): number {
+    	return degrees * (Math.PI / 180);
+    }
+    ```
+
+=== "src/app/app.component.html (appTrigonometry)"
+
+    ```html
+    <ul *appTrigonometry="30; sin as s; cos as c; tan as t">
+    	<li>sin(30°): {{ s }}</li>
+    	<li>cos(30°): {{ c }}</li>
+    	<li>tan(30°): {{ t }}</li>
+    </ul>
+    ```

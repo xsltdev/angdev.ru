@@ -1,44 +1,55 @@
 # Инъекция зависимостей в Angular
 
-Когда вы разрабатываете небольшую часть системы, например, модуль или класс, вам может понадобиться использовать функции других классов. Например, вам может понадобиться HTTP-сервис для выполнения обращений к бэкенду. Инъекция зависимости (Dependency Injection, или DI) - это шаблон проектирования и механизм создания и передачи одних частей приложения другим частям приложения, которым они необходимы. Angular поддерживает этот шаблон проектирования, и вы можете использовать его в своих приложениях для повышения гибкости и модульности.
+:date: 2.08.2022
+
+Когда вы разрабатываете небольшую часть системы, например, модуль или класс, вам может понадобиться использовать функции других классов. Например, вам может понадобиться HTTP-сервис для выполнения обращений к бэкенду. **Инъекция зависимости** (Dependency Injection, или DI) - это шаблон проектирования и механизм создания и передачи одних частей приложения другим частям приложения, которым они необходимы. Angular поддерживает этот шаблон проектирования, и вы можете использовать его в своих приложениях для повышения гибкости и модульности.
 
 В Angular зависимости обычно представляют собой сервисы, но они также могут быть значениями, например, строками или функциями. Инжектор для приложения (создаваемый автоматически во время bootstrap) инстанцирует зависимости, когда это необходимо, используя настроенный поставщик сервиса или значения.
 
-<div class="alert is-helpful">
+!!!node ""
 
-Смотрите <live-example name="dependency-injection"></live-example> для рабочего примера, содержащего фрагменты кода из этого руководства.
-
-</div>
+    Смотрите [код](https://angular.io/generated/live-examples/dependency-injection/stackblitz.html) для рабочего примера, содержащего фрагменты кода из этого руководства.
 
 ## Предварительные условия
 
-Вы должны быть знакомы с приложениями Angular в целом и иметь фундаментальные знания о компонентах, директивах и модулях NgModules. Настоятельно рекомендуем вам пройти следующий учебник:
+Вы должны быть знакомы с приложениями Angular в целом и иметь фундаментальные знания о компонентах, директивах и модулях `NgModules`. Настоятельно рекомендуем вам пройти следующий учебник:
 
-[приложение и учебник Tour of Heroes](tutorial/tour-of-heroes)
+[Приложение и учебник Tour of Heroes](toh.md)
 
 ## Узнайте об инъекции зависимостей Angular
 
-<div class="card-container">
-   <a href="guide/dependency-injection" class="docs-card" title="Understanding dependency injection">
-    <section>Understanding dependency injection</section>
-    <p>Learn basic principles of dependency injection in Angular.</p>
-    <p class="card-footer">Understanding dependency injection</p>
-  </a>
-  <a href="guide/creating-injectable-service" class="docs-card" title="Creating and injecting service">
-    <section>Creating and injecting service</section>
-    <p>Describes how to create a service and inject it in other services and components.</p>
-    <p class="card-footer">Creating an injectable service</p>
-  </a>
-  <a href="guide/dependency-injection-providers" class="docs-card" title="Configuring dependency providers">
-    <section>Configuring dependency providers</section>
-    <p>Describes how to configure dependencies using the providers field on the @Component and @NgModule decorators. Also describes how to use InjectionToken to provide and inject values in DI, which can be helpful when you want to use a value other than classes as dependencies.</p>
-    <p class="card-footer">Configuring dependency providers</p>
-  </a>
-  <a href="guide/hierarchical-dependency-injection" class="docs-card" title="Hierarchical injectors">
-    <section>Hierarchical injectors</section>
-    <p>Hierarchical DI enables you to share dependencies between different parts of the application only when and if you need to. This is an advanced topic.</p>
-    <p class="card-footer">Hierarchical injectors</p>
-  </a>
-</div>
+<div class="grid cards" markdown>
 
-:date: 2.08.2022
+-   :material-numeric-1-box-multiple:{ .lg .middle } **Понимание инъекции зависимостей**
+
+    ***
+
+    Изучите основные принципы внедрения зависимостей в Angular.
+
+    [:octicons-arrow-right-24: Понимание инъекции зависимостей](dependency-injection.md)
+
+-   :material-numeric-2-box-multiple:{ .lg .middle } **Создание и внедрение сервиса**
+
+    ***
+
+    Описывается, как создать службу и внедрить ее в другие службы и компоненты.
+
+    [:octicons-arrow-right-24: Создание и внедрение сервиса](creating-injectable-service.md)
+
+-   :material-numeric-3-box-multiple:{ .lg .middle } **Настройка поставщиков зависимостей**
+
+    ***
+
+    Описывается, как настраивать зависимости с помощью поля providers в декораторах `@Component` и `@NgModule`.
+
+    [:octicons-arrow-right-24: Настройка поставщиков зависимостей](dependency-injection-providers.md)
+
+-   :material-numeric-4-box-multiple:{ .lg .middle } **Иерархические инжекторы**
+
+    ***
+
+    Иерархический DI позволяет обмениваться зависимостями между различными частями приложения только тогда, когда и если это необходимо.
+
+    [:octicons-arrow-right-24: Иерархические инжекторы](hierarchical-dependency-injection.md)
+
+</div>
