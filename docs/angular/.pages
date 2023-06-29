@@ -53,7 +53,7 @@ nav:
             - hierarchical-dependency-injection.md
     - Гайды разработчика:
         - developer-guide-overview.md
-        - Автономно:
+        - Автономность:
             - standalone-components.md
             - standalone-migration.md
         - Обнаружение изменений:
