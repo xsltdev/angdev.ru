@@ -180,4 +180,11 @@ nav:
             - toh-pt5.md
             - toh-pt6.md
         - forms.md
+    - Обновления и релизы:
+        - Обновление Angular: https://angular.io/guide/update-to-version-16
+        - Дорожная карта Angular: https://angular.io/guide/roadmap
+        - Версионность и релизы Angular: https://angular.io/guide/releases
+        - Совместимость версий: https://angular.io/guide/versions
+        - Поддержка браузеров: https://angular.io/guide/browser-support
+        - Устаревшие API и функции: https://angular.io/guide/deprecations
     - ...

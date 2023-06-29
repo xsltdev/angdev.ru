@@ -1,5 +1,7 @@
 # Настройка поставщиков зависимостей
 
+:date: 2.08.2022
+
 В теме Создание и внедрение сервисов описывается использование классов в качестве зависимостей. Помимо классов, в качестве зависимостей можно использовать и другие значения, такие как булевы, строки, даты и объекты. Angular DI предоставляет необходимые API для гибкой настройки зависимостей, поэтому вы можете сделать эти значения доступными в DI.
 
 ## Указание маркера провайдера
@@ -8,33 +10,30 @@
 
 В следующем примере класс `Logger` предоставляет экземпляр `Logger`.
 
-<code-example path="dependency-injection/src/app/providers.component.ts" region="providers-logger"></code-example>.
+```ts
+providers: [Logger];
+```
 
 Однако вы можете настроить DI на использование другого класса или любого другого значения для ассоциации с классом `Logger`. Таким образом, когда `Logger` будет инжектирован, вместо него будет использоваться это новое значение.
 
-Фактически, синтаксис провайдера класса - это сокращенное выражение, которое расширяется в конфигурацию провайдера, определяемую интерфейсом `Provider`.
+Фактически, синтаксис провайдера класса — это сокращенное выражение, которое расширяется в конфигурацию провайдера, определяемую интерфейсом `Provider`.
 
 Angular расширяет значение `providers` в данном случае в полный объект провайдера следующим образом:
 
-<code-example path="dependency-injection/src/app/providers.component.ts" region="providers-3" ></code-example>.
+```ts
+[{ provide: Logger, useClass: Logger }];
+```
 
 Расширенная конфигурация провайдера представляет собой объект-букварь с двумя свойствами:
 
 -   Свойство `provide` содержит токен, который служит ключом для поиска значения зависимости и настройки инжектора.
-
--   Второе свойство - это объект определения провайдера, который указывает инжектору, как создать значение зависимости. Ключ определения провайдера может быть одним из следующих:
-
-    -   useClass - этот параметр указывает Angular DI инстанцировать предоставленный класс при инжектировании зависимости
-
-    -   useExisting - позволяет использовать псевдоним маркера и ссылаться на любой существующий маркер.
-
-    -   useFactory - позволяет определить функцию, которая конструирует зависимость.
-
-    -   useValue - предоставляет статическое значение, которое должно быть использовано в качестве зависимости.
+-   Второе свойство — это объект определения провайдера, который указывает инжектору, как создать значение зависимости. Ключ определения провайдера может быть одним из следующих:
+    -   `useClass` — этот параметр указывает Angular DI инстанцировать предоставленный класс при инжектировании зависимости
+    -   `useExisting` — позволяет использовать псевдоним маркера и ссылаться на любой существующий маркер.
+    -   `useFactory` — позволяет определить функцию, которая конструирует зависимость.
+    -   `useValue` — предоставляет статическое значение, которое должно быть использовано в качестве зависимости.
 
 В следующем разделе описано, как использовать упомянутые ключи определения провайдера.
-
-<a id="token"></a> <a id="injection-token"></a>
 
 ### Провайдеры классов: useClass
 
@@ -42,17 +41,32 @@ Angular расширяет значение `providers` в данном случ
 
 В следующем примере класс `BetterLogger` будет инстанцирован, когда зависимость `Logger` будет запрошена в компоненте или любом другом классе.
 
-<code-example path="dependency-injection/src/app/providers.component.ts" region="providers-4" ></code-example>.
-
-<a id="class-provider-dependencies"></a>
+```ts
+[{ provide: Logger, useClass: BetterLogger }];
+```
 
 Если альтернативные провайдеры классов имеют свои собственные зависимости, укажите обоих провайдеров в свойстве метаданных провайдеров родительского модуля или компонента.
 
-<code-example path="dependency-injection/src/app/providers.component.ts" region="providers-5"></code-example>.
+```ts
+[
+    UserService,
+    { provide: Logger, useClass: EvenBetterLogger },
+];
+```
 
 В этом примере `EvenBetterLogger` отображает имя пользователя в сообщении журнала. Этот логгер получает пользователя из инжектированного экземпляра `UserService`.
 
-<code-example path="dependency-injection/src/app/providers.component.ts" region="EvenBetterLogger"></code-example>.
+```ts
+@Injectable()
+export class EvenBetterLogger extends Logger {
+  constructor(private userService: UserService) { super(); }
+
+  override log(message: string) {
+    const name = this.userService.user.name;
+    super.log(`Message to ${name}: ${message}`);
+  }
+}
+```
 
 Angular DI знает, как построить зависимость `UserService`, поскольку она была настроена выше и доступна в инжекторе.
 
@@ -62,7 +76,13 @@ Angular DI знает, как построить зависимость `UserSer
 
 В следующем примере инжектор внедряет экземпляр синглтона `NewLogger`, когда компонент запрашивает либо новый, либо старый логгер. Таким образом, `OldLogger` является псевдонимом для `NewLogger`.
 
-<code-example path="dependency-injection/src/app/providers.component.ts" region="providers-6b"></code-example>.
+```ts
+[
+    NewLogger,
+    // Alias OldLogger w/ reference to NewLogger
+    { provide: OldLogger, useExisting: NewLogger },
+];
+```
 
 Убедитесь, что вы не переименовываете `OldLogger` в `NewLogger` с помощью `useClass`, так как это создаст два разных экземпляра `NewLogger`.
 
@@ -74,18 +94,38 @@ Angular DI знает, как построить зависимость `UserSer
 
 Чтобы сохранить чувствительную к безопасности информацию в `UserService` и вне `HeroService`, задайте конструктору `HeroService` булев флаг для управления отображением секретных героев.
 
-<code-example path="dependency-injection/src/app/heroes/hero.service.ts" region="internals" header="src/app/heroes/hero.service.ts (excerpt)"></code-example>.
+```ts
+constructor(
+  private logger: Logger,
+  private isAuthorized: boolean) { }
+
+getHeroes() {
+  const auth = this.isAuthorized ? 'authorized ' : 'unauthorized';
+  this.logger.log(`Getting heroes for ${auth} user.`);
+  return HEROES.filter(hero => this.isAuthorized || !hero.isSecret);
+}
+```
 
 Чтобы реализовать флаг `isAuthorized`, используйте фабрику-провайдер для создания нового экземпляра логгера для `HeroService`.
 
-<code-example path="dependency-injection/src/app/heroes/hero.service.provider.ts" region="factory" header="src/app/heroes/hero.service.provider.ts (excerpt)"></code-example>.
+```ts
+const heroServiceFactory = (
+    logger: Logger,
+    userService: UserService
+) => new HeroService(logger, userService.user.isAuthorized);
+```
 
 Функция factory имеет доступ к `UserService`. Вы инжектируете `Logger` и `UserService` в провайдер фабрики, чтобы инжектор мог передать их функции фабрики.
 
-<code-example path="dependency-injection/src/app/heroes/hero.service.provider.ts" region="provider" header="src/app/heroes/hero.service.provider.ts (excerpt)"></code-example>.
+```ts
+export const heroServiceProvider = {
+    provide: HeroService,
+    useFactory: heroServiceFactory,
+    deps: [Logger, UserService],
+};
+```
 
--   Поле `useFactory` указывает, что провайдер является фабричной функцией, реализация которой - `heroServiceFactory`.
-
+-   Поле `useFactory` указывает, что провайдер является фабричной функцией, реализация которой — `heroServiceFactory`.
 -   Свойство `deps` представляет собой массив маркеров провайдера.
 
 Классы `Logger` и `UserService` служат маркерами для своих собственных классов-провайдеров. Инжектор разрешает эти маркеры и вводит соответствующие сервисы в соответствующие параметры фабричной функции `heroServiceFactory`.
@@ -100,17 +140,31 @@ Angular DI знает, как построить зависимость `UserSer
 
 Определите и используйте объект `InjectionToken` для выбора маркера провайдера для неклассовых зависимостей. В следующем примере определен токен `APP_CONFIG` типа `InjectionToken`.
 
-<code-example path="dependency-injection/src/app/app.config.ts" region="token" header="src/app/app.config.ts"></code-example>.
+```ts
+import { InjectionToken } from '@angular/core';
+
+export const APP_CONFIG = new InjectionToken<AppConfig>(
+    'app.config'
+);
+```
 
 Необязательный параметр type, `<AppConfig>`, и описание токена, `app.config`, определяют назначение токена.
 
 Далее зарегистрируйте провайдер зависимостей в компоненте, используя объект `InjectionToken` из `APP_CONFIG`.
 
-<code-example path="dependency-injection/src/app/providers.component.ts" header="src/app/providers.component.ts" region="providers-9"></code-example>.
+```ts
+providers: [
+    { provide: APP_CONFIG, useValue: HERO_DI_CONFIG },
+];
+```
 
 Теперь внедрите объект конфигурации в конструктор с помощью декоратора параметров `@Inject()`.
 
-<code-example path="dependency-injection/src/app/app.component.2.ts" region="ctor" header="src/app/app.component.ts"></code-example>
+```ts
+constructor(@Inject(APP_CONFIG) config: AppConfig) {
+  this.title = config.title;
+}
+```
 
 ### Интерфейсы и DI
 
@@ -120,12 +174,16 @@ Angular DI знает, как построить зависимость `UserSer
 
 Поскольку у Angular нет интерфейса, который он мог бы найти во время выполнения, интерфейс не может быть маркером, и вы не можете его внедрить.
 
-<code-example path="dependency-injection/src/app/providers.component.ts" region="providers-9-interface"></code-example>.
+```ts
+// Can't use interface as provider token
+[{ provide: AppConfig, useValue: HERO_DI_CONFIG })]
+```
 
-<code-example path="dependency-injection/src/app/providers.component.ts" region="provider-9-ctor-interface"></code-example>.
+```ts
+// Can't inject using the interface as the parameter type
+constructor(private config: AppConfig){ }
+```
 
 ## Что дальше
 
--   [Dependency Injection in Action](guide/dependency-injection-in-action)
-
-:date: 2.08.2022
+-   [Инъекция зависимостей в действии](dependency-injection-in-action.md)
