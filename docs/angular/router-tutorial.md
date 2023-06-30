@@ -1,8 +1,10 @@
 # Использование маршрутов Angular в одностраничном приложении
 
+:date: 28.02.2022
+
 Этот учебник описывает, как создать одностраничное приложение, SPA, которое использует несколько маршрутов Angular.
 
-В одностраничном приложении \(SPA\), все функции вашего приложения существуют на одной HTML странице. Когда пользователи обращаются к функциям вашего приложения, браузеру нужно отобразить только те части, которые важны для пользователя, вместо того, чтобы загружать новую страницу.
+В одностраничном приложении (SPA), все функции вашего приложения существуют на одной HTML странице. Когда пользователи обращаются к функциям вашего приложения, браузеру нужно отобразить только те части, которые важны для пользователя, вместо того, чтобы загружать новую страницу.
 
 Этот шаблон может значительно улучшить пользовательское восприятие вашего приложения.
 
@@ -10,24 +12,17 @@
 
 Вы также можете настроить маршруты для защиты от неожиданного или несанкционированного поведения.
 
-Чтобы изучить пример приложения, в котором описано содержание этого руководства, смотрите <live-example></live-example>.
+Чтобы изучить пример приложения, в котором описано содержание этого руководства, смотрите [код](https://angular.io/generated/live-examples/router-tutorial/stackblitz.html).
 
 ## Задачи
 
 -   Организовать функции примера приложения в модули.
-
 -   Определить, как перейти к компоненту.
-
 -   Передавать информацию компоненту с помощью параметра.
-
 -   Структурировать маршруты путем вложения нескольких маршрутов.
-
 -   Проверять, могут ли пользователи получить доступ к маршруту.
-
 -   Контролировать, может ли приложение отбрасывать несохраненные изменения.
-
 -   Повышение производительности за счет предварительной выборки данных маршрута и "ленивой" загрузки функциональных модулей.
-
 -   Требовать определенные критерии для загрузки компонентов.
 
 ## Предварительные условия
@@ -35,14 +30,11 @@
 Чтобы завершить этот учебник, вы должны иметь базовое представление о следующих концепциях:
 
 -   JavaScript
-
 -   HTML
-
 -   CSS
+-   Angular CLI
 
--   [Angular CLI](cli)
-
-Вам может быть полезен учебник [Tour of Heroes](tutorial/tour-of-heroes), но он не обязателен.
+Вам может быть полезен учебник [Tour of Heroes](tour-of-heroes.md), но он не обязателен.
 
 ## Создайте пример приложения
 
@@ -50,11 +42,9 @@
 
 1.  Создайте новый проект Angular, _angular-router-sample_.
 
-    <code-example format="shell" language="shell">
-
+    ```shell
     ng new angular-router-sample
-
-    </code-example>
+    ```
 
     Когда появится запрос `Вы хотите добавить маршрутизацию Angular?`, выберите `N`.
 
@@ -62,45 +52,49 @@
 
     Через несколько мгновений новый проект `angular-router-sample` будет готов.
 
-1.  В терминале перейдите в каталог `angular-router-sample`.
+2.  В терминале перейдите в каталог `angular-router-sample`.
 
-1.  Создайте компонент _crisis-list_.
+3.  Создайте компонент _crisis-list_.
 
-    <code-example format="shell" language="shell">
-
+    ```shell
     ng generate component crisis-list
+    ```
 
-    </code-example>.
+4.  В редакторе кода найдите файл `crisis-list.component.html` и замените содержимое placeholder на следующий HTML.
 
-1.  В редакторе кода найдите файл `crisis-list.component.html` и замените содержимое placeholder на следующий HTML.
+    ```html
+    <h3>CRISIS CENTER</h3>
+    <p>Get your crisis here</p>
+    ```
 
-    <code-example header="src/app/crisis-list/crisis-list.component.html" path="router-tutorial/src/app/crisis-list/crisis-list.component.html"></code-example>
+5.  Создайте второй компонент, _heroes-list_.
 
-1.  Создайте второй компонент, _heroes-list_.
-
-    <code-example format="shell" language="shell">
-
+    ```shell
     ng generate component heroes-list
+    ```
 
-    </code-example>
+6.  В редакторе кода найдите файл `heroes-list.component.html` и замените его содержимое на следующий HTML.
 
-1.  В редакторе кода найдите файл `heroes-list.component.html` и замените его содержимое на следующий HTML.
+    ```html
+    <h3>HEROES</h3>
+    <p>Get your heroes here</p>
+    ```
 
-    <code-example header="src/app/heroes-list/heroes-list.component.html" path="router-tutorial/src/app/heroes-list/heroes-list.component.html"></code-example>.
+7.  В редакторе кода откройте файл `app.component.html` и замените его содержимое на следующий HTML.
 
-1.  В редакторе кода откройте файл `app.component.html` и замените его содержимое на следующий HTML.
+    ```html
+    <h1>Angular Router Sample</h1>
+    <app-crisis-list></app-crisis-list>
+    <app-heroes-list></app-heroes-list>
+    ```
 
-    <code-example header="src/app/app.component.html" path="router-tutorial/src/app/app.component.html" region="setup"></code-example>.
+8.  Убедитесь, что ваше новое приложение работает как ожидалось, выполнив команду `ng serve`.
 
-1.  Убедитесь, что ваше новое приложение работает как ожидалось, выполнив команду `ng serve`.
-
-    <code-example format="shell" language="shell">
-
+    ```shell
     ng serve
+    ```
 
-    </code-example>
-
-1.  Откройте браузер по адресу `http://localhost:4200`.
+9.  Откройте браузер по адресу `http://localhost:4200`.
 
     Вы должны увидеть одну веб-страницу, состоящую из заголовка и HTML двух ваших компонентов.
 
@@ -111,31 +105,40 @@
 
 1.  В редакторе кода откройте файл `app.module.ts`.
 
-1.  Добавьте следующий оператор `import`.
+2.  Добавьте следующий оператор `import`.
 
-    <code-example header="src/app/app.module.ts" path="router-tutorial/src/app/app/app.module.ts" region="router-import"></code-example>
+    ```ts
+    import { RouterModule } from '@angular/router';
+    ```
 
 ## Определите ваши маршруты
 
 В этом разделе вы определите два маршрута:
 
 -   Маршрут `/crisis-center` открывает компонент `crisis-center`.
-
 -   Маршрут `/heroes-list` открывает компонент `heroes-list`.
 
-Определение маршрута - это объект JavaScript. Каждый маршрут обычно имеет два свойства.
+Определение маршрута — это объект JavaScript. Каждый маршрут обычно имеет два свойства.
 
 Первое свойство, `path`, представляет собой строку, указывающую путь URL для маршрута.
 
-Второе свойство, `component`, - это строка, указывающая, какой компонент должно отображать ваше приложение для этого пути.
+Второе свойство, `component`, — это строка, указывающая, какой компонент должно отображать ваше приложение для этого пути.
 
 1.  В редакторе кода откройте файл `app.module.ts`.
 
-1.  Найдите раздел `@NgModule()`.
+2.  Найдите раздел `@NgModule()`.
 
-1.  Замените массив `imports` в этой секции на следующий.
+3.  Замените массив `imports` в этой секции на следующий.
 
-    <code-example header="src/app/app.module.ts" path="router-tutorial/src/app/app.module.ts" region="import-basic"></code-example>.
+    ```ts
+    imports: [
+    	BrowserModule,
+    	RouterModule.forRoot([
+    		{path: 'crisis-list', component: CrisisListComponent},
+    		{path: 'heroes-list', component: HeroesListComponent},
+    	]),
+    ],
+    ```
 
 Этот код добавляет `RouterModule` в массив `imports`. Далее код использует метод `forRoot()` модуля `RouterModule` для определения двух маршрутов.
 
@@ -143,7 +146,7 @@
 
 Метод `forRoot()` гарантирует, что ваше приложение создаст только один `RouterModule`.
 
-Для получения дополнительной информации смотрите [Singleton Services](guide/singleton-services#forroot-and-the-router).
+Для получения дополнительной информации смотрите [Singleton Services](singleton-services.md#forroot-and-the-router).
 
 ## Обновите ваш компонент с помощью `router-outlet`.
 
@@ -154,13 +157,18 @@
 
 1.  В редакторе кода откройте файл `app.component.html`.
 
-1.  Удалите следующие строки.
+2.  Удалите следующие строки.
 
-    <code-example header="src/app/app.component.html" path="router-tutorial/src/app/app/app.component.html" region="components"></code-example
+    ```html
+    <app-crisis-list></app-crisis-list>
+    <app-heroes-list></app-heroes-list>
+    ```
 
-1.  Добавьте директиву `router-outlet`.
+3.  Добавьте директиву `router-outlet`.
 
-    <code-example header="src/app/app.component.html" path="router-tutorial/src/app/app.component.html" region="router-outlet"></code-example>.
+    ```html
+    <router-outlet></router-outlet>
+    ```
 
 Просмотрите обновленное приложение в браузере. Вы должны увидеть только заголовок приложения.
 
@@ -168,24 +176,19 @@
 
 Например:
 
-<code-example format="https" language="https">
-
+```
 http://localhost:4200/crisis-list
+```
 
-</code-example>
+Обратите внимание, что компонент `crisis-list` отображается. Angular использует определенный вами маршрут для динамической загрузки компонента. Вы можете загрузить компонент `heroes-list` таким же образом:
 
-Обратите внимание, что компонент `crisis-list` отображается. Angular использует определенный вами маршрут для динамической загрузки компонента.
-Вы можете загрузить компонент `heroes-list` таким же образом:
-
-<code-example format="https" language="https">
-
+```
 http://localhost:4200/heroes-list
-
-</code-example>
+```
 
 ## Управление навигацией с помощью элементов пользовательского интерфейса
 
-В настоящее время ваше приложение поддерживает два маршрута. Однако единственный способ использовать эти маршруты - это вручную ввести путь в адресную строку браузера.
+В настоящее время ваше приложение поддерживает два маршрута. Однако единственный способ использовать эти маршруты — это вручную ввести путь в адресную строку браузера.
 
 В этом разделе вы добавите две ссылки, по которым пользователи смогут переходить между компонентами `heroes-list` и `crisis-list`.
 
@@ -197,15 +200,51 @@ http://localhost:4200/heroes-list
 
 1.  Откройте файл `app.component.html` и добавьте следующий HTML под заголовком.
 
-    <code-example header="src/app/app.component.html" path="router-tutorial/src/app/app/app.component.html" region="nav"></code-example>.
+    ```html
+    <nav>
+        <a class="button" routerLink="/crisis-list"
+            >Crisis Center</a
+        >
+        |
+        <a class="button" routerLink="/heroes-list"
+            >Heroes</a
+        >
+    </nav>
+    ```
 
     Этот HTML использует директиву Angular, `routerLink`.
 
     Эта директива соединяет определенные вами маршруты с файлами вашего шаблона.
 
-1.  Откройте файл `app.component.css` и добавьте следующие стили.
+2.  Откройте файл `app.component.css` и добавьте следующие стили.
 
-    <code-example header="src/app/app.component.css" path="router-tutorial/src/app/app.component.css"></code-example>.
+    ```css
+    .button {
+        box-shadow: inset 0 1px 0 0 #ffffff;
+        background: #ffffff linear-gradient(to bottom, #ffffff
+                    5%, #f6f6f6 100%);
+        border-radius: 6px;
+        border: 1px solid #dcdcdc;
+        display: inline-block;
+        cursor: pointer;
+        color: #666666;
+        font-family: Arial, sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+        padding: 6px 24px;
+        text-decoration: none;
+        text-shadow: 0 1px 0 #ffffff;
+        outline: 0;
+    }
+    .activebutton {
+        box-shadow: inset 0 1px 0 0 #dcecfb;
+        background: #bddbfa linear-gradient(to bottom, #bddbfa
+                    5%, #80b5ea 100%);
+        border: 1px solid #84bbf3;
+        color: #ffffff;
+        text-shadow: 0 1px 0 #528ecc;
+    }
+    ```
 
 Если вы просмотрите ваше приложение в браузере, вы должны увидеть эти две ссылки. Когда вы щелкаете по ссылке, появляется соответствующий компонент.
 
@@ -215,95 +254,125 @@ http://localhost:4200/heroes-list
 
 1.  В редакторе кода откройте файл `app.component.html`.
 
-1.  Обновите теги якорей, чтобы включить директиву `routerLinkActive`.
+2.  Обновите теги якорей, чтобы включить директиву `routerLinkActive`.
 
-    <code-example header="src/app/app.component.html" path="router-tutorial/src/app/app.component.html" region="routeractivelink"></code-example>
+    ```html
+    <nav>
+        <a
+            class="button"
+            routerLink="/crisis-list"
+            routerLinkActive="activebutton"
+            ariaCurrentWhenActive="page"
+        >
+            Crisis Center
+        </a>
+        |
+        <a
+            class="button"
+            routerLink="/heroes-list"
+            routerLinkActive="activebutton"
+            ariaCurrentWhenActive="page"
+        >
+            Heroes
+        </a>
+    </nav>
+    ```
 
 Снова просмотрите свое приложение. Когда вы нажимаете на одну из кнопок, стиль этой кнопки автоматически обновляется, идентифицируя активный компонент для пользователя.
 Добавляя директиву `routerLinkActive`, вы сообщаете своему приложению о необходимости применения определенного CSS-класса к активному маршруту.
 
-В данном руководстве этот CSS-класс - `activebutton`, но вы можете использовать любой класс, который вам нужен.
+В данном руководстве этот CSS-класс — `activebutton`, но вы можете использовать любой класс, который вам нужен.
 
-Обратите внимание, что мы также указываем значение для `routerLinkActive` в `ariaCurrentWhenActive`. Это гарантирует, что пользователи с ослабленным зрением (которые могут не воспринимать различные применяемые стилизации) также смогут определить активную кнопку. Для получения дополнительной информации см. раздел Accessibility Best Practices [Active links identification section](/guide/accessibility#active-links-identification).
+Обратите внимание, что мы также указываем значение для `routerLinkActive` в `ariaCurrentWhenActive`. Это гарантирует, что пользователи с ослабленным зрением (которые могут не воспринимать различные применяемые стилизации) также смогут определить активную кнопку. Для получения дополнительной информации см. раздел Accessibility Best Practices [Active links identification section](accessibility.md#active-links-identification).
 
 ## Добавление перенаправления
 
 На этом этапе руководства вы добавляете маршрут, который перенаправляет пользователя на отображение компонента `/heroes-list`.
 
 1.  В редакторе кода откройте файл `app.module.ts`.
-1.  В массиве `imports` обновите секцию `RouterModule` следующим образом.
+2.  В массиве `imports` обновите секцию `RouterModule` следующим образом.
 
-    <code-example header="src/app/app.module.ts" path="router-tutorial/src/app/app/app.module.ts" region="import-redirect"></code-example>.
+    ```ts
+    imports: [
+    	BrowserModule,
+    	RouterModule.forRoot([
+    		{path: 'crisis-list', component: CrisisListComponent},
+    		{path: 'heroes-list', component: HeroesListComponent},
+    		{path: '', redirectTo: '/heroes-list', pathMatch: 'full'},
+    	]),
+    ],
+    ```
 
     Обратите внимание, что этот новый маршрут использует пустую строку в качестве пути.
 
     Кроме того, он заменяет свойство `component` на два новых:
 
-    | Properties | Details |
-
-    | :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-
-    | `redirectTo` | Это свойство указывает Angular перенаправлять с пустого пути на путь `heroes-list`. |
-
-    | `pathMatch` | Это свойство указывает Angular на то, какую часть URL следует проверять. В данном руководстве вы должны установить это свойство в `full`. Эта стратегия рекомендуется, когда у вас есть пустая строка для пути. Более подробную информацию об этом свойстве можно найти в документации [Route API](api/router/Route). |
+    | Свойства     | Подробности                                                                                                                                                                                                                                                                                                                              |
+    | :----------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `redirectTo` | Это свойство указывает Angular перенаправлять с пустого пути на путь `heroes-list`.                                                                                                                                                                                                                                                      |
+    | `pathMatch`  | Это свойство указывает Angular на то, какую часть URL следует проверять. В данном руководстве вы должны установить это свойство в `full`. Эта стратегия рекомендуется, когда у вас есть пустая строка для пути. Более подробную информацию об этом свойстве можно найти в документации [Route API](https://angular.io/api/router/Route). |
 
 Теперь, когда вы открываете свое приложение, оно по умолчанию отображает компонент `heroes-list`.
 
 ## Добавление страницы 404
 
 Пользователь может попытаться получить доступ к маршруту, который вы не определили. Чтобы учесть такое поведение, лучшей практикой является отображение страницы 404.
+
 В этом разделе вы создадите страницу 404 и обновите конфигурацию маршрутов, чтобы отображать эту страницу для всех неопределенных маршрутов.
 
 1.  В терминале создайте новый компонент `PageNotFound`.
 
-    <code-example format="shell" language="shell">
-
+    ```shell
     ng generate component page-not-found
+    ```
 
-    </code-example>.
+2.  В редакторе кода откройте файл `page-not-found.component.html` и замените его содержимое на следующий HTML.
 
-1.  В редакторе кода откройте файл `page-not-found.component.html` и замените его содержимое на следующий HTML.
+    ```html
+    <h2>Page Not Found</h2>
+    <p>
+        We couldn't find that page! Not even with x-ray
+        vision.
+    </p>
+    ```
 
-    <code-example header="src/app/page-not-found/page-not-found.component.html" path="router-tutorial/src/app/page-not-found/page-not-found.component.html"></code-example>.
-
-1.  Откройте файл `app.module.ts`.
+3.  Откройте файл `app.module.ts`.
 
     В массиве `imports` обновите секцию `RouterModule` следующим образом.
 
-    <code-example header="src/app/app.module.ts" path="router-tutorial/src/app/app/app.module.ts" region="import-wildcard"></code-example>.
+    ```ts
+    imports: [
+    	BrowserModule,
+    	RouterModule.forRoot([
+    		{path: 'crisis-list', component: CrisisListComponent},
+    		{path: 'heroes-list', component: HeroesListComponent},
+    		{path: '', redirectTo: '/heroes-list', pathMatch: 'full'},
+    		{path: '**', component: PageNotFoundComponent}
+    	]),
+    ],
+    ```
 
     Новый маршрут использует путь, `**`.
 
-    Этот путь - то, как Angular идентифицирует маршрут с подстановочным знаком.
+    Этот путь — то, как Angular идентифицирует маршрут с подстановочным знаком.
 
     Любой маршрут, который не совпадает с существующим в вашей конфигурации, будет использовать этот путь.
 
-    <div class="alert is-important">
+    !!!warning ""
 
-    Notice that the wildcard route is placed at the end of the array.
+        Обратите внимание, что маршрут с подстановочным знаком помещен в конец массива.
 
-    The order of your routes is important, as Angular applies routes in order and uses the first match it finds.
+        Порядок маршрутов важен, так как Angular применяет маршруты по порядку и использует первое найденное соответствие.
 
-    </div>
+Попробуйте перейти к несуществующему маршруту в вашем приложении, например `http://localhost:4200/powers`. Этот маршрут не соответствует ни одному из определенных в вашем файле `app.module.ts`.
 
-Try navigating to a non-existing route on your application, such as `http://localhost:4200/powers`. This route doesn't match anything defined in your `app.module.ts` file.
+Однако, поскольку вы определили маршрут с подстановочным знаком, приложение автоматически отображает ваш компонент `PageNotFound`.
 
-However, because you defined a wildcard route, the application automatically displays your `PageNotFound` component.
+## Следующие шаги
 
-## Next steps
-
-At this point, you have a basic application that uses Angular's routing feature to change what components the user can see based on the URL address. You have extended these features to include a redirect, as well as a wildcard route to display a custom 404 page.
+На данном этапе у вас есть базовое приложение, которое использует функцию маршрутизации Angular для изменения компонентов, которые пользователь может увидеть в зависимости от адреса URL. Вы расширили эти возможности, добавив перенаправление, а также маршрут с подстановочным знаком для отображения пользовательской страницы 404.
 
 Для получения дополнительной информации о маршрутизации см. следующие темы:
 
--   [In-app Routing and Navigation](guide/router)
-
--   [API маршрутизатора](api/router)
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-:date: 28.02.2022
+-   [Маршрутизация и навигация в приложении](router.md)
+-   [API маршрутизатора](router.md)
