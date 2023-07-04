@@ -76,7 +76,22 @@ nav:
             - form-validation.md
             - dynamic-form.md
         - esbuild.md
-        - http.md
+        - Клиент HTTP:
+            - understanding-communicating-with-http.md
+            - http-setup-server-communication.md
+            - http-server-communication.md
+            - http-request-data-from-server.md
+            - http-make-jsonp-request.md
+            - http-handle-request-errors.md
+            - http-send-data-to-server.md
+            - http-configure-http-url-parameters.md
+            - http-intercept-requests-and-responses.md
+            - http-interceptor-use-cases.md
+            - http-pass-metadata-to-interceptors.md
+            - http-track-show-request-progress.md
+            - http-optimize-server-interaction.md
+            - http-security-xsrf-protection.md
+            - http-test-requests.md
         - hydration.md
         - image-directive.md
         - Тестирование:
