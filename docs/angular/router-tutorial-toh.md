@@ -1,5 +1,7 @@
 # Учебник по маршрутизатору: экскурсия по героям
 
+:date: 28.02.2022
+
 В этом учебнике представлен обширный обзор маршрутизатора Angular. В этом уроке вы, основываясь на базовой конфигурации маршрутизатора, изучите такие возможности, как дочерние маршруты, параметры маршрута, ленивая загрузка NgModules, защитные маршруты и предварительная загрузка данных для улучшения пользовательского опыта.
 
 Рабочий пример окончательной версии приложения смотрите в [коде](https://angular.io/generated/live-examples/router/stackblitz.html).
@@ -164,46 +166,85 @@ ng generate component hero-list
 
 После загрузки приложения `Router` выполняет начальную навигацию на основе текущего URL браузера.
 
-<div class="alert is-important">
+!!!warning ""
 
-**NOTE**: <br /> The `RouterModule.forRoot()` method is a pattern used to register application-wide providers. Read more about application-wide providers in the [Singleton services](guide/singleton-services#forRoot-router) guide.
+    Метод `RouterModule.forRoot()` - это шаблон, используемый для регистрации провайдеров всего приложения. Подробнее о провайдерах для всего приложения читайте в руководстве [Singleton services](singleton-services.md#forRoot-router).
 
-</div>
+```ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
 
-<code-example header="src/app/app.module.ts (first-config)" path="router/src/app/app.module.1.ts" region="first-config"></code-example>
+import { AppComponent } from './app.component';
+import { CrisisListComponent } from './crisis-list/crisis-list.component';
+import { HeroListComponent } from './hero-list/hero-list.component';
 
-<div class="alert is-helpful">
+const appRoutes: Routes = [
+    {
+        path: 'crisis-center',
+        component: CrisisListComponent,
+    },
+    { path: 'heroes', component: HeroListComponent },
+];
 
-Добавление настроенного `RouterModule` к `AppModule` достаточно для минимальных конфигураций маршрутов. Однако, по мере роста приложения, [рефакторинг конфигурации маршрутизации](#refactor-the-routing-configuration-into-a-routing-module) в отдельный файл и создание [модуля маршрутизации](#routing-module).
-Модуль маршрутизации - это специальный тип `Service Module`, предназначенный для маршрутизации.
+@NgModule({
+    imports: [
+        BrowserModule,
+        FormsModule,
+        RouterModule.forRoot(
+            appRoutes,
+            { enableTracing: true } // <-- debugging purposes only
+        ),
+    ],
+    declarations: [
+        AppComponent,
+        HeroListComponent,
+        CrisisListComponent,
+    ],
+    bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
 
-</div>
+!!!note ""
+
+    Добавление настроенного `RouterModule` к `AppModule` достаточно для минимальных конфигураций маршрутов. Однако, по мере роста приложения, [рефакторинг конфигурации маршрутизации](#refactor-the-routing-configuration-into-a-routing-module) в отдельный файл и создание [модуля маршрутизации](#routing-module).
+
+    Модуль маршрутизации - это специальный тип `Service Module`, предназначенный для маршрутизации.
 
 Регистрация `RouterModule.forRoot()` в массиве `AppModule` `imports` делает сервис `Router` доступным везде в приложении.
 
-<a id="shell"></a>
-
-### Добавьте выход маршрутизатора
+### Добавьте выход маршрутизатора {: #shell}
 
 Корневой `AppComponent` - это оболочка приложения. Она имеет заголовок, панель навигации с двумя ссылками и выход маршрутизатора, в котором маршрутизатор рендерит компоненты.
 
-<div class="lightbox">
-
-<img alt="A nav, made of two navigation buttons, with the first button active and its associated view displayed" src="generated/images/guide/router/shell-and-outlet.gif">
-
-</div>
+![Навигатор, состоящий из двух кнопок навигации, с активной первой кнопкой и отображением связанного с ней представления](shell-and-outlet.gif)
 
 Розетка маршрутизатора служит в качестве места, куда выводятся маршрутизируемые компоненты.
 
-<a id="shell-template"></a>.
-
 Соответствующий шаблон компонента выглядит следующим образом:
 
-<code-example header="src/app/app.component.html" path="router/src/app/app.component.1.html"></code-example>
+```html
+<h1>Angular Router</h1>
+<nav>
+    <a
+        routerLink="/crisis-center"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Crisis Center</a
+    >
+    <a
+        routerLink="/heroes"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Heroes</a
+    >
+</nav>
+<router-outlet></router-outlet>
+```
 
-<a id="wildcard"></a>
-
-### Определение маршрута с подстановочным знаком
+### Определение маршрута с подстановочным знаком {: #wildcard}
 
 До сих пор вы создали два маршрута в приложении: один к `/crisis-center` и другой к `/heroes`. Любой другой URL вызывает ошибку маршрутизатора и крах приложения.
 
@@ -215,45 +256,48 @@ ng generate component hero-list
 
 Маршрут с подстановочным знаком может переходить к пользовательскому компоненту "404 Not Found" или [redirect](#redirect) к существующему маршруту.
 
-<div class="alert is-helpful">
+!!!note
 
-Маршрутизатор выбирает маршрут с помощью стратегии [_первое совпадение выигрывает_](guide/router-reference#example-config). Поскольку маршрут с подстановочным знаком является наименее специфичным маршрутом, поместите его последним в конфигурации маршрута.
-
-</div>
+    Маршрутизатор выбирает маршрут с помощью стратегии [_первое совпадение выигрывает_](router-reference.md#example-config). Поскольку маршрут с подстановочным знаком является наименее специфичным маршрутом, поместите его последним в конфигурации маршрута.
 
 Чтобы проверить эту возможность, добавьте кнопку с `RouterLink` в шаблон `HeroListComponent` и установите ссылку на несуществующий маршрут под названием `"/sidekicks"`.
 
-<code-example header="src/app/hero-list/hero-list.component.html (excerpt)" path="router/src/app/hero-list/hero-list.component.1.html"></code-example>.
+```html
+<h2>HEROES</h2>
+<p>Get your heroes here</p>
+
+<button type="button" routerLink="/sidekicks">
+    Go to sidekicks
+</button>
+```
 
 Приложение потерпит неудачу, если пользователь нажмет на эту кнопку, потому что вы еще не определили маршрут `"/sidekicks"`.
 
 Вместо добавления маршрута `sidekicks` определите маршрут `wildcard` и попросите его перейти к `PageNotFoundComponent`.
 
-<code-example header="src/app/app.module.ts (wildcard)" path="router/src/app/app.module.1.ts" region="wildcard"></code-example>
+```ts
+{ path: '**', component: PageNotFoundComponent }
+```
 
 Создайте компонент `PageNotFoundComponent` для отображения, когда пользователи посещают недопустимые URL.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate component page-not-found
+```
 
-</code-example>
-
-<code-example header="src/app/page-not-found.component.html (404 компонент)" path="router/src/app/page-not-found/page-not-found.component.html"></code-example>.
+```html
+<h2>Page not found</h2>
+```
 
 Теперь, когда пользователь посещает `/sidekicks`, или любой другой недействительный URL, браузер выдает "Страница не найдена". Адресная строка браузера продолжает указывать на недопустимый URL.
 
-<a id="redirect"></a>
-
-### Настройка перенаправлений
+### Настройка перенаправлений {: #redirect}
 
 Когда приложение запускается, по умолчанию в строке браузера находится начальный URL:
 
-<code-example format="http" language="http">
-
+```
 localhost:4200
-
-</code-example>
+```
 
 Это не соответствует ни одному из жестко закодированных маршрутов, что означает, что маршрутизатор переходит на маршрут с подстановочным знаком и отображает `PageNotFoundComponent`.
 
@@ -261,41 +305,45 @@ localhost:4200
 
 Приложение должно переходить на нее, как если бы пользователь щелкнул по ссылке "Heroes" или вставил `localhost:4200/heroes` в адресную строку.
 
-Добавьте маршрут `redirect`, который переводит исходный относительный URL \(`''`\) в путь по умолчанию \(`/heroes`\), который вы хотите.
+Добавьте маршрут `redirect`, который переводит исходный относительный URL (`''`) в путь по умолчанию (`/heroes`), который вы хотите.
 
 Добавьте маршрут по умолчанию где-то _выше_ маршрута дикого символа. Он находится чуть выше маршрута wildcard в следующей выдержке, показывающей полный `appRoutes` для этой вехи.
 
-<code-example header="src/app/app-routing.module.ts (appRoutes)" path="router/src/app/app-routing.module.1.ts" region="appRoutes"></code-example>.
+```ts
+const appRoutes: Routes = [
+    {
+        path: 'crisis-center',
+        component: CrisisListComponent,
+    },
+    { path: 'heroes', component: HeroListComponent },
+    { path: '', redirectTo: '/heroes', pathMatch: 'full' },
+    { path: '**', component: PageNotFoundComponent },
+];
+```
 
 В адресной строке браузера отображается `.../heroes`, как если бы вы перешли туда напрямую.
 
 Маршрут перенаправления требует свойства `pathMatch`, чтобы указать маршрутизатору, как сопоставить URL с путем маршрута. В этом приложении маршрутизатор должен выбрать маршрут к `HeroListComponent` только тогда, когда _полный URL_ соответствует `''`, поэтому установите значение `pathMatch` в `'full'`.
 
-<a id="pathmatch"></a>
+!!!note "Внимание на pathMatch"
 
-<div class="callout is-helpful">
+    Технически, `pathMatch = 'full'` приводит к попаданию в маршрут, когда _оставшиеся_, несопоставленные сегменты URL совпадают с `''`. В данном примере перенаправление происходит в маршруте верхнего уровня, поэтому _оставшийся_ URL и _полный_ URL - это одно и то же.
 
-<header>Spotlight on pathMatch</header>
+    Другим возможным значением `pathMatch` является `'prefix'`, которое указывает маршрутизатору соответствовать маршруту перенаправления, если оставшийся URL начинается с пути префикса маршрута перенаправления. Это не относится к данному примеру приложения, потому что если бы значение `pathMatch` было `'prefix'`, каждый URL совпадал бы с `'prefix'`.
 
-Технически, `pathMatch = 'full'` приводит к попаданию в маршрут, когда _оставшиеся_, несопоставленные сегменты URL совпадают с `''`. В данном примере перенаправление происходит в маршруте верхнего уровня, поэтому _оставшийся_ URL и _полный_ URL - это одно и то же.
+    Попробуйте установить значение `'prefix'` и нажмите кнопку `Go to sidekicks`. Поскольку это плохой URL, вы должны увидеть страницу "Страница не найдена".
 
-Другим возможным значением `pathMatch` является `'prefix'`, которое указывает маршрутизатору соответствовать маршруту перенаправления, если оставшийся URL начинается с пути префикса маршрута перенаправления. Это не относится к данному примеру приложения, потому что если бы значение `pathMatch` было `'prefix'`, каждый URL совпадал бы с `'prefix'`.
+    Вместо этого вы все еще находитесь на странице "Герои".
 
-Попробуйте установить значение `'prefix'` и нажмите кнопку `Go to sidekicks`. Поскольку это плохой URL, вы должны увидеть страницу "Страница не найдена".
+    Введите плохой URL-адрес в адресную строку браузера.
 
-Вместо этого вы все еще находитесь на странице "Герои".
+    Вы будете мгновенно перенаправлены на страницу `/heroes`.
 
-Введите плохой URL-адрес в адресную строку браузера.
+    Каждый URL, хороший или плохой, который попадает в это определение маршрута, является подходящим.
 
-Вы будете мгновенно перенаправлены на страницу `/heroes`.
+    Маршрут по умолчанию должен перенаправлять на `HeroListComponent` только в том случае, если весь URL имеет вид `''`''. Не забудьте восстановить перенаправление на `pathMatch = 'full'`.
 
-Каждый URL, хороший или плохой, который попадает в это определение маршрута, является подходящим.
-
-Маршрут по умолчанию должен перенаправлять на `HeroListComponent` только в том случае, если весь URL имеет вид `''`''. Не забудьте восстановить перенаправление на `pathMatch = 'full'`.
-
-Узнайте больше в [посте Виктора Савкина о редиректах](https://vsavkin.tumblr.com/post/146722301646/angular-router-empty-paths-componentless-routes).
-
-</div>
+    Узнайте больше в [посте Виктора Савкина о редиректах](https://vsavkin.tumblr.com/post/146722301646/angular-router-empty-paths-componentless-routes).
 
 ### Завершение этапа 1
 
@@ -304,143 +352,171 @@ localhost:4200
 Этап 1 охватывает следующие действия:
 
 -   Загрузить библиотеку маршрутизатора
-
 -   Добавить навигационную панель в шаблон оболочки с тегами якоря, директивами `routerLink` и `routerLinkActive`.
-
 -   Добавить `router-outlet` в шаблон оболочки, где отображаются представления.
-
 -   Настройте модуль маршрутизатора с помощью `RouterModule.forRoot()`.
-
 -   Настройте маршрутизатор на составление HTML5 URL браузера.
-
 -   Обрабатывать недействительные маршруты с помощью `wildcard`.
-
 -   Переход к маршруту по умолчанию, когда приложение запускается с пустым путем.
 
 Структура стартового приложения выглядит следующим образом:
 
-<div class="filetree">   <div class="file">
-    angular-router-tour-of-heroes
-  </div>
-  <div class="children">
-    <div class="file">
-      src
-    </div>
-    <div class="children">
-      <div class="file">
-        app
-      </div>
-      <div class="children">
-        <div class="file">
-          crisis-list
-        </div>
-        <div class="children">
-          <div class="file">
-            crisis-list.component.css
-          </div>
-          <div class="file">
-            crisis-list.component.html
-          </div>
-          <div class="file">
-            crisis-list.component.ts
-          </div>
-        </div>
-        <div class="file">
-          hero-list
-        </div>
-        <div class="children">
-          <div class="file">
-            hero-list.component.css
-          </div>
-          <div class="file">
-            hero-list.component.html
-          </div>
-          <div class="file">
-            hero-list.component.ts
-          </div>
-        </div>
-        <div class="file">
-          page-not-found
-        </div>
-        <div class="children">
-          <div class="file">
-            page-not-found.component.css
-          </div>
-          <div class="file">
-            page-not-found.component.html
-          </div>
-          <div class="file">
-            page-not-found.component.ts
-          </div>
-        </div>
-        <div class="file">
-          app.component.css
-        </div>
-        <div class="file">
-          app.component.html
-        </div>
-        <div class="file">
-          app.component.ts
-        </div>
-        <div class="file">
-          app.module.ts
-        </div>
-      </div>
-      <div class="file">
-        main.ts
-      </div>
-      <div class="file">
-        index.html
-      </div>
-      <div class="file">
-        styles.css
-      </div>
-      <div class="file">
-        tsconfig.json
-      </div>
-    </div>
-    <div class="file">
-      node_modules &hellip;
-    </div>
-    <div class="file">
-      package.json
-    </div>
-  </div>
-</div>
+```
+angular-router-tour-of-heroes
++- src
+|  +- app
+|  |  +- crisis-list
+|  |  |  +- crisis-list.component.css
+|  |  |  +- crisis-list.component.html
+|  |  |	 +- crisis-list.component.ts
+|  |  +- hero-list
+|  |  |  +- hero-list.component.css
+|  |  |	 +- hero-list.component.html
+|  |  |	 +- hero-list.component.ts
+|  |   +- page-not-found
+|  |  |  +- page-not-found.component.css
+|  |  |	 +- page-not-found.component.html
+|  |  |	 +- page-not-found.component.ts
+|  |  +- app.component.css
+|  |  +- app.component.html
+|  |  +- app.component.ts
+|  |  +- app.module.ts
+|  +- main.ts
+|  +- index.html
+|  +- styles.css
+|  +- tsconfig.json
++- node_modules &hellip;
++- package.json
+```
 
 Вот файлы этой вехи.
 
-<code-tabs> <code-pane header="app.component.html" path="router/src/app/app.component.1.html"></code-pane>
-<code-pane header="app.module.ts" path="router/src/app/app.module.1.ts"></code-pane>
-<code-pane header="hero-list/hero-list.component.html" path="router/src/app/hero-list/hero-list.component.1.html"></code-pane>
-<code-pane header="crisis-list/crisis-list.component.html" path="router/src/app/crisis-list/crisis-list.component.1.html"></code-pane>
-<code-pane header="page-not-found/page-not-found.component.html" path="router/src/app/page-not-found/page-not-found.component.html"></code-pane>
-<code-pane header="index.html" path="router/src/index.html"></code-pane>
-</code-tabs>
+=== "app.component.html"
 
-<a id="routing-module"></a>
+    ```html
+    <h1>Angular Router</h1>
+    <nav>
+    	<a
+    		routerLink="/crisis-center"
+    		routerLinkActive="active"
+    		ariaCurrentWhenActive="page"
+    		>Crisis Center</a
+    	>
+    	<a
+    		routerLink="/heroes"
+    		routerLinkActive="active"
+    		ariaCurrentWhenActive="page"
+    		>Heroes</a
+    	>
+    </nav>
+    <router-outlet></router-outlet>
+    ```
 
-## Этап 2: _Модуль маршрутизации_
+=== "app.module.ts"
+
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { BrowserModule } from '@angular/platform-browser';
+    import { FormsModule } from '@angular/forms';
+    import { RouterModule, Routes } from '@angular/router';
+
+    import { AppComponent } from './app.component';
+    import { CrisisListComponent } from './crisis-list/crisis-list.component';
+    import { HeroListComponent } from './hero-list/hero-list.component';
+    import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+    const appRoutes: Routes = [
+    	{
+    		path: 'crisis-center',
+    		component: CrisisListComponent,
+    	},
+    	{ path: 'heroes', component: HeroListComponent },
+
+    	{ path: '', redirectTo: '/heroes', pathMatch: 'full' },
+    	{ path: '**', component: PageNotFoundComponent },
+    ];
+
+    @NgModule({
+    	imports: [
+    		BrowserModule,
+    		FormsModule,
+    		RouterModule.forRoot(
+    			appRoutes,
+    			{ enableTracing: true } // <-- debugging purposes only
+    		),
+    	],
+    	declarations: [
+    		AppComponent,
+    		HeroListComponent,
+    		CrisisListComponent,
+    		PageNotFoundComponent,
+    	],
+    	bootstrap: [AppComponent],
+    })
+    export class AppModule {}
+    ```
+
+=== "hero-list/hero-list.component.html"
+
+    ```html
+    <h2>HEROES</h2>
+    <p>Get your heroes here</p>
+
+    <button type="button" routerLink="/sidekicks">
+    	Go to sidekicks
+    </button>
+    ```
+
+=== "crisis-list/crisis-list.component.html"
+
+    ```html
+    <h2>CRISIS CENTER</h2>
+    <p>Get your crisis here</p>
+    ```
+
+=== "page-not-found/page-not-found.component.html"
+
+    ```html
+    <h2>Page not found</h2>
+    ```
+
+=== "index.html"
+
+    ```html
+    <html lang="en">
+    	<head>
+    		<!-- Set the base href -->
+    		<base href="/" />
+    		<title>Angular Router</title>
+    		<meta charset="UTF-8" />
+    		<meta
+    			name="viewport"
+    			content="width=device-width, initial-scale=1"
+    		/>
+    	</head>
+
+    	<body>
+    		<app-root></app-root>
+    	</body>
+    </html>
+    ```
+
+## Этап 2: Модуль маршрутизации {: #routing-module}
 
 Этот этап показывает, как настроить специализированный модуль _Модуль маршрутизации_, который хранит конфигурацию маршрутизации вашего приложения.
 
 Модуль маршрутизации имеет несколько характеристик:
 
 -   Отделяет проблемы маршрутизации от других проблем приложения.
-
 -   Предоставляет модуль для замены или удаления при тестировании приложения
-
 -   Обеспечивает известное местоположение для поставщиков услуг маршрутизации, таких как охранники и резолверы.
-
 -   Не объявляет компоненты
 
-<a id="integrate-routing"></a>
+### Интегрируйте маршрутизацию в ваше приложение {: #integrate-routing}
 
-### Интегрируйте маршрутизацию в ваше приложение
+Пример приложения с маршрутизацией не включает маршрутизацию по умолчанию. Когда вы используете [Angular CLI](https://angular.io/cli) для создания проекта, который использует маршрутизацию, установите опцию `--routing` для проекта или приложения, а также для каждого NgModule.
 
-Пример приложения с маршрутизацией не включает маршрутизацию по умолчанию. Когда вы используете [Angular CLI](cli) для создания проекта, который использует маршрутизацию, установите опцию `--routing` для проекта или приложения, а также для каждого NgModule.
-
-Когда вы создаете или инициализируете новый проект\(используя команду CLI [`ng new`](cli/new)\) или новое приложение\(используя команду [`ng generate app`](cli/generate)\), укажите опцию `--routing`.
+Когда вы создаете или инициализируете новый проект (используя команду CLI [`ng new`](https://angular.io/cli/new)) или новое приложение (используя команду [`ng generate app`](https://angular.io/cli/generate)), укажите опцию `--routing`.
 
 Это даст команду CLI включить пакет `@angular/router` npm и создать файл с именем `app-routing.module.ts`.
 
@@ -448,25 +524,19 @@ localhost:4200
 
 Например, следующая команда создает NgModule, который может использовать маршрутизацию.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate module my-module --routing
-
-</code-example>
+```
 
 Это создает отдельный файл `my-module-routing.module.ts` для хранения маршрутов NgModule. Файл включает пустой объект `Routes`, который вы можете заполнить маршрутами к различным компонентам и NgModules.
 
-<a id="routing-refactor"></a>
-
-### Рефакторинг конфигурации маршрутизации в модуль маршрутизации
+### Рефакторинг конфигурации маршрутизации в модуль маршрутизации {: #routing-refactor}
 
 Создайте модуль `AppRouting` в папке `/app`, который будет содержать конфигурацию маршрутизации.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate module app-routing --module app --flat
-
-</code-example>
+```
 
 Импортируйте символы `CrisisListComponent`, `HeroListComponent` и `PageNotFoundComponent`, как вы это сделали в `app.module.ts`. Затем перенесите импорт `Router` и конфигурацию маршрутизации, включая `RouterModule.forRoot()`, в этот модуль маршрутизации.
 
@@ -474,29 +544,76 @@ ng generate module app-routing --module app --flat
 
 После этих шагов файл должен выглядеть следующим образом.
 
-<code-example header="src/app/app-routing.module.ts" path="router/src/app/app-routing.module.1.ts"></code-example>.
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { CrisisListComponent } from './crisis-list/crisis-list.component';
+import { HeroListComponent } from './hero-list/hero-list.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+const appRoutes: Routes = [
+    {
+        path: 'crisis-center',
+        component: CrisisListComponent,
+    },
+    { path: 'heroes', component: HeroListComponent },
+    { path: '', redirectTo: '/heroes', pathMatch: 'full' },
+    { path: '**', component: PageNotFoundComponent },
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forRoot(
+            appRoutes,
+            { enableTracing: true } // <-- debugging purposes only
+        ),
+    ],
+    exports: [RouterModule],
+})
+export class AppRoutingModule {}
+```
 
 Далее обновите файл `app.module.ts`, удалив `RouterModule.forRoot` в массиве `imports`.
 
-<code-example header="src/app/app.module.ts" path="router/src/app/app.module.2.ts"></code-example>
+```ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
-<div class="alert is-helpful">
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 
-Позже в этом руководстве будет показано, как создать [несколько модулей маршрутизации](#heroes-functionality) и импортировать эти модули маршрутизации [в правильном порядке](#routing-module-order).
+import { CrisisListComponent } from './crisis-list/crisis-list.component';
+import { HeroListComponent } from './hero-list/hero-list.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-</div>
+@NgModule({
+    imports: [BrowserModule, FormsModule, AppRoutingModule],
+    declarations: [
+        AppComponent,
+        HeroListComponent,
+        CrisisListComponent,
+        PageNotFoundComponent,
+    ],
+    bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+!!!note ""
+
+    Позже в этом руководстве будет показано, как создать [несколько модулей маршрутизации](#heroes-functionality) и импортировать эти модули маршрутизации [в правильном порядке](#routing-module-order).
 
 Приложение продолжает работать точно так же, и вы можете использовать `AppRoutingModule` в качестве центрального места для сохранения будущей конфигурации маршрутизации.
 
-<a id="why-routing-module"></a>
-
-### Преимущества модуля маршрутизации
+### Преимущества модуля маршрутизации {: #why-routing-module}
 
 Модуль маршрутизации, часто называемый `AppRoutingModule`, заменяет конфигурацию маршрутизации в корневом или функциональном модуле.
 
-Модуль маршрутизации полезен по мере роста вашего приложения и когда конфигурация включает специализированные функции guard и resolver.
+Модуль маршрутизации полезен по мере роста вашего приложения и когда конфигурация включает специализированные функции `guard` и `resolver`.
 
-Некоторые разработчики пропускают модуль маршрутизации, когда конфигурация минимальна, и объединяют конфигурацию маршрутизации непосредственно в сопутствующий модуль\(например, `AppModule`\).
+Некоторые разработчики пропускают модуль маршрутизации, когда конфигурация минимальна, и объединяют конфигурацию маршрутизации непосредственно в сопутствующий модуль (например, `AppModule`).
 
 Большинство приложений должны реализовать модуль маршрутизации для согласованности. Он сохраняет код чистым, когда конфигурация становится сложной.
 
@@ -506,41 +623,33 @@ ng generate module app-routing --module app --flat
 
 Именно здесь разработчики ожидают найти и расширить конфигурацию маршрутизации.
 
-<a id="heroes-feature"></a>
-
-## Веха 3: Функция героев
+## Веха 3: Функция героев {: #heroes-feature}
 
 Этот этап включает в себя следующее:
 
 -   Организация приложения и маршрутов в области функций с помощью модулей.
-
 -   Императивная навигация от одного компонента к другому.
-
 -   Передача необходимой и необязательной информации в параметрах маршрута.
 
-Этот пример приложения воссоздает функцию героев в разделе "Услуги" учебника [Tour of Heroes](tutorial/tour-of-heroes/toh-pt4 'Tour of Heroes: Услуги') и использует большую часть кода из <live-example name="toh-pt4" title="Код примера Tour of Heroes: Услуги"></live-example>.
+Этот пример приложения воссоздает функцию героев в разделе "Услуги" учебника [Tour of Heroes](toh-pt4.md) и использует большую часть кода из [Код примера Tour of Heroes: Услуги](https://angular.io/generated/live-examples/toh-pt4/stackblitz.html).
 
 Типичное приложение имеет несколько функциональных областей, каждая из которых посвящена определенной бизнес-цели и имеет свою собственную папку.
 
 В этом разделе показано, как рефакторить приложение на различные функциональные модули, импортировать их в главный модуль и перемещаться между ними.
 
-<a id="heroes-functionality"></a>
-
-### Добавить функциональность героев
+### Добавить функциональность героев {: #heroes-functionality}
 
 Выполните следующие шаги:
 
 -   Для управления героями создайте `HeroesModule` с маршрутизацией в папке heroes и зарегистрируйте его в корневом `AppModule`.
 
-      <code-example format="shell" language="shell">
-
+    ```shell
     ng generate module heroes/heroes --module app --flat --routing
-
-      </code-example>
+    ```
 
 -   Переместите папку placeholder `hero-list`, находящуюся в папке `app`, в папку `heroes`.
 
--   Скопируйте содержимое `heroes/heroes.component.html` из <live-example name="toh-pt4" title="Tour of Heroes: Services example code">учебника "Services"</live-example> в шаблон `hero-list.component.html`.
+-   Скопируйте содержимое `heroes/heroes.component.html` из [учебника "Services"](https://angular.io/generated/live-examples/toh-pt4/stackblitz.html) в шаблон `hero-list.component.html`.
 
     -   Переименуйте `<h2>` в `<h2>HEROES</h2>`.
 
@@ -554,82 +663,63 @@ ng generate module app-routing --module app --flat
 
     -   Измените `selector` на `app-hero-list`.
 
-          <div class="alert is-helpful">.
+        !!!note ""
 
-        Selectors are not required for routed components because components are dynamically inserted when the page is rendered.
+            Селекторы не требуются для маршрутизируемых компонентов, поскольку компоненты динамически вставляются при отображении страницы.
 
-        However, they are useful for identifying and targeting them in your HTML element tree.
+            Однако они полезны для их идентификации и назначения в дереве элементов HTML.
 
-          </div>
+-   Скопируйте папку `hero-detail`, файлы `hero.ts`, `hero.service.ts` и `mock-heroes.ts` в подпапку `heroes`.
 
--   Copy the `hero-detail` folder, the `hero.ts`, `hero.service.ts`, and `mock-heroes.ts` files into the `heroes` sub-folder
+-   Скопируйте файл `message.service.ts` в папку `src/app`.
 
--   Copy the `message.service.ts` into the `src/app` folder
+-   Обновите импорт относительного пути к `message.service` в файле `hero.service.ts`.
 
--   Update the relative path import to the `message.service` in the `hero.service.ts` file
+Далее обновите метаданные `HeroesModule`.
 
-Next, update the `HeroesModule` metadata.
+-   Импортируйте и добавьте `HeroDetailComponent` и `HeroListComponent` в массив `declarations` в `HeroesModule`.
 
--   Import and add the `HeroDetailComponent` and `HeroListComponent` to the `declarations` array in the `HeroesModule`.
+```ts
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-<code-example header="src/app/heroes/heroes.module.ts" path="router/src/app/heroes/heroes.module.ts"></code-example>
+import { HeroListComponent } from './hero-list/hero-list.component';
+import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+
+import { HeroesRoutingModule } from './heroes-routing.module';
+
+@NgModule({
+    imports: [
+        CommonModule,
+        FormsModule,
+        HeroesRoutingModule,
+    ],
+    declarations: [HeroListComponent, HeroDetailComponent],
+})
+export class HeroesModule {}
+```
 
 Структура файлов управления героями выглядит следующим образом:
 
-<div class="filetree">   <div class="file">
-    src/app/heroes
-  </div>
-  <div class="children">
-    <div class="file">
-      hero-detail
-    </div>
-      <div class="children">
-        <div class="file">
-          hero-detail.component.css
-        </div>
-        <div class="file">
-          hero-detail.component.html
-        </div>
-        <div class="file">
-          hero-detail.component.ts
-        </div>
-      </div>
-    <div class="file">
-      hero-list
-    </div>
-      <div class="children">
-        <div class="file">
-          hero-list.component.css
-        </div>
-        <div class="file">
-          hero-list.component.html
-        </div>
-        <div class="file">
-          hero-list.component.ts
-        </div>
-      </div>
-    <div class="file">
-      hero.service.ts
-    </div>
-    <div class="file">
-      hero.ts
-    </div>
-    <div class="file">
-      heroes-routing.module.ts
-    </div>
-    <div class="file">
-      heroes.module.ts
-    </div>
-    <div class="file">
-      mock-heroes.ts
-    </div>
-    </div>
-  </div>
-</div>
+```
+src/app/heroes
++- hero-detail
+|  +- hero-detail.component.css
+|  +- hero-detail.component.html
+|  +- hero-detail.component.ts
++- hero-list
+|  +- hero-list.component.css
+|  +- hero-list.component.html
+|  +- hero-list.component.ts
++- hero.service.ts
++- hero.ts
++- heroes-routing.module.ts
++- heroes.module.ts
++- mock-heroes.ts
+```
 
-<a id="hero-routing-requirements"></a>
-
-#### Требования к маршрутизации функции героев
+#### Требования к маршрутизации функции героев {: #hero-routing-requirements}
 
 Функция героев состоит из двух взаимодействующих компонентов - списка героев и подробной информации о героях. Когда вы переходите к представлению списка, оно получает список героев и отображает их.
 
@@ -643,26 +733,37 @@ Next, update the `HeroesModule` metadata.
 
 В модуле `AppRoutingModule` вы использовали статический метод `RouterModule.forRoot()` для регистрации маршрутов и поставщиков услуг уровня приложения. В функциональном модуле вы используете статический метод `forChild()`.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Вызывайте `RouterModule.forRoot()` только в корневом `AppRoutingModule` (или `AppModule`, если в нем вы регистрируете маршруты приложений верхнего уровня).
-В любом другом модуле вы должны вызвать метод `RouterModule.forChild()` для регистрации дополнительных маршрутов.
-
-</div>
+    Вызывайте `RouterModule.forRoot()` только в корневом `AppRoutingModule` (или `AppModule`, если в нем вы регистрируете маршруты приложений верхнего уровня).
+    В любом другом модуле вы должны вызвать метод `RouterModule.forChild()` для регистрации дополнительных маршрутов.
 
 Обновленный `HeroesRoutingModule` выглядит следующим образом:
 
-<code-example header="src/app/heroes/heroes-routing.module.ts" path="router/src/app/heroes/heroes-routing.module.1.ts"></code-example>
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-<div class="alert is-helpful">
+import { HeroListComponent } from './hero-list/hero-list.component';
+import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 
-Рассмотрите возможность предоставления каждому функциональному модулю собственного файла конфигурации маршрута. Хотя в настоящее время маршруты функций минимальны, маршруты имеют тенденцию к усложнению даже в небольших приложениях.
+const heroesRoutes: Routes = [
+    { path: 'heroes', component: HeroListComponent },
+    { path: 'hero/:id', component: HeroDetailComponent },
+];
 
-</div>
+@NgModule({
+    imports: [RouterModule.forChild(heroesRoutes)],
+    exports: [RouterModule],
+})
+export class HeroesRoutingModule {}
+```
 
-<a id="remove-duplicate-hero-routes"></a>
+!!!note ""
 
-#### Удаление дубликатов маршрутов героев
+    Рассмотрите возможность предоставления каждому функциональному модулю собственного файла конфигурации маршрута. Хотя в настоящее время маршруты функций минимальны, маршруты имеют тенденцию к усложнению даже в небольших приложениях.
+
+#### Удаление дубликатов маршрутов героев {: #remove-duplicate-hero-routes}
 
 Маршруты героев в настоящее время определяются в двух местах: в `HeroesRoutingModule`, посредством `HeroesModule`, и в `AppRoutingModule`.
 
@@ -672,25 +773,82 @@ Next, update the `HeroesModule` metadata.
 
 Оставьте маршруты по умолчанию и wildcard, так как они все еще используются на верхнем уровне приложения.
 
-<code-example header="src/app/app-routing.module.ts (v2)" path="router/src/app/app-routing.module.2.ts"></code-example>
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-<a id="merge-hero-routes"></a>
+import { CrisisListComponent } from './crisis-list/crisis-list.component';
+// import { HeroListComponent } from './hero-list/hero-list.component';  // <-- delete this line
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-#### Удалите декларации героев
+const appRoutes: Routes = [
+    {
+        path: 'crisis-center',
+        component: CrisisListComponent,
+    },
+    // { path: 'heroes',     component: HeroListComponent }, // <-- delete this line
+    { path: '', redirectTo: '/heroes', pathMatch: 'full' },
+    { path: '**', component: PageNotFoundComponent },
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forRoot(
+            appRoutes,
+            { enableTracing: true } // <-- debugging purposes only
+        ),
+    ],
+    exports: [RouterModule],
+})
+export class AppRoutingModule {}
+```
+
+#### Удалите декларации героев {: #merge-hero-routes}
 
 Поскольку `HeroesModule` теперь предоставляет `HeroListComponent`, удалите его из массива `declarations` модуля `AppModule`. Теперь, когда у вас есть отдельный `HeroesModule`, вы можете развивать функцию героя с помощью большего количества компонентов и различных маршрутов.
 
 После этих шагов `AppModule` должен выглядеть следующим образом:
 
-<code-example header="src/app/app.module.ts" path="router/src/app/app.module.3.ts" region="remove-heroes"></code-example>
+```ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { HeroesModule } from './heroes/heroes.module';
 
-<a id="routing-module-order"></a>
+import { CrisisListComponent } from './crisis-list/crisis-list.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-### Порядок импорта модулей
+@NgModule({
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HeroesModule,
+        AppRoutingModule,
+    ],
+    declarations: [
+        AppComponent,
+        CrisisListComponent,
+        PageNotFoundComponent,
+    ],
+    bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+### Порядок импорта модулей {: #routing-module-order}
 
 Обратите внимание, что в массиве `импортов` модулей, `AppRoutingModule` стоит последним и идет _после_ `HeroesModule`.
 
-<code-example header="src/app/app.module.ts (module-imports)" path="router/src/app/app/app.module.3.ts" region="module-imports"></code-example>.
+```ts
+imports: [
+  BrowserModule,
+  FormsModule,
+  HeroesModule,
+  AppRoutingModule
+],
+```
 
 Порядок конфигурации маршрутов важен, потому что маршрутизатор принимает первый маршрут, который соответствует пути навигационного запроса.
 
@@ -700,77 +858,86 @@ Next, update the `HeroesModule` metadata.
 
 Маршрут дикого знака &mdash; который соответствует _каждому_ URL&mdash; будет перехватывать попытку перехода к маршруту героя.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Пересмотрите модули маршрутизации, чтобы увидеть, как щелчок по ссылке героев приводит к "Страница не найдена". Узнайте о проверке конфигурации маршрутизатора во время выполнения [ниже](#inspect-config 'Inspect the router config').
-
-</div>
+    Пересмотрите модули маршрутизации, чтобы увидеть, как щелчок по ссылке героев приводит к "Страница не найдена". Узнайте о проверке конфигурации маршрутизатора во время выполнения [ниже](#inspect-config).
 
 ### Параметры маршрута
 
-<a id="route-def-with-parameter"></a>
-
-#### Определение маршрута с параметром
+#### Определение маршрута с параметром {: #route-def-with-parameter}
 
 Вернитесь к модулю `HeroesRoutingModule` и снова посмотрите на определения маршрутов. Маршрут к `HeroDetailComponent` имеет токен `:id` в пути.
 
-<code-example header="src/app/heroes/heroes-routing.module.ts (excerpt)" path="router/src/app/heroes/heroes-routing.module.1.ts" region="hero-detail-route"></code-example>.
+```ts
+{ path: 'hero/:id', component: HeroDetailComponent }
+```
 
 Токен `:id` создает слот в пути для параметра маршрута. В данном случае эта конфигурация заставляет маршрутизатор вставить `id` героя в этот слот.
 
 Если вы скажете маршрутизатору перейти к компоненту detail и отобразить "Magneta", вы ожидаете, что ID героя появится в URL браузера следующим образом:
 
-<code-example format="nocode">
-
+```
 localhost:4200/hero/15
-
-</code-example>
+```
 
 Если пользователь введет этот URL в адресную строку браузера, маршрутизатор должен распознать шаблон и перейти к тому же детальному представлению "Magneta".
 
-<div class="callout is-helpful">
+!!!note "Параметр маршрута: Обязательный или необязательный?"
 
-<header>Route parameter: Required or optional?</header>
+    Встраивание маркера параметра маршрута, `:id`, в путь определения маршрута является хорошим выбором для данного сценария, поскольку `id` _требуется_ компонентом `HeroDetailComponent` и поскольку значение `15` в пути четко отличает маршрут к "Magneta" от маршрута к какому-либо другому герою.
 
-Встраивание маркера параметра маршрута, `:id`, в путь определения маршрута является хорошим выбором для данного сценария, поскольку `id` _требуется_ компонентом `HeroDetailComponent` и поскольку значение `15` в пути четко отличает маршрут к "Magneta" от маршрута к какому-либо другому герою.
-
-</div>
-
-<a id="route-parameters"></a>
-
-#### Установка параметров маршрута в представлении списка
+#### Установка параметров маршрута в представлении списка {: #route-parameters}
 
 После перехода к компоненту `HeroDetailComponent` вы ожидаете увидеть подробную информацию о выбранном герое. Вам нужны две части информации: путь маршрутизации к компоненту и `id` героя.
 
 Соответственно, массив _параметров ссылки_ состоит из двух элементов: _путь маршрутизации_ и _параметр маршрута_, который определяет `id` выбранного героя.
 
-<code-example header="src/app/heroes/hero-list/hero-list.component.html (link-parameters-array)" path="router/src/app/heroes/hero-list/hero-list.component.1.html" region="link-parameters-array"></code-example>.
+```html
+<a [routerLink]="['/hero', hero.id]"></a>
+```
 
 Маршрутизатор составляет URL назначения из массива следующим образом: `localhost:4200/hero/15`.
 
-Маршрутизатор извлекает параметр маршрута \(`id:15`\) из URL и передает его в `HeroDetailComponent` с помощью сервиса `ActivatedRoute`.
+Маршрутизатор извлекает параметр маршрута (`id:15`) из URL и передает его в `HeroDetailComponent` с помощью сервиса `ActivatedRoute`.
 
-<a id="activated-route-in-action"></a>
-
-### `Активированный маршрут` в действии
+### `Активированный маршрут` в действии {: #activated-route-in-action}
 
 Импортируйте токены `Router`, `ActivatedRoute` и `ParamMap` из пакета router.
 
-<code-example header="src/app/heroes/hero-detail/hero-detail.component.ts (активированный маршрут)" path="router/src/app/heroes/hero-detail/hero-detail.component.1.ts" region="imports"></code-example>.
+```ts
+import {
+    Router,
+    ActivatedRoute,
+    ParamMap,
+} from '@angular/router';
+```
 
 Импортируйте оператор `switchMap`, поскольку он понадобится вам позже для обработки параметров маршрута `Observable`.
 
-<code-example header="src/app/heroes/hero-detail/hero-detail.component.ts (импорт оператора switchMap)" path="router/src/app/heroes/hero-detail/hero-detail.component.3.ts" region="rxjs-operator-import"></code-example>.
+```ts
+import { switchMap } from 'rxjs/operators';
+```
 
-<a id="hero-detail-ctor"></a>.
+Добавьте сервисы как приватные переменные в конструктор, чтобы Angular инжектировал их (сделал их видимыми для компонента).
 
-Добавьте сервисы как приватные переменные в конструктор, чтобы Angular инжектировал их\ (сделал их видимыми для компонента\).
-
-<code-example header="src/app/heroes/hero-detail/hero-detail.component.ts (constructor)" path="router/src/app/heroes/hero-detail/hero-detail.component.3.ts" region="ctor"></code-example>.
+```ts
+constructor(
+  private route: ActivatedRoute,
+  private router: Router,
+  private service: HeroService
+) {}
+```
 
 В методе `ngOnInit()` используйте службу `ActivatedRoute` для получения параметров маршрута, извлечения `id` героя из параметров и получения героя для отображения.
 
-<code-example header="src/app/heroes/hero-detail/hero-detail.component.ts (ngOnInit)" path="router/src/app/heroes/hero-detail/hero-detail.component.3.ts" region="ngOnInit"></code-example>.
+```ts
+ngOnInit() {
+  this.hero$ = this.route.paramMap.pipe(
+    switchMap((params: ParamMap) =>
+      this.service.getHero(params.get('id')!))
+  );
+}
+```
 
 Когда карта изменяется, `paramMap` получает параметр `id` из измененных параметров.
 
@@ -780,24 +947,20 @@ localhost:4200/hero/15
 
 Если пользователь повторно переходит на этот маршрут с новым `id`, в то время как `HeroService` все еще получает старый `id`, `switchMap` отбрасывает старый запрос и возвращает героя для нового `id`.
 
-`AsyncPipe` обрабатывает наблюдаемую подписку, и свойство `героя` компонента будет \(re\)установлено с полученным героем.
+`AsyncPipe` обрабатывает наблюдаемую подписку, и свойство `hero` компонента будет установлено с полученным героем.
 
 #### `ParamMap` API
 
-API `ParamMap` вдохновлен интерфейсом [URLSearchParams](https://developer.mozilla.org/docs/Web/API/URLSearchParams). Он предоставляет методы для обработки доступа к параметрам как для параметров маршрута \(`paramMap`\), так и для параметров запроса \(`queryParamMap`\).
+API `ParamMap` вдохновлен интерфейсом [URLSearchParams](https://developer.mozilla.org/docs/Web/API/URLSearchParams). Он предоставляет методы для обработки доступа к параметрам как для параметров маршрута (`paramMap`), так и для параметров запроса (`queryParamMap`).
 
-| Member | Details | |:--- |:--- |:--- |
-| `has(name)` | Возвращает `true`, если имя параметра есть в карте параметров. |
-
-| `get(name)` | Возвращает значение имени параметра \(строку `\), если оно есть, или `null`, если имя параметра отсутствует в карте параметров. Возвращает _первый_ элемент, если значение параметра представляет собой массив значений. |
-
+| Member         | Details                                                                                                                                                                                                                   |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `has(name)`    | Возвращает `true`, если имя параметра есть в карте параметров.                                                                                                                                                            |
+| `get(name)`    | Возвращает значение имени параметра (строку), если оно есть, или `null`, если имя параметра отсутствует в карте параметров. Возвращает _первый_ элемент, если значение параметра представляет собой массив значений.      |
 | `getAll(name)` | Возвращает `строковый массив` значений имени параметра, если он найден, или пустой `массив`, если значение имени параметра отсутствует в карте. Используйте `getAll`, когда один параметр может иметь несколько значений. |
+| `keys`         | Возвращает массив `строк` всех имен параметров в карте.                                                                                                                                                                   |
 
-| `keys` | Возвращает массив `строк` всех имен параметров в карте. |
-
-<a id="reuse"></a>
-
-#### Observable `paramMap` и повторное использование компонентов
+#### Observable `paramMap` и повторное использование компонентов {: #reuse}
 
 В этом примере вы получаете карту параметров маршрута из `Observable`. Это означает, что карта параметров маршрута может меняться в течение жизни этого компонента.
 
@@ -809,23 +972,19 @@ API `ParamMap` вдохновлен интерфейсом [URLSearchParams](htt
 
 Поскольку `ngOnInit()` вызывается только один раз при инстанцировании компонента, вы можете определить, когда параметры маршрута изменяются _в пределах одного и того же экземпляра_, используя наблюдаемое свойство `paramMap`.
 
-<div class="alert is-helpful">
+!!!note ""
 
-При подписке на наблюдаемую переменную в компоненте вы почти всегда отписываетесь от нее, когда компонент уничтожается.
+    При подписке на наблюдаемую переменную в компоненте вы почти всегда отписываетесь от нее, когда компонент уничтожается.
 
-Однако наблюдаемые `ActivatedRoute` являются исключением, поскольку `ActivatedRoute` и его наблюдаемые изолированы от самого `Router`. Маршрутизатор" уничтожает маршрутизируемый компонент, когда он больше не нужен.
+    Однако наблюдаемые `ActivatedRoute` являются исключением, поскольку `ActivatedRoute` и его наблюдаемые изолированы от самого `Router`. Маршрутизатор" уничтожает маршрутизируемый компонент, когда он больше не нужен.
 
-Это означает, что все члены компонента также будут уничтожены, включая инжектированный `ActivatedRoute` и подписки на его свойства `Observable`.
+    Это означает, что все члены компонента также будут уничтожены, включая инжектированный `ActivatedRoute` и подписки на его свойства `Observable`.
 
-Маршрутизатор не `завершает` ни одну `обсервируемую` из `ActivatedRoute`, поэтому любые блоки `finalize` или `complete` не будут выполняться. Если вам нужно обработать что-то в `finalize`, вам все равно нужно отписаться в `ngOnDestroy`.
+    Маршрутизатор не `завершает` ни одну `обсервируемую` из `ActivatedRoute`, поэтому любые блоки `finalize` или `complete` не будут выполняться. Если вам нужно обработать что-то в `finalize`, вам все равно нужно отписаться в `ngOnDestroy`.
 
-Вы также должны отписаться, если в вашей наблюдаемой трубе есть задержка с кодом, который вы не хотите запускать после уничтожения компонента.
+    Вы также должны отписаться, если в вашей наблюдаемой трубе есть задержка с кодом, который вы не хотите запускать после уничтожения компонента.
 
-</div>
-
-<a id="snapshot"></a>
-
-#### `snapshot`: ненаблюдаемая альтернатива
+#### `snapshot`: ненаблюдаемая альтернатива {: #snapshot}
 
 Это приложение не будет повторно использовать `HeroDetailComponent`. Пользователь всегда возвращается к списку героев, чтобы выбрать другого героя для просмотра.
 
@@ -837,81 +996,95 @@ API `ParamMap` вдохновлен интерфейсом [URLSearchParams](htt
 
 `route.snapshot` предоставляет начальное значение карты параметров маршрута. Вы можете получить доступ к параметрам напрямую, без подписки или добавления операторов наблюдения, как показано ниже:
 
-<code-example header="src/app/heroes/hero-detail/hero-detail.component.ts (ngOnInit snapshot)" path="router/src/app/heroes/hero-detail/hero-detail.component.2.ts" region="snapshot"></code-example>
+```ts
+ngOnInit() {
+  const id = this.route.snapshot.paramMap.get('id')!;
 
-<div class="alert is-helpful">
+  this.hero$ = this.service.getHero(id);
+}
+```
 
-При использовании этой техники `snapshot` получает только начальное значение карты параметров. Используйте подход с наблюдаемой `paramMap`, если есть вероятность, что маршрутизатор может повторно использовать компонент.
-В этом учебном примере приложения используется наблюдаемая `paramMap`.
+!!!note ""
 
-</div>
+    При использовании этой техники `snapshot` получает только начальное значение карты параметров. Используйте подход с наблюдаемой `paramMap`, если есть вероятность, что маршрутизатор может повторно использовать компонент.
+    В этом учебном примере приложения используется наблюдаемая `paramMap`.
 
-<a id="nav-to-list"></a>
-
-### Навигация назад к компоненту списка
+### Навигация назад к компоненту списка {: #nav-to-list}
 
 Кнопка "Назад" компонента `HeroDetailComponent` использует метод `gotoHeroes()`, который принудительно перемещает обратно к компоненту `HeroListComponent`.
 
 Метод маршрутизатора `navigate()` принимает тот же массив параметров _ссылки_ из одного элемента, который вы можете связать с директивой `[routerLink]`. Он содержит путь к компоненту `HeroListComponent`:
 
-<code-example header="src/app/heroes/hero-detail/hero-detail.component.ts (excerpt)" path="router/src/app/heroes/hero-detail/hero-detail.component.1.ts" region="gotoHeroes"></code-example>.
+```ts
+gotoHeroes() {
+  this.router.navigate(['/heroes']);
+}
+```
 
-<a id="optional-route-parameters"></a>
-
-#### Параметры маршрута: Обязательные или необязательные?
+#### Параметры маршрута: Обязательные или необязательные? {: #optional-route-parameters}
 
 Используйте [route parameters](#route-parameters) для указания обязательного значения параметра в URL маршрута, как при переходе к `HeroDetailComponent` для просмотра героя с `id` 15:
 
-<code-example format="http" language="http">
-
+```
 localhost:4200/hero/15
-
-</code-example>
+```
 
 Вы также можете добавить необязательную информацию в запрос маршрута. Например, при возврате к списку `hero-detail.component.ts` из представления деталей героя было бы неплохо, если бы просматриваемый герой был предварительно выбран в списке.
 
-<div class="lightbox">   <img alt="Selected hero" src="generated/images/guide/router/selected-hero.png">
-</div>
+![Selected hero](selected-hero.png)
 
 Вы реализуете эту возможность, включив `id` просматриваемого героя в URL в качестве необязательного параметра при возврате из `HeroDetailComponent`.
 
 Необязательная информация может также включать другие формы, такие как:
 
 -   Свободно структурированные критерии поиска; например, `name='wind*'`.
-
--   Множественные значения; например, `after='12/31/2015' & before='1/1/2017'` &mdash; без особого порядка&mdash; `before='1/1/2017' & after='12/31/2015'` &mdash; в различных форматах&mdash; `during='currentYear'`.
+-   Множественные значения; например, `after='12/31/2015' & before='1/1/2017'` &mdash; без особого порядка &mdash; `before='1/1/2017' & after='12/31/2015'` &mdash; в различных форматах &mdash; `during='currentYear'`.
 
 Поскольку такие параметры не вписываются в путь URL, вы можете использовать необязательные параметры для передачи произвольно сложной информации во время навигации. Необязательные параметры не участвуют в сопоставлении шаблонов и обеспечивают гибкость выражения.
 
 Маршрутизатор поддерживает навигацию с необязательными параметрами так же, как и с обязательными параметрами маршрута. Определите необязательные параметры в отдельном объекте _после_ определения обязательных параметров маршрута.
 
-В общем случае, используйте обязательный параметр маршрута, когда значение является обязательным\\ (например, если необходимо отличить один путь маршрута от другого\); и необязательный параметр, когда значение является необязательным, сложным и/или многомерным.
+В общем случае, используйте обязательный параметр маршрута, когда значение является обязательным (например, если необходимо отличить один путь маршрута от другого); и необязательный параметр, когда значение является необязательным, сложным и/или многомерным.
 
-<a id="optionally-selecting"></a>
-
-#### Список героев: опциональный выбор героя
+#### Список героев: опциональный выбор героя {: #optionally-selecting}
 
 При переходе к компоненту `HeroDetailComponent` вы указали требуемый `id` редактируемого героя в параметре маршрута и сделали его вторым элементом массива [_link parameters array_](#link-parameters-array).
 
-<code-example header="src/app/heroes/hero-list/hero-list.component.html (link-parameters-array)" path="router/src/app/heroes/hero-list/hero-list.component.1.html" region="link-parameters-array"></code-example>.
+```html
+<a [routerLink]="['/hero', hero.id]"></a>
+```
 
 Маршрутизатор встроил значение `id` в навигационный URL, потому что вы определили его как параметр маршрута с маркером-заполнителем `:id` в маршруте `path`:
 
-<code-example header="src/app/heroes/heroes-routing.module.ts (hero-detail-route)" path="router/src/app/heroes/heroes-routing.module.1.ts" region="hero-detail-route"></code-example>.
+```ts
+{ path: 'hero/:id', component: HeroDetailComponent }
+```
 
 Когда пользователь нажимает кнопку "Назад", `HeroDetailComponent` создает другой массив _параметров ссылок_, который он использует для перехода обратно к `HeroListComponent`.
 
-<code-example header="src/app/heroes/hero-detail/hero-detail.component.ts (gotoHeroes)" path="router/src/app/heroes/hero-detail/hero-detail.component.1.ts" region="gotoHeroes"></code-example>.
+```ts
+gotoHeroes() {
+  this.router.navigate(['/heroes']);
+}
+```
 
 В этом массиве отсутствует параметр route, потому что ранее вам не нужно было отправлять информацию в `HeroListComponent`.
 
 Теперь отправьте `id` текущего героя с навигационным запросом, чтобы `HeroListComponent` мог выделить этого героя в своем списке.
 
-Отправьте `id` с объектом, который содержит необязательный параметр `id`. Для демонстрации в объекте есть дополнительный параметр \(`foo`\), который `HeroListComponent` должен игнорировать.
+Отправьте `id` с объектом, который содержит необязательный параметр `id`. Для демонстрации в объекте есть дополнительный параметр (`foo`), который `HeroListComponent` должен игнорировать.
 
 Вот пересмотренный навигационный оператор:
 
-<code-example header="src/app/heroes/hero-detail/hero-detail.component.ts (перейти к героям)" path="router/src/app/heroes/hero-detail/hero-detail.component.3.ts" region="gotoHeroes"></code-example>.
+```ts
+gotoHeroes(hero: Hero) {
+  const heroId = hero ? hero.id : null;
+  // Pass along the hero id if available
+  // so that the HeroList component can select that hero.
+  // Include a junk 'foo' property for fun.
+  this.router.navigate(['/heroes', { id: heroId, foo: 'foo' }]);
+}
+```
 
 Приложение по-прежнему работает. Нажатие кнопки "назад" возвращает к представлению списка героев.
 
@@ -919,29 +1092,23 @@ localhost:4200/hero/15
 
 Она должна выглядеть примерно так, в зависимости от того, где вы ее запустили:
 
-<code-example format="shell" language="shell">
-
+```
 localhost:4200/heroes;id=15;foo=foo
+```
 
-</code-example>
-
-Значение `id` отображается в URL как \(`;id=15;foo=foo`\), а не в пути URL. Путь для маршрута "Герои" не содержит токена `:id`.
+Значение `id` отображается в URL как (`;id=15;foo=foo`), а не в пути URL. Путь для маршрута "Герои" не содержит токена `:id`.
 
 Необязательные параметры маршрута не разделены символами "?" и "&", как это было бы в строке запроса URL. Они разделяются точкой с запятой ";".
 
 Это матричная нотация URL.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Матричная нотация URL - это идея, впервые представленная в [предложении 1996 года] (https://www.w3.org/DesignIssues/MatrixURIs.html) основателем Интернета Тимом Бернерсом-Ли.
+    Матричная нотация URL - это идея, впервые представленная в [предложении 1996 года](https://www.w3.org/DesignIssues/MatrixURIs.html) основателем Интернета Тимом Бернерсом-Ли.
 
-Хотя матричная нотация так и не вошла в стандарт HTML, она является легальной и стала популярной среди систем маршрутизации браузеров как способ изолировать параметры, принадлежащие родительским и дочерним маршрутам. Таким образом, Router обеспечивает поддержку матричной нотации во всех браузерах.
+    Хотя матричная нотация так и не вошла в стандарт HTML, она является легальной и стала популярной среди систем маршрутизации браузеров как способ изолировать параметры, принадлежащие родительским и дочерним маршрутам. Таким образом, Router обеспечивает поддержку матричной нотации во всех браузерах.
 
-</div>
-
-<a id="route-parameters-activated-route"></a>
-
-### Параметры маршрута в сервисе `ActivatedRoute`.
+### Параметры маршрута в сервисе `ActivatedRoute` {: #route-parameters-activated-route}
 
 В текущем состоянии разработки список героев не изменяется. Ни одна строка героев не выделена.
 
@@ -957,71 +1124,200 @@ localhost:4200/heroes;id=15;foo=foo
 
 Сначала расширьте оператор импорта маршрутизатора, включив в него служебный символ `ActivatedRoute`:
 
-<code-example header="src/app/heroes/hero-list/hero-list.component.ts (import)" path="router/src/app/heroes/hero-list/hero-list.component.ts" region="import-router"></code-example>.
+```ts
+import { ActivatedRoute } from '@angular/router';
+```
 
 Импортируйте оператор `switchMap` для выполнения операции над `Observable` карты параметров маршрута.
 
-<code-example header="src/app/heroes/hero-list/hero-list.component.ts (rxjs imports)" path="router/src/app/heroes/hero-list/hero-list.component.ts" region="rxjs-imports"></code-example>.
+```ts
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+```
 
 Вставьте `ActivatedRoute` в конструктор `HeroListComponent`.
 
-<code-example header="src/app/heroes/hero-list/hero-list.component.ts (constructor and ngOnInit)" path="router/src/app/heroes/hero-list/hero-list.component.ts" region="ctor"></code-example>
+```ts
+export class HeroListComponent implements OnInit {
+    heroes$!: Observable<Hero[]>;
+    selectedId = 0;
 
-The `ActivatedRoute.paramMap` property is an `Observable` map of route parameters. The `paramMap` emits a new map of values that includes `id` when the user navigates to the component.
+    constructor(
+        private service: HeroService,
+        private route: ActivatedRoute
+    ) {}
 
-In `ngOnInit()` you subscribe to those values, set the `selectedId`, and get the heroes.
+    ngOnInit() {
+        this.heroes$ = this.route.paramMap.pipe(
+            switchMap((params) => {
+                this.selectedId = parseInt(
+                    params.get('id')!,
+                    10
+                );
+                return this.service.getHeroes();
+            })
+        );
+    }
+}
+```
 
-Update the template with a [class binding](guide/class-binding). The binding adds the `selected` CSS class when the comparison returns `true` and removes it when `false`.
+Свойство `ActivatedRoute.paramMap` представляет собой `Observable` карту параметров маршрута. При переходе пользователя к компоненту `paramMap` выдает новую карту значений, включающую `id`.
 
-Look for it within the repeated `<li>` tag as shown here:
+В функции `ngOnInit()` вы подписываетесь на эти значения, устанавливаете `selectedId` и получаете героев.
 
-<code-example header="src/app/heroes/hero-list/hero-list.component.html" path="router/src/app/heroes/hero-list/hero-list.component.html"></code-example>.
+Обновите шаблон с помощью [class binding](class-binding.md). Привязка добавляет CSS-класс `selected`, когда сравнение возвращает `true`, и удаляет его, когда `false`.
+
+Ищите его в повторяющемся теге `<li>`, как показано здесь:
+
+```html
+<h2>Heroes</h2>
+<ul class="heroes">
+    <li
+        *ngFor="let hero of heroes$ | async"
+        [class.selected]="hero.id === selectedId"
+    >
+        <a [routerLink]="['/hero', hero.id]">
+            <span class="badge">{{ hero.id }}</span>{{
+            hero.name }}
+        </a>
+    </li>
+</ul>
+
+<button type="button" routerLink="/sidekicks">
+    Go to sidekicks
+</button>
+```
 
 Добавьте несколько стилей для применения при выборе героя.
 
-<code-example header="src/app/heroes/hero-list/hero-list.component.css" path="router/src/app/heroes/hero-list/hero-list.component.css" region="selected"></code-example>.
+```css
+.heroes .selected a {
+    background-color: #d6e6f7;
+}
+
+.heroes .selected a:hover {
+    background-color: #bdd7f5;
+}
+```
 
 Когда пользователь переходит от списка героев к герою "Magneta" и обратно, "Magneta" отображается выбранной:
 
-<div class="lightbox">
-
-<img alt="Selected hero in list has different background color" src="generated/images/guide/router/selected-hero.png">
-
-</div>
+![Выбранный герой в списке имеет разный цвет фона](selected-hero.png)
 
 Необязательный параметр маршрута `foo` безвреден, и маршрутизатор продолжает его игнорировать.
 
-<a id="route-animation"></a>
+### Добавление маршрутизируемых анимаций {: #route-animation}
 
-### Добавление маршрутизируемых анимаций
-
-В этом разделе показано, как добавить некоторые [анимации](guide/animations) в `HeroDetailComponent`.
+В этом разделе показано, как добавить некоторые [анимации](animations.md) в `HeroDetailComponent`.
 
 Сначала импортируйте `BrowserAnimationsModule` и добавьте его в массив `imports`:
 
-<code-example header="src/app/app.module.ts (animations-module)" path="router/src/app/app.module.ts" region="animations-module"></code-example>.
+```ts
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-Далее, добавьте объект `data` в маршруты для `HeroListComponent` и `HeroDetailComponent`. Переходы основаны на `состояниях`, и вы используете данные `анимации` из маршрута, чтобы предоставить именованную анимацию [`состояние`](api/animations/state) для переходов.
+@NgModule({
+  imports: [
+    BrowserAnimationsModule,
+  ],
+})
+```
 
-<code-example header="src/app/heroes/heroes-routing.module.ts (данные анимации)" path="router/src/app/heroes/heroes-routing.module.2.ts"></code-example>.
+Далее, добавьте объект `data` в маршруты для `HeroListComponent` и `HeroDetailComponent`. Переходы основаны на `states`, и вы используете данные `animation` из маршрута, чтобы предоставить именованную анимацию [`state`](https://angular.io/api/animations/state) для переходов.
+
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { HeroListComponent } from './hero-list/hero-list.component';
+import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+
+const heroesRoutes: Routes = [
+    {
+        path: 'heroes',
+        component: HeroListComponent,
+        data: { animation: 'heroes' },
+    },
+    {
+        path: 'hero/:id',
+        component: HeroDetailComponent,
+        data: { animation: 'hero' },
+    },
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(heroesRoutes)],
+    exports: [RouterModule],
+})
+export class HeroesRoutingModule {}
+```
 
 Создайте файл `animations.ts` в корневой папке `src/app/`. Его содержимое выглядит следующим образом:
 
-<code-example header="src/app/animations.ts (excerpt)" path="router/src/app/animations.ts"></code-example>.
+```ts
+import {
+    trigger,
+    animateChild,
+    group,
+    transition,
+    animate,
+    style,
+    query,
+} from '@angular/animations';
+
+// Routable animations
+export const slideInAnimation = trigger('routeAnimation', [
+    transition('heroes <=> hero', [
+        style({ position: 'relative' }),
+        query(':enter, :leave', [
+            style({
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+            }),
+        ]),
+        query(':enter', [style({ left: '-100%' })]),
+        query(':leave', animateChild()),
+        group([
+            query(':leave', [
+                animate(
+                    '300ms ease-out',
+                    style({ left: '100%' })
+                ),
+            ]),
+            query(':enter', [
+                animate(
+                    '300ms ease-out',
+                    style({ left: '0%' })
+                ),
+            ]),
+        ]),
+        query(':enter', animateChild()),
+    ]),
+]);
+```
 
 Этот файл делает следующее:
 
 -   Импортирует символы анимации, которые создают триггеры анимации, контролируют состояние и управляют переходами между состояниями.
-
 -   Экспортирует константу с именем `slideInAnimation`, установленную на триггер анимации с именем `routeAnimation`.
-
--   Определяет один переход при переключении между маршрутами `героев` и `героев` для облегчения входа компонента с левой стороны экрана, когда он входит в представление приложения \(`:enter`\), другой для анимации компонента справа, когда он покидает представление приложения \(`:leave`\)
+-   Определяет один переход при переключении между маршрутами `героев` и `героев` для облегчения входа компонента с левой стороны экрана, когда он входит в представление приложения (`:enter`), другой для анимации компонента справа, когда он покидает представление приложения (`:leave`)
 
 Вернитесь в `AppComponent`, импортируйте токен `RouterOutlet` из пакета `@angular/router` и `slideInAnimation` из `'./animations.ts`.
 
 Добавьте массив `animations` в метаданные `@Component`, содержащие `slideInAnimation`.
 
-<code-example header="src/app/app.component.ts (animations)" path="router/src/app/app.component.2.ts" region="animation-imports"></code-example>.
+```ts
+import { ChildrenOutletContexts } from '@angular/router';
+import { slideInAnimation } from './animations';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.css'],
+  animations: [ slideInAnimation ]
+})
+```
 
 Чтобы использовать маршрутизируемые анимации, оберните `RouterOutlet` внутри элемента, используйте триггер `@routeAnimation` и привяжите его к элементу.
 
@@ -1029,271 +1325,661 @@ Look for it within the repeated `<li>` tag as shown here:
 
 В данном примере используется переменная `routerOutlet`.
 
-<code-example header="src/app/app.component.html (router outlet)" path="router/src/app/app.component.2.html"></code-example>
+```html
+<h1>Angular Router</h1>
+<nav>
+    <a
+        routerLink="/crisis-center"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Crisis Center</a
+    >
+    <a
+        routerLink="/heroes"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Heroes</a
+    >
+</nav>
+<div [@routeAnimation]="getAnimationData()">
+    <router-outlet></router-outlet>
+</div>
+```
 
 Свойство `@routeAnimation` связано с `getAnimationData()`, которое возвращает свойство анимации из `данных`, предоставленных основным маршрутом. Свойство `animation` соответствует именам `transition`, которые вы использовали в `slideInAnimation`, определенном в `animations.ts`.
 
-<code-example header="src/app/app.component.ts (router outlet)" path="router/src/app/app.component.2.ts" region="function-binding"></code-example>.
+```ts
+export class AppComponent {
+    constructor(private contexts: ChildrenOutletContexts) {}
+
+    getAnimationData() {
+        return this.contexts.getContext('primary')?.route
+            ?.snapshot?.data?.['animation'];
+    }
+}
+```
 
 При переключении между двумя маршрутами, `HeroDetailComponent` и `HeroListComponent` теперь облегчаются слева при маршрутизации к, и сдвигаются вправо при навигации прочь.
 
-<a id="milestone-3-wrap-up"></a>
-
-### Завершение этапа 3
+### Завершение этапа 3 {: #milestone-3-wrap-up}
 
 В этом разделе было рассмотрено следующее:
 
 -   Организация приложения по функциональным областям
-
 -   Императивная навигация от одного компонента к другому
-
 -   Передача информации в параметрах маршрута и подписка на них в компоненте
-
 -   Импорт функциональной области NgModule в `AppModule`.
-
 -   Применение маршрутизируемых анимаций на основе страницы.
 
 После этих изменений структура папок выглядит следующим образом:
 
-<div class="filetree">   <div class="file">
-    angular-router-tour-of-heroes
-  </div>
-  <div class="children">
-    <div class="file">
-      src
-    </div>
-    <div class="children">
-      <div class="file">
-        app
-      </div>
-      <div class="children">
-        <div class="file">
-          crisis-list
-        </div>
-          <div class="children">
-            <div class="file">
-              crisis-list.component.css
-            </div>
-            <div class="file">
-              crisis-list.component.html
-            </div>
-            <div class="file">
-              crisis-list.component.ts
-            </div>
-          </div>
-        <div class="file">
-          heroes
-        </div>
-        <div class="children">
-          <div class="file">
-            hero-detail
-          </div>
-            <div class="children">
-              <div class="file">
-                hero-detail.component.css
-              </div>
-              <div class="file">
-                hero-detail.component.html
-              </div>
-              <div class="file">
-                hero-detail.component.ts
-              </div>
-            </div>
-          <div class="file">
-            hero-list
-          </div>
-            <div class="children">
-              <div class="file">
-                hero-list.component.css
-              </div>
-              <div class="file">
-                hero-list.component.html
-              </div>
-              <div class="file">
-                hero-list.component.ts
-              </div>
-            </div>
-          <div class="file">
-            hero.service.ts
-          </div>
-          <div class="file">
-            hero.ts
-          </div>
-          <div class="file">
-            heroes-routing.module.ts
-          </div>
-          <div class="file">
-            heroes.module.ts
-          </div>
-          <div class="file">
-            mock-heroes.ts
-          </div>
-        </div>
-        <div class="file">
-          page-not-found
-        </div>
-        <div class="children">
-          <div class="file">
-            page-not-found.component.css
-          </div>
-          <div class="file">
-            page-not-found.component.html
-          </div>
-          <div class="file">
-            page-not-found.component.ts
-          </div>
-        </div>
-      </div>
-      <div class="file">
-        animations.ts
-      </div>
-      <div class="file">
-        app.component.css
-      </div>
-      <div class="file">
-        app.component.html
-      </div>
-      <div class="file">
-        app.component.ts
-      </div>
-      <div class="file">
-        app.module.ts
-      </div>
-      <div class="file">
-        app-routing.module.ts
-      </div>
-      <div class="file">
-        main.ts
-      </div>
-      <div class="file">
-        message.service.ts
-      </div>
-      <div class="file">
-        index.html
-      </div>
-      <div class="file">
-        styles.css
-      </div>
-      <div class="file">
-        tsconfig.json
-      </div>
-    </div>
-    <div class="file">
-      node_modules &hellip;
-    </div>
-    <div class="file">
-      package.json
-    </div>
-  </div>
-</div>
+```
+angular-router-tour-of-heroes
++- src
+|  +- app
+|  |  +- crisis-list
+|  |  |  +- crisis-list.component.css
+|  |  |  +- crisis-list.component.html
+|  |  |  +- crisis-list.component.ts
+|  |  +- heroes
+|  |  |  +- hero-detail
+|  |  |  |  +- hero-detail.component.css
+|  |  |  |  +- hero-detail.component.html
+|  |  |  |  +- hero-detail.component.ts
+|  |  |  +- hero-list
+|  |  |  |  +- hero-list.component.css
+|  |  |  |  +- hero-list.component.html
+|  |  |  |  +- hero-list.component.ts
+|  |  |  +- hero.service.ts
+|  |  |  +- hero.ts
+|  |  |  +- heroes-routing.module.ts
+|  |  |  +- heroes.module.ts
+|  |  |  +- mock-heroes.ts
+|  |  +- page-not-found
+|  |  |  +- page-not-found.component.css
+|  |  |  +- page-not-found.component.html
+|  |  |  +- page-not-found.component.ts
+|  +- animations.ts
+|  +- app.component.css
+|  +- app.component.html
+|  +- app.component.ts
+|  +- app.module.ts
+|  +- app-routing.module.ts
+|  +- main.ts
+|  +- message.service.ts
+|  +- index.html
+|  +- styles.css
+|  +- tsconfig.json
++- node_modules …
++- package.json
+```
 
 Вот соответствующие файлы для этой версии примера приложения.
 
-<code-tabs> <code-pane header="animations.ts" path="router/src/app/animations.ts"></code-pane>
-<code-pane header="app.component.html" path="router/src/app/app.component.2.html"></code-pane>
-<code-pane header="app.component.ts" path="router/src/app/app.component.2.ts"></code-pane>
-<code-pane header="app.module.ts" path="router/src/app/app.module.3.ts"></code-pane>
-<code-pane header="app-routing.module.ts" path="router/src/app/app-routing.module.2.ts" region="milestone3"></code-pane>
-<code-pane header="hero-list.component.css" path="router/src/app/heroes/hero-list/hero-list.component.css"></code-pane>
-<code-pane header="hero-list.component.html" path="router/src/app/heroes/hero-list/hero-list.component.html"></code-pane>
-<code-pane header="hero-list.component.ts" path="router/src/app/heroes/hero-list/hero-list.component.ts"></code-pane>
-<code-pane header="hero-detail.component.html" path="router/src/app/heroes/hero-detail/hero-detail.component.html"></code-pane>
-<code-pane header="hero-detail.component.ts" path="router/src/app/heroes/hero-detail/hero-detail.component.3.ts"></code-pane>
-<code-pane header="hero.service.ts" path="router/src/app/heroes/hero.service.ts"></code-pane>
-<code-pane header="heroes.module.ts" path="router/src/app/heroes/heroes.module.ts"></code-pane>
-<code-pane header="heroes-routing.module.ts" path="router/src/app/heroes/heroes-routing.module.2.ts"></code-pane>
-<code-pane header="message.service.ts" path="router/src/app/message.service.ts"></code-pane>
-</code-tabs>
+=== "animations.ts"
 
-<a id="milestone-4"></a>
+    ```ts
+    import {
+    	trigger,
+    	animateChild,
+    	group,
+    	transition,
+    	animate,
+    	style,
+    	query,
+    } from '@angular/animations';
 
-## Веха 4: Функция кризисного центра
+    // Routable animations
+    export const slideInAnimation = trigger('routeAnimation', [
+    	transition('heroes <=> hero', [
+    		style({ position: 'relative' }),
+    		query(':enter, :leave', [
+    			style({
+    				position: 'absolute',
+    				top: 0,
+    				left: 0,
+    				width: '100%',
+    			}),
+    		]),
+    		query(':enter', [style({ left: '-100%' })]),
+    		query(':leave', animateChild()),
+    		group([
+    			query(':leave', [
+    				animate(
+    					'300ms ease-out',
+    					style({ left: '100%' })
+    				),
+    			]),
+    			query(':enter', [
+    				animate(
+    					'300ms ease-out',
+    					style({ left: '0%' })
+    				),
+    			]),
+    		]),
+    		query(':enter', animateChild()),
+    	]),
+    ]);
+    ```
+
+=== "app.component.html"
+
+    ```html
+    <h1>Angular Router</h1>
+    <nav>
+    	<a
+    		routerLink="/crisis-center"
+    		routerLinkActive="active"
+    		ariaCurrentWhenActive="page"
+    		>Crisis Center</a
+    	>
+    	<a
+    		routerLink="/heroes"
+    		routerLinkActive="active"
+    		ariaCurrentWhenActive="page"
+    		>Heroes</a
+    	>
+    </nav>
+    <div [@routeAnimation]="getAnimationData()">
+    	<router-outlet></router-outlet>
+    </div>
+    ```
+
+=== "app.component.ts"
+
+    ```ts
+    import { Component } from '@angular/core';
+    import { ChildrenOutletContexts } from '@angular/router';
+    import { slideInAnimation } from './animations';
+
+    @Component({
+    	selector: 'app-root',
+    	templateUrl: 'app.component.html',
+    	styleUrls: ['app.component.css'],
+    	animations: [slideInAnimation],
+    })
+    export class AppComponent {
+    	constructor(private contexts: ChildrenOutletContexts) {}
+
+    	getAnimationData() {
+    		return this.contexts.getContext('primary')?.route
+    			?.snapshot?.data?.['animation'];
+    	}
+    }
+    ```
+
+=== "app.module.ts"
+
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { BrowserModule } from '@angular/platform-browser';
+    import { FormsModule } from '@angular/forms';
+    import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+    import { AppComponent } from './app.component';
+    import { AppRoutingModule } from './app-routing.module';
+    import { HeroesModule } from './heroes/heroes.module';
+
+    import { CrisisListComponent } from './crisis-list/crisis-list.component';
+    import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+    @NgModule({
+    	imports: [
+    		BrowserModule,
+    		BrowserAnimationsModule,
+    		FormsModule,
+    		HeroesModule,
+    		AppRoutingModule,
+    	],
+    	declarations: [
+    		AppComponent,
+    		CrisisListComponent,
+    		PageNotFoundComponent,
+    	],
+    	bootstrap: [AppComponent],
+    })
+    export class AppModule {}
+    ```
+
+=== "app-routing.module.ts"
+
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { RouterModule, Routes } from '@angular/router';
+
+    import { CrisisListComponent } from './crisis-list/crisis-list.component';
+    /* . . . */
+    import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+    const appRoutes: Routes = [
+    	{
+    		path: 'crisis-center',
+    		component: CrisisListComponent,
+    	},
+    	/* . . . */
+    	{ path: '', redirectTo: '/heroes', pathMatch: 'full' },
+    	{ path: '**', component: PageNotFoundComponent },
+    ];
+
+    @NgModule({
+    	imports: [
+    		RouterModule.forRoot(
+    			appRoutes,
+    			{ enableTracing: true } // <-- debugging purposes only
+    		),
+    	],
+    	exports: [RouterModule],
+    })
+    export class AppRoutingModule {}
+    ```
+
+=== "hero-list.component.css"
+
+    ```css
+    /* HeroListComponent's private CSS styles */
+    .heroes {
+    	margin: 0 0 2em 0;
+    	list-style-type: none;
+    	padding: 0;
+    	width: 100%;
+    }
+    .heroes li {
+    	position: relative;
+    	cursor: pointer;
+    }
+
+    .heroes li:hover {
+    	left: 0.1em;
+    }
+
+    .heroes a {
+    	color: black;
+    	text-decoration: none;
+    	display: block;
+    	font-size: 1.2rem;
+    	background-color: #eee;
+    	margin: 0.5rem 0.5rem 0.5rem 0;
+    	padding: 0.5rem 0;
+    	border-radius: 4px;
+    }
+
+    .heroes a:hover {
+    	color: #2c3a41;
+    	background-color: #e6e6e6;
+    }
+
+    .heroes a:active {
+    	background-color: #525252;
+    	color: #fafafa;
+    }
+
+    .heroes .selected a {
+    	background-color: #d6e6f7;
+    }
+
+    .heroes .selected a:hover {
+    	background-color: #bdd7f5;
+    }
+
+    .heroes .badge {
+    	padding: 0.5em 0.6em;
+    	color: white;
+    	background-color: #435b60;
+    	min-width: 16px;
+    	margin-right: 0.8em;
+    	border-radius: 4px 0 0 4px;
+    }
+    ```
+
+=== "hero-list.component.html"
+
+    ```html
+    <h2>Heroes</h2>
+    <ul class="heroes">
+    	<li
+    		*ngFor="let hero of heroes$ | async"
+    		[class.selected]="hero.id === selectedId"
+    	>
+    		<a [routerLink]="['/hero', hero.id]">
+    			<span class="badge">{{ hero.id }}</span>{{
+    			hero.name }}
+    		</a>
+    	</li>
+    </ul>
+
+    <button type="button" routerLink="/sidekicks">
+    	Go to sidekicks
+    </button>
+    ```
+
+=== "hero-list.component.ts"
+
+    ```ts
+    // TODO: Feature Componetized like CrisisCenter
+    import { Observable } from 'rxjs';
+    import { switchMap } from 'rxjs/operators';
+    import { Component, OnInit } from '@angular/core';
+    import { ActivatedRoute } from '@angular/router';
+
+    import { HeroService } from '../hero.service';
+    import { Hero } from '../hero';
+
+    @Component({
+    	selector: 'app-hero-list',
+    	templateUrl: './hero-list.component.html',
+    	styleUrls: ['./hero-list.component.css'],
+    })
+    export class HeroListComponent implements OnInit {
+    	heroes$!: Observable<Hero[]>;
+    	selectedId = 0;
+
+    	constructor(
+    		private service: HeroService,
+    		private route: ActivatedRoute
+    	) {}
+
+    	ngOnInit() {
+    		this.heroes$ = this.route.paramMap.pipe(
+    			switchMap((params) => {
+    				this.selectedId = parseInt(
+    					params.get('id')!,
+    					10
+    				);
+    				return this.service.getHeroes();
+    			})
+    		);
+    	}
+    }
+    ```
+
+=== "hero-detail.component.html"
+
+    ```html
+    <h2>Heroes</h2>
+    <div *ngIf="hero$ | async as hero">
+    	<h3>{{ hero.name }}</h3>
+    	<p>Id: {{ hero.id }}</p>
+    	<label for="hero-name">Hero name: </label>
+    	<input
+    		type="text"
+    		id="hero-name"
+    		[(ngModel)]="hero.name"
+    		placeholder="name"
+    	/>
+    	<button type="button" (click)="gotoHeroes(hero)">
+    		Back
+    	</button>
+    </div>
+    ```
+
+=== "hero-detail.component.ts"
+
+    ```ts
+    import { switchMap } from 'rxjs/operators';
+    import { Component, OnInit } from '@angular/core';
+    import {
+    	Router,
+    	ActivatedRoute,
+    	ParamMap,
+    } from '@angular/router';
+    import { Observable } from 'rxjs';
+
+    import { HeroService } from '../hero.service';
+    import { Hero } from '../hero';
+
+    @Component({
+    	selector: 'app-hero-detail',
+    	templateUrl: './hero-detail.component.html',
+    	styleUrls: ['./hero-detail.component.css'],
+    })
+    export class HeroDetailComponent implements OnInit {
+    	hero$!: Observable<Hero>;
+
+    	constructor(
+    		private route: ActivatedRoute,
+    		private router: Router,
+    		private service: HeroService
+    	) {}
+
+    	ngOnInit() {
+    		this.hero$ = this.route.paramMap.pipe(
+    			switchMap((params: ParamMap) =>
+    				this.service.getHero(params.get('id')!)
+    			)
+    		);
+    	}
+
+    	gotoHeroes(hero: Hero) {
+    		const heroId = hero ? hero.id : null;
+    		// Pass along the hero id if available
+    		// so that the HeroList component can select that hero.
+    		// Include a junk 'foo' property for fun.
+    		this.router.navigate([
+    			'/heroes',
+    			{ id: heroId, foo: 'foo' },
+    		]);
+    	}
+    }
+    ```
+
+=== "hero.service.ts"
+
+    ```ts
+    import { Injectable } from '@angular/core';
+
+    import { Observable, of } from 'rxjs';
+    import { map } from 'rxjs/operators';
+
+    import { Hero } from './hero';
+    import { HEROES } from './mock-heroes';
+    import { MessageService } from '../message.service';
+
+    @Injectable({
+    	providedIn: 'root',
+    })
+    export class HeroService {
+    	constructor(private messageService: MessageService) {}
+
+    	getHeroes(): Observable<Hero[]> {
+    		// TODO: send the message _after_ fetching the heroes
+    		this.messageService.add(
+    			'HeroService: fetched heroes'
+    		);
+    		return of(HEROES);
+    	}
+
+    	getHero(id: number | string) {
+    		return this.getHeroes().pipe(
+    			// (+) before `id` turns the string into a number
+    			map(
+    				(heroes: Hero[]) =>
+    					heroes.find((hero) => hero.id === +id)!
+    			)
+    		);
+    	}
+    }
+    ```
+
+=== "heroes.module.ts"
+
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { CommonModule } from '@angular/common';
+    import { FormsModule } from '@angular/forms';
+
+    import { HeroListComponent } from './hero-list/hero-list.component';
+    import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+
+    import { HeroesRoutingModule } from './heroes-routing.module';
+
+    @NgModule({
+    	imports: [
+    		CommonModule,
+    		FormsModule,
+    		HeroesRoutingModule,
+    	],
+    	declarations: [HeroListComponent, HeroDetailComponent],
+    })
+    export class HeroesModule {}
+    ```
+
+=== "heroes-routing.module.ts"
+
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { RouterModule, Routes } from '@angular/router';
+
+    import { HeroListComponent } from './hero-list/hero-list.component';
+    import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+
+    const heroesRoutes: Routes = [
+    	{
+    		path: 'heroes',
+    		component: HeroListComponent,
+    		data: { animation: 'heroes' },
+    	},
+    	{
+    		path: 'hero/:id',
+    		component: HeroDetailComponent,
+    		data: { animation: 'hero' },
+    	},
+    ];
+
+    @NgModule({
+    	imports: [RouterModule.forChild(heroesRoutes)],
+    	exports: [RouterModule],
+    })
+    export class HeroesRoutingModule {}
+    ```
+
+=== "message.service.ts"
+
+    ```ts
+    import { Injectable } from '@angular/core';
+
+    @Injectable({
+    	providedIn: 'root',
+    })
+    export class MessageService {
+    	messages: string[] = [];
+
+    	add(message: string) {
+    		this.messages.push(message);
+    	}
+
+    	clear() {
+    		this.messages = [];
+    	}
+    }
+    ```
+
+## Веха 4: Функция кризисного центра {: #milestone-4}
 
 В этом разделе показано, как добавлять дочерние маршруты и использовать относительную маршрутизацию в вашем приложении.
 
 Чтобы добавить дополнительные возможности к текущему кризисному центру приложения, проделайте те же шаги, что и для функции героев:
 
 -   Создайте подпапку `crisis-center` в папке `src/app`.
-
 -   Скопируйте файлы и папки из папки `app/heroes` в новую папку `crisis-center`.
-
 -   В новых файлах измените все упоминания "героя" на "кризис", а "героев" на "кризисы".
-
 -   Переименуйте файлы NgModule в `crisis-center.module.ts` и `crisis-center-routing.module.ts`.
 
 Используйте имитацию кризисов вместо имитации героев:
 
-<code-example header="src/app/crisis-center/mock-crises.ts" path="router/src/app/crisis-center/mock-crises.ts"></code-example>.
+```ts
+import { Crisis } from './crisis';
+
+export const CRISES: Crisis[] = [
+    { id: 1, name: 'Dragon Burning Cities' },
+    { id: 2, name: 'Sky Rains Great White Sharks' },
+    { id: 3, name: 'Giant Asteroid Heading For Earth' },
+    {
+        id: 4,
+        name: 'Procrastinators Meeting Delayed Again',
+    },
+];
+```
 
 Получившийся кризисный центр является основой для введения новой концепции &mdash; дочерней маршрутизации. Вы можете оставить Heroes в его текущем состоянии в качестве контраста с Кризисным центром.
 
-<div class="alert is-helpful">
+!!!note ""
 
-В соответствии с принципом [Separation of Concerns](https://blog.8thlight.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html 'Separation of Concerns'), изменения в Кризисном центре не влияют на `AppModule` или любой другой компонент функции.
+    В соответствии с принципом [Separation of Concerns](https://blog.8thlight.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html 'Separation of Concerns'), изменения в Кризисном центре не влияют на `AppModule` или любой другой компонент функции.
 
-</div>
-
-<a id="crisis-child-routes"></a>
-
-### Кризисный центр с дочерними маршрутами
+### Кризисный центр с дочерними маршрутами {: #crisis-child-routes}
 
 В этом разделе показано, как организовать кризисный центр в соответствии со следующим рекомендуемым шаблоном для приложений Angular:
 
 -   Каждая область функций находится в своей собственной папке.
-
 -   Каждая функция имеет свой модуль функции Angular
-
 -   Каждая область имеет свой корневой компонент области
-
 -   Каждый корневой компонент области имеет свой собственный выход маршрутизатора и дочерние маршруты.
-
--   Маршруты областей функций редко \(если вообще когда-либо\) пересекаются с маршрутами других функций.
+-   Маршруты областей функций редко (если вообще когда-либо) пересекаются с маршрутами других функций.
 
 Если в вашем приложении много областей функций, деревья компонентов могут состоять из множества компонентов для этих функций, каждый из которых имеет ответвления от других, связанных с ним компонентов.
 
-<a id="child-routing-component"></a>
-
-### Дочерний компонент маршрутизации
+### Дочерний компонент маршрутизации {: #child-routing-component}
 
 Создайте компонент `CrisisCenter` в папке `crisis-center`:
 
-<code-example format="shell" language="shell">
-
+```
 ng generate component crisis-center/crisis-center
-
-</code-example>
+```
 
 Обновите шаблон компонента с помощью следующей разметки:
 
-<code-example header="src/app/crisis-center/crisis-center/crisis-center.component.html" path="router/src/app/crisis-center/crisis-center/crisis-center.component.html"></code-example>.
+```html
+<h2>Crisis Center</h2>
+<router-outlet></router-outlet>
+```
 
 Компонент `CrisisCenterComponent` имеет следующее общее с `AppComponent`:
 
 -   Он является корнем области кризисного центра, так же как `AppComponent` является корнем всего приложения.
-
 -   Это оболочка для области функций кризисного управления, так же как `AppComponent` является оболочкой для управления рабочим процессом высокого уровня.
 
 Как и большинство оболочек, класс `CrisisCenterComponent` является минимальным, поскольку в нем нет бизнес-логики, а в его шаблоне нет ссылок, только заголовок и `<router-outlet>` для дочернего компонента кризисного центра.
 
-<a id="child-route-config"></a>
-
-### Конфигурация дочернего маршрута
+### Конфигурация дочернего маршрута {: #child-route-config}
 
 В качестве главной страницы для функции "Кризисный центр" создайте компонент `CrisisCenterHome` в папке `crisis-center`.
 
-<code-example format="shell" language="shell">
-
+```
 ng generate component crisis-center/crisis-center-home
-
-</code-example>
+```
 
 Обновите шаблон с приветственным сообщением для `Кризисного центра`.
 
-<code-example header="src/app/crisis-center/crisis-center-home/crisis-center-home.component.html" path="router/src/app/crisis-center/crisis-center-home/crisis-center-home.component.html"></code-example>.
+```html
+<h3>Welcome to the Crisis Center</h3>
+```
 
 Обновите `crisis-center-routing.module.ts`, который вы переименовали после копирования из файла `heroes-routing.module.ts`. На этот раз вы определяете дочерние маршруты внутри родительского маршрута `crisis-center`.
 
-<code-example header="src/app/crisis-center/crisis-center-routing.module.ts (Routes)" path="router/src/app/crisis-center/crisis-center-routing.module.1.ts" region="routes"></code-example>.
+```ts
+const crisisCenterRoutes: Routes = [
+    {
+        path: 'crisis-center',
+        component: CrisisCenterComponent,
+        children: [
+            {
+                path: '',
+                component: CrisisListComponent,
+                children: [
+                    {
+                        path: ':id',
+                        component: CrisisDetailComponent,
+                    },
+                    {
+                        path: '',
+                        component: CrisisCenterHomeComponent,
+                    },
+                ],
+            },
+        ],
+    },
+];
+```
 
 Обратите внимание, что родительский маршрут `crisis-center` имеет свойство `children` с единственным маршрутом, содержащим `CrisisListComponent`. Маршрут `CrisisListComponent` также имеет массив `children` с двумя маршрутами.
 
@@ -1315,48 +2001,152 @@ ng generate component crisis-center/crisis-center-home
 
 Примените эту логику к навигации внутри кризисного центра, для которого родительский путь - `/crisis-center`.
 
--   Чтобы перейти к компоненту `CrisisCenterHomeComponent`, полный URL будет `/crisis-center` \(`/crisis-center` + `''` + `''`\)
-
--   Чтобы перейти к компоненту `CrisisDetailComponent` для кризиса с `id=2`, полный URL будет `/crisisis-center/2` \(`/crisisis-center` + `''` + `'/2'`\)
+-   Чтобы перейти к компоненту `CrisisCenterHomeComponent`, полный URL будет `/crisis-center` (`/crisis-center` + `''` + `''`)
+-   Чтобы перейти к компоненту `CrisisDetailComponent` для кризиса с `id=2`, полный URL будет `/crisisis-center/2` (`/crisisis-center` + `''` + `'/2'`)
 
 Абсолютный URL для последнего примера, включая `localhost`, выглядит следующим образом:
 
-<code-example>
-
+```
 localhost:4200/crisis-center/2
-
-</code-example>
+```
 
 Вот полный файл `crisis-center-routing.module.ts` с его импортами.
 
-<code-example header="src/app/crisis-center/crisis-center-routing.module.ts (excerpt)" path="router/src/app/crisis-center/crisis-center-routing.module.1.ts"></code-example>.
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-<a id="import-crisis-module"></a>
+import { CrisisCenterHomeComponent } from './crisis-center-home/crisis-center-home.component';
+import { CrisisListComponent } from './crisis-list/crisis-list.component';
+import { CrisisCenterComponent } from './crisis-center/crisis-center.component';
+import { CrisisDetailComponent } from './crisis-detail/crisis-detail.component';
 
-### Импортируйте модуль кризисного центра в маршруты `AppModule`.
+const crisisCenterRoutes: Routes = [
+    {
+        path: 'crisis-center',
+        component: CrisisCenterComponent,
+        children: [
+            {
+                path: '',
+                component: CrisisListComponent,
+                children: [
+                    {
+                        path: ':id',
+                        component: CrisisDetailComponent,
+                    },
+                    {
+                        path: '',
+                        component: CrisisCenterHomeComponent,
+                    },
+                ],
+            },
+        ],
+    },
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(crisisCenterRoutes)],
+    exports: [RouterModule],
+})
+export class CrisisCenterRoutingModule {}
+```
+
+### Импортируйте модуль кризисного центра в маршруты `AppModule` {: #import-crisis-module}
 
 Как и в случае с `HeroesModule`, вы должны добавить `CrisisCenterModule` в массив `imports` `AppModule` _перед_ `AppRoutingModule`:
 
-<code-tabs> <code-pane header="src/app/crisis-center/crisis-center.module.ts" path="router/src/app/crisis-center/crisis-center.module.ts"></code-pane>
-<code-pane header="src/app/app.module.ts (import CrisisCenterModule)" path="router/src/app/app.module.4.ts" region="crisis-center-module"></code-pane>
-</code-tabs>
+=== "src/app/crisis-center/crisis-center.module.ts"
 
-<div class="alert is-helpful">
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    import { CommonModule } from '@angular/common';
 
-Порядок импорта модулей важен, поскольку порядок маршрутов, определенных в модулях, влияет на согласование маршрутов. Если бы `AppModule` был импортирован первым, его маршрут с подстановочным знаком \(`путь: '**'`\) имел бы приоритет над маршрутами, определенными в `CrisisCenterModule`.
-Для получения дополнительной информации смотрите раздел [порядок маршрутов](guide/router#route-order).
+    import { CrisisCenterHomeComponent } from './crisis-center-home/crisis-center-home.component';
+    import { CrisisListComponent } from './crisis-list/crisis-list.component';
+    import { CrisisCenterComponent } from './crisis-center/crisis-center.component';
+    import { CrisisDetailComponent } from './crisis-detail/crisis-detail.component';
 
-</div>
+    import { CrisisCenterRoutingModule } from './crisis-center-routing.module';
+
+    @NgModule({
+    	imports: [
+    		CommonModule,
+    		FormsModule,
+    		CrisisCenterRoutingModule,
+    	],
+    	declarations: [
+    		CrisisCenterComponent,
+    		CrisisListComponent,
+    		CrisisCenterHomeComponent,
+    		CrisisDetailComponent,
+    	],
+    })
+    export class CrisisCenterModule {}
+    ```
+
+=== "src/app/app.module.ts (import CrisisCenterModule)"
+
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { CommonModule } from '@angular/common';
+    import { FormsModule } from '@angular/forms';
+
+    import { AppComponent } from './app.component';
+    import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+    import { ComposeMessageComponent } from './compose-message/compose-message.component';
+
+    import { AppRoutingModule } from './app-routing.module';
+    import { HeroesModule } from './heroes/heroes.module';
+    import { CrisisCenterModule } from './crisis-center/crisis-center.module';
+
+    @NgModule({
+    	imports: [
+    		CommonModule,
+    		FormsModule,
+    		HeroesModule,
+    		CrisisCenterModule,
+    		AppRoutingModule,
+    	],
+    	declarations: [AppComponent, PageNotFoundComponent],
+    	bootstrap: [AppComponent],
+    })
+    export class AppModule {}
+    ```
+
+!!!note ""
+
+    Порядок импорта модулей важен, поскольку порядок маршрутов, определенных в модулях, влияет на согласование маршрутов. Если бы `AppModule` был импортирован первым, его маршрут с подстановочным знаком (`путь: '**'`) имел бы приоритет над маршрутами, определенными в `CrisisCenterModule`.
+    Для получения дополнительной информации смотрите раздел [порядок маршрутов](router.md#route-order).
 
 Удалите начальный маршрут кризисного центра из файла `app-routing.module.ts`, поскольку теперь модули `HeroesModule` и `CrisisCenter` предоставляют функциональные маршруты.
 
 Файл `app-routing.module.ts` сохраняет маршруты верхнего уровня приложения, такие как маршруты по умолчанию и маршруты подстановочных знаков.
 
-<code-example header="src/app/app-routing.module.ts (v3)" path="router/src/app/app-routing.module.3.ts" region="v3"></code-example>
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-<a id="relative-navigation"></a>
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-### Относительная навигация
+const appRoutes: Routes = [
+    { path: '', redirectTo: '/heroes', pathMatch: 'full' },
+    { path: '**', component: PageNotFoundComponent },
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forRoot(
+            appRoutes,
+            { enableTracing: true } // <-- debugging purposes only
+        ),
+    ],
+    exports: [RouterModule],
+})
+export class AppRoutingModule {}
+```
+
+### Относительная навигация {: #relative-navigation}
 
 При создании функции кризисного центра вы перешли к маршруту подробной информации о кризисе, используя абсолютный путь, начинающийся со слэша.
 
@@ -1366,35 +2156,26 @@ localhost:4200/crisis-center/2
 
 Вы можете освободить ссылки от этой зависимости, определив пути, относительные к текущему сегменту URL. Навигация в области функции остается нетронутой, даже если вы измените путь родительского маршрута к функции.
 
-<div class="alert is-helpful">
+!!!note ""
 
-The router supports directory-like syntax in a _link parameters list_ to help guide route name lookup:
+    Маршрутизатор поддерживает синтаксис, подобный каталогу, в списке параметров _ссылки_, чтобы помочь в поиске имени маршрута:
 
-| Directory-like syntax | Details | |:--- |:--- |
+    | Синтаксис, подобный директории | Подробности                             |
+    | :----------------------------- | :-------------------------------------- |
+    | `./` без ведущей косой черты   | Относительно текущего уровня.           |
+    | `../`                          | На один уровень вверх по пути маршрута. |
 
-| `./` <br /> `no leading slash` | Relative to the current level. |
-
-| `../` | Up one level in the route path. |
-
-You can combine relative navigation syntax with an ancestor path. If you must navigate to a sibling route, you could use the `../<sibling>` convention to go up
-
-one level, then over and down the sibling route path.
-
-</div>
+    Можно комбинировать синтаксис относительной навигации и путь предка. Если вам нужно перейти к родственному маршруту, вы можете использовать соглашение `../<sibling>` для перехода на один уровень вверх, затем на другой и вниз по маршруту родственника.
 
 Чтобы перейти по относительному пути с помощью метода `Router.navigate`, вы должны предоставить `ActivatedRoute`, чтобы маршрутизатор знал, где вы находитесь в текущем дереве маршрутов.
 
 После массива _параметров ссылки_ добавьте объект со свойством `relativeTo`, установленным на `ActivatedRoute`. После этого маршрутизатор вычисляет целевой URL, основываясь на местоположении активного маршрута.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Всегда указывайте полный абсолютный путь при вызове метода маршрутизатора `navigateByUrl()`.
+    Всегда указывайте полный абсолютный путь при вызове метода маршрутизатора `navigateByUrl()`.
 
-</div>
-
-<a id="nav-to-crisis"></a>
-
-### Переход к списку кризисов с помощью относительного URL-адреса
+### Переход к списку кризисов с помощью относительного URL-адреса {: #nav-to-crisis}
 
 Вы уже ввели `ActivatedRoute`, который необходим для составления относительного пути навигации.
 
@@ -1402,13 +2183,17 @@ one level, then over and down the sibling route path.
 
 Обновите метод `gotoCrises()` компонента `CrisisDetailComponent` для перехода обратно к списку кризисных центров, используя навигацию по относительному пути.
 
-<code-example header="src/app/crisis-center/crisis-detail/crisis-detail.component.ts (относительная навигация)" path="router/src/app/crisis-center/crisis-detail/crisis-detail.component.ts" region="gotoCrises-navigate"></code-example>.
+```ts
+// Relative navigation back to the crises
+this.router.navigate(
+    ['../', { id: crisisId, foo: 'foo' }],
+    { relativeTo: this.route }
+);
+```
 
 Обратите внимание, что путь поднимается на уровень вверх, используя синтаксис `../`. Если текущий кризис `id` равен `3`, то путь обратно к списку кризисов будет `/crisis-center/;id=3;foo=foo`.
 
-<a id="named-outlets"></a>
-
-### Отображение нескольких маршрутов в именованных торговых точках
+### Отображение нескольких маршрутов в именованных торговых точках {: #named-outlets}
 
 Вы решили предоставить пользователям возможность связаться с кризисным центром. Когда пользователь нажимает кнопку "Связаться", вы хотите отобразить сообщение во всплывающем окне.
 
@@ -1422,114 +2207,178 @@ one level, then over and down the sibling route path.
 
 Добавьте аутлет с именем "popup" в `AppComponent`, непосредственно за неименованным аутлетом.
 
-<code-example header="src/app/app.component.html (outlets)" path="router/src/app/app.component.4.html" region="outlets"></code-example>.
+```html
+<div [@routeAnimation]="getAnimationData()">
+    <router-outlet></router-outlet>
+</div>
+<router-outlet name="popup"></router-outlet>
+```
 
 Вот куда попадает всплывающее окно, как только вы узнаете, как направить к нему всплывающий компонент.
 
-<a id="secondary-routes"></a>
-
-#### Вторичные маршруты
+#### Вторичные маршруты {: #secondary-routes}
 
 Именованные розетки являются целями _вторичных маршрутов_.
 
 Вторичные маршруты похожи на первичные, и вы настраиваете их таким же образом. Они отличаются по нескольким ключевым параметрам.
 
 -   Они независимы друг от друга
-
 -   Они работают в комбинации с другими маршрутами
-
 -   Они отображаются в именованных точках.
 
 Создайте новый компонент для составления сообщения.
 
-<code-example format="shell" language="shell">
-
+```
 ng generate component compose-message
-
-</code-example>
+```
 
 Он отображает короткую форму с заголовком, полем ввода для сообщения и двумя кнопками "Отправить" и "Отмена".
 
-<div class="lightbox">
-
-<img alt="Contact textarea with send and cancel buttons" src="generated/images/guide/router/contact-form.png">
-
-</div>
+![Контактная текстовая область с кнопками отправки и отмены](contact-form.png)
 
 Вот компонент, его шаблон и стили:
 
-<code-tabs> <code-pane header="src/app/compose-message/compose-message.component.html" path="router/src/app/compose-message/compose-message.component.html"></code-pane>
-<code-pane header="src/app/compose-message/compose-message.component.ts" path="router/src/app/compose-message/compose-message.component.ts"></code-pane>
-<code-pane header="src/app/compose-message/compose-message.component.css" path="router/src/app/compose-message/compose-message.component.css"></code-pane>
-</code-tabs>
+=== "src/app/compose-message/compose-message.component.html"
+
+    ```html
+    <h3>Contact Crisis Center</h3>
+    <div *ngIf="details">{{ details }}</div>
+    <div>
+    	<div>
+    		<label for="message">Enter your message: </label>
+    	</div>
+    	<div>
+    		<textarea
+    			id="message"
+    			[(ngModel)]="message"
+    			rows="10"
+    			cols="35"
+    			[disabled]="sending"
+    		></textarea>
+    	</div>
+    </div>
+    <p *ngIf="!sending">
+    	<button type="button" (click)="send()">Send</button>
+    	<button type="button" (click)="cancel()">Cancel</button>
+    </p>
+    ```
+
+=== "src/app/compose-message/compose-message.component.ts"
+
+    ```ts
+    import { Component } from '@angular/core';
+    import { Router } from '@angular/router';
+
+    @Component({
+    	selector: 'app-compose-message',
+    	templateUrl: './compose-message.component.html',
+    	styleUrls: ['./compose-message.component.css'],
+    })
+    export class ComposeMessageComponent {
+    	details = '';
+    	message = '';
+    	sending = false;
+
+    	constructor(private router: Router) {}
+
+    	send() {
+    		this.sending = true;
+    		this.details = 'Sending Message...';
+
+    		setTimeout(() => {
+    			this.sending = false;
+    			this.closePopup();
+    		}, 1000);
+    	}
+
+    	cancel() {
+    		this.closePopup();
+    	}
+
+    	closePopup() {
+    		// Providing a `null` value to the named outlet
+    		// clears the contents of the named outlet
+    		this.router.navigate([
+    			{ outlets: { popup: null } },
+    		]);
+    	}
+    }
+    ```
+
+== "src/app/compose-message/compose-message.component.css"
+
+    ```css
+    textarea {
+    	width: 100%;
+    	margin-top: 1rem;
+    	font-size: 1.2rem;
+    	box-sizing: border-box;
+    }
+    ```
 
 Он выглядит так же, как и любой другой компонент в этом руководстве, но есть два ключевых отличия.
 
-<div class="alert is-helpful">
+!!!note ""
 
-**NOTE**: <br /> The `send()` method simulates latency by waiting a second before "sending" the message and closing the popup.
+    Метод `send()` имитирует задержку, ожидая секунду перед "отправкой" сообщения и закрытием всплывающего окна.
 
-</div>
+Метод `closePopup()` закрывает всплывающее представление, переходя к выходу из всплывающего окна с помощью `null`, о чем говорится в разделе [очистка вторичных маршрутов](#clear-secondary-routes).
 
-Метод `closePopup()` закрывает всплывающее представление, переходя к выходу из всплывающего окна с помощью `null`, о чем говорится в разделе [очистка вторичных маршрутов] (#clear-secondary-routes).
-
-<a id="add-secondary-route"></a>
-
-#### Добавление вторичного маршрута
+#### Добавление вторичного маршрута {: #add-secondary-route}
 
 Откройте модуль `AppRoutingModule` и добавьте новый маршрут `compose` в `appRoutes`.
 
-<code-example header="src/app/app-routing.module.ts (compose route)" path="router/src/app/app-routing.module.3.ts" region="compose"></code-example>.
+```ts
+{
+  path: 'compose',
+  component: ComposeMessageComponent,
+  outlet: 'popup'
+},
+```
 
 В дополнение к свойствам `path` и `component`, есть новое свойство `outlet`, которое установлено в `'popup'`. Теперь этот маршрут нацелен на всплывающий аутлет, и компонент `ComposeMessageComponent` будет отображаться там.
 
 Чтобы дать пользователям возможность открыть всплывающее окно, добавьте ссылку "Contact" в шаблон `AppComponent`.
 
-<code-example header="src/app/app.component.html (contact-link)" path="router/src/app/app/app.component.4.html" region="contact-link"></code-example>.
+```html
+<a [routerLink]="[{ outlets: { popup: ['compose'] } }]"
+    >Contact</a
+>
+```
 
 Хотя маршрут `compose` настроен на аутлет "popup", этого недостаточно для подключения маршрута к директиве `RouterLink`. Вы должны указать именованный аутлет в массиве _параметров ссылки_ и связать его с `RouterLink` с помощью привязки свойств.
 
-Массив _параметров ссылки_ содержит объект с одним свойством `outlets`, значением которого является другой объект, ключом которого является одно\(или более\) имя розетки. В данном случае есть только свойство "popup" outlet, и его значением является другой массив _link parameters_, который определяет маршрут `compose`.
+Массив _параметров ссылки_ содержит объект с одним свойством `outlets`, значением которого является другой объект, ключом которого является одно (или более) имя розетки. В данном случае есть только свойство "popup" outlet, и его значением является другой массив _link parameters_, который определяет маршрут `compose`.
 
 Другими словами, когда пользователь нажимает на эту ссылку, маршрутизатор отображает компонент, связанный с маршрутом `compose` в аутлете `popup`.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Этот объект `outlets` внутри внешнего объекта был ненужным, когда существовал только один маршрут и один безымянный выход.
+    Этот объект `outlets` внутри внешнего объекта был ненужным, когда существовал только один маршрут и один безымянный выход.
 
-Маршрутизатор предположил, что ваша спецификация маршрута нацелена на безымянный первичный аутлет, и создал эти объекты для вас.
+    Маршрутизатор предположил, что ваша спецификация маршрута нацелена на безымянный первичный аутлет, и создал эти объекты для вас.
 
-Маршрутизация к именованной розетке выявила особенность маршрутизатора: вы можете нацелить несколько розеток несколькими маршрутами в одной директиве `RouterLink`.
+    Маршрутизация к именованной розетке выявила особенность маршрутизатора: вы можете нацелить несколько розеток несколькими маршрутами в одной директиве `RouterLink`.
 
-</div>
-
-<a id="secondary-route-navigation"></a>
-
-#### Вторичная навигация по маршруту: объединение маршрутов во время навигации
+#### Вторичная навигация по маршруту: объединение маршрутов во время навигации {: #secondary-route-navigation}
 
 Перейдите в _Кризисный центр_ и нажмите "Контакт". В адресной строке браузера вы должны увидеть что-то вроде следующего URL.
 
-<code-example format="http" language="http">
-
+```
 http://&hellip;/crisis-center(popup:compose)
-
-</code-example>
+```
 
 Соответствующая часть URL следует за `...`:
 
 -   `кризисный центр` является основной навигацией.
-
 -   Круглые скобки окружают вторичный маршрут
-
--   Вторичный маршрут состоит из названия выхода \(`popup`\), разделителя `colon` и пути вторичного маршрута \(`compose`\).
+-   Вторичный маршрут состоит из названия выхода (`popup`), разделителя `colon` и пути вторичного маршрута (`compose`).
 
 Нажмите на ссылку _Герои_ и снова посмотрите на URL.
 
-<code-example format="http" language="http">
-
+```
 http://&hellip;/heroes(popup:compose)
-
-</code-example>
+```
 
 Первичная навигационная часть изменилась; вторичный маршрут остался прежним.
 
@@ -1539,9 +2388,7 @@ http://&hellip;/heroes(popup:compose)
 
 Вы можете указать маршрутизатору на навигацию по всему дереву сразу, заполнив объект `outlets`, а затем передать этот объект внутри массива _параметров ссылок_ методу `router.navigate`.
 
-<a id="clear-secondary-routes"></a>
-
-#### Очистка вторичных маршрутов
+#### Очистка вторичных маршрутов {: #clear-secondary-routes}
 
 Как и обычные аутлеты, вторичные аутлеты сохраняются до тех пор, пока вы не перейдете к новому компоненту.
 
@@ -1551,7 +2398,13 @@ http://&hellip;/heroes(popup:compose)
 
 Снова метод `closePopup()`:
 
-<code-example header="src/app/compose-message/compose-message.component.ts (closePopup)" path="router/src/app/compose-message/compose-message.component.ts" region="closePopup"></code-example>.
+```ts
+closePopup() {
+  // Providing a `null` value to the named outlet
+  // clears the contents of the named outlet
+  this.router.navigate([{ outlets: { popup: null }}]);
+}
+```
 
 Нажатие на кнопки "отправить" или "отменить" очищает всплывающее окно. Функция `closePopup()` осуществляет императивную навигацию с помощью метода `Router.navigate()`, передавая массив [параметров ссылки](#link-parameters-array).
 
@@ -1563,39 +2416,29 @@ http://&hellip;/heroes(popup:compose)
 
 Установив для popup `RouterOutlet` значение `null`, очистите аутлет и удалите вторичный маршрут popup из текущего URL.
 
-<a id="охранники"></a> <a id="milestone-5-route-guards"></a>
-
-## Веха 5: Охрана маршрутов
+## Веха 5: Охрана маршрутов {: #milestone-5-route-guards}
 
 В настоящее время любой пользователь может перемещаться в любое место приложения в любое время, но иногда вам необходимо контролировать доступ к различным частям вашего приложения по различным причинам, некоторые из которых могут быть следующими:
 
 -   Возможно, пользователь не имеет права переходить к целевому компоненту.
-
--   Возможно, пользователь должен сначала войти в систему \(authenticate\)
-
+-   Возможно, пользователь должен сначала войти в систему (authenticate)
 -   Возможно, вам нужно получить некоторые данные перед отображением целевого компонента.
-
 -   Возможно, вы захотите сохранить изменения перед тем, как покинуть компонент.
-
 -   Вы можете спросить пользователя, можно ли отбросить ожидающие изменения, а не сохранять их.
 
 Для обработки этих сценариев в конфигурацию маршрута добавляются защитные функции.
 
 Возвращаемое значение охранника управляет поведением маршрутизатора:
 
-| Возвращаемое значение охранника | Подробности | | |:--- |:--- |
+| Возвращаемое значение | Подробности                                                                          |
+| :-------------------- | :----------------------------------------------------------------------------------- |
+| `true`                | Процесс навигации продолжается                                                       |
+| `false`               | Процесс навигации останавливается, и пользователь остается на месте                  |
+| `UrlTree`             | Текущая навигация отменяется и начинается новая навигация к возвращенному `UrlTree`. |
 
-| `true` | Процесс навигации продолжается |
+!!!note "Примечание"
 
-| `false` | Процесс навигации останавливается, и пользователь остается на месте |
-
-| `UrlTree` | Текущая навигация отменяется и начинается новая навигация к возвращенному `UrlTree`.
-
-<div class="alert is-helpful">
-
-**Примечание:** Guard также может указать маршрутизатору перейти в другое место, фактически отменяя текущую навигацию. Если это делается внутри guard, то guard должен возвращать `UrlTree`.
-
-</div>
+    Guard также может указать маршрутизатору перейти в другое место, фактически отменяя текущую навигацию. Если это делается внутри `guard`, то guard должен возвращать `UrlTree`.
 
 Охранник может вернуть свой булев ответ синхронно. Но во многих случаях охранник не может выдать ответ синхронно.
 Страж может задать вопрос пользователю, сохранить изменения на сервере или получить свежие данные.
@@ -1604,25 +2447,19 @@ http://&hellip;/heroes(popup:compose)
 
 Соответственно, страж маршрутизации может возвращать `Observable<boolean>` или `Promise<boolean>`, а маршрутизатор будет ждать, пока наблюдаемая или обещание разрешатся в `true` или `false`.
 
-<div class="alert is-helpful">
+!!!note ""
 
-**NOTE**: <br /> The observable provided to the `Router` automatically completes after it retrieves the first value.
-
-</div>
+    Наблюдаемая, предоставленная `Router`, автоматически завершается после получения первого значения.
 
 Маршрутизатор поддерживает несколько методов охраны:
 
-| Интерфейсы охраны | Подробности | | |:--- |:--- |:--- |
-
-| [`canActivate`](api/router/CanActivateFn) | Для опосредованной навигации _к_ маршруту |
-
-| [`canActivateChild`](api/router/CanActivateChildFn) | Для опосредования навигации _к_ дочернему маршруту |
-
-| [`canDeactivate`](api/router/CanDeactivateFn) | Для опосредованной навигации _в сторону_ от текущего маршрута | |
-
-| [`resolve`](api/router/ResolveFn) | Для выполнения поиска данных маршрута _до_ активации маршрута | |
-
-| [`canMatch`](api/router/CanMatchFn) | Чтобы контролировать, должен ли вообще использоваться `маршрут`, даже если `путь` соответствует сегменту URL |.
+| Интерфейсы охраны                                                      | Подробности                                                                                                  |
+| :--------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------- |
+| [`canActivate`](https://angular.io/api/router/CanActivateFn)           | Для опосредованной навигации _к_ маршруту                                                                    |
+| [`canActivateChild`](https://angular.io/api/router/CanActivateChildFn) | Для опосредования навигации _к_ дочернему маршруту                                                           |
+| [`canDeactivate`](https://angular.io/api/router/CanDeactivateFn)       | Для опосредованной навигации _в сторону_ от текущего маршрута                                                |
+| [`resolve`](https://angular.io/api/router/ResolveFn)                   | Для выполнения поиска данных маршрута _до_ активации маршрута                                                |
+| [`canMatch`](https://angular.io/api/router/CanMatchFn)                 | Чтобы контролировать, должен ли вообще использоваться `маршрут`, даже если `путь` соответствует сегменту URL |
 
 Вы можете иметь несколько защит на каждом уровне иерархии маршрутизации. Сначала маршрутизатор проверяет защиту `canDeactivate`, начиная с самого глубокого дочернего маршрута и заканчивая самым верхним.
 
@@ -1636,9 +2473,7 @@ http://&hellip;/heroes(popup:compose)
 
 В следующих разделах будет приведено несколько примеров.
 
-<a id="can-activate-guard"></a>
-
-### `canActivate`: требование аутентификации
+### `canActivate`: требование аутентификации {: #can-activate-guard}
 
 Приложения часто ограничивают доступ к области функций в зависимости от того, кем является пользователь. Вы можете разрешить доступ только аутентифицированным пользователям или пользователям с определенной ролью.
 
@@ -1652,148 +2487,242 @@ http://&hellip;/heroes(popup:compose)
 
 Создайте папку `admin` с файлом функционального модуля и файлом конфигурации маршрутизации.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate module admin --routing
-
-</code-example>
+```
 
 Затем создайте вспомогательные компоненты.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate component admin/admin-dashboard
+```
 
-</code-example>
-
-<code-example format="shell" language="shell">
-
+```shell
 ng generate component admin/admin
+```
 
-</code-example>
-
-<code-example format="shell" language="shell">
-
+```shell
 ng generate component admin/manage-crises
+```
 
-</code-example>
-
-<code-example format="shell" language="shell">
-
+```shell
 ng generate component admin/manage-heroes
-
-</code-example>
+```
 
 Структура файла функции администратора выглядит следующим образом:
 
-<div class="filetree">   <div class="file">
-    src/app/admin
-  </div>
-  <div class="children">
-    <div class="file">
-      admin
-    </div>
-      <div class="children">
-        <div class="file">
-          admin.component.css
-        </div>
-        <div class="file">
-          admin.component.html
-        </div>
-        <div class="file">
-          admin.component.ts
-        </div>
-      </div>
-    <div class="file">
-      admin-dashboard
-    </div>
-      <div class="children">
-        <div class="file">
-          admin-dashboard.component.css
-        </div>
-        <div class="file">
-          admin-dashboard.component.html
-        </div>
-        <div class="file">
-          admin-dashboard.component.ts
-        </div>
-      </div>
-    <div class="file">
-      manage-crises
-    </div>
-      <div class="children">
-        <div class="file">
-          manage-crises.component.css
-        </div>
-        <div class="file">
-          manage-crises.component.html
-        </div>
-        <div class="file">
-          manage-crises.component.ts
-        </div>
-      </div>
-    <div class="file">
-      manage-heroes
-    </div>
-      <div class="children">
-        <div class="file">
-          manage-heroes.component.css
-        </div>
-        <div class="file">
-          manage-heroes.component.html
-        </div>
-        <div class="file">
-          manage-heroes.component.ts
-        </div>
-      </div>
-    <div class="file">
-      admin.module.ts
-    </div>
-    <div class="file">
-      admin-routing.module.ts
-    </div>
-  </div>
-</div>
+```
+src/app/admin
++- admin
+|  +- admin.component.css
+|  +- admin.component.html
+|  +- admin.component.ts
++- admin-dashboard
+|  +- admin-dashboard.component.css
+|  +- admin-dashboard.component.html
+|  +- admin-dashboard.component.ts
++- manage-crises
+|  +- manage-crises.component.css
+|  +- manage-crises.component.html
+|  +- manage-crises.component.ts
++- manage-heroes
+|  +- manage-heroes.component.css
+|  +- manage-heroes.component.html
+|  +- manage-heroes.component.ts
++- admin.module.ts
++- admin-routing.module.ts
+```
 
 Функциональный модуль администратора содержит `AdminComponent`, используемый для маршрутизации внутри функционального модуля, маршрут приборной панели и два незавершенных компонента для управления кризисами и героями.
 
-<code-tabs> <code-pane header="src/app/admin/admin/admin.component.html"  path="router/src/app/admin/admin/admin.component.html"></code-pane>
-<code-pane header="src/app/admin/admin-dashboard/admin-dashboard.component.html" path="router/src/app/admin/admin-dashboard/admin-dashboard.component.1.html"></code-pane>
-<code-pane header="src/app/admin/admin.module.ts" path="router/src/app/admin/admin.module.ts"></code-pane>
-<code-pane header="src/app/admin/manage-crises/manage-crises.component.html" path="router/src/app/admin/manage-crises/manage-crises.component.html"></code-pane>
-<code-pane header="src/app/admin/manage-heroes/manage-heroes.component.html"  path="router/src/app/admin/manage-heroes/manage-heroes.component.html"></code-pane>
-</code-tabs>
+=== "src/app/admin/admin/admin.component.html"
 
-<div class="alert is-helpful">
+    ```html
+    <h2>Admin</h2>
+    <nav>
+    	<a
+    		routerLink="./"
+    		routerLinkActive="active"
+    		[routerLinkActiveOptions]="{ exact: true }"
+    		ariaCurrentWhenActive="page"
+    		>Dashboard</a
+    	>
+    	<a
+    		routerLink="./crises"
+    		routerLinkActive="active"
+    		ariaCurrentWhenActive="page"
+    		>Manage Crises</a
+    	>
+    	<a
+    		routerLink="./heroes"
+    		routerLinkActive="active"
+    		ariaCurrentWhenActive="page"
+    		>Manage Heroes</a
+    	>
+    </nav>
+    <router-outlet></router-outlet>
+    ```
 
-Хотя ссылка `RouterLink` на приборную панель администратора содержит только относительную косую черту без дополнительного сегмента URL, она подходит к любому маршруту в области функций администратора. Вы хотите, чтобы ссылка `Dashboard` была активна только тогда, когда пользователь посещает этот маршрут.
-Добавление дополнительной привязки к `Dashboard` routerLink, `[routerLinkActiveOptions]="{ exact: true }"`, отмечает ссылку `./` как активную, когда пользователь переходит на URL `/admin`, а не при переходе на любой из дочерних маршрутов.
+=== "src/app/admin/admin-dashboard/admin-dashboard.component.html"
 
-</div>
+    ```html
+    <h3>Dashboard</h3>
+    ```
 
-<a id="component-less-route"></a>
+=== "src/app/admin/admin.module.ts"
 
-##### Маршрут без компонента: группировка маршрутов без компонента
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { CommonModule } from '@angular/common';
+
+    import { AdminComponent } from './admin/admin.component';
+    import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+    import { ManageCrisesComponent } from './manage-crises/manage-crises.component';
+    import { ManageHeroesComponent } from './manage-heroes/manage-heroes.component';
+
+    import { AdminRoutingModule } from './admin-routing.module';
+
+    @NgModule({
+    	imports: [CommonModule, AdminRoutingModule],
+    	declarations: [
+    		AdminComponent,
+    		AdminDashboardComponent,
+    		ManageCrisesComponent,
+    		ManageHeroesComponent,
+    	],
+    })
+    export class AdminModule {}
+    ```
+
+=== "src/app/admin/manage-crises/manage-crises.component.html"
+
+    ```html
+    <p>Manage your crises here</p>
+    ```
+
+=== "src/app/admin/manage-heroes/manage-heroes.component.html"
+
+    ```html
+    <p>Manage your heroes here</p>
+    ```
+
+!!!note ""
+
+    Хотя ссылка `RouterLink` на приборную панель администратора содержит только относительную косую черту без дополнительного сегмента URL, она подходит к любому маршруту в области функций администратора. Вы хотите, чтобы ссылка `Dashboard` была активна только тогда, когда пользователь посещает этот маршрут.
+    Добавление дополнительной привязки к `Dashboard` routerLink, `[routerLinkActiveOptions]="{ exact: true }"`, отмечает ссылку `./` как активную, когда пользователь переходит на URL `/admin`, а не при переходе на любой из дочерних маршрутов.
+
+##### Маршрут без компонента: группировка маршрутов без компонента {: #component-less-route}
 
 Начальная конфигурация маршрутизации администратора:
 
-<code-example header="src/app/admin/admin-routing.module.ts (admin routing)" path="router/src/app/admin/admin-routing.module.1.ts" region="admin-routes"></code-example>.
+```ts
+const adminRoutes: Routes = [
+    {
+        path: 'admin',
+        component: AdminComponent,
+        children: [
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'crises',
+                        component: ManageCrisesComponent,
+                    },
+                    {
+                        path: 'heroes',
+                        component: ManageHeroesComponent,
+                    },
+                    {
+                        path: '',
+                        component: AdminDashboardComponent,
+                    },
+                ],
+            },
+        ],
+    },
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(adminRoutes)],
+    exports: [RouterModule],
+})
+export class AdminRoutingModule {}
+```
 
 Дочерний маршрут под `AdminComponent` имеет свойство `path` и `children`, но он не использует `component`. Это определяет маршрут без компонента.
 
-Для группировки маршрутов управления `Кризисного центра` по пути `admin` компонент не нужен. Кроме того, маршрут _без компонента_ облегчает [охрану дочерних маршрутов] (#can-activate-child-guard).
+Для группировки маршрутов управления `Кризисного центра` по пути `admin` компонент не нужен. Кроме того, маршрут _без компонента_ облегчает [охрану дочерних маршрутов](#can-activate-child-guard).
 
 Далее импортируйте `AdminModule` в `app.module.ts` и добавьте его в массив `imports` для регистрации маршрутов администратора.
 
-<code-example header="src/app/app.module.ts (модуль администратора)" path="router/src/app/app.module.4.ts" region="admin-module"></code-example>.
+```ts
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ComposeMessageComponent } from './compose-message/compose-message.component';
+
+import { AppRoutingModule } from './app-routing.module';
+import { HeroesModule } from './heroes/heroes.module';
+import { CrisisCenterModule } from './crisis-center/crisis-center.module';
+
+import { AdminModule } from './admin/admin.module';
+
+@NgModule({
+    imports: [
+        CommonModule,
+        FormsModule,
+        HeroesModule,
+        CrisisCenterModule,
+        AdminModule,
+        AppRoutingModule,
+    ],
+    declarations: [
+        AppComponent,
+        ComposeMessageComponent,
+        PageNotFoundComponent,
+    ],
+    bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
 
 Добавьте ссылку "Admin" в оболочку `AppComponent`, чтобы пользователи могли получить доступ к этой функции.
 
-<code-example header="src/app/app.component.html (template)" path="router/src/app/app.component.5.html"></code-example>.
+```html
+<h1 class="title">Angular Router</h1>
+<nav>
+    <a
+        routerLink="/crisis-center"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Crisis Center</a
+    >
+    <a
+        routerLink="/heroes"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Heroes</a
+    >
+    <a
+        routerLink="/admin"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Admin</a
+    >
+    <a [routerLink]="[{ outlets: { popup: ['compose'] } }]"
+        >Contact</a
+    >
+</nav>
+<div [@routeAnimation]="getAnimationData()">
+    <router-outlet></router-outlet>
+</div>
+<router-outlet name="popup"></router-outlet>
+```
 
-<a id="guard-admin-feature"></a>
-
-#### Охрана функции администратора
+#### Охрана функции администратора {: #guard-admin-feature}
 
 В настоящее время каждый маршрут в Кризисном центре открыт для всех. Новая функция администратора должна быть доступна только для аутентифицированных пользователей.
 
@@ -1801,53 +2730,134 @@ ng generate component admin/manage-heroes
 
 Создайте новый файл с именем `auth.guard.ts` в папке `auth`. Файл `auth.guard.ts` будет содержать функцию `authGuard`.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate guard auth/auth
-
-</code-example>
+```
 
 Чтобы продемонстрировать основные принципы, в этом примере только регистрируется в консоли, немедленно возвращается `true` и разрешается продолжить навигацию:
 
-<code-example header="src/app/app/auth/auth.guard.ts (excerpt)" path="router/src/app/auth/auth.guard.1.ts"></code-example>.
+```ts
+export const authGuard = () => {
+    console.log('authGuard#canActivate called');
+    return true;
+};
+```
 
 Далее откройте `admin-routing.module.ts`, импортируйте функцию `authGuard` и обновите административный маршрут со свойством `canActivate` guard, которое ссылается на нее:
 
-<code-example header="src/app/admin/admin-routing.module.ts (охраняемый маршрут администратора)" path="router/src/app/admin/admin-routing.module.2.ts" region="admin-route"></code-example>.
+```ts
+import { authGuard } from '../auth/auth.guard';
+
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminComponent } from './admin/admin.component';
+import { ManageCrisesComponent } from './manage-crises/manage-crises.component';
+import { ManageHeroesComponent } from './manage-heroes/manage-heroes.component';
+
+const adminRoutes: Routes = [
+    {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [authGuard],
+
+        children: [
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'crises',
+                        component: ManageCrisesComponent,
+                    },
+                    {
+                        path: 'heroes',
+                        component: ManageHeroesComponent,
+                    },
+                    {
+                        path: '',
+                        component: AdminDashboardComponent,
+                    },
+                ],
+            },
+        ],
+    },
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(adminRoutes)],
+    exports: [RouterModule],
+})
+export class AdminRoutingModule {}
+```
 
 Функция администрирования теперь защищена стражем, но для полноценной работы стража требуется дополнительная настройка.
 
-<a id="teach-auth"></a>
-
-#### Аутентификация с помощью `authGuard`.
+#### Аутентификация с помощью `authGuard` {: #teach-auth}
 
 Сделайте `authGuard` имитирующим аутентификацию.
 
 `authGuard` должен вызывать прикладную службу, которая может регистрировать пользователя и сохранять информацию о текущем пользователе. Создайте новый `AuthService` в папке `auth`:
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate service auth/auth
-
-</code-example>
+```
 
 Обновите `AuthService` для входа пользователя в систему:
 
-<code-example header="src/app/app/auth/auth.service.ts (excerpt)" path="router/src/app/auth/auth.service.ts"></code-example>
+```ts
+import { Injectable } from '@angular/core';
+
+import { Observable, of } from 'rxjs';
+import { tap, delay } from 'rxjs/operators';
+
+@Injectable({
+    providedIn: 'root',
+})
+export class AuthService {
+    isLoggedIn = false;
+
+    // store the URL so we can redirect after logging in
+    redirectUrl: string | null = null;
+
+    login(): Observable<boolean> {
+        return of(true).pipe(
+            delay(1000),
+            tap(() => (this.isLoggedIn = true))
+        );
+    }
+
+    logout(): void {
+        this.isLoggedIn = false;
+    }
+}
+```
 
 Хотя он не выполняет вход в систему, у него есть флаг `isLoggedIn`, чтобы сообщить вам, аутентифицирован ли пользователь. Его метод `login()` имитирует вызов API к внешней службе, возвращая наблюдаемую, которая успешно разрешается после небольшой паузы.
 
 Свойство `redirectUrl` хранит URL, к которому хотел получить доступ пользователь, чтобы вы могли перейти к нему после аутентификации.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Чтобы сделать все минимальным, этот пример перенаправляет неаутентифицированных пользователей на `/admin`.
-
-</div>
+    Чтобы сделать все минимальным, этот пример перенаправляет неаутентифицированных пользователей на `/admin`.
 
 Пересмотрите `authGuard` для вызова `AuthService`.
 
-<code-example header="src/app/app/auth/auth.guard.ts (v2)" path="router/src/app/auth/auth.guard.2.ts"></code-example>
+```ts
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { AuthService } from './auth.service';
+
+export const authGuard = () => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
+
+    if (authService.isLoggedIn) {
+        return true;
+    }
+
+    // Redirect to the login page
+    return router.parseUrl('/login');
+};
+```
 
 Эта защита возвращает синхронный булев результат или `UrlTree`. Если пользователь вошел в систему, он возвращает `true` и навигация продолжается.
 
@@ -1855,31 +2865,146 @@ ng generate service auth/auth
 
 Возврат `UrlTree` указывает `Router` отменить текущую навигацию и запланировать новую для перенаправления пользователя.
 
-<a id="add-login-component"></a>
-
-#### Добавьте `LoginComponent`.
+#### Добавьте `LoginComponent` {: #add-login-component}
 
 Вам нужен `LoginComponent` для входа пользователя в приложение. После входа в систему вы будете перенаправлять на сохраненный URL, если он доступен, или использовать URL по умолчанию.
 
 Нет ничего нового в этом компоненте или способе его использования в конфигурации маршрутизатора.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate component auth/login
-
-</code-example>
+```
 
 Зарегистрируйте маршрут `/login` в файле `auth/auth-routing.module.ts`. В файле `app.module.ts` импортируйте и добавьте `AuthModule` в массив импортов `AppModule`.
 
-<code-tabs> <code-pane header="src/app/app.module.ts" path="router/src/app/app.module.ts" region="auth"></code-pane>
-<code-pane header="src/app/auth/login/login.component.html" path="router/src/app/auth/login/login.component.html"></code-pane>
-<code-pane header="src/app/auth/login/login.component.ts" path="router/src/app/auth/login/login.component.1.ts"></code-pane>
-<code-pane header="src/app/auth/auth.module.ts" path="router/src/app/auth/auth.module.ts"></code-pane>
-</code-tabs>
+=== "src/app/app.module.ts"
 
-<a id="can-activate-child-guard"></a>
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { BrowserModule } from '@angular/platform-browser';
+    import { FormsModule } from '@angular/forms';
+    import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-### `canActivateChild`: защита дочерних маршрутов
+    import { AppComponent } from './app.component';
+    import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+    import { ComposeMessageComponent } from './compose-message/compose-message.component';
+
+    import { AppRoutingModule } from './app-routing.module';
+    import { HeroesModule } from './heroes/heroes.module';
+    import { AuthModule } from './auth/auth.module';
+
+    @NgModule({
+    	imports: [
+    		BrowserModule,
+    		BrowserAnimationsModule,
+    		FormsModule,
+    		HeroesModule,
+    		AuthModule,
+    		AppRoutingModule,
+    	],
+    	declarations: [
+    		AppComponent,
+    		ComposeMessageComponent,
+    		PageNotFoundComponent,
+    	],
+    	bootstrap: [AppComponent],
+    })
+    export class AppModule {}
+    ```
+
+=== "src/app/auth/login/login.component.html"
+
+    ```html
+    <h2>Login</h2>
+    <p>{{message}}</p>
+    <p>
+    	<button
+    		type="button"
+    		(click)="login()"
+    		*ngIf="!authService.isLoggedIn"
+    	>
+    		Login
+    	</button>
+    	<button
+    		type="button"
+    		(click)="logout()"
+    		*ngIf="authService.isLoggedIn"
+    	>
+    		Logout
+    	</button>
+    </p>
+    ```
+
+=== "src/app/auth/login/login.component.ts"
+
+    ```ts
+    import { Component } from '@angular/core';
+    import { Router } from '@angular/router';
+    import { AuthService } from '../auth.service';
+
+    @Component({
+    	selector: 'app-login',
+    	templateUrl: './login.component.html',
+    	styleUrls: ['./login.component.css'],
+    })
+    export class LoginComponent {
+    	message: string;
+
+    	constructor(
+    		public authService: AuthService,
+    		public router: Router
+    	) {
+    		this.message = this.getMessage();
+    	}
+
+    	getMessage() {
+    		return (
+    			'Logged ' +
+    			(this.authService.isLoggedIn ? 'in' : 'out')
+    		);
+    	}
+
+    	login() {
+    		this.message = 'Trying to log in ...';
+
+    		this.authService.login().subscribe(() => {
+    			this.message = this.getMessage();
+    			if (this.authService.isLoggedIn) {
+    				// Usually you would use the redirect URL from the auth service.
+    				// However to keep the example simple, we will always redirect to `/admin`.
+    				const redirectUrl = '/admin';
+
+    				// Redirect the user
+    				this.router.navigate([redirectUrl]);
+    			}
+    		});
+    	}
+
+    	logout() {
+    		this.authService.logout();
+    		this.message = this.getMessage();
+    	}
+    }
+    ```
+
+=== "src/app/auth/auth.module.ts"
+
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { CommonModule } from '@angular/common';
+    import { FormsModule } from '@angular/forms';
+
+    import { LoginComponent } from './login/login.component';
+    import { AuthRoutingModule } from './auth-routing.module';
+
+    @NgModule({
+    	imports: [CommonModule, FormsModule, AuthRoutingModule],
+    	declarations: [LoginComponent],
+    })
+    export class AuthModule {}
+    ```
+
+### `canActivateChild`: защита дочерних маршрутов {: #can-activate-child-guard}
 
 Вы также можете защитить дочерние маршруты с помощью защиты `canActivateChild`. Защита `canActivateChild` аналогична защите `canActivate`.
 
@@ -1889,11 +3014,43 @@ ng generate component auth/login
 
 Добавьте тот же `authGuard` к админскому маршруту `component-less`, чтобы защитить все остальные дочерние маршруты одновременно, вместо того, чтобы добавлять `authGuard` к каждому маршруту по отдельности.
 
-<code-example header="src/app/admin/admin-routing.module.ts (excerpt)" path="router/src/app/admin/admin-routing.module.3.ts" region="can-activate-child"></code-example>.
+```ts
+const adminRoutes: Routes = [
+    {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [authGuard],
+        children: [
+            {
+                path: '',
+                canActivateChild: [authGuard],
+                children: [
+                    {
+                        path: 'crises',
+                        component: ManageCrisesComponent,
+                    },
+                    {
+                        path: 'heroes',
+                        component: ManageHeroesComponent,
+                    },
+                    {
+                        path: '',
+                        component: AdminDashboardComponent,
+                    },
+                ],
+            },
+        ],
+    },
+];
 
-<a id="can-deactivate-guard"></a>
+@NgModule({
+    imports: [RouterModule.forChild(adminRoutes)],
+    exports: [RouterModule],
+})
+export class AdminRoutingModule {}
+```
 
-### `canDeactivate`: обработка несохраненных изменений
+### `canDeactivate`: обработка несохраненных изменений {: #can-deactivate-guard}
 
 Вернемся к рабочему процессу "Герои", приложение принимает каждое изменение героя немедленно без проверки.
 
@@ -1903,15 +3060,13 @@ ng generate component auth/login
 
 Если пользователь одобрит изменения, приложение можно сохранить.
 
-Вы все еще можете задержать навигацию до тех пор, пока сохранение не будет успешным. Если вы позволите пользователю сразу перейти к следующему экрану, а сохранение окажется неудачным\ (возможно, данные будут признаны недействительными\), вы потеряете контекст ошибки.
+Вы все еще можете задержать навигацию до тех пор, пока сохранение не будет успешным. Если вы позволите пользователю сразу перейти к следующему экрану, а сохранение окажется неудачным (возможно, данные будут признаны недействительными), вы потеряете контекст ошибки.
 
 Вам нужно остановить навигацию, пока вы асинхронно ждете ответа сервера.
 
 Защита `canDeactivate` поможет вам решить, что делать с несохраненными изменениями и как действовать дальше.
 
-<a id="cancel-save"></a>
-
-#### Отмена и сохранение
+#### Отмена и сохранение {: #cancel-save}
 
 Пользователи обновляют информацию о кризисе в компоненте `CrisisDetailComponent`. В отличие от компонента `HeroDetailComponent`, изменения пользователя не обновляют сущность кризиса немедленно.
 
@@ -1919,45 +3074,88 @@ ng generate component auth/login
 
 Обе кнопки позволяют вернуться к списку кризисов после сохранения или отмены.
 
-<code-example header="src/app/crisis-center/crisis-detail/crisis-detail.component.ts (методы отмены и сохранения)" path="router/src/app/crisis-center/crisis-detail/crisis-detail.component.ts" region="cancel-save"></code-example>.
+```ts
+cancel() {
+  this.gotoCrises();
+}
+
+save() {
+  this.crisis.name = this.editName;
+  this.gotoCrises();
+}
+```
 
 В этом сценарии пользователь может нажать на ссылку героев, отменить действие, нажать кнопку возврата браузера или уйти без сохранения.
 
 Этот пример приложения просит пользователя быть явным с диалоговым окном подтверждения, которое асинхронно ожидает ответа пользователя.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Вы можете ждать ответа пользователя с помощью синхронного, блокирующего кода, однако приложение будет более отзывчивым &mdash; и сможет выполнять другую работу&mdash; если будет ждать ответа пользователя асинхронно.
-
-</div>
+    Вы можете ждать ответа пользователя с помощью синхронного, блокирующего кода, однако приложение будет более отзывчивым &mdash; и сможет выполнять другую работу &mdash; если будет ждать ответа пользователя асинхронно.
 
 Создайте службу `Dialog` для обработки подтверждения пользователя.
 
-<code-example format="shell" language="shell">
-
-ng генерировать диалог обслуживания
-
-</code-example>
+```shell
+ng generate service dialog
+```
 
 Добавьте метод `confirm()` в `DialogService`, чтобы попросить пользователя подтвердить свое намерение. Метод `window.confirm` является блокирующим действием, которое отображает модальный диалог и ожидает взаимодействия с пользователем.
 
-<code-example header="src/app/dialog.service.ts" path="router/src/app/dialog.service.ts"></code-example>.
+```ts
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
-Он возвращает `Observable`, который разрешается, когда пользователь в конечном итоге решает, что делать: либо отменить изменения и перейти к следующему \(`true`\), либо сохранить ожидающие изменения и остаться в кризисном редакторе \(`false`\).
+/**
+ * Async modal dialog service
+ * DialogService makes this app easier to test by faking this service.
+ * TODO: better modal implementation that doesn't use window.confirm
+ */
+@Injectable({
+    providedIn: 'root',
+})
+export class DialogService {
+    /**
+     * Ask user to confirm an action. `message` explains the action and choices.
+     * Returns observable resolving to `true`=confirm or `false`=cancel
+     */
+    confirm(message?: string): Observable<boolean> {
+        const confirmation = window.confirm(
+            message || 'Is it OK?'
+        );
 
-<a id="canDeactivate"></a>
+        return of(confirmation);
+    }
+}
+```
+
+Он возвращает `Observable`, который разрешается, когда пользователь в конечном итоге решает, что делать: либо отменить изменения и перейти к следующему (`true`), либо сохранить ожидающие изменения и остаться в кризисном редакторе (`false`).
 
 Создайте защиту, которая проверяет наличие метода `canDeactivate()` в компоненте - любом компоненте.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate guard can-deactivate
-
-</code-example>
+```
 
 Вставьте следующий код в свой страж.
 
-<code-example header="src/app/can-deactivate.guard.ts" path="router/src/app/can-deactivate.guard.ts"></code-example>.
+```ts
+import { CanDeactivateFn } from '@angular/router';
+import { Observable } from 'rxjs';
+
+export interface CanComponentDeactivate {
+    canDeactivate?: () =>
+        | Observable<boolean>
+        | Promise<boolean>
+        | boolean;
+}
+
+export const canDeactivateGuard: CanDeactivateFn<CanComponentDeactivate> = (
+    component: CanComponentDeactivate
+) =>
+    component.canDeactivate
+        ? component.canDeactivate()
+        : true;
+```
 
 Хотя стражу не обязательно знать, какой компонент имеет метод `deactivate`, он может определить, что компонент `CrisisDetailComponent` имеет метод `canDeactivate()` и вызвать его. Незнание сторожем деталей метода деактивации любого компонента делает его многоразовым.
 
@@ -1965,23 +3163,105 @@ ng generate guard can-deactivate
 
 Это было бы полезно, если бы вы хотели использовать эту защиту только для этого компонента и вам нужно было бы получить свойства компонента или подтвердить, должен ли маршрутизатор разрешить навигацию от него.
 
-<code-example header="src/app/can-deactivate.guard.ts (component-specific)" path="router/src/app/can-deactivate.guard.1.ts"></code-example>.
+```ts
+import { Observable } from 'rxjs';
+import {
+    CanDeactivateFn,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+} from '@angular/router';
+
+import { CrisisDetailComponent } from './crisis-center/crisis-detail/crisis-detail.component';
+
+export const canDeactivateGuard: CanDeactivateFn<CrisisDetailComponent> = (
+    component: CrisisDetailComponent,
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+): Observable<boolean> | boolean => {
+    // Get the Crisis Center ID
+    console.log(route.paramMap.get('id'));
+
+    // Get the current URL
+    console.log(state.url);
+
+    // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    if (
+        !component.crisis ||
+        component.crisis.name === component.editName
+    ) {
+        return true;
+    }
+    // Otherwise ask the user with the dialog service and return its
+    // observable which resolves to true or false when the user decides
+    return component.dialogService.confirm(
+        'Discard changes?'
+    );
+};
+```
 
 Если вернуться к `CrisisDetailComponent`, то он реализует рабочий процесс подтверждения для несохраненных изменений.
 
-<code-example header="src/app/crisis-center/crisis-detail/crisis-detail.component.ts (excerpt)" path="router/src/app/crisis-center/crisis-detail/crisis-detail.component.ts" region="canDeactivate"></code-example>.
+```ts
+canDeactivate(): Observable<boolean> | boolean {
+  // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+  if (!this.crisis || this.crisis.name === this.editName) {
+    return true;
+  }
+  // Otherwise ask the user with the dialog service and return its
+  // observable which resolves to true or false when the user decides
+  return this.dialogService.confirm('Discard changes?');
+}
+```
 
-Обратите внимание, что метод `canDeactivate()` может возвращаться синхронно; он возвращает `true` немедленно, если нет кризиса или нет ожидающих изменений. Но он также может возвращать `Promise` или `Observable`, и маршрутизатор будет ждать, пока это разрешится в истинное \(navigate\) или ложное \(stay on the current route\) решение.
+Обратите внимание, что метод `canDeactivate()` может возвращаться синхронно; он возвращает `true` немедленно, если нет кризиса или нет ожидающих изменений. Но он также может возвращать `Promise` или `Observable`, и маршрутизатор будет ждать, пока это разрешится в истинное (navigate) или ложное (stay on the current route) решение.
 
 Добавьте `Guard` к маршруту деталей кризиса в `crisis-center-routing.module.ts`, используя свойство массива `canDeactivate`.
 
-<code-example header="src/app/crisis-center/crisis-center-routing.module.ts (можно отключить защиту)" path="router/src/app/crisis-center/crisis-center-routing.module.3.ts"></code-example>.
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { CrisisCenterHomeComponent } from './crisis-center-home/crisis-center-home.component';
+import { CrisisListComponent } from './crisis-list/crisis-list.component';
+import { CrisisCenterComponent } from './crisis-center/crisis-center.component';
+import { CrisisDetailComponent } from './crisis-detail/crisis-detail.component';
+
+import { canDeactivateGuard } from '../can-deactivate.guard';
+
+const crisisCenterRoutes: Routes = [
+    {
+        path: 'crisis-center',
+        component: CrisisCenterComponent,
+        children: [
+            {
+                path: '',
+                component: CrisisListComponent,
+                children: [
+                    {
+                        path: ':id',
+                        component: CrisisDetailComponent,
+                        canDeactivate: [canDeactivateGuard],
+                    },
+                    {
+                        path: '',
+                        component: CrisisCenterHomeComponent,
+                    },
+                ],
+            },
+        ],
+    },
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(crisisCenterRoutes)],
+    exports: [RouterModule],
+})
+export class CrisisCenterRoutingModule {}
+```
 
 Теперь вы обеспечили пользователю защиту от несохраненных изменений.
 
-<a id="Resolve"></a> <a id="resolve-guard"></a>
-
-### _Resolve_: предварительная выборка данных компонента
+### _Resolve_: предварительная выборка данных компонента {: #resolve-guard}
 
 В `Hero Detail` и `Crisis Detail` приложение ждало, пока активируется маршрут, чтобы получить данные о соответствующем герое или кризисе.
 
@@ -1995,9 +3275,7 @@ ng generate guard can-deactivate
 
 В общем, вы хотите отложить отображение компонента маршрутизации до тех пор, пока не будут получены все необходимые данные.
 
-<a id="fetch-before-navigating"></a>
-
-#### Выборка данных перед навигацией
+#### Выборка данных перед навигацией {: #fetch-before-navigating}
 
 В данный момент `CrisisDetailComponent` извлекает данные о выбранном кризисе. Если кризис не найден, маршрутизатор возвращается к представлению списка кризисов.
 
@@ -2005,13 +3283,13 @@ ng generate guard can-deactivate
 
 Создайте файл `crisis-detail-resolver.ts` в области функции `Crisis Center`. Этот файл будет содержать функцию `crisisDetailResolver`.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate resolver crisis-center/crisis-detail-resolver
+```
 
-</code-example>
-
-<code-example header="src/app/crisis-center/crisis-detail-resolver.ts" path="router/src/app/crisis-center/crisis-detail-resolver.1.ts"></code-example >
+```ts
+export function crisisDetailResolver() {}
+```
 
 Перенесите соответствующие части логики поиска кризисов в `CrisisDetailComponent.ngOnInit()` в `crisisDetailResolver`. Импортируйте модель `Crisis`, `CrisisService` и `Router`, чтобы вы могли перейти в другое место, если не сможете найти кризис.
 
@@ -2023,50 +3301,516 @@ ng generate resolver crisis-center/crisis-detail-resolver
 
 Если он не возвращает действительный `кризис`, то возвращает пустой `Observable`, отменяет предыдущую текущую навигацию к `CrisisDetailComponent` и возвращает пользователя к `CrisisListComponent`. Обновленная функция resolver выглядит следующим образом:
 
-<code-example header="src/app/crisis-center/crisis-detail-resolver.ts" path="router/src/app/crisis-center/crisis-detail-resolver.ts"></code-example >
+```ts
+import { inject } from '@angular/core';
+import {
+    ActivatedRouteSnapshot,
+    ResolveFn,
+    Router,
+} from '@angular/router';
+import { EMPTY, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+
+import { Crisis } from './crisis';
+import { CrisisService } from './crisis.service';
+
+export const crisisDetailResolver: ResolveFn<Crisis> = (
+    route: ActivatedRouteSnapshot
+) => {
+    const router = inject(Router);
+    const cs = inject(CrisisService);
+    const id = route.paramMap.get('id')!;
+
+    return cs.getCrisis(id).pipe(
+        mergeMap((crisis) => {
+            if (crisis) {
+                return of(crisis);
+            } else {
+                // id not found
+                router.navigate(['/crisis-center']);
+                return EMPTY;
+            }
+        })
+    );
+};
+```
 
 Импортируйте этот resolver в `crisis-center-routing.module.ts` и добавьте объект `resolve` в конфигурацию маршрута `CrisisDetailComponent`.
 
-<code-example header="src/app/crisis-center/crisis-center-routing.module.ts (resolver)" path="router/src/app/crisis-center/crisis-center-routing.module.4.ts"></code-example
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { CrisisCenterHomeComponent } from './crisis-center-home/crisis-center-home.component';
+import { CrisisListComponent } from './crisis-list/crisis-list.component';
+import { CrisisCenterComponent } from './crisis-center/crisis-center.component';
+import { CrisisDetailComponent } from './crisis-detail/crisis-detail.component';
+
+import { canDeactivateGuard } from '../can-deactivate.guard';
+import { crisisDetailResolver } from './crisis-detail-resolver';
+
+const crisisCenterRoutes: Routes = [
+    {
+        path: 'crisis-center',
+        component: CrisisCenterComponent,
+        children: [
+            {
+                path: '',
+                component: CrisisListComponent,
+                children: [
+                    {
+                        path: ':id',
+                        component: CrisisDetailComponent,
+                        canDeactivate: [canDeactivateGuard],
+                        resolve: {
+                            crisis: crisisDetailResolver,
+                        },
+                    },
+                    {
+                        path: '',
+                        component: CrisisCenterHomeComponent,
+                    },
+                ],
+            },
+        ],
+    },
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(crisisCenterRoutes)],
+    exports: [RouterModule],
+})
+export class CrisisCenterRoutingModule {}
+```
 
 Компонент `CrisisDetailComponent` больше не должен получать данные о кризисе. Когда вы переконфигурировали маршрут, вы изменили местоположение кризиса.
 
 Обновите `CrisisDetailComponent`, чтобы получить кризис из свойства `ActivatedRoute.data.crisis` вместо этого;
 
-<code-example header="src/app/crisis-center/crisis-detail/crisis-detail.component.ts (ngOnInit v2)" path="router/src/app/crisis-center/crisis-detail/crisis-detail.component.ts" region="ngOnInit"></code-example>
+```ts
+ngOnInit() {
+  this.route.data
+    .subscribe(data => {
+      const crisis: Crisis = data['crisis'];
+      this.editName = crisis.name;
+      this.crisis = crisis;
+    });
+}
+```
 
 Рассмотрите следующие три важных момента:
 
 1.  Функция маршрутизатора `ResolveFn` является необязательной.
 
-1.  Маршрутизатор вызывает резольвер в любом случае, когда пользователь может переместиться в сторону, поэтому вам не придется писать код для каждого случая использования.
+2.  Маршрутизатор вызывает резольвер в любом случае, когда пользователь может переместиться в сторону, поэтому вам не придется писать код для каждого случая использования.
 
-1.  Возвращение пустого `Observable` хотя бы в одном резольвере отменяет навигацию.
+3.  Возвращение пустого `Observable` хотя бы в одном резольвере отменяет навигацию.
 
 Соответствующий код Кризисного центра для этого этапа приведен ниже.
 
-<code-tabs> <code-pane header="app.component.html" path="router/src/app/app.component.html"></code-pane>
-<code-pane header="crisis-center-home.component.html" path="router/src/app/crisis-center/crisis-center-home/crisis-center-home.component.html"></code-pane>
-<code-pane header="crisis-center.component.html" path="router/src/app/crisis-center/crisis-center/crisis-center.component.html"></code-pane>
-<code-pane header="crisis-center-routing.module.ts" path="router/src/app/crisis-center/crisis-center-routing.module.4.ts"></code-pane>
-<code-pane header="crisis-list.component.html" path="router/src/app/crisis-center/crisis-list/crisis-list.component.html"></code-pane>
-<code-pane header="crisis-list.component.ts" path="router/src/app/crisis-center/crisis-list/crisis-list.component.ts"></code-pane>
-<code-pane header="crisis-detail.component.html" path="router/src/app/crisis-center/crisis-detail/crisis-detail.component.html"></code-pane>
-<code-pane header="crisis-detail.component.ts" path="router/src/app/crisis-center/crisis-detail/crisis-detail.component.ts"></code-pane>
-<code-pane header="crisis-detail-resolver.ts" path="router/src/app/crisis-center/crisis-detail-resolver.ts"></code-pane>
-<code-pane header="crisis.service.ts" path="router/src/app/crisis-center/crisis.service.ts"></code-pane>
-<code-pane header="dialog.service.ts" path="router/src/app/dialog.service.ts"></code-pane>
-</code-tabs>
+=== "app.component.html"
 
-Охрана
+    ```html
+    <div class="wrapper">
+    	<h1 class="title">Angular Router</h1>
+    	<nav>
+    		<a
+    			routerLink="/crisis-center"
+    			routerLinkActive="active"
+    			ariaCurrentWhenActive="page"
+    			>Crisis Center</a
+    		>
+    		<a
+    			routerLink="/superheroes"
+    			routerLinkActive="active"
+    			ariaCurrentWhenActive="page"
+    			>Heroes</a
+    		>
+    		<a
+    			routerLink="/admin"
+    			routerLinkActive="active"
+    			ariaCurrentWhenActive="page"
+    			>Admin</a
+    		>
+    		<a
+    			routerLink="/login"
+    			routerLinkActive="active"
+    			ariaCurrentWhenActive="page"
+    			>Login</a
+    		>
+    		<a
+    			[routerLink]="[{ outlets: { popup: ['compose'] } }]"
+    			>Contact</a
+    		>
+    	</nav>
+    	<div [@routeAnimation]="getRouteAnimationData()">
+    		<router-outlet></router-outlet>
+    	</div>
+    	<router-outlet name="popup"></router-outlet>
+    </div>
+    ```
 
-<code-tabs> <code-pane header="auth.guard.ts" path="router/src/app/auth/auth.guard.3.ts"></code-pane>
-<code-pane header="can-deactivate.guard.ts" path="router/src/app/can-deactivate.guard.ts"></code-pane>
-</code-tabs>
+=== "crisis-center-home.component.html"
 
-<a id="query-parameters"></a> <a id="fragment"></a>
+    ```html
+    <h3>Welcome to the Crisis Center</h3>
+    ```
 
-### Параметры запроса и фрагменты
+=== "crisis-center.component.html"
+
+    ```html
+    <h2>Crisis Center</h2>
+    <router-outlet></router-outlet>
+    ```
+
+=== "crisis-center-routing.module.ts"
+
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { RouterModule, Routes } from '@angular/router';
+
+    import { CrisisCenterHomeComponent } from './crisis-center-home/crisis-center-home.component';
+    import { CrisisListComponent } from './crisis-list/crisis-list.component';
+    import { CrisisCenterComponent } from './crisis-center/crisis-center.component';
+    import { CrisisDetailComponent } from './crisis-detail/crisis-detail.component';
+
+    import { canDeactivateGuard } from '../can-deactivate.guard';
+    import { crisisDetailResolver } from './crisis-detail-resolver';
+
+    const crisisCenterRoutes: Routes = [
+    	{
+    		path: 'crisis-center',
+    		component: CrisisCenterComponent,
+    		children: [
+    			{
+    				path: '',
+    				component: CrisisListComponent,
+    				children: [
+    					{
+    						path: ':id',
+    						component: CrisisDetailComponent,
+    						canDeactivate: [canDeactivateGuard],
+    						resolve: {
+    							crisis: crisisDetailResolver,
+    						},
+    					},
+    					{
+    						path: '',
+    						component: CrisisCenterHomeComponent,
+    					},
+    				],
+    			},
+    		],
+    	},
+    ];
+
+    @NgModule({
+    	imports: [RouterModule.forChild(crisisCenterRoutes)],
+    	exports: [RouterModule],
+    })
+    export class CrisisCenterRoutingModule {}
+    ```
+
+=== "crisis-list.component.html"
+
+    ```html
+    <ul class="crises">
+    	<li
+    		*ngFor="let crisis of crises$ | async"
+    		[class.selected]="crisis.id === selectedId"
+    	>
+    		<a [routerLink]="[crisis.id]">
+    			<span class="badge">{{ crisis.id }}</span>{{
+    			crisis.name }}
+    		</a>
+    	</li>
+    </ul>
+
+    <router-outlet></router-outlet>
+    ```
+
+=== "crisis-list.component.ts"
+
+    ```ts
+    import { Component, OnInit } from '@angular/core';
+    import { ActivatedRoute } from '@angular/router';
+
+    import { CrisisService } from '../crisis.service';
+    import { Crisis } from '../crisis';
+    import { Observable } from 'rxjs';
+    import { switchMap } from 'rxjs/operators';
+
+    @Component({
+    	selector: 'app-crisis-list',
+    	templateUrl: './crisis-list.component.html',
+    	styleUrls: ['./crisis-list.component.css'],
+    })
+    export class CrisisListComponent implements OnInit {
+    	crises$?: Observable<Crisis[]>;
+    	selectedId = 0;
+
+    	constructor(
+    		private service: CrisisService,
+    		private route: ActivatedRoute
+    	) {}
+
+    	ngOnInit() {
+    		this.crises$ = this.route.firstChild?.paramMap.pipe(
+    			switchMap((params) => {
+    				this.selectedId = parseInt(
+    					params.get('id')!,
+    					10
+    				);
+    				return this.service.getCrises();
+    			})
+    		);
+    	}
+    }
+    ```
+
+=== "crisis-detail.component.html"
+
+    ```html
+    <div *ngIf="crisis">
+    	<h3>{{ editName }}</h3>
+    	<p>Id: {{ crisis.id }}</p>
+    	<label for="crisis-name">Crisis name: </label>
+    	<input
+    		type="text"
+    		id="crisis-name"
+    		[(ngModel)]="editName"
+    		placeholder="name"
+    	/>
+    	<div>
+    		<button type="button" (click)="save()">Save</button>
+    		<button type="button" (click)="cancel()">
+    			Cancel
+    		</button>
+    	</div>
+    </div>
+    ```
+
+=== "crisis-detail.component.ts"
+
+    ```ts
+    import { Component, OnInit } from '@angular/core';
+    import { ActivatedRoute, Router } from '@angular/router';
+    import { Observable } from 'rxjs';
+
+    import { Crisis } from '../crisis';
+    import { DialogService } from '../../dialog.service';
+
+    @Component({
+    	selector: 'app-crisis-detail',
+    	templateUrl: './crisis-detail.component.html',
+    	styleUrls: ['./crisis-detail.component.css'],
+    })
+    export class CrisisDetailComponent implements OnInit {
+    	crisis!: Crisis;
+    	editName = '';
+
+    	constructor(
+    		private route: ActivatedRoute,
+    		private router: Router,
+    		public dialogService: DialogService
+    	) {}
+
+    	ngOnInit() {
+    		this.route.data.subscribe((data) => {
+    			const crisis: Crisis = data['crisis'];
+    			this.editName = crisis.name;
+    			this.crisis = crisis;
+    		});
+    	}
+
+    	cancel() {
+    		this.gotoCrises();
+    	}
+
+    	save() {
+    		this.crisis.name = this.editName;
+    		this.gotoCrises();
+    	}
+
+    	canDeactivate(): Observable<boolean> | boolean {
+    		// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    		if (
+    			!this.crisis ||
+    			this.crisis.name === this.editName
+    		) {
+    			return true;
+    		}
+    		// Otherwise ask the user with the dialog service and return its
+    		// observable which resolves to true or false when the user decides
+    		return this.dialogService.confirm(
+    			'Discard changes?'
+    		);
+    	}
+
+    	gotoCrises() {
+    		const crisisId = this.crisis
+    			? this.crisis.id
+    			: null;
+    		// Pass along the crisis id if available
+    		// so that the CrisisListComponent can select that crisis.
+    		// Add a totally useless `foo` parameter for kicks.
+    		// Relative navigation back to the crises
+    		this.router.navigate(
+    			['../', { id: crisisId, foo: 'foo' }],
+    			{ relativeTo: this.route }
+    		);
+    	}
+    }
+    ```
+
+=== "crisis-detail-resolver.ts"
+
+    ```ts
+    import { inject } from '@angular/core';
+    import {
+    	ActivatedRouteSnapshot,
+    	ResolveFn,
+    	Router,
+    } from '@angular/router';
+    import { EMPTY, of } from 'rxjs';
+    import { mergeMap } from 'rxjs/operators';
+
+    import { Crisis } from './crisis';
+    import { CrisisService } from './crisis.service';
+
+    export const crisisDetailResolver: ResolveFn<Crisis> = (
+    	route: ActivatedRouteSnapshot
+    ) => {
+    	const router = inject(Router);
+    	const cs = inject(CrisisService);
+    	const id = route.paramMap.get('id')!;
+
+    	return cs.getCrisis(id).pipe(
+    		mergeMap((crisis) => {
+    			if (crisis) {
+    				return of(crisis);
+    			} else {
+    				// id not found
+    				router.navigate(['/crisis-center']);
+    				return EMPTY;
+    			}
+    		})
+    	);
+    };
+    ```
+
+=== "crisis.service.ts"
+
+    ```ts
+    import { BehaviorSubject } from 'rxjs';
+    import { map } from 'rxjs/operators';
+
+    import { Injectable } from '@angular/core';
+    import { MessageService } from '../message.service';
+    import { Crisis } from './crisis';
+    import { CRISES } from './mock-crises';
+
+    @Injectable({
+    	providedIn: 'root',
+    })
+    export class CrisisService {
+    	static nextCrisisId = 100;
+    	private crises$: BehaviorSubject<
+    		Crisis[]
+    	> = new BehaviorSubject<Crisis[]>(CRISES);
+
+    	constructor(private messageService: MessageService) {}
+
+    	getCrises() {
+    		return this.crises$;
+    	}
+
+    	getCrisis(id: number | string) {
+    		return this.getCrises().pipe(
+    			map(
+    				(crises) =>
+    					crises.find(
+    						(crisis) => crisis.id === +id
+    					)!
+    			)
+    		);
+    	}
+    }
+    ```
+
+=== "dialog.service.ts"
+
+    ```ts
+    import { Injectable } from '@angular/core';
+    import { Observable, of } from 'rxjs';
+
+    /**
+     * Async modal dialog service
+     * DialogService makes this app easier to test by faking this service.
+     * TODO: better modal implementation that doesn't use window.confirm
+     */
+    @Injectable({
+    	providedIn: 'root',
+    })
+    export class DialogService {
+    	/**
+    	 * Ask user to confirm an action. `message` explains the action and choices.
+    	 * Returns observable resolving to `true`=confirm or `false`=cancel
+    	 */
+    	confirm(message?: string): Observable<boolean> {
+    		const confirmation = window.confirm(
+    			message || 'Is it OK?'
+    		);
+
+    		return of(confirmation);
+    	}
+    }
+    ```
+
+Гварды
+
+=== "auth.guard.ts"
+
+    ```ts
+    import { inject } from '@angular/core';
+    import { Router } from '@angular/router';
+    import { AuthService } from './auth.service';
+
+    export const authGuard = () => {
+    	const authService = inject(AuthService);
+    	const router = inject(Router);
+
+    	if (authService.isLoggedIn) {
+    		return true;
+    	}
+
+    	// Redirect to the login page
+    	return router.parseUrl('/login');
+    };
+    ```
+
+=== "can-deactivate.guard.ts"
+
+    ```ts
+    import { CanDeactivateFn } from '@angular/router';
+    import { Observable } from 'rxjs';
+
+    export interface CanComponentDeactivate {
+    	canDeactivate?: () =>
+    		| Observable<boolean>
+    		| Promise<boolean>
+    		| boolean;
+    }
+
+    export const canDeactivateGuard: CanDeactivateFn<CanComponentDeactivate> = (
+    	component: CanComponentDeactivate
+    ) =>
+    	component.canDeactivate
+    		? component.canDeactivate()
+    		: true;
+    ```
+
+### Параметры запроса и фрагменты {: #query-parameters}
 
 В разделе [параметры маршрута](#optional-route-parameters) вы имели дело только с параметрами, специфичными для маршрута. Однако вы можете использовать параметры запроса для получения необязательных параметров, доступных для всех маршрутов.
 
@@ -2078,21 +3822,90 @@ ng generate resolver crisis-center/crisis-detail-resolver
 
 Добавьте объект `NavigationExtras` в метод `router.navigate()`, который переводит вас на маршрут `/login`.
 
-<code-example header="src/app/app/auth/auth.guard.ts (v3)" path="router/src/app/auth/auth.guard.4.ts"></code-example>
+```ts
+import { inject } from '@angular/core';
+import { Router, NavigationExtras } from '@angular/router';
+import { AuthService } from './auth.service';
+
+export const authGuard = () => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
+
+    if (authService.isLoggedIn) {
+        return true;
+    }
+
+    // Create a dummy session id
+    const sessionId = 123456789;
+
+    // Set our navigation extras object
+    // that contains our global query params and fragment
+    const navigationExtras: NavigationExtras = {
+        queryParams: { session_id: sessionId },
+        fragment: 'anchor',
+    };
+
+    // Redirect to the login page with extras
+    return router.createUrlTree(
+        ['/login'],
+        navigationExtras
+    );
+};
+```
 
 Вы также можете сохранять параметры запроса и фрагменты при разных навигациях без необходимости предоставлять их снова при переходе. В `LoginComponent` вы добавите _объект_ в качестве второго аргумента в функцию `router.navigate()` и предоставите `queryParamsHandling` и `preserveFragment` для передачи текущих параметров запроса и фрагмента в следующий маршрут.
 
-<code-example header="src/app/auth/login/login.component.ts (preserve)" path="router/src/app/auth/login/login.component.ts" region="preserve"></code-example>
+```ts
+// Set our navigation extras object
+// that passes on our global query params and fragment
+const navigationExtras: NavigationExtras = {
+    queryParamsHandling: 'preserve',
+    preserveFragment: true,
+};
 
-<div class="alert is-helpful">
+// Redirect the user
+this.router.navigate([redirectUrl], navigationExtras);
+```
 
-Функция `queryParamsHandling` также предоставляет опцию `merge`, которая сохраняет и объединяет текущие параметры запроса с любыми предоставленными параметрами запроса при навигации.
+!!!note ""
 
-</div>
+    Функция `queryParamsHandling` также предоставляет опцию `merge`, которая сохраняет и объединяет текущие параметры запроса с любыми предоставленными параметрами запроса при навигации.
 
 Чтобы перейти к маршруту Admin Dashboard после входа в систему, обновите `admin-dashboard.component.ts` для обработки параметров запроса и фрагмента.
 
-<code-example header="src/app/admin/admin-dashboard/admin-dashboard.component.ts (v2)" path="router/src/app/app/admin/admin-dashboard/admin-dashboard.component.1.ts"></code-example>.
+```ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+@Component({
+    selector: 'app-admin-dashboard',
+    templateUrl: './admin-dashboard.component.html',
+    styleUrls: ['./admin-dashboard.component.css'],
+})
+export class AdminDashboardComponent implements OnInit {
+    sessionId!: Observable<string>;
+    token!: Observable<string>;
+
+    constructor(private route: ActivatedRoute) {}
+
+    ngOnInit() {
+        // Capture the session ID if available
+        this.sessionId = this.route.queryParamMap.pipe(
+            map(
+                (params) =>
+                    params.get('session_id') || 'None'
+            )
+        );
+
+        // Capture the fragment if available
+        this.token = this.route.fragment.pipe(
+            map((fragment) => fragment || 'None')
+        );
+    }
+}
+```
 
 Параметры запроса и фрагменты также доступны через службу `ActivatedRoute`. Как и параметры маршрута, параметры запроса и фрагменты предоставляются в виде `Observable`.
 
@@ -2102,24 +3915,18 @@ ng generate resolver crisis-center/crisis-detail-resolver
 
 Вы можете использовать эти постоянные биты информации для вещей, которые необходимо предоставлять на разных страницах, например, токены аутентификации или идентификаторы сессии.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Параметры `query params` и `fragment` также могут быть сохранены с помощью `RouterLink` с привязками `queryParamsHandling` и `preserveFragment` соответственно.
+    Параметры `query params` и `fragment` также могут быть сохранены с помощью `RouterLink` с привязками `queryParamsHandling` и `preserveFragment` соответственно.
 
-</div>
-
-<a id="asynchronous-routing"></a>
-
-## Веха 6: Асинхронная маршрутизация
+## Веха 6: Асинхронная маршрутизация {: #asynchronous-routing}
 
 По мере прохождения этапов приложение, естественно, становилось все больше. В какой-то момент вы достигнете точки, когда приложение будет долго загружаться.
 
 Чтобы решить эту проблему, используйте асинхронную маршрутизацию, которая загружает функциональные модули лениво, по запросу. Ленивая загрузка имеет несколько преимуществ.
 
 -   Вы можете загружать функциональные области только по запросу пользователя.
-
 -   Вы можете ускорить время загрузки для пользователей, которые посещают только определенные области приложения
-
 -   Вы можете продолжать расширять области функций с ленивой загрузкой, не увеличивая размер начального пакета загрузки.
 
 Вы уже прошли часть этого пути. Разбив приложение на модули &mdash;`AppModule`, `HeroesModule`, `AdminModule` и `CrisisCenterModule`&mdash; вы получили естественных кандидатов для ленивой загрузки.
@@ -2128,9 +3935,7 @@ ng generate resolver crisis-center/crisis-detail-resolver
 
 Например, модуль `AdminModule` нужен нескольким авторизованным пользователям, поэтому его следует загружать только по запросу нужных людей.
 
-<a id="lazy-loading-route-config"></a>
-
-### Конфигурация маршрута с ленивой загрузкой
+### Конфигурация маршрута с ленивой загрузкой {: #lazy-loading-route-config}
 
 Измените путь `admin` в `admin-routing.module.ts` с `'admin'` на пустую строку, `''`, пустой путь.
 
@@ -2140,239 +3945,566 @@ ng generate resolver crisis-center/crisis-detail-resolver
 
 Задайте ему свойство `loadChildren` вместо свойства `children`. Свойство `loadChildren` принимает функцию, которая возвращает обещание, используя встроенный в браузер синтаксис для ленивой загрузки кода с использованием динамического импорта `import('...')`.
 
-Путь - это расположение `AdminModule'\ (относительно корня\ приложения).
+Путь - это расположение `AdminModule' (относительно корня приложения).
 
 После запроса и загрузки кода `Promise` разрешает объект, содержащий `NgModule`, в данном случае `AdminModule`.
 
-<code-example header="app-routing.module.ts (load children)" path="router/src/app/app-routing.module.5.ts" region="admin-1"></code-example>
+```ts
+{
+  path: 'admin',
+  loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+},
+```
 
-<div class="alert is-important">
+!!!warning ""
 
-**NOTE**: <br /> When using absolute paths, the `NgModule` file location must begin with `src/app` in order to resolve correctly.
-For custom [path mapping with absolute paths](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping), you must configure the `baseUrl` and `paths` properties in the project `tsconfig.json`.
+    При использовании абсолютных путей расположение файла `NgModule` должно начинаться с `src/app` для корректного разрешения.
+    Для пользовательского [отображения путей с абсолютными путями](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping) необходимо настроить свойства `baseUrl` и `paths` в проекте `tsconfig.json`.
 
-</div>
+Когда маршрутизатор переходит к этому маршруту, он использует строку `loadChildren` для динамической загрузки `AdminModule`. Затем он добавляет маршруты `AdminModule` в свою текущую конфигурацию маршрутов.
+Наконец, он загружает запрошенный маршрут в целевой компонент администратора.
 
-When the router navigates to this route, it uses the `loadChildren` string to dynamically load the `AdminModule`. Then it adds the `AdminModule` routes to its current route configuration.
-Finally, it loads the requested route to the destination admin component.
+Ленивая загрузка и переконфигурация происходят только один раз, когда маршрут запрашивается впервые; модуль и маршруты сразу же становятся доступными для последующих запросов.
 
-The lazy loading and re-configuration happen just once, when the route is first requested; the module and routes are available immediately for subsequent requests.
+Сделайте последний шаг и отделите набор функций администратора от основного приложения. Корневой `AppModule` не должен загружать или ссылаться на `AdminModule` или его файлы.
 
-Take the final step and detach the admin feature set from the main application. The root `AppModule` must neither load nor reference the `AdminModule` or its files.
+В файле `app.module.ts` удалите оператор импорта `AdminModule` из верхней части файла и удалите `AdminModule` из массива `imports` модуля NgModule.
 
-In `app.module.ts`, remove the `AdminModule` import statement from the top of the file and remove the `AdminModule` from the NgModule's `imports` array.
+### `canMatch`: защита несанкционированного доступа к функциональным модулям {: #can-match-guard}
 
-<a id="can-match-guard"></a>
+Вы уже защищаете модуль `AdminModule` защитой `canActivate`, которая предотвращает доступ неавторизованных пользователей к области функций администратора. Он перенаправляет на страницу входа в систему, если пользователь не авторизован.
 
-### `canMatch`: guarding unauthorized access of feature modules
+Но маршрутизатор все равно загружает `AdminModule`, даже если пользователь не может посетить ни один из его компонентов. В идеале, вы должны загружать `AdminModule`, только если пользователь вошел в систему.
 
-You're already protecting the `AdminModule` with a `canActivate` guard that prevents unauthorized users from accessing the admin feature area. It redirects to the login page if the user is not authorized.
+Защита `canMatch` контролирует, пытается ли `Router` соответствовать `Route`. Это позволяет вам иметь несколько конфигураций `маршрутов`, которые имеют один и тот же `путь`, но сопоставляются на основе различных условий. Такой подход
+позволяет `маршрутизатору` вместо подстановочного знака `маршрут`.
 
-But the router is still loading the `AdminModule` even if the user can't visit any of its components. Ideally, you'd only load the `AdminModule` if the user is logged in.
+Существующий `authGuard` содержит логику для поддержки защиты `canMatch`.
 
-A `canMatch` guard controls whether the `Router` attempts to match a `Route`. This lets you have multiple `Route` configurations that share the same `path` but are matched based on different conditions. This approach
-allows the `Router` to match the wildcard `Route` instead.
+Наконец, добавьте `authGuard` к свойству массива `canMatch` для маршрута `admin`. Готовый маршрут администратора выглядит следующим образом:
 
-The existing `authGuard` contains the logic to support the `canMatch` guard.
+```ts
+{
+  path: 'admin',
+  loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+  canMatch: [authGuard]
+},
+```
 
-Finally, add the `authGuard` to the `canMatch` array property for the `admin` route. The completed admin route looks like this:
+### Предварительная загрузка: фоновая загрузка областей функций {: #preloading}
 
-<code-example header="app-routing.module.ts (lazy admin route)" path="router/src/app/app-routing.module.5.ts" region="admin"></code-example>
+Помимо загрузки модулей по требованию, вы можете загружать модули асинхронно с помощью предварительной загрузки.
 
-<a id="preloading"></a>
+Модуль `AppModule` загружается с нетерпением при запуске приложения, что означает, что он загружается сразу. Теперь `AdminModule` загружается только тогда, когда пользователь нажимает на ссылку, что называется ленивой загрузкой.
 
-### Preloading: background loading of feature areas
+Предварительная загрузка позволяет загружать модули в фоновом режиме, чтобы данные были готовы к отображению, когда пользователь активирует определенный маршрут. Рассмотрим кризисный центр.
+Это не первый вид, который видит пользователь.
+По умолчанию Герои являются первым видом.
+Для наименьшей начальной полезной нагрузки и быстрого времени запуска вам следует нетерпеливо загружать `AppModule` и `HeroesModule`.
 
-In addition to loading modules on-demand, you can load modules asynchronously with preloading.
+Вы можете лениво загрузить Кризисный центр. Но вы почти уверены, что пользователь посетит Кризисный центр в течение нескольких минут после запуска приложения.
+В идеале приложение должно запускаться только с загруженными `AppModule` и `HeroesModule`, а затем, почти сразу, загружать `CrisisCenterModule` в фоновом режиме.
+К тому времени, когда пользователь переходит в Кризисный центр, его модуль уже загружен и готов к работе.
 
-The `AppModule` is eagerly loaded when the application starts, meaning that it loads right away. Now the `AdminModule` loads only when the user clicks on a link, which is called lazy loading.
+#### Как работает предварительная загрузка {: #how-preloading}
 
-Preloading lets you load modules in the background so that the data is ready to render when the user activates a particular route. Consider the Crisis Center.
-It isn't the first view that a user sees.
-By default, the Heroes are the first view.
-For the smallest initial payload and fastest launch time, you should eagerly load the `AppModule` and the `HeroesModule`.
+После каждой успешной навигации маршрутизатор ищет в своей конфигурации незагруженный модуль, который он может предварительно загрузить. Будет ли он предварительно загружать модуль, и какие модули он предварительно загружает, зависит от стратегии предварительной загрузки.
 
-You could lazy load the Crisis Center. But you're almost certain that the user will visit the Crisis Center within minutes of launching the app.
-Ideally, the application would launch with just the `AppModule` and the `HeroesModule` loaded and then, almost immediately, load the `CrisisCenterModule` in the background.
-By the time the user navigates to the Crisis Center, its module is loaded and ready.
+Маршрутизатор `Router` предлагает две стратегии предварительной загрузки:
 
-<a id="how-preloading"></a>
+| Стратегии                    | Подробности                                                                             |
+| :--------------------------- | :-------------------------------------------------------------------------------------- |
+| Без предварительной загрузки | По умолчанию. Лениво загруженные области функций по-прежнему загружаются по требованию. |
+| Предварительная загрузка     | Все лениво загруженные области функций предварительно загружаются.                      |
 
-#### How preloading works
+Маршрутизатор либо никогда не выполняет предварительную загрузку, либо выполняет предварительную загрузку каждого лениво загруженного модуля. Маршрутизатор также поддерживает [пользовательские стратегии предварительной загрузки](#custom-preloading) для точного контроля над тем, какие модули и когда предварительно загружать.
 
-After each successful navigation, the router looks in its configuration for an unloaded module that it can preload. Whether it preloads a module, and which modules it preloads, depends upon the preload strategy.
+Этот раздел поможет вам обновить модуль `CrisisCenterModule`, чтобы он загружался лениво по умолчанию и использовал стратегию `PreloadAllModules` для загрузки всех лениво загруженных модулей.
 
-The `Router` offers two preloading strategies:
+#### Ленивая загрузка кризисного центра {: #lazy-load-crisis-center}
 
-| Strategies | Details | |:--- |:--- |
-| No preloading | The default. Lazy loaded feature areas are still loaded on-demand. |
-| Preloading | All lazy loaded feature areas are preloaded. |
+Обновите конфигурацию маршрута для ленивой загрузки модуля `CrisisCenterModule`. Выполните те же шаги, что и при настройке `AdminModule` для ленивой загрузки.
 
-The router either never preloads, or preloads every lazy loaded module. The `Router` also supports [custom preloading strategies](#custom-preloading) for fine control over which modules to preload and when.
+1.  Измените путь `crisis-center` в `CrisisCenterRoutingModule` на пустую строку.
+2.  Добавьте маршрут `кризисного центра` в `AppRoutingModule`.
+3.  Установите строку `loadChildren` для загрузки модуля `CrisisCenterModule`.
+4.  Удалите все упоминания о `CrisisCenterModule` из `app.module.ts`.
 
-This section guides you through updating the `CrisisCenterModule` to load lazily by default and use the `PreloadAllModules` strategy to load all lazy loaded modules.
+Вот обновленные модули _до включения предварительной загрузки_:
 
-<a id="lazy-load-crisis-center"></a>
+=== "app.module.ts"
 
-#### Lazy load the crisis center
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { BrowserModule } from '@angular/platform-browser';
+    import { FormsModule } from '@angular/forms';
+    import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-Update the route configuration to lazy load the `CrisisCenterModule`. Take the same steps you used to configure `AdminModule` for lazy loading.
+    import { Router } from '@angular/router';
 
-1.  Change the `crisis-center` path in the `CrisisCenterRoutingModule` to an empty string.
-1.  Add a `crisis-center` route to the `AppRoutingModule`.
-1.  Set the `loadChildren` string to load the `CrisisCenterModule`.
-1.  Remove all mention of the `CrisisCenterModule` from `app.module.ts`.
+    import { AppComponent } from './app.component';
+    import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+    import { ComposeMessageComponent } from './compose-message/compose-message.component';
 
-Here are the updated modules _before enabling preload_:
+    import { AppRoutingModule } from './app-routing.module';
+    import { HeroesModule } from './heroes/heroes.module';
+    import { AuthModule } from './auth/auth.module';
 
-<code-tabs> <code-pane header="app.module.ts" path="router/src/app/app.module.ts" region="preload"></code-pane>
-<code-pane header="app-routing.module.ts" path="router/src/app/app-routing.module.6.ts" region="preload-v1"></code-pane>
-<code-pane header="crisis-center-routing.module.ts" path="router/src/app/crisis-center/crisis-center-routing.module.ts"></code-pane>
-</code-tabs>
+    @NgModule({
+    	imports: [
+    		BrowserModule,
+    		BrowserAnimationsModule,
+    		FormsModule,
+    		HeroesModule,
+    		AuthModule,
+    		AppRoutingModule,
+    	],
+    	declarations: [
+    		AppComponent,
+    		ComposeMessageComponent,
+    		PageNotFoundComponent,
+    	],
+    	bootstrap: [AppComponent],
+    })
+    export class AppModule {}
+    ```
 
-You could try this now and confirm that the `CrisisCenterModule` loads after you click the "Crisis Center" button.
+=== "app-routing.module.ts"
 
-To enable preloading of all lazy loaded modules, import the `PreloadAllModules` token from the Angular router package.
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { RouterModule, Routes } from '@angular/router';
 
-The second argument in the `RouterModule.forRoot()` method takes an object for additional configuration options. The `preloadingStrategy` is one of those options.
-Add the `PreloadAllModules` token to the `forRoot()` call:
+    import { ComposeMessageComponent } from './compose-message/compose-message.component';
+    import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-<code-example header="src/app/app-routing.module.ts (preload all)" path="router/src/app/app-routing.module.6.ts" region="forRoot"></code-example>
+    import { authGuard } from './auth/auth.guard';
 
-This configures the `Router` preloader to immediately load all lazy loaded routes (routes with a `loadChildren` property).
+    const appRoutes: Routes = [
+    	{
+    		path: 'compose',
+    		component: ComposeMessageComponent,
+    		outlet: 'popup',
+    	},
+    	{
+    		path: 'admin',
+    		loadChildren: () =>
+    			import('./admin/admin.module').then(
+    				(m) => m.AdminModule
+    			),
+    		canMatch: [authGuard],
+    	},
+    	{
+    		path: 'crisis-center',
+    		loadChildren: () =>
+    			import(
+    				'./crisis-center/crisis-center.module'
+    			).then((m) => m.CrisisCenterModule),
+    	},
+    	{ path: '', redirectTo: '/heroes', pathMatch: 'full' },
+    	{ path: '**', component: PageNotFoundComponent },
+    ];
 
-When you visit `http://localhost:4200`, the `/heroes` route loads immediately upon launch and the router starts loading the `CrisisCenterModule` right after the `HeroesModule` loads.
+    @NgModule({
+    	imports: [RouterModule.forRoot(appRoutes)],
+    	exports: [RouterModule],
+    })
+    export class AppRoutingModule {}
+    ```
 
-<a id="custom-preloading"></a>
+=== "crisis-center-routing.module.ts"
 
-### Custom Preloading Strategy
+    ```ts
+    import { NgModule } from '@angular/core';
+    import { RouterModule, Routes } from '@angular/router';
 
-Preloading every lazy loaded module works well in many situations. However, in consideration of things such as low bandwidth and user metrics, you can use a custom preloading strategy for specific feature modules.
+    import { CrisisCenterHomeComponent } from './crisis-center-home/crisis-center-home.component';
+    import { CrisisListComponent } from './crisis-list/crisis-list.component';
+    import { CrisisCenterComponent } from './crisis-center/crisis-center.component';
+    import { CrisisDetailComponent } from './crisis-detail/crisis-detail.component';
 
-This section guides you through adding a custom strategy that only preloads routes whose `data.preload` flag is set to `true`. Recall that you can add anything to the `data` property of a route.
+    import { canDeactivateGuard } from '../can-deactivate.guard';
+    import { crisisDetailResolver } from './crisis-detail-resolver';
 
-Set the `data.preload` flag in the `crisis-center` route in the `AppRoutingModule`.
+    const crisisCenterRoutes: Routes = [
+    	{
+    		path: '',
+    		component: CrisisCenterComponent,
+    		children: [
+    			{
+    				path: '',
+    				component: CrisisListComponent,
+    				children: [
+    					{
+    						path: ':id',
+    						component: CrisisDetailComponent,
+    						canDeactivate: [canDeactivateGuard],
+    						resolve: {
+    							crisis: crisisDetailResolver,
+    						},
+    					},
+    					{
+    						path: '',
+    						component: CrisisCenterHomeComponent,
+    					},
+    				],
+    			},
+    		],
+    	},
+    ];
 
-<code-example header="src/app/app-routing.module.ts (route data preload)" path="router/src/app/app-routing.module.ts" region="preload-v2"></code-example>
+    @NgModule({
+    	imports: [RouterModule.forChild(crisisCenterRoutes)],
+    	exports: [RouterModule],
+    })
+    export class CrisisCenterRoutingModule {}
+    ```
 
-Generate a new `SelectivePreloadingStrategy` service.
+Вы можете попробовать сделать это сейчас и убедиться, что модуль `CrisisCenterModule` загружается после нажатия кнопки "Crisis Center".
 
-<code-example format="shell" language="shell">
+Чтобы включить предварительную загрузку всех лениво загруженных модулей, импортируйте маркер `PreloadAllModules` из пакета Angular router.
 
+Второй аргумент в методе `RouterModule.forRoot()` принимает объект для дополнительных опций конфигурации. Одним из таких параметров является `preloadingStrategy`.
+Добавьте маркер `PreloadAllModules` к вызову `forRoot()`:
+
+```ts
+RouterModule.forRoot(appRoutes, {
+    enableTracing: true, // <-- debugging purposes only
+    preloadingStrategy: PreloadAllModules,
+});
+```
+
+Это настраивает предзагрузчик `Router` на немедленную загрузку всех лениво загруженных маршрутов (маршруты со свойством `loadChildren`).
+
+Когда вы посещаете сайт `http://localhost:4200`, маршрут `/heroes` загружается сразу после запуска, а маршрутизатор начинает загружать `CrisisCenterModule` сразу после загрузки `HeroesModule`.
+
+### Пользовательская стратегия предзагрузки {: #custom-preloading}
+
+Предварительная загрузка каждого лениво загруженного модуля хорошо работает во многих ситуациях. Однако, учитывая такие вещи, как низкая пропускная способность и пользовательские показатели, вы можете использовать пользовательскую стратегию предварительной загрузки для определенных функциональных модулей.
+
+Этот раздел поможет вам добавить пользовательскую стратегию, которая будет предзагружать только те маршруты, флаг `data.preload` которых установлен на `true`. Напомним, что в свойство `data` маршрута можно добавить что угодно.
+
+Установите флаг `data.preload` в маршруте `crisis-center` в модуле `AppRoutingModule`.
+
+```ts
+{
+  path: 'crisis-center',
+  loadChildren: () => import('./crisis-center/crisis-center.module').then(m => m.CrisisCenterModule),
+  data: { preload: true }
+},
+```
+
+Создайте новую службу `SelectivePreloadingStrategy`.
+
+```shell
 ng generate service selective-preloading-strategy
+```
 
-</code-example>
+Замените содержимое `selective-preloading-strategy.service.ts` на следующее:
 
-Replace the contents of `selective-preloading-strategy.service.ts` with the following:
+```ts
+import { Injectable } from '@angular/core';
+import { PreloadingStrategy, Route } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
-<code-example header="src/app/selective-preloading-strategy.service.ts" path="router/src/app/selective-preloading-strategy.service.ts"></code-example>
+@Injectable({
+    providedIn: 'root',
+})
+export class SelectivePreloadingStrategyService
+    implements PreloadingStrategy {
+    preloadedModules: string[] = [];
 
-`SelectivePreloadingStrategyService` implements the `PreloadingStrategy`, which has one method, `preload()`.
+    preload(
+        route: Route,
+        load: () => Observable<any>
+    ): Observable<any> {
+        if (
+            route.canMatch === undefined &&
+            route.data?.['preload'] &&
+            route.path != null
+        ) {
+            // add the route path to the preloaded module array
+            this.preloadedModules.push(route.path);
 
-The router calls the `preload()` method with two arguments:
+            // log the route path to the console
+            console.log('Preloaded: ' + route.path);
 
-1.  The route to consider.
-1.  A loader function that can load the routed module asynchronously.
+            return load();
+        } else {
+            return of(null);
+        }
+    }
+}
+```
 
-An implementation of `preload` must return an `Observable`. If the route does preload, it returns the observable returned by calling the loader function.
-If the route does not preload, it returns an `Observable` of `null`.
+`SelectivePreloadingStrategyService` реализует `PreloadingStrategy`, которая имеет один метод `preload()`.
 
-In this sample, the `preload()` method loads the route if the route's `data.preload` flag is truthy. We also skip loading the `Route` if there is a `canMatch` guard because the user might
-not have access to it.
+Маршрутизатор вызывает метод `preload()` с двумя аргументами:
 
-As a side effect, `SelectivePreloadingStrategyService` logs the `path` of a selected route in its public `preloadedModules` array.
+1.  Маршрут, который необходимо рассмотреть.
+1.  Функция загрузчика, которая может асинхронно загружать маршрутизируемый модуль.
 
-Shortly, you'll extend the `AdminDashboardComponent` to inject this service and display its `preloadedModules` array.
+Реализация `preload` должна возвращать `Observable`. Если маршрут выполняет предварительную загрузку, он возвращает наблюдаемую, полученную при вызове функции-загрузчика.
+Если маршрут не загружается, он возвращает `Observable` в значении `null`.
 
-But first, make a few changes to the `AppRoutingModule`.
+В этом примере метод `preload()` загружает маршрут, если флаг маршрута `data.preload` является истинным. Мы также пропускаем загрузку `маршрута`, если есть защита `canMatch`, потому что пользователь может не иметь к ней доступа.
+не имеет к нему доступа.
 
-1.  Import `SelectivePreloadingStrategyService` into `AppRoutingModule`.
-1.  Replace the `PreloadAllModules` strategy in the call to `forRoot()` with this `SelectivePreloadingStrategyService`.
+В качестве побочного эффекта, `SelectivePreloadingStrategyService` записывает `путь` выбранного маршрута в свой публичный массив `preloadedModules`.
 
-Now edit the `AdminDashboardComponent` to display the log of preloaded routes.
+Вскоре вы расширите `AdminDashboardComponent`, чтобы внедрить этот сервис и отобразить его массив `preloadedModules`.
 
-1.  Import the `SelectivePreloadingStrategyService`.
-1.  Inject it into the dashboard's constructor.
-1.  Update the template to display the strategy service's `preloadedModules` array.
+Но сначала внесите несколько изменений в `AppRoutingModule`.
 
-Now the file is as follows:
+1.  Импортируйте `SelectivePreloadingStrategyService` в `AppRoutingModule`.
+1.  Замените стратегию `PreloadAllModules` в вызове `forRoot()` на эту `SelectivePreloadingStrategyService`.
 
-<code-example header="src/app/admin/admin-dashboard/admin-dashboard.component.ts (preloaded modules)" path="router/src/app/admin/admin-dashboard/admin-dashboard.component.ts"></code-example>
+Теперь отредактируйте `AdminDashboardComponent` для отображения журнала предварительно загруженных маршрутов.
 
-Once the application loads the initial route, the `CrisisCenterModule` is preloaded. Verify this by logging in to the `Admin` feature area and noting that the `crisis-center` is listed in the `Preloaded Modules`.
-It also logs to the browser's console.
+1.  Импортируйте `SelectivePreloadingStrategyService`.
+1.  Вставьте его в конструктор приборной панели.
+1.  Обновите шаблон, чтобы отобразить массив `preloadedModules` службы стратегий.
 
-<a id="redirect-advanced"></a>
+Теперь файл выглядит следующим образом:
 
-### Migrating URLs with redirects
+```ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-You've set up the routes for navigating around your application and used navigation imperatively and declaratively. But like any application, requirements change over time.
-You've setup links and navigation to `/heroes` and `/hero/:id` from the `HeroListComponent` and `HeroDetailComponent` components.
-If there were a requirement that links to `heroes` become `superheroes`, you would still want the previous URLs to navigate correctly.
-You also don't want to update every link in your application, so redirects makes refactoring routes trivial.
+import { SelectivePreloadingStrategyService } from '../../selective-preloading-strategy.service';
 
-<a id="url-refactor"></a>
+@Component({
+    selector: 'app-admin-dashboard',
+    templateUrl: './admin-dashboard.component.html',
+    styleUrls: ['./admin-dashboard.component.css'],
+})
+export class AdminDashboardComponent implements OnInit {
+    sessionId!: Observable<string>;
+    token!: Observable<string>;
+    modules: string[] = [];
 
-#### Changing `/heroes` to `/superheroes`
+    constructor(
+        private route: ActivatedRoute,
+        preloadStrategy: SelectivePreloadingStrategyService
+    ) {
+        this.modules = preloadStrategy.preloadedModules;
+    }
 
-This section guides you through migrating the `Hero` routes to new URLs. The `Router` checks for redirects in your configuration before navigating, so each redirect is triggered when needed.
-To support this change, add redirects from the old routes to the new routes in the `heroes-routing.module`.
+    ngOnInit() {
+        // Capture the session ID if available
+        this.sessionId = this.route.queryParamMap.pipe(
+            map(
+                (params) =>
+                    params.get('session_id') || 'None'
+            )
+        );
 
-<code-example header="src/app/heroes/heroes-routing.module.ts (heroes redirects)" path="router/src/app/heroes/heroes-routing.module.ts"></code-example>
+        // Capture the fragment if available
+        this.token = this.route.fragment.pipe(
+            map((fragment) => fragment || 'None')
+        );
+    }
+}
+```
 
-Notice two different types of redirects. The first change is from `/heroes` to `/superheroes` without any parameters.
-The second change is from `/hero/:id` to `/superhero/:id`, which includes the `:id` route parameter.
-Router redirects also use powerful pattern-matching, so the `Router` inspects the URL and replaces route parameters in the `path` with their appropriate destination.
-Previously, you navigated to a URL such as `/hero/15` with a route parameter `id` of `15`.
+Как только приложение загрузит начальный маршрут, модуль `Кризис-центр` будет предварительно загружен. Убедитесь в этом, войдя в область функций `Admin` и отметив, что `кризис-центр` находится в списке `предзагруженных модулей`.
 
-<div class="alert is-helpful">
+Он также регистрируется в консоли браузера.
 
-The `Router` also supports [query parameters](#query-parameters) and the [fragment](#fragment) when using redirects.
+### Перенос URL-адресов с помощью перенаправлений {: #redirect-advanced}
 
--   When using absolute redirects, the `Router` uses the query parameters and the fragment from the `redirectTo` in the route config
--   When using relative redirects, the `Router` use the query params and the fragment from the source URL
+Вы настроили маршруты для перемещения по вашему приложению и используете навигацию императивно и декларативно. Но, как и в любом приложении, требования со временем меняются.
+Вы настроили ссылки и навигацию на `/heroes` и `/hero/:id` из компонентов `HeroListComponent` и `HeroDetailComponent`.
 
+Если бы существовало требование, чтобы ссылки на `героев` стали `супергероями`, вы бы все равно хотели, чтобы предыдущие URL были корректными для навигации.
+Вы также не хотите обновлять каждую ссылку в вашем приложении, поэтому перенаправления делают рефакторинг маршрутов тривиальным.
+
+#### Изменение `/heroes` на `/superheroes` {: #url-refactor}
+
+Этот раздел поможет вам перенести маршруты `Hero` на новые URL. Маршрутизатор `Router` проверяет наличие перенаправлений в вашей конфигурации перед началом навигации, поэтому каждое перенаправление запускается по мере необходимости.
+
+Чтобы поддержать это изменение, добавьте перенаправления со старых маршрутов на новые в `heroes-routing.module`.
+
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { HeroListComponent } from './hero-list/hero-list.component';
+import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+
+const heroesRoutes: Routes = [
+    { path: 'heroes', redirectTo: '/superheroes' },
+    { path: 'hero/:id', redirectTo: '/superhero/:id' },
+    {
+        path: 'superheroes',
+        component: HeroListComponent,
+        data: { animation: 'heroes' },
+    },
+    {
+        path: 'superhero/:id',
+        component: HeroDetailComponent,
+        data: { animation: 'hero' },
+    },
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(heroesRoutes)],
+    exports: [RouterModule],
+})
+export class HeroesRoutingModule {}
+```
+
+Обратите внимание на два разных типа перенаправления. Первое изменение - с `/heroes` на `/superheroes` без каких-либо параметров.
+Второе изменение - с `/hero/:id` на `/superhero/:id`, которое включает параметр маршрута `:id`.
+Перенаправления маршрутизатора также используют мощное сопоставление шаблонов, поэтому `Router` проверяет URL и заменяет параметры маршрута в `path` на соответствующие назначения.
+Ранее вы переходили на URL, например `/hero/15`, с параметром маршрута `id`, равным `15`.
+
+!!!note ""
+
+    Маршрутизатор `Router` также поддерживает [параметры запроса](#query-parameters) и [фрагмент](#fragment) при использовании перенаправлений.
+
+    - При использовании абсолютных перенаправлений `Router` использует параметры запроса и фрагмент из `redirectTo` в конфигурации маршрута.
+    - При использовании относительных перенаправлений `Router` использует параметры запроса и фрагмент из исходного URL
+
+В настоящее время пустой маршрут перенаправляет на `/heroes`, который перенаправляет на `/superheroes`. Это не будет работать, потому что `Router` обрабатывает перенаправления один раз на каждом уровне конфигурации маршрутизации.
+Это предотвращает цепочку перенаправлений, которая может привести к бесконечным петлям перенаправления.
+
+Вместо этого обновите пустой маршрут пути в `app-routing.module.ts`, чтобы он перенаправлял на `/superheroes`.
+
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { ComposeMessageComponent } from './compose-message/compose-message.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+import { authGuard } from './auth/auth.guard';
+import { SelectivePreloadingStrategyService } from './selective-preloading-strategy.service';
+
+const appRoutes: Routes = [
+    {
+        path: 'compose',
+        component: ComposeMessageComponent,
+        outlet: 'popup',
+    },
+    {
+        path: 'admin',
+        loadChildren: () =>
+            import('./admin/admin.module').then(
+                (m) => m.AdminModule
+            ),
+        canMatch: [authGuard],
+    },
+    {
+        path: 'crisis-center',
+        loadChildren: () =>
+            import(
+                './crisis-center/crisis-center.module'
+            ).then((m) => m.CrisisCenterModule),
+        data: { preload: true },
+    },
+    {
+        path: '',
+        redirectTo: '/superheroes',
+        pathMatch: 'full',
+    },
+    { path: '**', component: PageNotFoundComponent },
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forRoot(appRoutes, {
+            enableTracing: false, // <-- debugging purposes only
+            preloadingStrategy: SelectivePreloadingStrategyService,
+        }),
+    ],
+    exports: [RouterModule],
+})
+export class AppRoutingModule {}
+```
+
+Ссылка `routerLink` не привязана к конфигурации маршрута, поэтому обновите связанные с ней ссылки маршрутизатора, чтобы они оставались активными при активном новом маршруте. Обновите шаблон `app.component.ts` для `/heroes` `routerLink`.
+
+```html
+<div class="wrapper">
+    <h1 class="title">Angular Router</h1>
+    <nav>
+        <a
+            routerLink="/crisis-center"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Crisis Center</a
+        >
+        <a
+            routerLink="/superheroes"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Heroes</a
+        >
+        <a
+            routerLink="/admin"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Admin</a
+        >
+        <a
+            routerLink="/login"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Login</a
+        >
+        <a
+            [routerLink]="[{ outlets: { popup: ['compose'] } }]"
+            >Contact</a
+        >
+    </nav>
+    <div [@routeAnimation]="getRouteAnimationData()">
+        <router-outlet></router-outlet>
+    </div>
+    <router-outlet name="popup"></router-outlet>
 </div>
+```
 
-Currently, the empty path route redirects to `/heroes`, which redirects to `/superheroes`. This won't work because the `Router` handles redirects once at each level of routing configuration.
-This prevents chaining of redirects, which can lead to endless redirect loops.
+Обновите метод `goToHeroes()` в `hero-detail.component.ts` для перехода к `/superheroes` с необязательными параметрами маршрута.
 
-Instead, update the empty path route in `app-routing.module.ts` to redirect to `/superheroes`.
+```ts
+gotoHeroes(hero: Hero) {
+  const heroId = hero ? hero.id : null;
+  // Pass along the hero id if available
+  // so that the HeroList component can select that hero.
+  // Include a junk 'foo' property for fun.
+  this.router.navigate(['/superheroes', {id: heroId, foo: 'foo'}]);
+}
+```
 
-<code-example header="src/app/app-routing.module.ts (superheroes redirect)" path="router/src/app/app-routing.module.ts"></code-example>
+После установки перенаправлений все предыдущие маршруты теперь указывают на новые места назначения, и оба URL по-прежнему функционируют как положено.
 
-A `routerLink` isn't tied to route configuration, so update the associated router links to remain active when the new route is active. Update the `app.component.ts` template for the `/heroes` `routerLink`.
+### Проверка конфигурации маршрутизатора {: #inspect-config}
 
-<code-example header="src/app/app.component.html (superheroes active routerLink)" path="router/src/app/app.component.html"></code-example>
+Чтобы определить, действительно ли ваши маршруты оцениваются [в правильном порядке](#routing-module-order), вы можете проверить конфигурацию маршрутизатора.
 
-Update the `goToHeroes()` method in the `hero-detail.component.ts` to navigate back to `/superheroes` with the optional route parameters.
+Для этого нужно внедрить маршрутизатор и записать в консоль его свойство `config`. Например, обновите `AppModule` следующим образом и посмотрите в окне консоли браузера готовую конфигурацию маршрута.
 
-<code-example header="src/app/heroes/hero-detail/hero-detail.component.ts (goToHeroes)" path="router/src/app/heroes/hero-detail/hero-detail.component.ts" region="redirect"></code-example>
+```ts
+export class AppModule {
+    // Diagnostic only: inspect router configuration
+    constructor(router: Router) {
+        // Use a custom replacer to display function names in the route configs
+        const replacer = (key, value) =>
+            typeof value === 'function'
+                ? value.name
+                : value;
 
-With the redirects setup, all previous routes now point to their new destinations and both URLs still function as intended.
+        console.log(
+            'Routes: ',
+            JSON.stringify(router.config, replacer, 2)
+        );
+    }
+}
+```
 
-<a id="inspect-config"></a>
+## Готовое приложение {: #final-app}
 
-### Inspect the router's configuration
-
-To determine if your routes are actually evaluated [in the proper order](#routing-module-order), you can inspect the router's configuration.
-
-Do this by injecting the router and logging to the console its `config` property. For example, update the `AppModule` as follows and look in the browser console window to see the finished route configuration.
-
-<code-example header="src/app/app.module.ts (inspect the router config)" path="router/src/app/app.module.7.ts" region="inspect-config"></code-example>
-
-<a id="final-app"></a>
-
-## Final application
-
-For the completed router application, see the <live-example name="router"></live-example> for the final source code.
-
-<a id="link-parameters-array"></a>
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-:date: 28.02.2022
+Готовое приложение маршрутизатора смотрите в [примере](https://angular.io/generated/live-examples/router/stackblitz.html) для окончательного исходного кода.
