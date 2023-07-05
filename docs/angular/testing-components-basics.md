@@ -1,5 +1,7 @@
 # Основы тестирования компонентов
 
+:date: 28.02.2022
+
 Компонент, в отличие от всех других частей приложения Angular, сочетает в себе HTML-шаблон и класс TypeScript. Компонент действительно представляет собой шаблон и класс, _работающие вместе_.
 
 Чтобы адекватно протестировать компонент, необходимо проверить, что они работают вместе так, как задумано.
@@ -8,15 +10,11 @@
 
 Angular `TestBed` облегчает этот вид тестирования, как вы увидите в следующих разделах. Но во многих случаях _тестирование класса компонента в одиночку_, без участия DOM, может подтвердить большую часть поведения компонента простым и более очевидным способом.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, <live-example name="testing" noDownload>запустите его в браузере</live-example> или <live-example name="testing" downloadOnly>скачайте и запустите его локально</live-example>.
+    Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, [запустите его в браузере](https://angular.io/generated/live-examples/testing/stackblitz.html) или скачайте и запустите его локально.
 
-</div>
-
-<a id="component-class-testing"></a>
-
-## Тестирование класса компонента
+## Тестирование класса компонента {: #component-class-testing}
 
 Тестируйте класс компонента самостоятельно, как вы тестировали бы класс сервиса.
 
@@ -26,51 +24,165 @@ Angular `TestBed` облегчает этот вид тестирования, �
 
 Рассмотрим этот `LightswitchComponent`, который включает и выключает свет (представленный экранным сообщением), когда пользователь нажимает на кнопку.
 
-<code-example header="app/demo/demo.ts (LightswitchComp)" path="testing/src/app/demo/demo.ts" region="LightswitchComp"></code-example>.
+```ts
+@Component({
+    selector: 'lightswitch-comp',
+    template: ` <button type="button" (click)="clicked()">
+            Click me!
+        </button>
+        <span>{{ message }}</span>`,
+})
+export class LightswitchComponent {
+    isOn = false;
+    clicked() {
+        this.isOn = !this.isOn;
+    }
+    get message() {
+        return `The light is ${this.isOn ? 'On' : 'Off'}`;
+    }
+}
+```
 
 Вы можете решить только проверить, что метод `clicked()` переключает состояние света _on/off_ и устанавливает соответствующее сообщение.
 
 Этот класс компонента не имеет зависимостей. Чтобы протестировать классы такого типа, выполните те же шаги, что и для службы, не имеющей зависимостей:
 
 1.  Создайте компонент, используя ключевое слово new.
+2.  Посмотрите на его API.
+3.  Утвердите ожидания для его публичного состояния.
 
-1.  Посмотрите на его API.
+```ts
+describe('LightswitchComp', () => {
+    it('#clicked() should toggle #isOn', () => {
+        const comp = new LightswitchComponent();
+        expect(comp.isOn)
+            .withContext('off at first')
+            .toBe(false);
+        comp.clicked();
+        expect(comp.isOn)
+            .withContext('on after click')
+            .toBe(true);
+        comp.clicked();
+        expect(comp.isOn)
+            .withContext('off after second click')
+            .toBe(false);
+    });
 
-1.  Утвердите ожидания для его публичного состояния.
-
-<code-example header="app/demo/demo.spec.ts (Lightswitch tests)" path="testing/src/app/demo/demo.spec.ts" region="Lightswitch"></code-example>
+    it('#clicked() should set #message to "is on"', () => {
+        const comp = new LightswitchComponent();
+        expect(comp.message)
+            .withContext('off at first')
+            .toMatch(/is off/i);
+        comp.clicked();
+        expect(comp.message)
+            .withContext('on after clicked')
+            .toMatch(/is on/i);
+    });
+});
+```
 
 Вот `DashboardHeroComponent` из учебника _Tour of Heroes_.
 
-<code-example header="app/dashboard/dashboard-hero.component.ts (компонент)" path="testing/src/app/dashboard/dashboard-hero.component.ts" region="class"></code-example>.
+```ts
+export class DashboardHeroComponent {
+    @Input() hero!: Hero;
+    @Output() selected = new EventEmitter<Hero>();
+    click() {
+        this.selected.emit(this.hero);
+    }
+}
+```
 
 Он появляется в шаблоне родительского компонента, который связывает _hero_ со свойством `@Input` и слушает событие, вызванное через свойство _selected_ `@Output`.
 
 Вы можете проверить, что код класса работает без создания `DashboardHeroComponent` или его родительского компонента.
 
-<code-example header="app/dashboard/dashboard-hero.component.spec.ts (class tests)" path="testing/src/app/dashboard/dashboard-hero.component.spec.ts" region="class-only"></code-example
+```ts
+it('raises the selected event when clicked', () => {
+    const comp = new DashboardHeroComponent();
+    const hero: Hero = { id: 42, name: 'Test' };
+    comp.hero = hero;
+
+    comp.selected
+        .pipe(first())
+        .subscribe((selectedHero: Hero) =>
+            expect(selectedHero).toBe(hero)
+        );
+    comp.click();
+});
+```
 
 Когда компонент имеет зависимости, вы можете захотеть использовать `TestBed` для создания компонента и его зависимостей.
 
 Следующий `WelcomeComponent` зависит от `UserService`, чтобы узнать имя пользователя для приветствия.
 
-<code-example header="app/welcome/welcome.component.ts" path="testing/src/app/welcome/welcome.component.ts" region="class"></code-example>.
+```ts
+export class WelcomeComponent implements OnInit {
+    welcome = '';
+    constructor(private userService: UserService) {}
+
+    ngOnInit(): void {
+        this.welcome = this.userService.isLoggedIn
+            ? 'Welcome, ' + this.userService.user.name
+            : 'Please log in.';
+    }
+}
+```
 
 Вы можете начать с создания макета `UserService`, который отвечает минимальным требованиям этого компонента.
 
-<code-example header="app/welcome/welcome.component.spec.ts (MockUserService)" path="testing/src/app/welcome/welcome.component.spec.ts" region="mock-user-service"></code-example>.
+```ts
+class MockUserService {
+    isLoggedIn = true;
+    user = { name: 'Test User' };
+}
+```
 
 Затем предоставьте и внедрите _как_ **компонент** _так и сервис_ в конфигурацию `TestBed`.
 
-<code-example header="app/welcome/welcome.component.spec.ts (class-only setup)" path="testing/src/app/welcome/welcome.component.spec.ts" region="class-only-before-each"></code-example>.
+```ts
+beforeEach(() => {
+    TestBed.configureTestingModule({
+        // provide the component-under-test and dependent service
+        providers: [
+            WelcomeComponent,
+            {
+                provide: UserService,
+                useClass: MockUserService,
+            },
+        ],
+    });
+    // inject both the component and the dependent service.
+    comp = TestBed.inject(WelcomeComponent);
+    userService = TestBed.inject(UserService);
+});
+```
 
-Затем запустите класс компонента, не забыв вызвать методы [lifecycle hooks](guide/lifecycle-hooks), как это делает Angular при запуске приложения.
+Затем запустите класс компонента, не забыв вызвать методы [lifecycle hooks](lifecycle-hooks.md), как это делает Angular при запуске приложения.
 
-<code-example header="app/welcome/welcome.component.spec.ts (class-only tests)" path="testing/src/app/welcome/welcome/welcome.component.spec.ts" region="class-only-tests"></code-example>.
+```ts
+it('should not have welcome message after construction', () => {
+    expect(comp.welcome).toBe('');
+});
+
+it('should welcome logged in user after Angular calls ngOnInit', () => {
+    comp.ngOnInit();
+    expect(comp.welcome).toContain(userService.user.name);
+});
+
+it('should ask user to log in if not logged in after ngOnInit', () => {
+    userService.isLoggedIn = false;
+    comp.ngOnInit();
+    expect(comp.welcome).not.toContain(
+        userService.user.name
+    );
+    expect(comp.welcome).toContain('log in');
+});
+```
 
 ## Тестирование DOM компонента
 
-Тестирование _класса_ компонента так же просто, как [тестирование сервиса](guide/testing-services).
+Тестирование _класса_ компонента так же просто, как [тестирование сервиса](testing-services.md).
 
 Но компонент - это нечто большее, чем просто его класс. Компонент взаимодействует с DOM и с другими компонентами.
 
@@ -81,13 +193,9 @@ Angular `TestBed` облегчает этот вид тестирования, �
 Ни один из предыдущих _class-only_ тестов не может ответить на ключевые вопросы о том, как компоненты ведут себя на экране.
 
 -   Привязан ли `Lightswitch.clicked()` к чему-либо так, чтобы пользователь мог вызвать его?
-
 -   Отображается ли `Lightswitch.message`?
-
 -   Может ли пользователь выбрать героя, отображаемого `DashboardHeroComponent`?
-
--   Отображается ли имя героя так, как ожидалось\(например, в верхнем регистре\)?
-
+-   Отображается ли имя героя так, как ожидалось (например, в верхнем регистре)?
 -   Отображается ли приветственное сообщение по шаблону `WelcomeComponent`?
 
 Эти вопросы могут не вызывать беспокойства для предыдущих простых компонентов, показанных на рисунке. Но многие компоненты имеют сложное взаимодействие с элементами DOM, описанными в их шаблонах, заставляя HTML появляться и исчезать при изменении состояния компонента.
@@ -100,25 +208,52 @@ Angular `TestBed` облегчает этот вид тестирования, �
 
 CLI по умолчанию создает начальный файл тестов, когда вы просите его сгенерировать новый компонент.
 
-Например, следующая команда CLI генерирует `BannerComponent` в папке `app/banner` \(с встроенным шаблоном и стилями\):
+Например, следующая команда CLI генерирует `BannerComponent` в папке `app/banner` (с встроенным шаблоном и стилями):
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate component banner --inline-template --inline-style --module app
-
-</code-example>
+```
 
 Он также генерирует начальный тестовый файл для компонента, `banner-external.component.spec.ts`, который выглядит следующим образом:
 
-<code-example header="app/banner/banner-external.component.spec.ts (initial)" path="testing/src/app/banner/banner-initial.component.spec.ts" region="v1"></code-example>
+```ts
+import {
+    ComponentFixture,
+    TestBed,
+    waitForAsync,
+} from '@angular/core/testing';
 
-<div class="alert is-helpful">
+import { BannerComponent } from './banner.component';
 
-Поскольку `compileComponents` является асинхронным, он использует утилиту [`waitForAsync`](api/core/testing/waitForAsync), импортированную из `@angular/core/testing`.
+describe('BannerComponent', () => {
+    let component: BannerComponent;
+    let fixture: ComponentFixture<BannerComponent>;
 
-Более подробную информацию см. в разделе [waitForAsync](guide/testing-components-scenarios#waitForAsync).
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [BannerComponent],
+            }).compileComponents();
+        })
+    );
 
-</div>
+    beforeEach(() => {
+        fixture = TestBed.createComponent(BannerComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(component).toBeDefined();
+    });
+});
+```
+
+!!!note ""
+
+    Поскольку `compileComponents` является асинхронным, он использует утилиту [`waitForAsync`](https://angular.io/api/core/testing/waitForAsync), импортированную из `@angular/core/testing`.
+
+    Более подробную информацию см. в разделе [waitForAsync](testing-components-scenarios.md#waitForAsync).
 
 ### Уменьшить настройку
 
@@ -128,63 +263,100 @@ ng generate component banner --inline-template --inline-style --module app
 
 Вы узнаете об этих расширенных возможностях тестирования в следующих разделах. Пока же вы можете радикально уменьшить этот файл тестов до более удобного размера:
 
-<code-example header="app/banner/banner-initial.component.spec.ts (minimal)" path="testing/src/app/banner/banner-initial.component.spec.ts" region="v2"></code-example>.
+```ts
+describe('BannerComponent (minimal)', () => {
+    it('should create', () => {
+        TestBed.configureTestingModule({
+            declarations: [BannerComponent],
+        });
+        const fixture = TestBed.createComponent(
+            BannerComponent
+        );
+        const component = fixture.componentInstance;
+        expect(component).toBeDefined();
+    });
+});
+```
 
 В этом примере объект метаданных, переданный в `TestBed.configureTestingModule`, просто объявляет `BannerComponent`, компонент для тестирования.
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="configureTestingModule"></code-example>.
+```ts
+TestBed.configureTestingModule({
+    declarations: [BannerComponent],
+});
+```
 
-<div class="alert is-helpful">
+!!!note ""
 
-Нет необходимости объявлять или импортировать что-либо еще. Модуль тестирования по умолчанию предварительно сконфигурирован с чем-то вроде `BrowserModule` из `@angular/platform-browser`.
+    Нет необходимости объявлять или импортировать что-либо еще. Модуль тестирования по умолчанию предварительно сконфигурирован с чем-то вроде `BrowserModule` из `@angular/platform-browser`.
 
-Позже вы вызовете `TestBed.configureTestingModule()` с импортом, провайдерами и другими объявлениями в соответствии с вашими потребностями тестирования. Необязательные методы `override` позволяют еще более точно настроить аспекты конфигурации.
+    Позже вы вызовете `TestBed.configureTestingModule()` с импортом, провайдерами и другими объявлениями в соответствии с вашими потребностями тестирования. Необязательные методы `override` позволяют еще более точно настроить аспекты конфигурации.
 
-</div>
-
-<a id="create-component"></a>
-
-### `createComponent()`
+### `createComponent()` {: #create-component}
 
 После настройки `TestBed`, вы вызываете его метод `createComponent()`.
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="createComponent"></code-example>.
+```ts
+const fixture = TestBed.createComponent(BannerComponent);
+```
 
 `TestBed.createComponent()` создает экземпляр `BannerComponent`, добавляет соответствующий элемент в DOM test-runner и возвращает [`ComponentFixture`](#component-fixture).
 
-<div class="alert is-important">
+!!!warning ""
 
-Не переконфигурируйте `TestBed` после вызова `createComponent`.
+    Не переконфигурируйте `TestBed` после вызова `createComponent`.
 
-Метод `createComponent` замораживает текущее определение `TestBed`, закрывая его для дальнейшей конфигурации.
+    Метод `createComponent` замораживает текущее определение `TestBed`, закрывая его для дальнейшей конфигурации.
 
-Вы не можете больше вызывать никаких методов конфигурации `TestBed`, ни `configureTestingModule()`, ни `get()`, ни одного из методов `override...`. Если вы попытаетесь, `TestBed` выдаст ошибку.
+    Вы не можете больше вызывать никаких методов конфигурации `TestBed`, ни `configureTestingModule()`, ни `get()`, ни одного из методов `override...`. Если вы попытаетесь, `TestBed` выдаст ошибку.
 
-</div>
+### `ComponentFixture` {: #component-fixture}
 
-<a id="component-fixture"></a>
-
-### `ComponentFixture`
-
-[ComponentFixture](api/core/testing/ComponentFixture) - это тестовый набор для взаимодействия с созданным компонентом и его соответствующим элементом.
+[ComponentFixture](https://angular.io/api/core/testing/ComponentFixture) - это тестовый набор для взаимодействия с созданным компонентом и его соответствующим элементом.
 
 Получите доступ к экземпляру компонента через фикстуру и подтвердите его существование с помощью ожидания Jasmine:
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="componentInstance"></code-example>.
+```ts
+const component = fixture.componentInstance;
+expect(component).toBeDefined();
+```
 
-### `beforeEach()`.
+### `beforeEach()`
 
 Вы будете добавлять больше тестов по мере развития этого компонента. Вместо того, чтобы дублировать конфигурацию `TestBed` для каждого теста, вы рефакторите, чтобы вытащить настройку в Jasmine `beforeEach()` и некоторые вспомогательные переменные:
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="v3"></code-example>.
+```ts
+describe('BannerComponent (with beforeEach)', () => {
+    let component: BannerComponent;
+    let fixture: ComponentFixture<BannerComponent>;
+
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [BannerComponent],
+        });
+        fixture = TestBed.createComponent(BannerComponent);
+        component = fixture.componentInstance;
+    });
+
+    it('should create', () => {
+        expect(component).toBeDefined();
+    });
+});
+```
 
 Теперь добавьте тест, который получает элемент компонента из `fixture.nativeElement` и ищет ожидаемый текст.
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="v4-test-2"></code-example>.
+```ts
+it('should contain "banner works!"', () => {
+    const bannerElement: HTMLElement =
+        fixture.nativeElement;
+    expect(bannerElement.textContent).toContain(
+        'banner works!'
+    );
+});
+```
 
-<a id="native-element"></a>
-
-### `nativeElement`
+### `nativeElement` {: #native-element}
 
 Значение `ComponentFixture.nativeElement` имеет тип `any`. Позже вы встретите `DebugElement.nativeElement`, и оно тоже имеет тип `any`.
 
@@ -196,19 +368,29 @@ Angular не может знать во время компиляции, как�
 
 Вот еще один тест, который вызывает `HTMLElement.querySelector` для получения элемента абзаца и поиска текста баннера:
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="v4-test-3"></code-example>.
+```ts
+it('should have <p> with "banner works!"', () => {
+    const bannerElement: HTMLElement =
+        fixture.nativeElement;
+    const p = bannerElement.querySelector('p')!;
+    expect(p.textContent).toEqual('banner works!');
+});
+```
 
-<a id="debug-element"></a>
-
-### `DebugElement`
+### `DebugElement` {: #debug-element}
 
 Angular _fixture_ предоставляет элемент компонента напрямую через `fixture.nativeElement`.
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="nativeElement"></code-example>.
+```ts
+const bannerElement: HTMLElement = fixture.nativeElement;
+```
 
 На самом деле это удобный метод, реализованный как `fixture.debugElement.nativeElement`.
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="debugElement-nativeElement"></code-example>.
+```ts
+const bannerDe: DebugElement = fixture.debugElement;
+const bannerEl: HTMLElement = bannerDe.nativeElement;
+```
 
 Для такого извилистого пути к элементу есть веская причина.
 
@@ -222,17 +404,24 @@ Angular полагается на абстракцию `DebugElement` для б�
 
 Вот предыдущий тест, повторно реализованный с `fixture.debugElement.nativeElement`:
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="v4-test-4"></code-example>.
+```ts
+it('should find the <p> with fixture.debugElement.nativeElement)', () => {
+    const bannerDe: DebugElement = fixture.debugElement;
+    const bannerEl: HTMLElement = bannerDe.nativeElement;
+    const p = bannerEl.querySelector('p')!;
+    expect(p.textContent).toEqual('banner works!');
+});
+```
 
 У `DebugElement` есть другие методы и свойства, которые полезны в тестах, как вы увидите в других частях этого руководства.
 
 Вы импортируете символ `DebugElement` из библиотеки ядра Angular.
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="import-debug-element"></code-example>.
+```ts
+import { DebugElement } from '@angular/core';
+```
 
-<a id="by-css"></a>
-
-### `By.css()`.
+### `By.css()` {: #by-css}
 
 Хотя все тесты в этом руководстве выполняются в браузере, некоторые приложения могут работать на другой платформе хотя бы часть времени.
 
@@ -244,28 +433,27 @@ Angular полагается на абстракцию `DebugElement` для б�
 
 Вы создаете _предикат_ с помощью класса `By`, импортированного из библиотеки для платформы выполнения. Вот импорт `By` для платформы браузера:
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="import-by"></code-example>.
+```ts
+import { By } from '@angular/platform-browser';
+```
 
 Следующий пример повторно реализует предыдущий тест с помощью `DebugElement.query()` и метода браузера `By.css`.
 
-<code-example path="testing/src/app/banner/banner-initial.component.spec.ts" region="v4-test-5"></code-example>.
+```ts
+it('should find the <p> with fixture.debugElement.query(By.css)', () => {
+    const bannerDe: DebugElement = fixture.debugElement;
+    const paragraphDe = bannerDe.query(By.css('p'));
+    const p: HTMLElement = paragraphDe.nativeElement;
+    expect(p.textContent).toEqual('banner works!');
+});
+```
 
 Некоторые примечательные наблюдения:
 
--   Статический метод `By.css()` выбирает узлы `DebugElement` со [стандартным CSS-селектором] (https://developer.mozilla.org/docs/Web/Guide/CSS/Getting_started/Selectors 'CSS-селекторы').
-
+-   Статический метод `By.css()` выбирает узлы `DebugElement` со [стандартным CSS-селектором](https://developer.mozilla.org/docs/Web/Guide/CSS/Getting_started/Selectors).
 -   Запрос возвращает `DebugElement` для параграфа.
-
 -   Вы должны развернуть этот результат, чтобы получить элемент абзаца.
 
 Когда вы фильтруете по селектору CSS и проверяете только свойства _родного элемента_ браузера, подход `By.css` может оказаться излишним.
 
 Часто проще и понятнее фильтровать с помощью стандартного метода `HTMLElement`, такого как `querySelector()` или `querySelectorAll()`.
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-:date: 28.02.2022

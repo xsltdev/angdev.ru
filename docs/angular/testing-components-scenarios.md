@@ -1,12 +1,12 @@
 # Сценарии тестирования компонентов
 
+<!-- не закончено #component-with-async-service -->
+
 В этом руководстве рассматриваются общие сценарии использования тестирования компонентов.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, <live-example name="testing" noDownload>запустите его в браузере</live-example> или <live-example name="testing" downloadOnly>скачайте и запустите его локально</live-example>.
-
-</div>
+    Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, [запустите его в браузере](https://angular.io/generated/live-examples/testing/stackblitz.html) или скачайте и запустите его локально.
 
 ## Привязка компонентов
 
@@ -14,71 +14,136 @@
 
 После нескольких изменений `BannerComponent` представляет динамический заголовок, привязываясь к свойству `title` компонента следующим образом.
 
-<code-example header="app/banner/banner.component.ts" path="testing/src/app/banner/banner.component.ts" region="component"></code-example>.
+```ts
+@Component({
+    selector: 'app-banner',
+    template: '<h1>{{title}}</h1>',
+    styles: ['h1 { color: green; font-size: 350%}'],
+})
+export class BannerComponent {
+    title = 'Test Tour of Heroes';
+}
+```
 
 Как бы минимально это ни было, вы решили добавить тест, чтобы подтвердить, что компонент действительно отображает нужное содержимое там, где вы думаете.
 
-#### Запрос для `<h1>`.
+#### Запрос для `<h1>`
 
 Вы напишете последовательность тестов, которые проверяют значение элемента `<h1>`, который обертывает привязку интерполяции свойства _title_.
 
 Вы обновите `beforeEach`, чтобы найти этот элемент с помощью стандартного HTML `querySelector` и присвоить его переменной `h1`.
 
-<code-example header="app/banner/banner.component.spec.ts (setup)" path="testing/src/app/banner/banner.component.spec.ts" region="setup"></code-example>
+```ts
+let component: BannerComponent;
+let fixture: ComponentFixture<BannerComponent>;
+let h1: HTMLElement;
 
-<a id="detect-changes"></a>
+beforeEach(() => {
+    TestBed.configureTestingModule({
+        declarations: [BannerComponent],
+    });
+    fixture = TestBed.createComponent(BannerComponent);
+    component = fixture.componentInstance; // BannerComponent test instance
+    h1 = fixture.nativeElement.querySelector('h1');
+});
+```
 
-#### `createComponent()` не связывает данные
+#### `createComponent()` не связывает данные {: #detect-changes}
 
 Для первого теста вы хотите убедиться, что на экране отображается стандартный `title`. Ваш инстинкт подсказывает вам написать тест, который сразу же проверяет `<h1>` следующим образом:
 
-<code-example path="testing/src/app/banner/banner.component.spec.ts" region="expect-h1-default-v1"></code-example>.
+```ts
+it('should display original title', () => {
+    expect(h1.textContent).toContain(component.title);
+});
+```
 
 Этот тест проваливается с сообщением:
 
-<code-example format="javascript" language="javascript">
-
-ожидал, что '' будет содержать "Тестовый тур героев".
-
-</code-example>
+```
+expected '' to contain 'Test Tour of Heroes'.
+```
 
 Привязка происходит, когда Angular выполняет **обнаружение изменений**.
 
-В продакшене обнаружение изменений срабатывает автоматически, когда Angular создает компонент, пользователь нажимает клавишу или завершается асинхронная активность\\(например, AJAX\).
+В продакшене обнаружение изменений срабатывает автоматически, когда Angular создает компонент, пользователь нажимает клавишу или завершается асинхронная активность (например, AJAX).
 
 Функция `TestBed.createComponent` _не_ запускает обнаружение изменений; этот факт подтверждается в пересмотренном тесте:
 
-<code-example path="testing/src/app/banner/banner.component.spec.ts" region="test-w-o-detect-changes"></code-example>
+```ts
+it('no title in the DOM after createComponent()', () => {
+    expect(h1.textContent).toEqual('');
+});
+```
 
-#### `detectChanges()`.
+#### `detectChanges()`
 
 Вы должны указать `TestBed` на выполнение привязки данных, вызвав `fixture.detectChanges()`. Только тогда `<h1>` будет иметь ожидаемый заголовок.
 
-<code-example path="testing/src/app/banner/banner.component.spec.ts" region="expect-h1-default"></code-example>.
+```ts
+it('should display original title after detectChanges()', () => {
+    fixture.detectChanges();
+    expect(h1.textContent).toContain(component.title);
+});
+```
 
-Отложенное обнаружение изменений является намеренным и полезным. Она дает тестеру возможность проверить и изменить состояние компонента _до того, как Angular инициирует привязку данных и вызовет [lifecycle hooks](guide/lifecycle-hooks)_.
+Отложенное обнаружение изменений является намеренным и полезным. Она дает тестеру возможность проверить и изменить состояние компонента _до того, как Angular инициирует привязку данных и вызовет [lifecycle hooks](lifecycle-hooks.md)_.
 
 Вот еще один тест, который изменяет свойство `title` компонента _до_ вызова `fixture.detectChanges()`.
 
-<code-example path="testing/src/app/banner/banner.component.spec.ts" region="after-change"></code-example>.
+```ts
+it('should display a different test title', () => {
+    component.title = 'Test Title';
+    fixture.detectChanges();
+    expect(h1.textContent).toContain('Test Title');
+});
+```
 
-<a id="auto-detect-changes"></a>
-
-#### Автоматическое обнаружение изменений
+#### Автоматическое обнаружение изменений {: #auto-detect-changes}
 
 Тесты `BannerComponent` часто вызывают `detectChanges`. Некоторые тестировщики предпочитают, чтобы тестовая среда Angular выполняла обнаружение изменений автоматически.
 
 Это возможно, если настроить `TestBed` с провайдером `ComponentFixtureAutoDetect`. Сначала импортируйте его из библиотеки утилит для тестирования:
 
-<code-example header="app/banner/banner.component.detect-changes.spec.ts (import)" path="testing/src/app/banner/banner.component.detect-changes.spec.ts" region="import-ComponentFixtureAutoDetect"></code-example>.
+```ts
+import { ComponentFixtureAutoDetect } from '@angular/core/testing';
+```
 
 Затем добавьте его в массив `providers` конфигурации модуля тестирования:
 
-<code-example header="app/banner/banner.component.detect-changes.spec.ts (AutoDetect)" path="testing/src/app/banner/banner.component.detect-changes.spec.ts" region="auto-detect"></code-example>.
+```ts
+TestBed.configureTestingModule({
+    declarations: [BannerComponent],
+    providers: [
+        {
+            provide: ComponentFixtureAutoDetect,
+            useValue: true,
+        },
+    ],
+});
+```
 
 Вот три теста, которые иллюстрируют работу автоматического обнаружения изменений.
 
-<code-example header="app/banner/banner.component.detect-changes.spec.ts (Тесты автоопределения)" path="testing/src/app/banner/banner.component.detect-changes.spec.ts" region="auto-detect-tests"></code-example>.
+```ts
+it('should display original title', () => {
+    // Hooray! No `fixture.detectChanges()` needed
+    expect(h1.textContent).toContain(comp.title);
+});
+
+it('should still see original title after comp.title change', () => {
+    const oldTitle = comp.title;
+    comp.title = 'Test Title';
+    // Displayed title is old because Angular didn't hear the change :(
+    expect(h1.textContent).toContain(oldTitle);
+});
+
+it('should display updated title after detectChanges', () => {
+    comp.title = 'Test Title';
+    fixture.detectChanges(); // detect changes explicitly
+    expect(h1.textContent).toContain(comp.title);
+});
+```
 
 Первый тест показывает преимущество автоматического обнаружения изменений.
 
@@ -90,15 +155,11 @@
 
 Тест должен вызвать `fixture.detectChanges()` вручную, чтобы запустить очередной цикл обнаружения изменений.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Вместо того, чтобы гадать, когда тестовое приспособление будет или не будет выполнять обнаружение изменений, примеры в этом руководстве _всегда_ вызывают `detectChanges()` _явно_. Нет никакого вреда в том, чтобы вызывать `detectChanges()` чаще, чем это необходимо.
+    Вместо того, чтобы гадать, когда тестовое приспособление будет или не будет выполнять обнаружение изменений, примеры в этом руководстве _всегда_ вызывают `detectChanges()` _явно_. Нет никакого вреда в том, чтобы вызывать `detectChanges()` чаще, чем это необходимо.
 
-</div>
-
-<a id="dispatch-event"></a>
-
-#### Изменение входного значения с помощью `dispatchEvent()`.
+#### Изменение входного значения с помощью `dispatchEvent()` {: #dispatch-event}
 
 Чтобы имитировать ввод данных пользователем, найдите элемент input и установите его свойство `value`.
 
@@ -110,7 +171,31 @@ Angular не знает, что вы установили свойство `valu
 
 Следующий пример демонстрирует правильную последовательность действий.
 
-<code-example header="app/hero/hero-detail.component.spec.ts (pipe test)" path="testing/src/app/hero/hero-detail.component.spec.ts" region="title-case-pipe"></code-example>.
+```ts
+it('should convert hero name to Title Case', () => {
+    // get the name's input and display elements from the DOM
+    const hostElement: HTMLElement = harness.routeNativeElement!;
+    const nameInput: HTMLInputElement = hostElement.querySelector(
+        'input'
+    )!;
+    const nameDisplay: HTMLElement = hostElement.querySelector(
+        'span'
+    )!;
+
+    // simulate user entering a new name into the input box
+    nameInput.value = 'quick BROWN  fOx';
+
+    // Dispatch a DOM event so that Angular learns of input value change.
+    nameInput.dispatchEvent(new Event('input'));
+
+    // Tell Angular to update the display binding through the title pipe
+    harness.detectChanges();
+
+    expect(nameDisplay.textContent).toBe(
+        'Quick Brown  Fox'
+    );
+});
+```
 
 ## Компонент с внешними файлами
 
@@ -118,7 +203,13 @@ Angular не знает, что вы установили свойство `valu
 
 Многие компоненты определяют _внешние шаблоны_ и _внешние css_ с помощью свойств `@Component.templateUrl` и `@Component.styleUrls` соответственно, как это делает следующий вариант `BannerComponent`.
 
-<code-example header="app/banner/banner-external.component.ts (metadata)" path="testing/src/app/banner/banner-external.component.ts" region="metadata"></code-example>.
+```ts
+@Component({
+  selector: 'app-banner',
+  templateUrl: './banner-external.component.html',
+  styleUrls:  ['./banner-external.component.css']
+})
+```
 
 Этот синтаксис указывает компилятору Angular читать внешние файлы во время компиляции компонента.
 
@@ -126,38 +217,60 @@ Angular не знает, что вы установили свойство `valu
 
 Однако, если вы запускаете тесты в **не-CLI окружении**, тесты этого компонента могут не пройти. Например, если вы запустите тесты `BannerComponent` в среде веб-кодирования, такой как [plunker](https://plnkr.co), вы увидите сообщение, подобное этому:
 
-<code-example format="output" hideCopy language="shell">
-
-Ошибка: Этот тестовый модуль использует компонент BannerComponent, который использует "templateUrl" или "styleUrls", но они никогда не были скомпилированы.
-Пожалуйста, вызовите "TestBed.compileComponents" перед началом тестирования.
-
-</code-example>
+```
+Error: This test module uses the component BannerComponent
+which is using a "templateUrl" or "styleUrls", but they were never compiled.
+Please call "TestBed.compileComponents" before your test.
+```
 
 Вы получаете это сообщение о сбое теста, когда среда выполнения компилирует исходный код _во время выполнения самих тестов_.
 
 Чтобы устранить проблему, вызовите `compileComponents()`, как объясняется в следующем разделе [Вызов compileComponents](#compile-components).
 
-<a id="component-with-dependency"></a>
-
-## Компонент с зависимостью
+## Компонент с зависимостью {: #component-with-dependency}
 
 Компоненты часто имеют зависимости от сервисов.
 
 Компонент `WelcomeComponent` отображает приветственное сообщение для вошедшего в систему пользователя. Он знает, кто этот пользователь, на основе свойства инжектированного `UserService`:
 
-<code-example header="app/welcome/welcome.component.ts" path="testing/src/app/welcome/welcome.component.ts"></code-example>.
+```ts
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../model/user.service';
+
+@Component({
+    selector: 'app-welcome',
+    template: '<h3 class="welcome"><i>{{welcome}}</i></h3>',
+})
+export class WelcomeComponent implements OnInit {
+    welcome = '';
+    constructor(private userService: UserService) {}
+
+    ngOnInit(): void {
+        this.welcome = this.userService.isLoggedIn
+            ? 'Welcome, ' + this.userService.user.name
+            : 'Please log in.';
+    }
+}
+```
 
 В `WelcomeComponent` есть логика принятия решений, которая взаимодействует с сервисом, логика, которая делает этот компонент достойным тестирования. Вот конфигурация модуля тестирования для файла спецификации:
 
-<code-example header="app/welcome/welcome.component.spec.ts" path="testing/src/app/welcome/welcome.component.spec.ts" region="config-test-module"></code-example>.
+```ts
+TestBed.configureTestingModule({
+    declarations: [WelcomeComponent],
+    // providers: [ UserService ],  // NO! Don't provide the real service!
+    // Provide a test-double instead
+    providers: [
+        { provide: UserService, useValue: userServiceStub },
+    ],
+});
+```
 
 На этот раз, в дополнение к объявлению _component-under-test_, конфигурация добавляет провайдера `UserService` в список `providers`.
 
 Но не настоящий `UserService`.
 
-<a id="service-test-doubles"></a>
-
-#### Предоставление дублей для тестирования сервисов
+#### Предоставление дублей для тестирования сервисов {: #service-test-doubles}
 
 В _компонент под тестом_ не обязательно должны быть внедрены реальные сервисы. На самом деле, обычно лучше, если это будут тестовые дубликаты, такие как заглушки, подделки, шпионы или моки.
 
@@ -171,11 +284,16 @@ Angular не знает, что вы установили свойство `valu
 
 Этот конкретный набор тестов предоставляет минимальный макет `UserService`, который удовлетворяет потребности `WelcomeComponent` и его тестов:
 
-<code-example header="app/welcome/welcome.component.spec.ts" path="testing/src/app/welcome/welcome.component.spec.ts" region="user-service-stub"></code-example>.
+```ts
+let userServiceStub: Partial<UserService>;
 
-<a id="get-injected-service"></a>
+userServiceStub = {
+    isLoggedIn: true,
+    user: { name: 'Test User' },
+};
+```
 
-#### Получение инжектированных сервисов
+#### Получение инжектированных сервисов {: #get-injected-service}
 
 Тестам нужен доступ к заглушке `UserService`, инжектированной в `WelcomeComponent`.
 
@@ -185,11 +303,14 @@ Angular имеет иерархическую систему инъекций. �
 
 Инжектор компонента является свойством `DebugElement` приспособления.
 
-<code-example header="Инжектор WelcomeComponent" path="testing/src/app/welcome/welcome.component.spec.ts" region="injected-service"></code-example>.
+```ts
+// UserService actually injected into the component
+userService = fixture.debugElement.injector.get(
+    UserService
+);
+```
 
-<a id="testbed-inject"></a>
-
-#### `TestBed.inject()`.
+#### `TestBed.inject()` {: #testbed-inject}
 
 Вы _можете_ также получить сервис из корневого инжектора, используя `TestBed.inject()`. Это проще для запоминания и менее многословно.
 
@@ -197,64 +318,132 @@ Angular имеет иерархическую систему инъекций. �
 
 В этом тестовом наборе _единственным_ поставщиком `UserService` является корневой модуль тестирования, поэтому безопасно вызывать `TestBed.inject()` следующим образом:
 
-<code-example header="TestBed injector" path="testing/src/app/welcome/welcome.component.spec.ts" region="inject-from-testbed"></code-example>.
+```ts
+// UserService from the root injector
+userService = TestBed.inject(UserService);
+```
 
-<div class="alert is-helpful">
+!!!note ""
 
-Случай использования, когда `TestBed.inject()` не работает, смотрите в разделе [_Override component providers_](#component-override), где объясняется, когда и почему вы должны получить сервис из инжектора компонента.
+    Случай использования, когда `TestBed.inject()` не работает, смотрите в разделе [_Override component providers_](#component-override), где объясняется, когда и почему вы должны получить сервис из инжектора компонента.
 
-</div>
-
-<a id="welcome-spec-setup"></a>
-
-#### Окончательная настройка и тесты
+#### Окончательная настройка и тесты {: #welcome-spec-setup}
 
 Вот полный `beforeEach()`, использующий `TestBed.inject()`:
 
-<code-example header="app/welcome/welcome.component.spec.ts" path="testing/src/app/welcome/welcome.component.spec.ts" region="setup"></code-example>
+```ts
+let userServiceStub: Partial<UserService>;
+
+beforeEach(() => {
+    // stub UserService for test purposes
+    userServiceStub = {
+        isLoggedIn: true,
+        user: { name: 'Test User' },
+    };
+
+    TestBed.configureTestingModule({
+        declarations: [WelcomeComponent],
+        providers: [
+            {
+                provide: UserService,
+                useValue: userServiceStub,
+            },
+        ],
+    });
+
+    fixture = TestBed.createComponent(WelcomeComponent);
+    comp = fixture.componentInstance;
+
+    // UserService from the root injector
+    userService = TestBed.inject(UserService);
+
+    //  get the "welcome" element by CSS selector (e.g., by class name)
+    el = fixture.nativeElement.querySelector('.welcome');
+});
+```
 
 И вот несколько тестов:
 
-<code-example header="app/welcome/welcome.component.spec.ts" path="testing/src/app/welcome/welcome/welcome.component.spec.ts" region="tests"></code-example>.
+```ts
+it('should welcome the user', () => {
+    fixture.detectChanges();
+    const content = el.textContent;
+    expect(content)
+        .withContext('"Welcome ..."')
+        .toContain('Welcome');
+    expect(content)
+        .withContext('expected name')
+        .toContain('Test User');
+});
+
+it('should welcome "Bubba"', () => {
+    userService.user.name = 'Bubba'; // welcome message hasn't been shown yet
+    fixture.detectChanges();
+    expect(el.textContent).toContain('Bubba');
+});
+
+it('should request login if not logged in', () => {
+    userService.isLoggedIn = false; // welcome message hasn't been shown yet
+    fixture.detectChanges();
+    const content = el.textContent;
+    expect(content)
+        .withContext('not welcomed')
+        .not.toContain('Welcome');
+    expect(content)
+        .withContext('"log in"')
+        .toMatch(/log in/i);
+});
+```
 
 Первый тест - это тест на вменяемость; он подтверждает, что заглушка `UserService` вызвана и работает.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Второй параметр \(например, `'ожидаемое имя'`\) является необязательной меткой отказа. Если ожидание не сработало, Jasmine добавляет эту метку к сообщению о неудаче ожидания.
-В спецификации с несколькими ожиданиями это может помочь прояснить, что пошло не так и какое ожидание не сработало.
+    Второй параметр (например, `'expected name'`) является необязательной меткой отказа. Если ожидание не сработало, Jasmine добавляет эту метку к сообщению о неудаче ожидания.
 
-</div>
+    В спецификации с несколькими ожиданиями это может помочь прояснить, что пошло не так и какое ожидание не сработало.
 
 Остальные тесты подтверждают логику работы компонента, когда сервис возвращает различные значения. Второй тест проверяет эффект от изменения имени пользователя.
 Третий тест проверяет, что компонент выводит правильное сообщение, когда нет зарегистрированного пользователя.
 
-<a id="component-with-async-service"></a>
-
-## Компонент с асинхронным сервисом
+## Компонент с асинхронным сервисом {: #component-with-async-service}
 
 В этом примере шаблон `AboutComponent` содержит `TwainComponent`. Компонент `TwainComponent` отображает цитаты Марка Твена.
 
-<code-example header="app/twain/twain.component.ts (template)" path="testing/src/app/twain/twain.component.ts" region="template" ></code-example>
+```ts
+template: `
+  <p class="twain"><i>{{quote | async}}</i></p>
+  <button type="button" (click)="getQuote()">Next quote</button>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>`,
+```
 
-<div class="alert is-helpful">
+!!!note ""
 
-**NOTE**: <br /> The value of the component's `quote` property passes through an `AsyncPipe`.
-That means the property returns either a `Promise` or an `Observable`.
-
-</div>
+    Значение свойства `quote` компонента проходит через `AsyncPipe`. Это означает, что свойство возвращает либо `Promise`, либо `Observable`.
 
 В этом примере метод `TwainComponent.getQuote()` сообщает, что свойство `quote` возвращает `Observable`.
 
-<code-example header="app/twain/twain.component.ts (getQuote)" path="testing/src/app/twain/twain.component.ts" region="get-quote"></code-example>.
+```ts
+getQuote() {
+  this.errorMessage = '';
+  this.quote = this.twainService.getQuote().pipe(
+    startWith('...'),
+    catchError( (err: any) => {
+      // Wait a turn because errorMessage already set once this turn
+      setTimeout(() => this.errorMessage = err.message || err.toString());
+      return of('...'); // reset message to placeholder
+    })
+  );
+};
+```
 
-Компонент `TwainComponent` получает цитаты от инжектированного `TwainService`. Компонент запускает возвращаемую `Observable` со значением заполнителя \(`'...'`\), прежде чем сервис сможет вернуть свою первую цитату.
+Компонент `TwainComponent` получает цитаты от инжектированного `TwainService`. Компонент запускает возвращаемую `Observable` со значением заполнителя (`'...'`), прежде чем сервис сможет вернуть свою первую цитату.
 
 Компонент `catchError` перехватывает ошибки сервиса, подготавливает сообщение об ошибке и возвращает значение placeholder на канале успеха. Он должен подождать тик для установки `errorMessage`, чтобы избежать двойного обновления сообщения в одном и том же цикле обнаружения изменений.
 
 Все эти функции вы захотите протестировать.
 
-#### Тестирование с помощью шпиона
+#### Тестирование с помощью spy
 
 При тестировании компонента значение имеет только публичный API сервиса. В целом, сами тесты не должны выполнять вызовы на удаленные серверы.
 
