@@ -1,5 +1,7 @@
 # Развертывание нескольких локалей
 
+:date: 28.02.2022
+
 Если `myapp` - это каталог, содержащий распространяемые файлы вашего проекта, вы обычно делаете различные версии доступными для разных локалей в каталогах locale. Например, ваша французская версия находится в директории `myapp/fr`, а испанская версия - в директории `myapp/es`.
 
 HTML тег `base` с атрибутом `href` определяет базовый URI, или URL, для относительных ссылок. Если вы установите опцию `"localize"` в файле конфигурации сборки рабочего пространства [`angular.json`][aioguideworkspaceconfig] в значение `true` или в массив идентификаторов локалей, CLI настроит базовый `href` для каждой версии приложения.
@@ -10,7 +12,27 @@ HTML тег `base` с атрибутом `href` определяет базов�
 
 В следующем примере `"baseHref"` установлен на пустую строку.
 
-<code-example header="angular.json" path="i18n/angular.json" region="i18n-baseHref"></code-example>.
+```json
+"projects": {
+    "angular.io-example": {
+      // ...
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "fr": {
+            "translation": "src/locale/messages.fr.xlf",
+            "baseHref": ""
+          }
+        }
+      },
+      "architect": {
+        // ...
+      }
+    }
+  }
+  // ...
+}
+```
 
 Также, чтобы объявить базовый `href` во время компиляции, используйте опцию CLI `--baseHref` с [`ng build`][aioclibuild].
 
@@ -24,32 +46,84 @@ HTML тег `base` с атрибутом `href` определяет базов�
 
 Смена подкаталога часто происходит с помощью меню, реализованного в приложении.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Дополнительную информацию о том, как развернуть приложения на удаленном сервере, см. в разделе [Развертывание][aioguidedeployment].
-
-</div>
+    Дополнительную информацию о том, как развернуть приложения на удаленном сервере, см. в разделе [Развертывание][aioguidedeployment].
 
 ### Пример Nginx
 
 В следующем примере показана конфигурация Nginx.
 
-<code-example path="i18n/doc-files/nginx.conf" language="nginx"></code-example>.
+```
+http {
+    # Browser preferred language detection (does NOT require
+    # AcceptLanguageModule)
+    map $http_accept_language $accept_language {
+        ~*^de de;
+        ~*^fr fr;
+        ~*^en en;
+    }
+    # ...
+}
+
+server {
+    listen 80;
+    server_name localhost;
+    root /www/data;
+
+    # Fallback to default language if no preference defined by browser
+    if ($accept_language ~ "^$") {
+        set $accept_language "fr";
+    }
+
+    # Redirect "/" to Angular application in the preferred language of the browser
+    rewrite ^/$ /$accept_language permanent;
+
+    # Everything under the Angular application is always redirected to Angular in the
+    # correct language
+    location ~ ^/(fr|de|en) {
+        try_files $uri /$1/index.html?$args;
+    }
+    # ...
+}
+```
 
 ### Пример Apache
 
 В следующем примере показана конфигурация Apache.
 
-<code-example path="i18n/doc-files/apache2.conf" language="apache"></code-example>
+```apache
+<VirtualHost *:80>
+    ServerName localhost
+    DocumentRoot /www/data
+    <Directory "/www/data">
+        RewriteEngine on
+        RewriteBase /
+        RewriteRule ^../index\.html$ - [L]
+
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule (..) $1/index.html [L]
+
+        RewriteCond %{HTTP:Accept-Language} ^de [NC]
+        RewriteRule ^$ /de/ [R]
+
+        RewriteCond %{HTTP:Accept-Language} ^en [NC]
+        RewriteRule ^$ /en/ [R]
+
+        RewriteCond %{HTTP:Accept-Language} !^en [NC]
+        RewriteCond %{HTTP:Accept-Language} !^de [NC]
+        RewriteRule ^$ /fr/ [R]
+    </Directory>
+</VirtualHost>
+```
 
 <!-- links -->
 
-[aioclibuild]: cli/build 'ng build | CLI | Angular'
-[aioguidedeployment]: guide/deployment 'Deployment | Angular'
-[aioguideworkspaceconfig]: guide/workspace-config 'Angular workspace configuration | Angular'
+[aioclibuild]: https://angular.io/cli/build
+[aioguidedeployment]: deployment.md
+[aioguideworkspaceconfig]: workspace-config.md
 
 <!-- external links -->
 
 <!-- end links -->
-
-:date: 28.02.2022

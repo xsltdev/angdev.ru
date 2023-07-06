@@ -1,28 +1,79 @@
-<a id="attribute-directive"></a>
-
 # Тестирование директив атрибутов
+
+:date: 28.02.2022
 
 Директива _атрибута_ изменяет поведение элемента, компонента или другой директивы. Ее название отражает способ применения директивы: в качестве атрибута на главном элементе.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, <live-example name="testing" noDownload>запустите его в браузере</live-example> или <live-example name="testing" downloadOnly>скачайте и запустите его локально</live-example>.
-
-</div>
+    Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, [запустите его в браузере](https://angular.io/generated/live-examples/testing/stackblitz.html) или скачайте и запустите его локально.
 
 ## Тестирование `HighlightDirective`
 
-В примере приложения `HighlightDirective` устанавливает цвет фона элемента на основе либо связанного с данными цвета, либо цвета по умолчанию \(lightgray\). Он также устанавливает пользовательское свойство элемента \(`customProperty`\) в `true` без какой-либо причины, кроме как для того, чтобы показать, что это возможно.
+В примере приложения `HighlightDirective` устанавливает цвет фона элемента на основе либо связанного с данными цвета, либо цвета по умолчанию (lightgray). Он также устанавливает пользовательское свойство элемента (`customProperty`) в `true` без какой-либо причины, кроме как для того, чтобы показать, что это возможно.
 
-<code-example header="app/shared/highlight.directive.ts" path="testing/src/app/shared/highlight.directive.ts"></code-example>.
+```ts
+import {
+    Directive,
+    ElementRef,
+    Input,
+    OnChanges,
+} from '@angular/core';
+
+@Directive({ selector: '[highlight]' })
+/**
+ * Set backgroundColor for the attached element to highlight color
+ * and set the element's customProperty to true
+ */
+export class HighlightDirective implements OnChanges {
+    defaultColor = 'rgb(211, 211, 211)'; // lightgray
+
+    @Input('highlight') bgColor = '';
+
+    constructor(private el: ElementRef) {
+        el.nativeElement.style.customProperty = true;
+    }
+
+    ngOnChanges() {
+        this.el.nativeElement.style.backgroundColor =
+            this.bgColor || this.defaultColor;
+    }
+}
+```
 
 Она используется во всем приложении, возможно, наиболее просто в `AboutComponent`:
 
-<code-example header="app/about/about.component.ts" path="testing/src/app/about/about.component.ts"></code-example>.
+```ts
+import { Component } from '@angular/core';
+@Component({
+    template: `
+        <h2 highlight="skyblue">About</h2>
+        <h3>Quote of the day:</h3>
+        <twain-quote></twain-quote>
+    `,
+})
+export class AboutComponent {}
+```
 
-Тестирование конкретного использования `HighlightDirective` в `AboutComponent` требует только техник, рассмотренных в разделе ["Тесты вложенных компонентов"](guide/testing-components-scenarios#nested-component-tests) раздела [Сценарии тестирования компонентов](guide/testing-components-scenarios).
+Тестирование конкретного использования `HighlightDirective` в `AboutComponent` требует только техник, рассмотренных в разделе ["Тесты вложенных компонентов"](testing-components-scenarios.md#nested-component-tests) раздела [Сценарии тестирования компонентов](testing-components-scenarios.md).
 
-<code-example header="app/about/about.component.spec.ts" path="testing/src/app/about/about/about.component.spec.ts" region="tests"></code-example>.
+```ts
+beforeEach(() => {
+    fixture = TestBed.configureTestingModule({
+        declarations: [AboutComponent, HighlightDirective],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).createComponent(AboutComponent);
+    fixture.detectChanges(); // initial binding
+});
+
+it('should have skyblue <h2>', () => {
+    const h2: HTMLElement = fixture.nativeElement.querySelector(
+        'h2'
+    );
+    const bgColor = h2.style.backgroundColor;
+    expect(bgColor).toBe('skyblue');
+});
+```
 
 Однако тестирование одного варианта использования вряд ли позволит изучить весь спектр возможностей директивы. Поиск и тестирование всех компонентов, использующих директиву, утомителен, сложен и почти так же маловероятен для полного охвата.
 
@@ -30,23 +81,91 @@
 
 Лучшим решением будет создание искусственного тестового компонента, который демонстрирует все способы применения директивы.
 
-<code-example header="app/shared/highlight.directive.spec.ts (TestComponent)" path="testing/src/app/shared/highlight.directive.spec.ts" region="test-component"></code-example>.
+```ts
+@Component({
+    template: ` <h2 highlight="yellow">Something Yellow</h2>
+        <h2 highlight>The Default (Gray)</h2>
+        <h2>No Highlight</h2>
+        <input
+            #box
+            [highlight]="box.value"
+            value="cyan"
+        />`,
+})
+class TestComponent {}
+```
 
-<div class="lightbox">
+![HighlightDirective spec in action](highlight-directive-spec.png)
 
-<img alt="HighlightDirective spec in action" src="generated/images/guide/testing/highlight-directive-spec.png">
+!!!note ""
 
-</div>
-
-<div class="alert is-helpful">
-
-Случай `<input>` связывает директиву `HighlightDirective` с именем значения цвета в поле ввода. Начальным значением является слово "cyan", которое должно быть фоновым цветом поля ввода.
-
-</div>
+    Случай `<input>` связывает директиву `HighlightDirective` с именем значения цвета в поле ввода. Начальным значением является слово "cyan", которое должно быть фоновым цветом поля ввода.
 
 Вот несколько тестов этого компонента:
 
-<code-example header="app/shared/highlight.directive.spec.ts (selected tests)" path="testing/src/app/shared/highlight.directive.spec.ts" region="selected-tests"></code-example>.
+```ts
+beforeEach(() => {
+    fixture = TestBed.configureTestingModule({
+        declarations: [HighlightDirective, TestComponent],
+    }).createComponent(TestComponent);
+
+    fixture.detectChanges(); // initial binding
+
+    // all elements with an attached HighlightDirective
+    des = fixture.debugElement.queryAll(
+        By.directive(HighlightDirective)
+    );
+
+    // the h2 without the HighlightDirective
+    bareH2 = fixture.debugElement.query(
+        By.css('h2:not([highlight])')
+    );
+});
+
+// color tests
+it('should have three highlighted elements', () => {
+    expect(des.length).toBe(3);
+});
+
+it('should color 1st <h2> background "yellow"', () => {
+    const bgColor =
+        des[0].nativeElement.style.backgroundColor;
+    expect(bgColor).toBe('yellow');
+});
+
+it('should color 2nd <h2> background w/ default color', () => {
+    const dir = des[1].injector.get(
+        HighlightDirective
+    ) as HighlightDirective;
+    const bgColor =
+        des[1].nativeElement.style.backgroundColor;
+    expect(bgColor).toBe(dir.defaultColor);
+});
+
+it('should bind <input> background to value color', () => {
+    // easier to work with nativeElement
+    const input = des[2].nativeElement as HTMLInputElement;
+    expect(input.style.backgroundColor)
+        .withContext('initial backgroundColor')
+        .toBe('cyan');
+
+    input.value = 'green';
+
+    // Dispatch a DOM event so that Angular responds to the input value change.
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(input.style.backgroundColor)
+        .withContext('changed backgroundColor')
+        .toBe('green');
+});
+
+it('bare <h2> should not have a customProperty', () => {
+    expect(
+        bareH2.properties['customProperty']
+    ).toBeUndefined();
+});
+```
 
 Несколько приемов заслуживают внимания:
 
@@ -65,11 +184,3 @@
     Тест на цвет по умолчанию использует инжектор второго `<h2>` для получения его экземпляра `HighlightDirective` и его `defaultColor`.
 
 -   `DebugElement.properties` предоставляет доступ к искусственному пользовательскому свойству, которое задается директивой
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-:date: 28.02.2022

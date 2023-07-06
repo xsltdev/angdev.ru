@@ -1,14 +1,14 @@
-# Тестирование труб
+# Тестирование пайпов
 
-Вы можете протестировать [pipes](guide/pipes) без использования утилит тестирования Angular.
+:date: 28.02.2022
 
-<div class="alert is-helpful">
+Вы можете протестировать [pipes](pipes.md) без использования утилит тестирования Angular.
 
-Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, <live-example name="testing" noDownload>запустите его в браузере</live-example> или <live-example name="testing" downloadOnly>скачайте и запустите его локально</live-example>.
+!!!note ""
 
-</div>
+    Если вы хотите поэкспериментировать с приложением, которое описано в этом руководстве, [запустите его в браузере](https://angular.io/generated/live-examples/testing/stackblitz.html) или скачайте и запустите его локально.
 
-## Тестирование `TitleCasePipe`.
+## Тестирование `TitleCasePipe`
 
 Класс pipe имеет один метод, `transform`, который манипулирует входным значением в преобразованное выходное значение. Реализация `transform` редко взаимодействует с DOM.
 
@@ -16,26 +16,72 @@
 
 Рассмотрим `TitleCasePipe`, который выводит первую букву каждого слова. Вот реализация с регулярным выражением.
 
-<code-example header="app/shared/title-case.pipe.ts" path="testing/src/app/shared/title-case.pipe.ts"></code-example>.
+```ts
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({ name: 'titlecase', pure: true })
+/** Transform to Title Case: uppercase the first letter of the words in a string. */
+export class TitleCasePipe implements PipeTransform {
+    transform(input: string): string {
+        return input.length === 0
+            ? ''
+            : input.replace(
+                  /\w\S*/g,
+                  (txt) =>
+                      txt[0].toUpperCase() +
+                      txt.slice(1).toLowerCase()
+              );
+    }
+}
+```
 
 Все, что использует регулярное выражение, стоит тщательно протестировать. Используйте простой Jasmine для изучения ожидаемых и побочных случаев.
 
-<code-example header="app/shared/title-case.pipe.spec.ts" path="testing/src/app/shared/title-case.pipe.spec.ts" region="excerpt"></code-example>
+```ts
+describe('TitleCasePipe', () => {
+    // This pipe is a pure, stateless function so no need for BeforeEach
+    const pipe = new TitleCasePipe();
 
-<a id="write-tests"></a>
+    it('transforms "abc" to "Abc"', () => {
+        expect(pipe.transform('abc')).toBe('Abc');
+    });
 
-## Написание тестов DOM для поддержки теста трубы
+    it('transforms "abc def" to "Abc Def"', () => {
+        expect(pipe.transform('abc def')).toBe('Abc Def');
+    });
+
+    // ... more tests ...
+});
+```
+
+## Написание тестов DOM для поддержки теста трубы {: #write-tests}
 
 Это тесты трубы _в изоляции_. Они не могут определить, правильно ли работает `TitleCasePipe` в компонентах приложения.
 
 Рассмотрите возможность добавления тестов компонентов, таких как этот:
 
-<code-example header="app/hero/hero-detail.component.spec.ts (pipe test)" path="testing/src/app/hero/hero-detail.component.spec.ts" region="title-case-pipe"></code-example>
+```ts
+it('should convert hero name to Title Case', () => {
+    // get the name's input and display elements from the DOM
+    const hostElement: HTMLElement = harness.routeNativeElement!;
+    const nameInput: HTMLInputElement = hostElement.querySelector(
+        'input'
+    )!;
+    const nameDisplay: HTMLElement = hostElement.querySelector(
+        'span'
+    )!;
 
-<!-- links -->
+    // simulate user entering a new name into the input box
+    nameInput.value = 'quick BROWN  fOx';
 
-<!-- external links -->
+    // Dispatch a DOM event so that Angular learns of input value change.
+    nameInput.dispatchEvent(new Event('input'));
 
-<!-- end links -->
+    // Tell Angular to update the display binding through the title pipe
+    harness.detectChanges();
 
-:date: 28.02.2022
+    expect(nameDisplay.textContent).toBe(
+        'Quick Brown  Fox'
+    );
+});
+```
