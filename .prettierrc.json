@@ -27,7 +27,7 @@
 			"options": {
 				"parser": "html",
 				"useTabs": false,
-				"tabWidth": 2
+				"tabWidth": 4
 			}
 		},
 		{
@@ -35,7 +35,7 @@
 			"options": {
 				"parser": "html",
 				"useTabs": false,
-				"tabWidth": 2
+				"tabWidth": 4
 			}
 		},
 		{
@@ -43,7 +43,7 @@
 			"options": {
 				"parser": "html",
 				"useTabs": false,
-				"tabWidth": 2
+				"tabWidth": 4
 			}
 		}
 	]

@@ -18,7 +18,9 @@ hide:
 
     Перевод официальной документации
 
-    **[:octicons-arrow-right-24: Angular](doc/setup-and-configuration.md)** <small>v9</small>
+    **[:octicons-arrow-right-24: Angular 16](angular/index.md)** _(в процессе перевода)_
+
+    [:octicons-arrow-right-24: Angular](archive/angular9/setup-and-configuration.md) <small>v9</small>
 
 -   :material-file-document:{ .lg .middle } **Гайды**
 
@@ -26,7 +28,7 @@ hide:
 
     Гайды по Angular
 
-    [:octicons-arrow-right-24: Гайд](guide/intro/start.md)
+    [:octicons-arrow-right-24: Гайд от webdraftt](archive/webdraftt/intro/start.md)
 
     [:octicons-arrow-right-24: Шпаргалка](cheatsheet.md)
 
@@ -36,9 +38,9 @@ hide:
 
     Библиотеки Angular
 
-    [:octicons-arrow-right-24: NgRx](ngrx/about.md) &mdash; <small>управление состоянием</small>
+    [:octicons-arrow-right-24: NgRx](ngrx/about.md) &mdash; _управление состоянием_
 
-    [:octicons-arrow-right-24: RxJS](rxjs/about.md) &mdash; <small>библиотека для реактивного программирования</small>
+    [:octicons-arrow-right-24: RxJS](rxjs/about.md) &mdash; _библиотека для реактивного программирования_
 
 </div>
 

@@ -1,0 +1,244 @@
+title: Документация
+nav:
+    - index.md
+    - Начало работы:
+        - what-is-angular.md
+        - Попробовать:
+            - start.md
+            - start-routing.md
+            - start-data.md
+            - start-forms.md
+            - start-deployment.md
+        - setup-local.md
+    - Понимание Angular:
+        - understanding-angular-overview.md
+        - Компоненты:
+            - component-overview.md
+            - lifecycle-hooks.md
+            - view-encapsulation.md
+            - component-interaction.md
+            - component-styles.md
+            - inputs-outputs.md
+            - content-projection.md
+            - dynamic-component-loader.md
+            - elements.md
+        - Шаблоны:
+            - template-overview.md
+            - template-syntax.md
+            - interpolation.md
+            - template-statements.md
+            - Биндинг:
+                - binding-overview.md
+                - property-binding.md
+                - attribute-binding.md
+                - class-binding.md
+                - event-binding.md
+                - two-way-binding.md
+            - Пайпы:
+                - pipes-overview.md
+                - pipe-template.md
+                - pipes.md
+                - pipes-transform-data.md
+            - template-reference-variables.md
+            - svg-in-templates.md
+        - Директивы:
+            - built-in-directives.md
+            - attribute-directives.md
+            - structural-directives.md
+            - directive-composition-api.md
+        - Внедрение зависимостей:
+            - dependency-injection-overview.md
+            - dependency-injection.md
+            - creating-injectable-service.md
+            - dependency-injection-providers.md
+            - hierarchical-dependency-injection.md
+    - Гайды разработчика:
+        - developer-guide-overview.md
+        - Автономность:
+            - standalone-components.md
+            - standalone-migration.md
+        - Обнаружение изменений:
+            - change-detection.md
+            - change-detection-zone-pollution.md
+            - change-detection-slow-computations.md
+            - change-detection-skipping-subtrees.md
+        - Роутинг и навигация:
+            - routing-overview.md
+            - router.md
+            - router-tutorial.md
+            - routing-with-urlmatcher.md
+            - router-tutorial-toh.md
+            - router-reference.md
+        - Формы:
+            - forms-overview.md
+            - reactive-forms.md
+            - typed-forms.md
+            - form-validation.md
+            - dynamic-form.md
+        - esbuild.md
+        - Клиент HTTP:
+            - understanding-communicating-with-http.md
+            - http-setup-server-communication.md
+            - http-server-communication.md
+            - http-request-data-from-server.md
+            - http-make-jsonp-request.md
+            - http-handle-request-errors.md
+            - http-send-data-to-server.md
+            - http-configure-http-url-parameters.md
+            - http-intercept-requests-and-responses.md
+            - http-interceptor-use-cases.md
+            - http-pass-metadata-to-interceptors.md
+            - http-track-show-request-progress.md
+            - http-optimize-server-interaction.md
+            - http-security-xsrf-protection.md
+            - http-test-requests.md
+        - hydration.md
+        - image-directive.md
+        - Тестирование:
+            - testing.md
+            - testing-code-coverage.md
+            - testing-services.md
+            - testing-components-basics.md
+            - testing-components-scenarios.md
+            - testing-attribute-directives.md
+            - testing-pipes.md
+            - test-debugging.md
+            - testing-utility-apis.md
+        - Интернационализация:
+            - i18n-overview.md
+            - Общие задачи интернационализации:
+                - i18n-common-overview.md
+                - i18n-common-add-package.md
+                - i18n-common-locale-id.md
+                - i18n-common-format-data-locale.md
+                - i18n-common-prepare.md
+                - i18n-common-translation-files.md
+                - i18n-common-merge.md
+                - i18n-common-deploy.md
+            - i18n-example.md
+            - Дополнительные практики интернационализации:
+                - i18n-optional-overview.md
+                - i18n-optional-manual-runtime-locale.md
+                - i18n-optional-import-global-variants.md
+                - i18n-optional-manage-marked-text.md
+        - Анимация:
+            - animations.md
+            - transition-and-triggers.md
+            - complex-animation-sequences.md
+            - reusable-animations.md
+            - route-animations.md
+        - Service workers и PWA:
+            - service-worker-intro.md
+            - service-worker-getting-started.md
+#            - app-shell.md
+#            - service-worker-communications.md
+#            - service-worker-notifications.md
+#            - service-worker-devops.md
+#            - service-worker-config.md
+#        - web-worker.md
+#        - universal.md
+#        - prerendering.md
+#        - Библиотеки Angular:
+#            - libraries.md
+#            - using-libraries.md
+#            - creating-libraries.md
+#            - angular-package-format.md
+#        - Предварительный обзор возможностей:
+#            - signals.md
+#            - rxjs-interop.md
+#    - Лучшие практики:
+#        - security.md
+#        - accessibility.md
+#        - updating.md
+#        - property-binding-best-practices.md
+#        - lazy-loading-ngmodules.md
+#        - lightweight-injection-tokens.md
+#    - Инструменты Angular:
+#        - cli-builder.md
+#        - Процесс разработки:
+#            - deployment.md
+#            - AOT компилятор:
+#                - aot-compiler.md
+#                - angular-compiler-options.md
+#                - aot-metadata-errors.md
+#                - template-typecheck.md
+#            - build.md
+#        - language-service.md
+#        - devtools.md
+#        - Схемы:
+#            - schematics.md
+#            - schematics-authoring.md
+#            - schematics-for-libraries.md
+#    - Туториалы:
+#        - Ваше первое приложение:
+#            - first-app.md
+#            - first-app-lesson-01.md
+#            - first-app-lesson-02.md
+#            - first-app-lesson-03.md
+#            - first-app-lesson-04.md
+#            - first-app-lesson-05.md
+#            - first-app-lesson-06.md
+#            - first-app-lesson-07.md
+#            - first-app-lesson-08.md
+#            - first-app-lesson-09.md
+#            - first-app-lesson-10.md
+#            - first-app-lesson-11.md
+#            - first-app-lesson-12.md
+#            - first-app-lesson-13.md
+#            - first-app-lesson-14.md
+#        - Тур героев:
+#            - toh.md
+#            - toh-pt0.md
+#            - toh-pt1.md
+#            - toh-pt2.md
+#            - toh-pt3.md
+#            - toh-pt4.md
+#            - toh-pt5.md
+#            - toh-pt6.md
+#        - forms.md
+    - Обновления и релизы (en):
+        - Обновление Angular: https://angular.io/guide/update-to-version-16
+        - Дорожная карта Angular: https://angular.io/guide/roadmap
+        - Версионность и релизы Angular: https://angular.io/guide/releases
+        - Совместимость версий: https://angular.io/guide/versions
+        - Поддержка браузеров: https://angular.io/guide/browser-support
+        - Устаревшие API и функции: https://angular.io/guide/deprecations
+    - Справка:
+#        - Концептуальная справка:
+#            - Концепции Angular:
+#                - architecture.md
+#                - architecture-modules.md
+#                - architecture-components.md
+#                - architecture-services.md
+#                - architecture-next-steps.md
+#                - binding-syntax.md
+#                - event-binding-concepts.md
+#                - template-reference-variables.md
+#            - Рабочее пространство и структура проекта:
+#                - file-structure.md
+#                - workspace-config.md
+#                - npm-packages.md
+#                - typescript-configuration.md
+#            - NgModules:
+#                - ngmodules.md
+#                - ngmodule-vs-jsmodule.md
+#                - bootstrapping.md
+#                - frequent-ngmodules.md
+#                - module-types.md
+#                - feature-modules.md
+#                - providers.md
+#                - singleton-services.md
+#                - sharing-ngmodules.md
+#                - ngmodule-api.md
+#                - ngmodule-faq.md
+#            - Observables и RxJS:
+#                - observables.md
+#                - rx-library.md
+#                - observables-in-angular.md
+#                - practical-observable-usage.md
+#                - comparing-observables.md
+#            - dependency-injection-in-action.md
+        - CLI (en): https://angular.io/cli
+        - API (en): https://angular.io/api
+#        - glossary.md
+#    - ...
