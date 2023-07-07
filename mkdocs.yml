@@ -27,6 +27,7 @@ theme:
               name: Светлая тема
     language: ru
     features:
+        - navigation.prune
         - navigation.tabs
         - navigation.tracking
         - navigation.top
@@ -67,6 +68,8 @@ extra:
         - icon: fontawesome/solid/database
           link: 'https://dbasedev.ru/'
           name: Базы данных
+    status:
+        new: Новое
 
 markdown_extensions:
     - admonition
