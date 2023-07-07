@@ -1,31 +1,40 @@
 # Установите локаль времени выполнения вручную
 
-<!--todo: The Angular CLI sets the locale ID token as part of the translation. -->
+:date: 28.02.2022
 
-<!--todo: To override the provider for the locale ID token. -->
-
-Начальная установка Angular уже содержит данные локали для английского языка в Соединенных Штатах \(`en-US`\). Angular CLI][aioclimain] автоматически включает данные локали и устанавливает значение `LOCALE_ID`, когда вы используете опцию `--localize` в команде [`ng build`][aioclibuild].
+Начальная установка Angular уже содержит данные локали для английского языка в Соединенных Штатах (`en-US`). [Angular CLI][aioclimain] автоматически включает данные локали и устанавливает значение `LOCALE_ID`, когда вы используете опцию `--localize` в команде [`ng build`][aioclibuild].
 
 Чтобы вручную установить локаль времени выполнения приложения, отличную от автоматического значения, выполните следующие действия.
 
 1.  Найдите идентификатор локали Unicode в комбинации "язык-локаль" в каталоге [`@angular/common/locales/`][unpkgbrowseangularcommonlocales].
 
-1.  Установите маркер [`LOCALE_ID`][aioapicorelocaleid].
+2.  Установите маркер [`LOCALE_ID`][aioapicorelocaleid].
 
 В следующем примере значение `LOCALE_ID` установлено на `fr` для французского языка.
 
-<code-example header="src/app/app.module.ts" path="i18n/doc-files/app.module.ts" region="locale-id"></code-example>
+```ts
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from '../src/app/app.component';
+
+@NgModule({
+    imports: [BrowserModule],
+    declarations: [AppComponent],
+    providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
+    bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
 
 <!-- links -->
 
-[aioapicorelocaleid]: api/core/LOCALE_ID 'LOCALE_ID | Core - API | Angular'
-[aioclimain]: cli 'CLI Overview and Command Reference | Angular'
-[aioclibuild]: cli/build 'ng build | CLI | Angular'
+[aioapicorelocaleid]: https://angular.io/api/core/LOCALE_ID
+[aioclimain]: https://angular.io/cli
+[aioclibuild]: https://angular.io/cli/build
 
 <!-- external links -->
 
-[unpkgbrowseangularcommonlocales]: https://unpkg.com/browse/@angular/common/locales/ '@angular/common/locales/ | Unpkg'
+[unpkgbrowseangularcommonlocales]: https://unpkg.com/browse/@angular/common/locales/
 
 <!-- end links -->
-
-:date: 28.02.2022

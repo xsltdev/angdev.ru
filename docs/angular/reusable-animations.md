@@ -1,47 +1,109 @@
 # Многоразовые анимации
 
+:date: 11.10.2022
+
 В этой теме приведены примеры создания многократно используемых анимаций.
 
 ## Предварительные условия
 
 Прежде чем продолжить изучение этой темы, вы должны быть знакомы со следующим:
 
--   [Введение в анимации Angular](руководство/анимации)
-
--   [Переход и триггеры](guide/transition-and-triggers)
+-   [Введение в анимации Angular](animations.md)
+-   [Переход и триггеры](transition-and-triggers.md)
 
 ## Создание многократно используемых анимаций
 
-Чтобы создать многократно используемую анимацию, используйте функцию [`animation()`](api/animations/animation) для определения анимации в отдельном файле `.ts` и объявите это определение анимации как экспортную переменную `const`. Затем вы можете импортировать и повторно использовать эту анимацию в любом из компонентов вашего приложения с помощью функции [`useAnimation()`](api/animations/useAnimation).
+Чтобы создать многократно используемую анимацию, используйте функцию `animation()` для определения анимации в отдельном файле `.ts` и объявите это определение анимации как экспортную переменную `const`. Затем вы можете импортировать и повторно использовать эту анимацию в любом из компонентов вашего приложения с помощью функции [`useAnimation()`](https://angular.io/api/animations/useAnimation).
 
-<code-example header="src/app/animations.ts" path="animations/src/app/animations.1.ts" region="animation-const"></code-example>.
+```ts
+import {
+    animation,
+    style,
+    animate,
+    trigger,
+    transition,
+    useAnimation,
+} from '@angular/animations';
+
+export const transitionAnimation = animation([
+    style({
+        height: '{{ height }}',
+        opacity: '{{ opacity }}',
+        backgroundColor: '{{ backgroundColor }}',
+    }),
+    animate('{{ time }}'),
+]);
+```
 
 В предыдущем фрагменте кода `transitionAnimation` сделан многократно используемым путем объявления его как переменной экспорта.
 
-<div class="alert is-helpful">
+!!!note ""
 
-**NOTE**: <br /> The `height`, `opacity`, `backgroundColor`, and `time` inputs are replaced during runtime.
-
-</div>
+    Вводы `height`, `opacity`, `backgroundColor` и `time` заменяются во время выполнения.
 
 Вы также можете экспортировать часть анимации. Например, в следующем фрагменте экспортируется анимация `trigger`.
 
-<code-example header="src/app/animations.1.ts" path="animations/src/app/animations.1.ts" region="trigger-const"></code-example>.
+```ts
+import {
+    animation,
+    style,
+    animate,
+    trigger,
+    transition,
+    useAnimation,
+} from '@angular/animations';
+
+export const triggerAnimation = trigger('openClose', [
+    transition('open => closed', [
+        useAnimation(transitionAnimation, {
+            params: {
+                height: 0,
+                opacity: 1,
+                backgroundColor: 'red',
+                time: '1s',
+            },
+        }),
+    ]),
+]);
+```
 
 С этого момента вы можете импортировать многократно используемые переменные анимации в класс вашего компонента. Например, следующий фрагмент кода импортирует переменную `transitionAnimation` и использует ее с помощью функции `useAnimation()`.
 
-<code-example header="src/app/open-close.component.ts" path="animations/src/app/open-close.component.3.ts" region="reusable"></code-example>.
+```ts
+import { Component } from '@angular/core';
+import {
+    transition,
+    trigger,
+    useAnimation,
+} from '@angular/animations';
+import { transitionAnimation } from './animations';
+
+@Component({
+    selector: 'app-open-close-reusable',
+    animations: [
+        trigger('openClose', [
+            transition('open => closed', [
+                useAnimation(transitionAnimation, {
+                    params: {
+                        height: 0,
+                        opacity: 1,
+                        backgroundColor: 'red',
+                        time: '1s',
+                    },
+                }),
+            ]),
+        ]),
+    ],
+    templateUrl: 'open-close.component.html',
+    styleUrls: ['open-close.component.css'],
+});
+```
 
 ## Больше об анимации Angular
 
 Вам также может быть интересно следующее:
 
--   [Введение в анимации Angular](руководство/анимации)
-
--   [Переход и триггеры](guide/transition-and-triggers)
-
--   [Сложные анимационные последовательности](руководство/complex-animation-sequences)
-
--   [Анимации перехода по маршруту](guide/route-animations)
-
-:date: 11.10.2022
+-   [Введение в анимации Angular](animations.md)
+-   [Переход и триггеры](transition-and-triggers.md)
+-   [Сложные анимационные последовательности](complex-animation-sequences.md)
+-   [Анимации перехода по маршруту](route-animations.md)
