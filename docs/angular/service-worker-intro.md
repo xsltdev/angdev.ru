@@ -1,6 +1,8 @@
 # Angular service worker введение
 
-Рабочие службы дополняют традиционную модель развертывания веб-приложений и позволяют приложениям предоставлять пользовательский опыт с надежностью и производительностью наравне с кодом, написанным для работы на вашей операционной системе и оборудовании. Добавление сервисного работника в приложение Angular является одним из шагов для превращения приложения в [Progressive Web App](https://web.dev/progressive-web-apps/)\(также известное как PWA\).
+:date: 28.02.2022
+
+**Рабочие службы** дополняют традиционную модель развертывания веб-приложений и позволяют приложениям предоставлять пользовательский опыт с надежностью и производительностью наравне с кодом, написанным для работы на вашей операционной системе и оборудовании. Добавление сервисного работника в приложение Angular является одним из шагов для превращения приложения в [Progressive Web App](https://web.dev/progressive-web-apps/) (также известное как PWA).
 
 В самом простом виде service worker - это скрипт, который запускается в веб-браузере и управляет кэшированием приложения.
 
@@ -21,6 +23,7 @@
 ## Service worker в Angular
 
 Приложения Angular, как одностраничные приложения, находятся в выгодном положении, чтобы воспользоваться преимуществами service worker. Начиная с версии 5.0.0, Angular поставляется с реализацией service worker.
+
 Разработчики Angular могут воспользоваться преимуществами этого сервисного работника и получить выгоду от повышенной надежности и производительности, которую он обеспечивает, без необходимости кодировать низкоуровневые API.
 
 Рабочий сервис Angular разработан для оптимизации работы конечного пользователя при использовании приложения через медленное или ненадежное сетевое соединение, а также для минимизации рисков, связанных с обслуживанием устаревшего контента.
@@ -47,7 +50,7 @@
 
     Ресурсы загружаются только в том случае, если они изменились.
 
-Для поддержки такого поведения работник службы Angular загружает с сервера файл _manifest_. Файл, называемый `ngsw.json`\ (не путать с [web app manifest](https://developer.mozilla.org/docs/Web/Manifest)\), описывает ресурсы для кэширования и включает хэши содержимого каждого файла.
+Для поддержки такого поведения работник службы Angular загружает с сервера файл _manifest_. Файл, называемый `ngsw.json` (не путать с [web app manifest](https://developer.mozilla.org/docs/Web/Manifest)), описывает ресурсы для кэширования и включает хэши содержимого каждого файла.
 
 При развертывании обновления приложения содержимое манифеста изменяется, сообщая сервис-рабочему, что новая версия приложения должна быть загружена и закэширована.
 
@@ -68,7 +71,7 @@
 
 ### Поддержка браузеров
 
-Чтобы воспользоваться преимуществами Angular service worker, ваше приложение должно работать в веб-браузере, который поддерживает service worker в целом. В настоящее время сервис-работники поддерживаются в последних версиях Chrome, Firefox, Edge, Safari, Opera, UC Browser \(Android version\) и Samsung Internet.
+Чтобы воспользоваться преимуществами Angular service worker, ваше приложение должно работать в веб-браузере, который поддерживает service worker в целом. В настоящее время сервис-работники поддерживаются в последних версиях Chrome, Firefox, Edge, Safari, Opera, UC Browser (Android version) и Samsung Internet.
 
 Такие браузеры, как IE и Opera Mini, не поддерживают service workers.
 
@@ -76,7 +79,6 @@
 
 -   Браузер не загружает сценарий работника службы и файл манифеста `ngsw.json`.
 -   Активные попытки взаимодействия с работником сервиса, например, вызов `SwUpdate.checkForUpdate()`, возвращают отклоненные обещания
-
 -   Наблюдаемые события связанных сервисов, такие как `SwUpdate.available`, не запускаются.
 
 Настоятельно рекомендуется убедиться, что ваше приложение работает даже без поддержки service worker в браузере. Хотя браузер без поддержки игнорирует кэширование работников служб, он все равно сообщает об ошибках, если приложение пытается взаимодействовать с работником службы.
@@ -91,15 +93,11 @@
 
 Остальные статьи в этом разделе посвящены реализации рабочих служб в Angular.
 
--   [App Shell](guide/app-shell)
-
--   [Service Worker Communication](guide/service-worker-communications)
-
--   [Service Worker Notifications](guide/service-worker-notifications)
-
--   [Service Worker in Production](guide/service-worker-devops)
-
--   [Конфигурация рабочих служб](guide/service-worker-config)
+-   [App Shell](app-shell.md)
+-   [Service Worker Communication](service-worker-communications.md)
+-   [Service Worker Notifications](service-worker-notifications.md)
+-   [Service Worker in Production](service-worker-devops.md)
+-   [Конфигурация рабочих служб](service-worker-config.md)
 
 Более подробную информацию о рабочих службах в целом смотрите в [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers).
 
@@ -108,17 +106,14 @@
 Дополнительные рекомендации и примеры см:
 
 -   [Precaching with Angular Service Worker](https://web.dev/precaching-with-the-angular-service-worker)
-
 -   [Создание PWA с помощью Angular CLI](https://web.dev/creating-pwa-with-angular-cli)
 
 ## Следующие шаги
 
-Чтобы начать использовать Angular service workers, смотрите [Getting Started with service workers](guide/service-worker-getting-started).
+Чтобы начать использовать Angular service workers, смотрите [Getting Started with service workers](service-worker-getting-started.md).
 
 <!-- links -->
 
 <!-- external links -->
 
 <!-- end links -->
-
-:date: 28.02.2022
