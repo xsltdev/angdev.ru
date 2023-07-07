@@ -130,73 +130,73 @@ nav:
         - Service workers и PWA:
             - service-worker-intro.md
             - service-worker-getting-started.md
-            - app-shell.md
-            - service-worker-communications.md
-            - service-worker-notifications.md
-            - service-worker-devops.md
-            - service-worker-config.md
-        - web-worker.md
-        - universal.md
-        - prerendering.md
-        - Библиотеки Angular:
-            - libraries.md
-            - using-libraries.md
-            - creating-libraries.md
-            - angular-package-format.md
-        - Предварительный обзор возможностей:
-            - signals.md
-            - rxjs-interop.md
-    - Лучшие практики:
-        - security.md
-        - accessibility.md
-        - updating.md
-        - property-binding-best-practices.md
-        - lazy-loading-ngmodules.md
-        - lightweight-injection-tokens.md
-    - Инструменты Angular:
-        - cli-builder.md
-        - Процесс разработки:
-            - deployment.md
-            - AOT компилятор:
-                - aot-compiler.md
-                - angular-compiler-options.md
-                - aot-metadata-errors.md
-                - template-typecheck.md
-            - build.md
-        - language-service.md
-        - devtools.md
-        - Схемы:
-            - schematics.md
-            - schematics-authoring.md
-            - schematics-for-libraries.md
-    - Туториалы:
-        - Ваше первое приложение:
-            - first-app.md
-            - first-app-lesson-01.md
-            - first-app-lesson-02.md
-            - first-app-lesson-03.md
-            - first-app-lesson-04.md
-            - first-app-lesson-05.md
-            - first-app-lesson-06.md
-            - first-app-lesson-07.md
-            - first-app-lesson-08.md
-            - first-app-lesson-09.md
-            - first-app-lesson-10.md
-            - first-app-lesson-11.md
-            - first-app-lesson-12.md
-            - first-app-lesson-13.md
-            - first-app-lesson-14.md
-        - Тур героев:
-            - toh.md
-            - toh-pt0.md
-            - toh-pt1.md
-            - toh-pt2.md
-            - toh-pt3.md
-            - toh-pt4.md
-            - toh-pt5.md
-            - toh-pt6.md
-        - forms.md
-    - Обновления и релизы:
+#            - app-shell.md
+#            - service-worker-communications.md
+#            - service-worker-notifications.md
+#            - service-worker-devops.md
+#            - service-worker-config.md
+#        - web-worker.md
+#        - universal.md
+#        - prerendering.md
+#        - Библиотеки Angular:
+#            - libraries.md
+#            - using-libraries.md
+#            - creating-libraries.md
+#            - angular-package-format.md
+#        - Предварительный обзор возможностей:
+#            - signals.md
+#            - rxjs-interop.md
+#    - Лучшие практики:
+#        - security.md
+#        - accessibility.md
+#        - updating.md
+#        - property-binding-best-practices.md
+#        - lazy-loading-ngmodules.md
+#        - lightweight-injection-tokens.md
+#    - Инструменты Angular:
+#        - cli-builder.md
+#        - Процесс разработки:
+#            - deployment.md
+#            - AOT компилятор:
+#                - aot-compiler.md
+#                - angular-compiler-options.md
+#                - aot-metadata-errors.md
+#                - template-typecheck.md
+#            - build.md
+#        - language-service.md
+#        - devtools.md
+#        - Схемы:
+#            - schematics.md
+#            - schematics-authoring.md
+#            - schematics-for-libraries.md
+#    - Туториалы:
+#        - Ваше первое приложение:
+#            - first-app.md
+#            - first-app-lesson-01.md
+#            - first-app-lesson-02.md
+#            - first-app-lesson-03.md
+#            - first-app-lesson-04.md
+#            - first-app-lesson-05.md
+#            - first-app-lesson-06.md
+#            - first-app-lesson-07.md
+#            - first-app-lesson-08.md
+#            - first-app-lesson-09.md
+#            - first-app-lesson-10.md
+#            - first-app-lesson-11.md
+#            - first-app-lesson-12.md
+#            - first-app-lesson-13.md
+#            - first-app-lesson-14.md
+#        - Тур героев:
+#            - toh.md
+#            - toh-pt0.md
+#            - toh-pt1.md
+#            - toh-pt2.md
+#            - toh-pt3.md
+#            - toh-pt4.md
+#            - toh-pt5.md
+#            - toh-pt6.md
+#        - forms.md
+    - Обновления и релизы (en):
         - Обновление Angular: https://angular.io/guide/update-to-version-16
         - Дорожная карта Angular: https://angular.io/guide/roadmap
         - Версионность и релизы Angular: https://angular.io/guide/releases
@@ -204,60 +204,41 @@ nav:
         - Поддержка браузеров: https://angular.io/guide/browser-support
         - Устаревшие API и функции: https://angular.io/guide/deprecations
     - Справка:
-        - Концептуальная справка:
-            - Концепции Angular:
-                - architecture.md
-                - architecture-modules.md
-                - architecture-components.md
-                - architecture-services.md
-                - architecture-next-steps.md
-                - binding-syntax.md
-                - event-binding-concepts.md
-                - template-reference-variables.md
-            - Рабочее пространство и структура проекта:
-                - file-structure.md
-                - workspace-config.md
-                - npm-packages.md
-                - typescript-configuration.md
-            - NgModules:
-                - ngmodules.md
-                - ngmodule-vs-jsmodule.md
-                - bootstrapping.md
-                - frequent-ngmodules.md
-                - module-types.md
-                - feature-modules.md
-                - providers.md
-                - singleton-services.md
-                - sharing-ngmodules.md
-                - ngmodule-api.md
-                - ngmodule-faq.md
-            - Observables и RxJS:
-                - observables.md
-                - rx-library.md
-                - observables-in-angular.md
-                - practical-observable-usage.md
-                - comparing-observables.md
-            - dependency-injection-in-action.md
-        - CLI:
-            - Обзор: https://angular.io/cli
-            - ng add: https://angular.io/cli/add
-            - ng analytics: https://angular.io/cli/analytics
-            - ng build: https://angular.io/cli/build
-            - ng cache: https://angular.io/cli/cache
-            - ng completion: https://angular.io/cli/completion
-            - ng config: https://angular.io/cli/config
-            - ng deploy: https://angular.io/cli/deploy
-            - ng doc: https://angular.io/cli/doc
-            - ng e2e: https://angular.io/cli/e2e
-            - ng extract-i18n: https://angular.io/cli/extract-i18n
-            - ng generate: https://angular.io/cli/generate
-            - ng lint: https://angular.io/cli/lint
-            - ng new: https://angular.io/cli/new
-            - ng run: https://angular.io/cli/run
-            - ng serve: https://angular.io/cli/serve
-            - ng test: https://angular.io/cli/test
-            - ng update: https://angular.io/cli/update
-            - ng version: https://angular.io/cli/version
-        - API: https://angular.io/api
-        - glossary.md
-    - ...
+#        - Концептуальная справка:
+#            - Концепции Angular:
+#                - architecture.md
+#                - architecture-modules.md
+#                - architecture-components.md
+#                - architecture-services.md
+#                - architecture-next-steps.md
+#                - binding-syntax.md
+#                - event-binding-concepts.md
+#                - template-reference-variables.md
+#            - Рабочее пространство и структура проекта:
+#                - file-structure.md
+#                - workspace-config.md
+#                - npm-packages.md
+#                - typescript-configuration.md
+#            - NgModules:
+#                - ngmodules.md
+#                - ngmodule-vs-jsmodule.md
+#                - bootstrapping.md
+#                - frequent-ngmodules.md
+#                - module-types.md
+#                - feature-modules.md
+#                - providers.md
+#                - singleton-services.md
+#                - sharing-ngmodules.md
+#                - ngmodule-api.md
+#                - ngmodule-faq.md
+#            - Observables и RxJS:
+#                - observables.md
+#                - rx-library.md
+#                - observables-in-angular.md
+#                - practical-observable-usage.md
+#                - comparing-observables.md
+#            - dependency-injection-in-action.md
+        - CLI (en): https://angular.io/cli
+        - API (en): https://angular.io/api
+#        - glossary.md
+#    - ...
