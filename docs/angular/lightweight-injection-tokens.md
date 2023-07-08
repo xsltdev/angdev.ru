@@ -1,8 +1,10 @@
 # Оптимизация размера клиентского приложения с помощью облегченных инъекционных маркеров
 
+:date: 28.02.2022
+
 На этой странице представлен концептуальный обзор техники инъекции зависимостей, которая рекомендуется разработчикам библиотек. Проектирование вашей библиотеки с использованием _легких инъекционных маркеров_ помогает оптимизировать размер пакета клиентских приложений, использующих вашу библиотеку.
 
-Вы можете управлять структурой зависимостей среди ваших компонентов и инжектируемых сервисов для оптимизации размера пакета, используя [tree-shakable providers] (guide/architecture-services#introduction-to-services-and-dependency-injection). Обычно это гарантирует, что если предоставленный компонент или сервис никогда не будет использоваться приложением, компилятор сможет удалить его код из пакета.
+Вы можете управлять структурой зависимостей среди ваших компонентов и инжектируемых сервисов для оптимизации размера пакета, используя [tree-shakable providers](architecture-services.md#introduction-to-services-and-dependency-injection). Обычно это гарантирует, что если предоставленный компонент или сервис никогда не будет использоваться приложением, компилятор сможет удалить его код из пакета.
 
 Из-за того, как Angular хранит инъекционные маркеры, возможно, что такой неиспользуемый компонент или сервис все равно окажется в связке. На этой странице описан шаблон проектирования инъекции зависимостей, который поддерживает правильное встряхивание дерева с помощью облегченных инъекционных маркеров.
 
@@ -18,52 +20,41 @@
 
 Чтобы лучше объяснить условие, при котором происходит сохранение маркера, рассмотрим библиотеку, которая предоставляет компонент library-card. Этот компонент содержит тело и может содержать необязательный заголовок.
 
-<code-example format="html" language="html">
-
-&lt;lib-card&gt; &lt;lib-header&gt;&hellip;&lt;/lib-header&gt;
-&lt;/lib-card&gt;
-
-</code-example>
+```html
+<lib-card>
+    <lib-header>…</lib-header>
+</lib-card>
+```
 
 В вероятной реализации компонент `<lib-card>` использует `@ContentChild()` или `@ContentChildren()` для получения `<lib-header>` и `<lib-body>`, как показано ниже.
 
-<code-example format="typescript" language="typescript">
-
-&commat;Component({ selector: 'lib-header',
-&hellip;,
-
+```ts
+@Component({
+  selector: 'lib-header',
+  …,
 })
-
 class LibHeaderComponent {}
 
-&commat;Component({ selector: 'lib-card',
-
-&hellip;,
-
+@Component({
+  selector: 'lib-card',
+  …,
 })
-
 class LibCardComponent {
-
-&commat;ContentChild(LibHeaderComponent)
-
-заголовок: LibHeaderComponent|null = null;
-
+  @ContentChild(LibHeaderComponent)
+  header: LibHeaderComponent|null = null;
 }
-
-</code-example>
+```
 
 Поскольку `<lib-header>` является необязательным, элемент может появиться в шаблоне в своей минимальной форме, `<lib-card></lib-card>`. В этом случае `<lib-header>` не используется, и можно было бы ожидать, что он будет в виде дерева, но этого не происходит.
 Это происходит потому, что `LibCardComponent` фактически содержит две ссылки на `LibHeaderComponent`.
 
-<code-example format="typescript" language="typescript">
-
-&commat;ContentChild(LibHeaderComponent) header: LibHeaderComponent;
-
-</code-example>
+```ts
+@ContentChild(LibHeaderComponent) header: LibHeaderComponent;
+```
 
 -   Одна из этих ссылок находится в позиции _type_ - то есть, она указывает `LibHeaderComponent` как тип: `header: LibHeaderComponent;`.
 
--   Другая ссылка находится в позиции _value_ -- то есть LibHeaderComponent является значением декоратора параметров `@ContentChild()`: `@ContentChild(LibHeaderComponent)`.
+-   Другая ссылка находится в позиции _value_ - то есть LibHeaderComponent является значением декоратора параметров `@ContentChild()`: `@ContentChild(LibHeaderComponent)`.
 
 Компилятор по-разному обрабатывает ссылки на маркеры в этих позициях.
 
@@ -77,30 +68,27 @@ class LibCardComponent {
 
 Проблема "дрожащего дерева" возникает, когда компонент используется в качестве маркера инъекции. Это может произойти в двух случаях.
 
--   Маркер используется в позиции значения [content query] (guide/lifecycle-hooks#using-aftercontent-hooks 'Подробнее об использовании content queries.').
+-   Маркер используется в позиции значения [content query](lifecycle-hooks.md#using-aftercontent-hooks 'Подробнее об использовании content queries.').
 
 -   Маркер используется в качестве спецификатора типа для инъекции конструктора.
 
 В следующем примере оба использования маркера `OtherComponent` приводят к сохранению `OtherComponent`, предотвращая его от перетряхивания дерева, когда он не используется.
 
-<code-example format="typescript" language="typescript">
+```ts
+class MyComponent {
+    constructor(@Optional() other: OtherComponent) {}
 
-class MyComponent { constructor(&commat;Optional() other: OtherComponent) {}
-
-&commat;ContentChild(OtherComponent) other: OtherComponent|null;
-
+    @ContentChild(OtherComponent)
+    other: OtherComponent | null;
 }
-
-</code-example>
+```
 
 Хотя маркеры, используемые только в качестве спецификаторов типов, удаляются при преобразовании в JavaScript, все маркеры, используемые для инъекции зависимостей, необходимы во время выполнения. Они эффективно изменяют `constructor(@Optional() other: OtherComponent)` на `constructor(@Optional() @Inject(OtherComponent) other)`.
 Теперь маркер находится в позиции значения и заставляет шейкер дерева сохранять ссылку.
 
-<div class="alert is helpful">
+!!!note ""
 
-Для всех сервисов библиотека должна использовать [tree-shakable providers](guide/architecture-services#introduction-to-services-and-dependency-injection), предоставляя зависимости на корневом уровне, а не в конструкторах компонентов.
-
-</div>
+    Для всех сервисов библиотека должна использовать [tree-shakable providers](architecture-services.md#introduction-to-services-and-dependency-injection), предоставляя зависимости на корневом уровне, а не в конструкторах компонентов.
 
 ## Использование облегченных инъекционных маркеров
 
@@ -108,37 +96,26 @@ class MyComponent { constructor(&commat;Optional() other: OtherComponent) {}
 
 Следующий пример показывает, как это работает для `LibHeaderComponent`.
 
-<code-example format="typescript" language="typescript">
-
+```ts
 abstract class LibHeaderToken {}
 
-&commat;Component({ selector: 'lib-header',
-
-провайдеры: [
-
-{provide: LibHeaderToken, useExisting: LibHeaderComponent}
-
-]
-
-&hellip;,
-
+@Component({
+  selector: 'lib-header',
+  providers: [
+    {provide: LibHeaderToken, useExisting: LibHeaderComponent}
+  ]
+  …,
 })
-
 class LibHeaderComponent extends LibHeaderToken {}
 
-&commat;Component({ selector: 'lib-card',
-
-&hellip;,
-
+@Component({
+  selector: 'lib-card',
+  …,
 })
-
 class LibCardComponent {
-
-&commat;ContentChild(LibHeaderToken) header: LibHeaderToken|null = null;
-
+  @ContentChild(LibHeaderToken) header: LibHeaderToken|null = null;
 }
-
-</code-example>
+```
 
 В этом примере реализация `LibCardComponent` больше не ссылается на `LibHeaderComponent` ни в позиции типа, ни в позиции значения. Это позволяет полностью перетряхнуть дерево `LibHeaderComponent`.
 Сохраняется `LibHeaderToken`, но это только объявление класса, без конкретной реализации.
@@ -151,11 +128,11 @@ class LibCardComponent {
 
 1.  Легкий инжектируемый токен, который представлен в виде абстрактного класса.
 
-1.  Определение компонента, реализующего абстрактный класс.
+2.  Определение компонента, реализующего абстрактный класс.
 
-1.  Инъекция облегченного шаблона с использованием `@ContentChild()` или `@ContentChildren()`.
+3.  Инъекция облегченного шаблона с использованием `@ContentChild()` или `@ContentChildren()`.
 
-1.  Провайдер в реализации маркера инъекции легковесного паттерна, который связывает маркер инъекции легковесного паттерна с реализацией.
+4.  Провайдер в реализации маркера инъекции легковесного паттерна, который связывает маркер инъекции легковесного паттерна с реализацией.
 
 ### Использование маркера облегченной инъекции для определения API.
 
@@ -167,52 +144,37 @@ class LibCardComponent {
 
 Например, `LibCardComponent` теперь запрашивает `LibHeaderToken`, а не `LibHeaderComponent`. Следующий пример показывает, как шаблон позволяет `LibCardComponent` взаимодействовать с `LibHeaderComponent` без фактического обращения к `LibHeaderComponent`.
 
-<code-example format="typescript" language="typescript">
-
-abstract class LibHeaderToken { abstract doSomething(): void;
+```ts
+abstract class LibHeaderToken {
+  abstract doSomething(): void;
 }
 
-&commat;Component({ selector: 'lib-header',
-
-providers: [
-
-{provide: LibHeaderToken, useExisting: LibHeaderComponent}
-
-]
-
-&hellip;,
-
+@Component({
+  selector: 'lib-header',
+  providers: [
+    {provide: LibHeaderToken, useExisting: LibHeaderComponent}
+  ]
+  …,
 })
-
 class LibHeaderComponent extends LibHeaderToken {
-
-doSomething(): void {
-
-// Конкретная реализация `doSomething`.
-
+  doSomething(): void {
+    // Concrete implementation of `doSomething`
+  }
 }
 
-}
-
-&commat;Component({ selector: 'lib-card',
-
-&hellip;,
-
+@Component({
+  selector: 'lib-card',
+  …,
 })
-
 class LibCardComponent implement AfterContentInit {
+  @ContentChild(LibHeaderToken)
+  header: LibHeaderToken|null = null;
 
-&commat;ContentChild(LibHeaderToken)
-
-заголовок: LibHeaderToken|null = null;
-
-ngAfterContentInit(): void { this.header &amp;&amp; this.header.doSomething();
-
+  ngAfterContentInit(): void {
+    this.header && this.header.doSomething();
+  }
 }
-
-}
-
-</code-example>
+```
 
 В этом примере родительский компонент запрашивает маркер, чтобы получить дочерний компонент, и сохраняет полученную ссылку на компонент, если она присутствует. Перед вызовом метода в дочернем компоненте родительский компонент проверяет, присутствует ли дочерний компонент.
 Если дочерний компонент был встряхнут, то на него нет ссылки во время выполнения, и вызов его метода невозможен.
@@ -224,11 +186,3 @@ ngAfterContentInit(): void { this.header &amp;&amp; this.header.doSomething();
 Пример "LibHeaderComponent" следует этому соглашению.
 
 Вы должны поддерживать связь между компонентом и его токеном, но при этом различать их. Рекомендуемый стиль - использовать базовое имя компонента с суффиксом "`Token`" для названия ваших облегченных инъекционных токенов: "`LibHeaderToken`".
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-:дата: 28.02.2022

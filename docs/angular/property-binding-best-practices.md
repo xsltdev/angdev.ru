@@ -1,12 +1,12 @@
 # Лучшие практики связывания свойств
 
+:date: 28.02.2022
+
 Следуя нескольким рекомендациям, вы можете использовать связывание свойств таким образом, чтобы уменьшить количество ошибок и сохранить читабельность кода.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Смотрите <live-example name="property-binding"></live-example> для рабочего примера, содержащего фрагменты кода из этого руководства.
-
-</div>
+    Смотрите [код](https://angular.io/generated/live-examples/property-binding/stackblitz.html) для рабочего примера, содержащего фрагменты кода из этого руководства.
 
 ## Избегайте побочных эффектов
 
@@ -28,7 +28,7 @@
 
 Выражение шаблона должно возвращать значение того типа, которое ожидает целевое свойство. Например, return:
 
--   a `строка`, если целевое свойство ожидает строку
+-   a `string`, если целевое свойство ожидает строку
 
 -   `number`, если ожидается число
 
@@ -38,15 +38,21 @@
 
 В следующем примере свойство `childItem` компонента `ItemDetailComponent` ожидает строку.
 
-<code-example header="src/app/app.component.html" path="property-binding/src/app/app.component.html" region="model-property-binding"></code-example>
+```html
+<app-item-detail [childItem]="parentItem"></app-item-detail>
+```
 
 Подтвердите это ожидание, посмотрев в `ItemDetailComponent`, где тип `@Input()` является `string`:
 
-<code-example header="src/app/item-detail/item-detail.component.ts (установка типа @Input())" path="property-binding/src/app/item-detail/item-detail.component.ts" region="input-type"></code-example>.
+```ts
+@Input() childItem = '';
+```
 
 `parentItem` в `AppComponent` является строкой, что означает, что выражение `parentItem` в `[childItem]="parentItem"`, оценивается как строка.
 
-<code-example header="src/app/app.component.ts" path="property-binding/src/app/app.component.ts" region="parent-data-type"></code-example>.
+```ts
+parentItem = 'lamp';
+```
 
 Если бы `parentItem` был каким-то другим типом, вам нужно было бы указать `childItem` `@Input()` как этот тип.
 
@@ -54,26 +60,34 @@
 
 В этом примере `ItemListComponent` является дочерним компонентом `AppComponent` и свойство `items` ожидает массив объектов.
 
-<code-example header="src/app/app.component.html" path="property-binding/src/app/app.component.html" region="pass-object"></code-example>
+```html
+<app-item-list [items]="currentItems"></app-item-list>
+```
 
 В `ItemListComponent` `@Input()`, `items`, имеет тип `Item[]`.
 
-<code-example header="src/app/item-list.component.ts" path="property-binding/src/app/item-list/item-list.component.ts" region="item-input"></code-example>.
+```ts
+@Input() items: Item[] = [];
+```
 
 Обратите внимание, что `Item` является объектом и имеет два свойства, `id` и `name`.
 
-<code-example header="src/app/item.ts" path="property-binding/src/app/item.ts" region="item-class"></code-example>.
+```ts
+export interface Item {
+    id: number;
+    name: string;
+}
+```
 
 В `app.component.ts`, `currentItems` - это массив объектов в той же форме, что и объект `Item` в `items.ts`, с `id` и `name`.
 
-<code-example header="src/app.component.ts" path="property-binding/src/app/app.component.ts" region="pass-object"></code-example>.
+```ts
+currentItems = [
+    {
+        id: 21,
+        name: 'phone',
+    },
+];
+```
 
 Предоставляя объект в той же форме, вы удовлетворяете ожиданиям `items`, когда Angular оценивает выражение `currentItems`.
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-:дата: 28.02.2022

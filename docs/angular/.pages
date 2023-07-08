@@ -146,13 +146,13 @@ nav:
         - Предварительный обзор возможностей:
             - signals.md
             - rxjs-interop.md
-#    - Лучшие практики:
-#        - security.md
-#        - accessibility.md
-#        - updating.md
-#        - property-binding-best-practices.md
-#        - lazy-loading-ngmodules.md
-#        - lightweight-injection-tokens.md
+    - Лучшие практики:
+        - security.md
+        - accessibility.md
+        - updating.md
+        - property-binding-best-practices.md
+        - lazy-loading-ngmodules.md
+        - lightweight-injection-tokens.md
 #    - Инструменты Angular:
 #        - cli-builder.md
 #        - Процесс разработки:

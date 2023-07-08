@@ -1,86 +1,69 @@
 # Ленивая загрузка функциональных модулей
 
+:date: 7.05.2022
+
 По умолчанию NgModules загружаются с нетерпением. Это означает, что как только приложение загружается, загружаются и все модули NgModules, независимо от того, нужны они сразу или нет. Для больших приложений с большим количеством маршрутов рассмотрите вариант ленивой загрузки &mdash; шаблон проектирования, который загружает NgModules по мере необходимости.
 
 Ленивая загрузка помогает уменьшить размер начальных пакетов, что, в свою очередь, сокращает время загрузки.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Окончательный пример приложения с двумя лениво загружаемыми модулями, который описан на этой странице, смотрите в <live-example></live-example>.
+    Окончательный пример приложения с двумя лениво загружаемыми модулями, который описан на этой странице, смотрите в [коде](https://angular.io/generated/live-examples/lazy-loading-ngmodules/stackblitz.html).
 
-</div>
-
-<a id="lazy-loading"></a>
-
-## Основы ленивой загрузки
+## Основы ленивой загрузки {: #lazy-loading}
 
 В этом разделе представлена основная процедура настройки маршрута с ленивой загрузкой. Пошаговый пример смотрите в разделе [пошаговая настройка](#step-by-step) на этой странице.
 
-Для ленивой загрузки модулей Angular используйте `loadChildren`\ (вместо `component`\) в конфигурации `маршрутов` вашего `AppRoutingModule` следующим образом.
+Для ленивой загрузки модулей Angular используйте `loadChildren` (вместо `component`) в конфигурации `маршрутов` вашего `AppRoutingModule` следующим образом.
 
-<code-example header="AppRoutingModule (excerpt)">
-
-const routes: Маршруты = [ {
-путь: 'items',
-
-loadChildren: () =&gt; import('./items/items.module').then(m =&gt; m.ItemsModule)
-
-}
-
+```ts
+const routes: Routes = [
+    {
+        path: 'items',
+        loadChildren: () =>
+            import('./items/items.module').then(
+                (m) => m.ItemsModule
+            ),
+    },
 ];
-
-</code-example>
+```
 
 В модуле маршрутизации модуля lazy-loaded добавьте маршрут для компонента.
 
-<code-example header="Routing module for lazy loaded module (excerpt)">
-
-const routes: Маршруты = [ {
-путь: '',
-
-компонент: ItemsComponent
-
-}
-
+```ts
+const routes: Routes = [
+    {
+        path: '',
+        component: ItemsComponent,
+    },
 ];
-
-</code-example>
+```
 
 Также не забудьте удалить `ItemsModule` из `AppModule`. Для получения пошаговых инструкций по ленивой загрузке модулей, продолжите следующие разделы этой страницы.
 
-<a id="step-by-step"></a>
-
-## Пошаговая настройка
+## Пошаговая настройка {: #step-by-step}
 
 Установка функционального модуля с ленивой загрузкой требует двух основных шагов:
 
 1.  Создайте функциональный модуль с помощью Angular CLI, используя флаг `--route`.
 
-1.  Настройте маршруты.
+2.  Настройте маршруты.
 
 ### Настройка приложения
 
 Если у вас еще нет приложения, выполните следующие шаги, чтобы создать его с помощью Angular CLI. Если у вас уже есть приложение, перейдите к разделу [Настройка маршрутов](#config-routes).
 
-<!-- vale Angular.Google_WordListWarnings = NO -->
-
 Введите следующую команду, где `customer-app` - имя вашего приложения:
 
-<!-- vale Angular.Google_WordListWarnings = YES -->
-
-<code-example format="shell" language="shell">
-
+```shell
 ng new customer-app --routing
-
-</code-example>
+```
 
 Это создает приложение под названием `customer-app`, а флаг `--routing` создает файл `app-routing.module.ts`. Это один из файлов, необходимых для настройки ленивой загрузки для вашего функционального модуля. Перейдите в проект, выполнив команду `cd customer-app`.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Опция `--routing` требует Angular CLI версии 8.1 или выше. Смотрите [Keeping Up to Date](guide/updating).
-
-</div>
+    Опция `--routing` требует Angular CLI версии 8.1 или выше. Смотрите [Keeping Up to Date](updating.md).
 
 ### Создание функционального модуля с маршрутизацией
 
@@ -88,81 +71,120 @@ ng new customer-app --routing
 
 Путь для загрузки функциональных модулей `customers` также `customers`, поскольку он указан с опцией `--route`:
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate module customers --route customers --module app.module
-
-</code-example>
+```
 
 Это создаст директорию `customers`, содержащую новый функциональный модуль `CustomersModule`, определяемый в файле `customers.module.ts`, и модуль маршрутизации `CustomersRoutingModule`, определяемый в файле `customers-routing.module.ts`. Команда автоматически объявляет `CustomersComponent` и импортирует `CustomersRoutingModule` внутри нового функционального модуля.
 
 Поскольку новый модуль предназначен для ленивой загрузки, команда **не** добавляет ссылку на него в файл корневого модуля приложения, `app.module.ts`. Вместо этого она добавляет объявленный маршрут `customers` в массив `routes`, объявленный в модуле, предоставленном в качестве опции `--module`.
 
-<code-example header="src/app/app-routing.module.ts" path="lazy-loading-ngmodules/src/app/app-routing.module.ts" region="routes-customers"></code-example>.
+```ts
+const routes: Routes = [
+    {
+        path: 'customers',
+        loadChildren: () =>
+            import('./customers/customers.module').then(
+                (m) => m.CustomersModule
+            ),
+    },
+];
+```
 
 Обратите внимание, что синтаксис ленивой загрузки использует `loadChildren`, за которым следует функция, использующая встроенный в браузер синтаксис `import('...')` для динамического импорта. Путь импорта - это относительный путь к модулю.
 
-<div class="callout is-helpful">
+!!!note "Ленивая загрузка на основе строк"
 
-<header>String-based lazy loading</header>
+    В версии 8 Angular строковый синтаксис для спецификации маршрута `loadChildren` [был устаревшим](https://angular.io/guide/deprecations#loadchildren-string-syntax) в пользу синтаксиса `import()`. Вы можете отказаться от использования строковой ленивой загрузки (`loadChildren: './path/to/module#Module'`), включив маршруты с ленивой загрузкой в ваш файл `tsconfig`, который включает файлы с ленивой загрузкой в компиляцию.
 
-В версии 8 Angular строковый синтаксис для спецификации маршрута `loadChildren` [был устаревшим] (guide/deprecations#loadchildren-string-syntax) в пользу синтаксиса `import()`. Вы можете отказаться от использования строковой ленивой загрузки\(`loadChildren: './path/to/module#Module'`\), включив маршруты с ленивой загрузкой в ваш файл `tsconfig`, который включает файлы с ленивой загрузкой в компиляцию.
-
-По умолчанию Angular CLI генерирует проекты с более строгими включениями файлов, предназначенными для использования с синтаксисом `import()`.
-
-</div>
+    По умолчанию Angular CLI генерирует проекты с более строгими включениями файлов, предназначенными для использования с синтаксисом `import()`.
 
 ### Добавьте еще один функциональный модуль
 
 Используйте ту же команду для создания второго функционального модуля с ленивой загрузкой и маршрутизацией, а также его компонента-заглушки.
 
-<code-example format="shell" language="shell">
-
+```shell
 ng generate module orders --route orders --module app.module
-
-</code-example>
+```
 
 Это создает новый каталог `orders`, содержащий `OrdersModule` и `OrdersRoutingModule`, а также новые исходные файлы `OrdersComponent`. Маршрут `orders`, указанный с помощью опции `--route`, добавляется в массив `routes` внутри файла `app-routing.module.ts`, используя синтаксис ленивой загрузки.
 
-<code-example header="src/app/app-routing.module.ts" path="lazy-loading-ngmodules/src/app/app-routing.module.ts" region="routes-customers-orders"></code-example>.
+```ts
+const routes: Routes = [
+    {
+        path: 'customers',
+        loadChildren: () =>
+            import('./customers/customers.module').then(
+                (m) => m.CustomersModule
+            ),
+    },
+    {
+        path: 'orders',
+        loadChildren: () =>
+            import('./orders/orders.module').then(
+                (m) => m.OrdersModule
+            ),
+    },
+];
+```
 
 ### Настройте пользовательский интерфейс
 
 Хотя вы можете ввести URL в адресную строку, навигационный пользовательский интерфейс более прост для пользователя и более распространен. Замените стандартную разметку placeholder в `app.component.html` на пользовательскую навигацию, чтобы вы могли переходить к своим модулям в браузере:
 
-<code-example header="app.component.html" path="lazy-loading-ngmodules/src/app/app.component.html" region="app-component-template" header="src/app/app.component.html"></code-example>.
+```html
+<h1>{{title}}</h1>
+
+<button type="button" routerLink="/customers">
+    Customers
+</button>
+<button type="button" routerLink="/orders">Orders</button>
+<button type="button" routerLink="">Home</button>
+
+<router-outlet></router-outlet>
+```
 
 Чтобы увидеть ваше приложение в браузере, введите следующую команду в окне инструмента командной строки:
 
-<code-example format="shell" language="shell">
-
-служить
-
-</code-example>
-
-<!-- vale Angular.Google_WordListWarnings = NO -->
+```shell
+ng serve
+```
 
 Затем перейдите на `localhost:4200`, где вы должны увидеть "customer-app" и три кнопки.
 
-<!-- vale Angular.Google_WordListWarnings = YES -->
-
-<div class="lightbox">
-
-<img alt="three buttons in the browser" src="generated/images/guide/lazy-loading-ngmodules/three-buttons.png" width="300">
-
-</div>
+![три кнопки в браузере](three-buttons.png)
 
 Эти кнопки работают, потому что Angular CLI автоматически добавил маршруты к модулям функций в массив `routes` в файле `app-routing.module.ts`.
 
-<a id="config-routes"></a>
-
-### Импорт и конфигурация маршрутов
+### Импорт и конфигурация маршрутов {: #config-routes}
 
 Angular CLI автоматически добавил каждый функциональный модуль в карту маршрутов на уровне приложения. Завершите это добавлением маршрута по умолчанию.
 
 В файле `app-routing.module.ts` обновите массив `routes` следующим образом:
 
-<code-example header="src/app/app-routing.module.ts" path="lazy-loading-ngmodules/src/app/app-routing.module.ts" id="app-routing.module.ts" region="const-routes"></code-example>.
+```ts
+const routes: Routes = [
+    {
+        path: 'customers',
+        loadChildren: () =>
+            import('./customers/customers.module').then(
+                (m) => m.CustomersModule
+            ),
+    },
+    {
+        path: 'orders',
+        loadChildren: () =>
+            import('./orders/orders.module').then(
+                (m) => m.OrdersModule
+            ),
+    },
+    {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
+    },
+];
+```
 
 Первые два пути - это маршруты к `CustomersModule` и `OrdersModule`. Последняя запись определяет маршрут по умолчанию.
 
@@ -172,7 +194,18 @@ Angular CLI автоматически добавил каждый функци�
 
 Далее посмотрите на файл `customers.module.ts`. Если вы используете Angular CLI и следуете шагам, описанным на этой странице, вам не нужно ничего здесь делать.
 
-<code-example header="src/app/customers/customers.module.ts" path="lazy-loading-ngmodules/src/app/customers/customers.module.ts" id="customers.module.ts" region="customers-module"></code-example>.
+```ts
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CustomersRoutingModule } from './customers-routing.module';
+import { CustomersComponent } from './customers.component';
+
+@NgModule({
+    imports: [CommonModule, CustomersRoutingModule],
+    declarations: [CustomersComponent],
+})
+export class CustomersModule {}
+```
 
 Файл `customers.module.ts` импортирует файлы `customers-routing.module.ts` и `customers.component.ts`. `CustomersRoutingModule` указан в массиве `@NgModule` `imports`, что дает `CustomersModule` доступ к собственному модулю маршрутизации.
 
@@ -182,44 +215,60 @@ Angular CLI автоматически добавил каждый функци�
 
 Файл определения маршрута для конкретной функции `customers-routing.module.ts` импортирует свой компонент функции, определенный в файле `customers.component.ts`, вместе с другими операторами импорта JavaScript. Затем он сопоставляет пустой путь с `CustomersComponent`.
 
-<code-example header="src/app/customers/customers-routing.module.ts" path="lazy-loading-ngmodules/src/app/customers/customers-routing.module.ts" id="customers-routing.module.ts" region="customers-routing-module"></code-example>.
+```ts
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { CustomersComponent } from './customers.component';
+
+const routes: Routes = [
+    {
+        path: '',
+        component: CustomersComponent,
+    },
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+})
+export class CustomersRoutingModule {}
+```
 
 Здесь `path` установлен в пустую строку, потому что путь в `AppRoutingModule` уже установлен в `customers`, поэтому этот маршрут в `CustomersRoutingModule` уже находится в контексте `customers`. Каждый маршрут в этом модуле маршрутизации является дочерним маршрутом.
 
 Модуль маршрутизации другого функционального модуля настроен аналогично.
 
-<code-example header="src/app/orders/orders-routing.module.ts (excerpt)" path="lazy-loading-ngmodules/src/app/orders/orders-routing.module.ts" id="orders-routing.module.ts" region="orders-routing-module-detail"></code-example>.
+```ts
+import { OrdersComponent } from './orders.component';
+
+const routes: Routes = [
+    {
+        path: '',
+        component: OrdersComponent,
+    },
+];
+```
 
 ### Проверить ленивую загрузку
 
-Вы можете проверить, действительно ли модуль загружается в ленивом режиме, с помощью инструментов разработчика Chrome. В Chrome откройте инструменты разработчика, нажав `Cmd+Option+i` на Mac или `Ctrl+Shift+j` на PC, и перейдите на вкладку Network.
+Вы можете проверить, действительно ли модуль загружается в ленивом режиме, с помощью инструментов разработчика Chrome. В Chrome откройте инструменты разработчика, нажав ++cmd+option+i++ на Mac или ++ctrl+shift+j++ на PC, и перейдите на вкладку Network.
 
-<div class="lightbox">
-
-<img alt="lazy loaded modules diagram" src="generated/images/guide/lazy-loading-ngmodules/network-tab.png" width="600">
-
-</div>
+![lazy loaded modules diagram](network-tab.png)
 
 Нажмите на кнопку "Заказы" или "Клиенты". Если появится фрагмент, значит, все подключено правильно и функциональный модуль загружается в ленивом режиме.
+
 Кусок должен появиться для Заказов и для Клиентов, но только один раз для каждого.
 
-<div class="lightbox">
-
-<img alt="lazy loaded modules diagram" src="generated/images/guide/lazy-loading-ngmodules/chunk-arrow.png" width="600">
-
-</div>
+![lazy loaded modules diagram](chunk-arrow.png)
 
 Чтобы увидеть его снова или проверить после внесения изменений, нажмите на круг с линией в верхней левой части вкладки Сеть:
 
-<div class="lightbox">
+![lazy loaded modules diagram](clear.gif)
 
-<img alt="lazy loaded modules diagram" src="generated/images/guide/lazy-loading-ngmodules/clear.gif" width="200">
+Затем перезагрузите с помощью ++cmd+r++ или ++ctrl+r++, в зависимости от вашей платформы.
 
-</div>
-
-Затем перезагрузите с помощью `Cmd+r` или `Ctrl+r`, в зависимости от вашей платформы.
-
-## `forRoot()` и `forChild()`.
+## `forRoot()` и `forChild()`
 
 Вы могли заметить, что Angular CLI добавляет `RouterModule.forRoot(routes)` в массив `импортов` модуля `AppRoutingModule`. Это дает Angular знать, что `AppRoutingModule` является модулем маршрутизации, а `forRoot()` указывает, что это корневой модуль маршрутизации.
 
@@ -235,11 +284,9 @@ Angular CLI также добавляет функцию `RouterModule.forChild(
 
 Он использует такие директивы, как `RouterOutlet` и `RouterLink`.
 
-Дополнительную информацию см. в разделе [шаблон `forRoot()`](guide/singleton-services#forRoot) руководства [Singleton Services](guide/singleton-services).
+Дополнительную информацию см. в разделе [шаблон `forRoot()`](singleton-services.md#forRoot) руководства [Singleton Services](singleton-services.md).
 
-<a id="preloading"></a>
-
-## Предварительная загрузка
+## Предварительная загрузка {: #preloading}
 
 Предварительная загрузка улучшает UX, загружая части вашего приложения в фоновом режиме. Вы можете предварительно загружать модули, отдельные компоненты или данные компонента.
 
@@ -251,59 +298,41 @@ Angular CLI также добавляет функцию `RouterModule.forChild(
 
 ### Приложение на основе модулей
 
-<code-example header="AppRoutingModule (excerpt)">
-
-import { PreloadAllModules } from '&commat;angular/router';
-
-</code-example>
+```ts
+import { PreloadAllModules } from '@angular/router';
+```
 
 Все еще в `AppRoutingModule`, укажите стратегию предварительной загрузки в `forRoot()`.
 
-<code-example header="AppRoutingModule (excerpt)">
-
-RouterModule.forRoot( appRoutes,
-{
-
-preloadingStrategy: PreloadAllModules
-
-}
-
-)
-
-</code-example>
+```ts
+RouterModule.forRoot(appRoutes, {
+    preloadingStrategy: PreloadAllModules,
+});
+```
 
 ### Автономное приложение
 
 Для автономных приложений настройте стратегии предварительной загрузки, добавив `withPreloading` к `provideRouter`s RouterFeatures в `app.config.ts`.
 
-<code-example header="`app.config.ts`">
-
-import { ApplicationConfig } from '@angular/core'; import {
-PreloadAllModules,
-
-provideRouter
-
-withPreloading,
-
-} из '@angular/router';
+```ts
+import { ApplicationConfig } from '@angular/core';
+import {
+  PreloadAllModules,
+  provideRouter
+  withPreloading,
+} from '@angular/router';
 
 import { routes } from './app.routes';
 
-export const appConfig: ApplicationConfig = { providers: [
-
-provideRouter(
-
-routes,
-
-withPreloading(PreloadAllModules)
-
-),
-
-],
-
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(
+      routes,
+      withPreloading(PreloadAllModules)
+    ),
+  ],
 };
-
-</code-example>
+```
 
 ### Предварительная загрузка данных компонента
 
@@ -313,104 +342,83 @@ withPreloading(PreloadAllModules)
 
 Создайте службу резольвера. С помощью Angular CLI команда для создания службы выглядит следующим образом:
 
-<code-example format="shell" language="shell">
-
-ng generate service &lt;service-name&gt;
-
-</code-example>
+```shell
+ng generate service <service-name>
+```
 
 Во вновь созданном сервисе реализуйте интерфейс `Resolve`, предоставляемый пакетом `@angular/router`:
 
-<code-example header="Resolver service (excerpt)">
+```ts
+import { Resolve } from '@angular/router';
 
-import { Resolve } from '&commat;angular/router';
+/* … */
 
-&hellip;
-
-/_ Интерфейс, представляющий вашу модель данных _/ export interface Crisis {
-
-id: число;
-
-name: string;
-
+/* An interface that represents your data model */
+export interface Crisis {
+    id: number;
+    name: string;
 }
 
-export class CrisisDetailResolverService implements Resolve&lt;Crisis&gt; { resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable&lt;Crisis&gt; {
-
-// ваша логика здесь
-
+export class CrisisDetailResolverService
+    implements Resolve<Crisis> {
+    resolve(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<Crisis> {
+        // your logic goes here
+    }
 }
-
-}
-
-</code-example>
+```
 
 Импортируйте этот резольвер в модуль маршрутизации вашего модуля.
 
-<code-example header="Feature module's routing module (excerpt)">
-
+```ts
 import { CrisisDetailResolverService } from './crisis-detail-resolver.service';
-
-</code-example>
+```
 
 Добавьте объект `resolve` в конфигурацию `route` компонента.
 
-<code-example header="Feature module's routing module (excerpt)">
-
-{ path: '/your-path',
-компонент: YourComponent,
-
-resolve: {
-
-кризис: CrisisDetailResolverService
-
+```ts
+{
+  path: '/your-path',
+  component: YourComponent,
+  resolve: {
+    crisis: CrisisDetailResolverService
+  }
 }
-
-}
-
-</code-example>
+```
 
 В конструкторе компонента введите экземпляр класса `ActivatedRoute`, который представляет текущий маршрут.
 
-<code-example header="Component's constructor (excerpt)">
+```ts
+import { ActivatedRoute } from '@angular/router';
 
-import { ActivatedRoute } from '&commat;angular/router';
-
-&commat;Component({ &hellip; }) class YourComponent {
-
-constructor(private route: ActivatedRoute) {}
-
+@Component({ … })
+class YourComponent {
+  constructor(private route: ActivatedRoute) {}
 }
-
-</code-example>
+```
 
 Используйте инжектированный экземпляр класса `ActivatedRoute` для доступа к `данным`, связанным с данным маршрутом.
 
-<code-example header="Component's ngOnInit lifecycle hook (excerpt)">
+```ts
+import { ActivatedRoute } from '@angular/router';
 
-import { ActivatedRoute } from '&commat;angular/router';
+@Component({ … })
+class YourComponent {
+  constructor(private route: ActivatedRoute) {}
 
-&commat;Component({ &hellip; }) class YourComponent {
-
-constructor(private route: ActivatedRoute) {}
-
-ngOnInit() { this.route.data
-
-.subscribe(data =&gt; {
-
-const crisis: Crisis = data.crisis;
-
-// &hellip;
-
-});
-
+  ngOnInit() {
+    this.route.data
+      .subscribe(data => {
+        const crisis: Crisis = data.crisis;
+        // …
+      });
+  }
 }
+```
 
-}
-
-</code-example>
-
-Для получения дополнительной информации и рабочего примера смотрите раздел [учебника по маршрутизации, посвященный предварительной загрузке] (guide/router-tutorial-toh#preloading-background-loading-of-feature-areas).
+Для получения дополнительной информации и рабочего примера смотрите раздел [учебника по маршрутизации, посвященный предварительной загрузке](router-tutorial-toh.md#preloading-background-loading-of-feature-areas).
 
 ## Устранение неполадок при ленивой загрузке модулей
 
@@ -422,26 +430,14 @@ const crisis: Crisis = data.crisis;
 
 Помните, что многие общие модули Angular должны быть импортированы в основу вашего приложения.
 
-Для получения дополнительной информации о модулях Angular смотрите [NgModules](guide/ngmodules).
+Для получения дополнительной информации о модулях Angular смотрите [NgModules](ngmodules.md).
 
-## Подробнее о NgModules и маршрутизации.
+## Подробнее о NgModules и маршрутизации
 
 Вам также может быть интересно следующее:
 
--   [Маршрутизация и навигация](guide/router)
-
--   [Провайдеры](guide/providers)
-
--   [Типы модулей функций](guide/module-types)
-
+-   [Маршрутизация и навигация](router.md)
+-   [Провайдеры](providers.md)
+-   [Типы модулей функций](module-types.md)
 -   [Разделение кода на уровне маршрутов в Angular](https://web.dev/route-level-code-splitting-in-angular)
-
 -   [Стратегии предварительной загрузки маршрутов в Angular](https://web.dev/route-preloading-in-angular)
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-:date: 7.05.2022
