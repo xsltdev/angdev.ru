@@ -143,9 +143,9 @@ nav:
             - using-libraries.md
             - creating-libraries.md
             - angular-package-format.md
-#        - Предварительный обзор возможностей:
-#            - signals.md
-#            - rxjs-interop.md
+        - Предварительный обзор возможностей:
+            - signals.md
+            - rxjs-interop.md
 #    - Лучшие практики:
 #        - security.md
 #        - accessibility.md

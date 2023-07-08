@@ -2,15 +2,13 @@
 
 **Angular Signals** - это система, которая детально отслеживает, как и где ваше состояние используется в приложении, позволяя фреймворку оптимизировать обновления рендеринга.
 
-<div class="alert is-important">
+!!!warning ""
 
-Сигналы Angular доступны для [предварительного просмотра разработчиком](/guide/releases#developer-preview). Они готовы к тому, чтобы вы попробовали их, но могут измениться до того, как они станут стабильными.
-
-</div>
+    Сигналы Angular доступны для [предварительного просмотра разработчиком](releases.md#developer-preview). Они готовы к тому, чтобы вы попробовали их, но могут измениться до того, как они станут стабильными.
 
 ## Что такое сигналы?
 
-**сигнал** - это обертка вокруг значения, которая может уведомлять заинтересованных потребителей об изменении этого значения. Сигналы могут содержать любое значение, от простых примитивов до сложных структур данных.
+**Сигнал** - это обертка вокруг значения, которая может уведомлять заинтересованных потребителей об изменении этого значения. Сигналы могут содержать любое значение, от простых примитивов до сложных структур данных.
 
 Значение сигнала всегда считывается через функцию getter, что позволяет Angular отслеживать, где используется сигнал.
 
@@ -20,26 +18,31 @@
 
 Записываемые сигналы предоставляют API для обновления их значений напрямую. Вы создаете записываемые сигналы, вызывая функцию `signal` с начальным значением сигнала:
 
-```ts const count = signal(0);
+```ts
+const count = signal(0);
 // Signals are getter functions - calling them reads their value.
 console.log('The count is: ' + count());
 ```
 
 Чтобы изменить значение записываемого сигнала, вы можете либо `.set()` его непосредственно:
 
-```ts count.set(3);
-
+```ts
+count.set(3);
 ```
 
 или использовать операцию `.update()` для вычисления нового значения на основе предыдущего:
 
-```ts // Increment the count by 1.
+```ts
+// Increment the count by 1.
 count.update((value) => value + 1);
 ```
 
 При работе с сигналами, содержащими объекты, иногда полезно мутировать объект напрямую. Например, если объект представляет собой массив, вы можете захотеть вставить новое значение, не заменяя массив полностью. Для такого внутреннего изменения используйте метод `.mutate`:
 
-```ts const todos = signal([{title: 'Learn signals', done: false}]);
+```ts
+const todos = signal([
+    { title: 'Learn signals', done: false },
+]);
 todos.mutate((value) => {
     // Change the first TODO in the array to 'done: true' without replacing it.
     value[0].done = true;
@@ -52,7 +55,8 @@ todos.mutate((value) => {
 
 Сигнал **вычисляемый** получает свое значение от других сигналов. Определите его, используя `computed` и указав функцию вычисления:
 
-```typescript const count: WritableSignal<number> = signal(0);
+```typescript
+const count: WritableSignal<number> = signal(0);
 const doubleCount: Signal<number> = computed(
     () => count() * 2
 );
@@ -60,7 +64,7 @@ const doubleCount: Signal<number> = computed(
 
 Сигнал `doubleCount` зависит от `count`. Когда `count` обновляется, Angular знает, что все, что зависит от `count` или `doubleCount`, также должно обновиться.
 
-#### Вычисления как лениво оцениваются, так и мемоизируются.
+#### Вычисления как лениво оцениваются, так и мемоизируются
 
 Функция вычисления `doubleCount` не запускается для вычисления своего значения до тех пор, пока `doubleCount` не будет прочитан в первый раз. После вычисления это значение кэшируется, и последующие чтения `doubleCount` будут возвращать кэшированное значение без пересчета.
 
@@ -68,21 +72,22 @@ const doubleCount: Signal<number> = computed(
 
 В результате, в вычисляемых сигналах можно безопасно выполнять вычислительно дорогие производные, такие как фильтрация массивов.
 
-#### Вычислимые сигналы не являются сигналами, доступными для записи.
+#### Вычислимые сигналы не являются сигналами, доступными для записи
 
 Вы не можете напрямую присваивать значения вычисляемому сигналу. То есть,
 
-```ts doubleCount.set(3);
-
+```ts
+doubleCount.set(3);
 ```
 
 выдает ошибку компиляции, поскольку `doubleCount` не является `WritableSignal`.
 
-#### Вычисленные зависимости сигналов являются динамическими.
+#### Вычисленные зависимости сигналов являются динамическими
 
 Отслеживаются только те сигналы, которые действительно считываются во время вычисления. Например, в этом вычислении сигнал `count` читается только условно:
 
-```ts const showCount = signal(false);
+```ts
+const showCount = signal(false);
 const count = signal(0);
 const conditionalCount = computed(() => {
     if (showCount()) {
@@ -99,16 +104,17 @@ const conditionalCount = computed(() => {
 
 Обратите внимание, что зависимости могут быть как удалены, так и добавлены. Если позже `showCount` снова будет установлен в `false`, то `count` больше не будет считаться зависимостью `conditionalCount`.
 
-## Чтение сигналов в компонентах `OnPush`.
+## Чтение сигналов в компонентах `OnPush`
 
-Когда компонент `OnPush` использует значение сигнала в своем шаблоне, Angular будет отслеживать сигнал как зависимость этого компонента. Когда сигнал обновляется, Angular автоматически [помечает](/api/core/ChangeDetectorRef#markforcheck) компонент, чтобы обеспечить его обновление при следующем запуске обнаружения изменений. Дополнительную информацию о компонентах `OnPush` см. в руководстве [Skipping component subtrees](/guide/change-detection-skipping-subtrees).
+Когда компонент `OnPush` использует значение сигнала в своем шаблоне, Angular будет отслеживать сигнал как зависимость этого компонента. Когда сигнал обновляется, Angular автоматически [помечает](https://angular.io/api/core/ChangeDetectorRef#markforcheck) компонент, чтобы обеспечить его обновление при следующем запуске обнаружения изменений. Дополнительную информацию о компонентах `OnPush` см. в руководстве [Skipping component subtrees](change-detection-skipping-subtrees.md).
 
 ## Эффекты
 
-Сигналы полезны тем, что они могут уведомлять заинтересованных потребителей об изменениях. **эффект** - это операция, которая выполняется всякий раз, когда одно или несколько значений сигнала изменяются. Вы можете создать эффект с помощью функции `effect`:
+Сигналы полезны тем, что они могут уведомлять заинтересованных потребителей об изменениях. **Эффект** - это операция, которая выполняется всякий раз, когда одно или несколько значений сигнала изменяются. Вы можете создать эффект с помощью функции `effect`:
 
-```ts effect(() => {
-  console.log(`The current count is: ${count()}`);
+```ts
+effect(() => {
+    console.log(`The current count is: ${count()}`);
 });
 ```
 
@@ -138,7 +144,8 @@ const conditionalCount = computed(() => {
 
 По умолчанию для регистрации нового эффекта с помощью функции `effect()` требуется "контекст инъекции" (доступ к функции `inject`). Самый простой способ обеспечить это - вызвать `effect` в компоненте, директиве или `конструкторе` сервиса:
 
-```ts @Component({...})
+```ts
+@Component({...})
 export class EffectiveCounterCmp {
     readonly count = signal(0);
     constructor() {
@@ -152,7 +159,8 @@ export class EffectiveCounterCmp {
 
 В качестве альтернативы эффект может быть назначен полю (что также дает ему описательное имя).
 
-```ts @Component({...})
+```ts
+@Component({...})
 export class EffectiveCounterCmp {
     readonly count = signal(0);
 
@@ -164,7 +172,8 @@ export class EffectiveCounterCmp {
 
 Чтобы создать эффект вне конструктора, вы можете передать `Injector` в `effect` через его опции:
 
-```ts @Component({...})
+```ts
+@Component({...})
 export class EffectiveCounterCmp {
     readonly count = signal(0);
     constructor(private injector: Injector) {}
@@ -194,7 +203,8 @@ export class EffectiveCounterCmp {
 
 При создании сигнала вы можете опционально указать функцию равенства, которая будет использоваться для проверки того, действительно ли новое значение отличается от предыдущего.
 
-```ts import _ from 'lodash';
+```ts
+import _ from 'lodash';
 const data = signal(['test'], { equal: _.isEqual });
 
 // Even though this is a different array instance, the deep equality
@@ -213,7 +223,8 @@ data.set(['test']);
 
 Например, предположим, что когда `currentUser` меняется, значение `counter` должно быть зарегистрировано. Создайте `effect`, который считывает оба сигнала:
 
-```ts effect(() => {
+```ts
+effect(() => {
   console.log(`User set to `${currentUser()}` and the counter is ${counter()}`);
 });
 ```
@@ -222,20 +233,22 @@ data.set(['test']);
 
 Вы можете предотвратить отслеживание чтения сигнала, вызвав его геттер с `untracked`:
 
-```ts effect(() => {
+```ts
+effect(() => {
   console.log(`User set to `${currentUser()}` and the counter is ${untracked(counter)}`);
 });
 ```
 
 `untracked` также полезен, когда эффект должен вызвать внешний код, который не должен рассматриваться как зависимость:
 
-```ts effect(() => {
-  const user = currentUser();
-  untracked(() => {
-    // If the `loggingService` reads signals, they won't be counted as
-    // dependencies of this effect.
-    this.loggingService.log(`User set to ${user}`);
-  });
+```ts
+effect(() => {
+    const user = currentUser();
+    untracked(() => {
+        // If the `loggingService` reads signals, they won't be counted as
+        // dependencies of this effect.
+        this.loggingService.log(`User set to ${user}`);
+    });
 });
 ```
 
@@ -243,15 +256,18 @@ data.set(['test']);
 
 Эффекты могут запускать длительные операции, которые должны быть отменены, если эффект уничтожен или запущен снова до завершения первой операции. Когда вы создаете эффект, ваша функция может опционально принимать функцию `onCleanup` в качестве первого параметра. Эта функция `onCleanup` позволяет вам зарегистрировать обратный вызов, который будет вызван перед началом следующего запуска эффекта или когда эффект будет уничтожен.
 
-```ts effect((onCleanup) => {
-  const user = currentUser();
+```ts
+effect((onCleanup) => {
+    const user = currentUser();
 
-  const timer = setTimeout(() => {
-    console.log(`1 second ago, the user became ${user}`);
-  }, 1000);
+    const timer = setTimeout(() => {
+        console.log(
+            `1 second ago, the user became ${user}`
+        );
+    }, 1000);
 
-  onCleanup(() => {
-    clearTimeout(timer);
-  });
+    onCleanup(() => {
+        clearTimeout(timer);
+    });
 });
 ```
