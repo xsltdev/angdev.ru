@@ -130,11 +130,11 @@ nav:
         - Service workers и PWA:
             - service-worker-intro.md
             - service-worker-getting-started.md
-#            - app-shell.md
-#            - service-worker-communications.md
-#            - service-worker-notifications.md
-#            - service-worker-devops.md
-#            - service-worker-config.md
+            - app-shell.md
+            - service-worker-communications.md
+            - service-worker-notifications.md
+            - service-worker-devops.md
+            - service-worker-config.md
 #        - web-worker.md
 #        - universal.md
 #        - prerendering.md
