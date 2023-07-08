@@ -1,5 +1,7 @@
 # Использование библиотек Angular, опубликованных на npm
 
+:date: 5.01.2022
+
 Когда вы создаете свое приложение Angular, воспользуйтесь преимуществами сложных библиотек первой стороны, а также богатой экосистемой библиотек сторонних разработчиков. [Angular Material][angularmaterialmain] является примером сложной сторонней библиотеки.
 
 Ссылки на самые популярные библиотеки можно найти в разделе [Angular Resources][aioresources].
@@ -22,11 +24,10 @@
 
 Например, предположим, у вас есть библиотека с именем `d3`:
 
-<code-example format="shell" language="shell">
-
-npm install d3 --save npm install &commat;types/d3 --save-dev
-
-</code-example>
+```
+npm install d3 --save
+npm install @types/d3 --save-dev
+```
 
 Типы, определенные в пакете `@types/` для библиотеки, установленной в рабочем пространстве, автоматически добавляются в конфигурацию TypeScript для проекта, использующего эту библиотеку. TypeScript по умолчанию ищет типы в каталоге `node_modules/@types`, поэтому вам не придется добавлять каждый пакет типов отдельно.
 
@@ -36,39 +37,29 @@ npm install d3 --save npm install &commat;types/d3 --save-dev
 
     Этот файл автоматически включается в качестве глобального определения типа.
 
-1.  Добавьте следующий код в `src/typings.d.ts`:
+2.  Добавьте следующий код в `src/typings.d.ts`:
 
-    <code-example format="typescript" language="typescript">
-
-    объявить модуль 'host' {
-
-    export interface Host {
-
-    протокол?: строка;
-
-    имя хоста?: string
-
-    имя пути?: string;
-
+    ```ts
+    declare module 'host' {
+        export interface Host {
+            protocol?: string;
+            hostname?: string;
+            pathname?: string;
+        }
+        export function parse(
+            url: string,
+            queryString?: string
+        ): Host;
     }
+    ```
 
-    export function parse(url: string, queryString?: string): Host;
+3.  В компонент или файл, использующий библиотеку, добавьте следующий код:
 
-    }
-
-    </code-example>
-
-1.  В компонент или файл, использующий библиотеку, добавьте следующий код:
-
-    <code-example format="typescript" language="typescript">
-
-    import \* as host from 'host';
-
+    ```ts
+    import * as host from 'host';
     const parsedUrl = host.parse('https://angular.io');
-
     console.log(parsedUrl.hostname);
-
-    </code-example>
+    ```
 
 Определите больше типов по мере необходимости.
 
@@ -89,57 +80,37 @@ npm install d3 --save npm install &commat;types/d3 --save-dev
 
 1.  Установите библиотеку и связанные с ней зависимости с помощью менеджера пакетов npm:
 
-    <code-example format="shell" language="shell">
-
+    ```
     npm install jquery --save
-
     npm install popper.js --save
-
     npm install bootstrap --save
+    ```
 
-    </code-example>
+2.  В конфигурационном файле `angular.json` добавьте связанные файлы сценариев в массив `scripts`:
 
-1.  В конфигурационном файле `angular.json` добавьте связанные файлы сценариев в массив `scripts`:
-
-    <code-example format="json" language="json">.
-
+    ```json
     "scripts": [
-
-    "node_modules/jquery/dist/jquery.slim.js",
-
-    "node_modules/popper.js/dist/umd/popper.js",
-
-    "node_modules/bootstrap/dist/js/bootstrap.js"
-
+    	"node_modules/jquery/dist/jquery.slim.js",
+    	"node_modules/popper.js/dist/umd/popper.js",
+    	"node_modules/bootstrap/dist/js/bootstrap.js"
     ],
+    ```
 
-    </code-example>
+3.  Добавьте CSS-файл `bootstrap.css` в массив `styles`:
 
-1.  Добавьте CSS-файл `bootstrap.css` в массив `styles`:
+    ```css
+    "styles":["node_modules/bootstrap/dist/css/bootstrap.css","src/styles.css"], ;
+    ```
 
-    <code-example format="css" language="css">.
-
-    "styles": [
-
-    "node_modules/bootstrap/dist/css/bootstrap.css",
-
-    "src/styles.css"
-
-    ],
-
-    </code-example>
-
-1.  Запустите или перезапустите команду `ng serve` Angular CLI, чтобы увидеть работу Bootstrap 4 в вашем приложении.
+4.  Запустите или перезапустите команду `ng serve` Angular CLI, чтобы увидеть работу Bootstrap 4 в вашем приложении.
 
 ### Использование глобальных библиотек во время выполнения внутри вашего приложения
 
 После импорта библиотеки с помощью массива "scripts", **не** импортируйте ее с помощью оператора import в коде TypeScript. Следующий фрагмент кода является примером оператора импорта.
 
-<code-example format="typescript" language="typescript">
-
-import \* as \$ from 'jquery';
-
-</code-example>
+```ts
+import * as $ from 'jquery';
+```
 
 Если вы импортируете ее с помощью оператора import, у вас будет две разные копии библиотеки: одна импортирована как глобальная библиотека, а другая - как модуль. Это особенно плохо для библиотек с плагинами, таких как JQuery, потому что каждая копия включает разные плагины.
 
@@ -151,52 +122,43 @@ import \* as \$ from 'jquery';
 
 Например:
 
-<code-example format="typescript" language="typescript">
-
+```ts
 declare var libraryName: any;
-
-</code-example>
+```
 
 Некоторые скрипты расширяют другие библиотеки; например, плагины JQuery:
 
-<code-example format="typescript" language="typescript">
-
-\$('.test').myPlugin();
-
-</code-example>
+```ts
+$('.test').myPlugin();
+```
 
 В этом случае установленный `@types/jquery` не включает `myPlugin`, поэтому необходимо добавить интерфейс в `src/typings.d.ts`. Например:
 
-<code-example format="typescript" language="typescript">
-
-интерфейс JQuery { myPlugin(options?: any): any;
+```ts
+interface JQuery {
+    myPlugin(options?: any): any;
 }
-
-</code-example>
+```
 
 Если вы не добавите интерфейс для определяемого сценарием расширения, ваша IDE выдаст ошибку:
 
-<code-example format="none" language="none">
-
-[TS][ошибка] Свойство 'myPlugin' не существует для типа 'JQuery'
-
-</code-example>
+```
+[TS][Error] Property 'myPlugin' does not exist on type 'JQuery'
+```
 
 <!-- links -->
 
-[aiocliupdate]: cli/update 'ng update | CLI |Angular'
-[aioguidenpmpackages]: guide/npm-packages 'Workspace npm dependencies | Angular'
-[aioguideworkspaceconfig]: guide/workspace-config 'Angular workspace configuration | Angular'
-[aioresources]: resources 'Explore Angular Resources | Angular'
+[aiocliupdate]: https://angular.io/cli/update
+[aioguidenpmpackages]: npm-packages.md
+[aioguideworkspaceconfig]: workspace-config.md
+[aioresources]: resources.md
 
 <!-- external links -->
 
-[angularmaterialmain]: https://material.angular.io 'Angular Material | Angular'
-[angularupdatemain]: https://update.angular.io 'Angular Update Guide | Angular'
-[getbootstrapdocs40gettingstartedintroduction]: https://getbootstrap.com/docs/4.0/getting-started/introduction 'Introduction | Bootstrap'
-[npmjsmain]: https://www.npmjs.com 'npm'
-[yarnpkgmain]: https://yarnpkg.com ' Yarn'
+[angularmaterialmain]: https://material.angular.io
+[angularupdatemain]: https://update.angular.io
+[getbootstrapdocs40gettingstartedintroduction]: https://getbootstrap.com/docs/4.0/getting-started/introduction
+[npmjsmain]: https://www.npmjs.com
+[yarnpkgmain]: https://yarnpkg.com
 
 <!-- end links -->
-
-:date: 5.01.2022

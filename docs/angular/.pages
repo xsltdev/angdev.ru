@@ -135,14 +135,14 @@ nav:
             - service-worker-notifications.md
             - service-worker-devops.md
             - service-worker-config.md
-#        - web-worker.md
-#        - universal.md
-#        - prerendering.md
-#        - Библиотеки Angular:
-#            - libraries.md
-#            - using-libraries.md
-#            - creating-libraries.md
-#            - angular-package-format.md
+        - web-worker.md
+        - universal.md
+        - prerendering.md
+        - Библиотеки Angular:
+            - libraries.md
+            - using-libraries.md
+            - creating-libraries.md
+            - angular-package-format.md
 #        - Предварительный обзор возможностей:
 #            - signals.md
 #            - rxjs-interop.md
@@ -196,14 +196,7 @@ nav:
 #            - toh-pt5.md
 #            - toh-pt6.md
 #        - forms.md
-    - Обновления и релизы (en):
-        - Обновление Angular: https://angular.io/guide/update-to-version-16
-        - Дорожная карта Angular: https://angular.io/guide/roadmap
-        - Версионность и релизы Angular: https://angular.io/guide/releases
-        - Совместимость версий: https://angular.io/guide/versions
-        - Поддержка браузеров: https://angular.io/guide/browser-support
-        - Устаревшие API и функции: https://angular.io/guide/deprecations
-    - Справка:
+#    - Справка:
 #        - Концептуальная справка:
 #            - Концепции Angular:
 #                - architecture.md
@@ -238,7 +231,5 @@ nav:
 #                - practical-observable-usage.md
 #                - comparing-observables.md
 #            - dependency-injection-in-action.md
-        - CLI (en): https://angular.io/cli
-        - API (en): https://angular.io/api
 #        - glossary.md
 #    - ...

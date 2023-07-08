@@ -1,94 +1,75 @@
-# Prerendering static pages
-
-Angular Universal lets you prerender the pages of your application.
-Prerendering is the process where a dynamic page is processed at build time generating static HTML.
-
-## How to prerender a page
-
-To prerender a static page make sure to add Server-Side Rendering (SSR) capabilities to your application.
-For more information see the [universal guide](guide/universal).
-Once SSR is added, run the following command:
-
-<code-example format="shell" language="shell">
-
-npm run prerender
-
-</code-example>
-
-### Build options for prerendering
-
-When you add prerendering to your application, the following build options are available:
-
-| Options         | Details                                                                                                                                            |
-| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `browserTarget` | Specify the target to build.                                                                                                                       |
-| `serverTarget`  | Specify the Server target to use for prerendering the application.                                                                                 |
-| `routes`        | Define an array of extra routes to prerender.                                                                                                      |
-| `guessRoutes`   | Whether builder should extract routes and guess which paths to render. Defaults to `true`.                                                         |
-| `routesFile`    | Specify a file that contains a list of all routes to prerender, separated by newlines. This option is useful if you have a large number of routes. |
-| `numProcesses`  | Specify the number of CPUs to be used while running the prerendering command.                                                                      |
-
-### Prerendering dynamic routes
-
-You can prerender dynamic routes.
-An example of a dynamic route is `product/:id`, where `id` is dynamically provided.
-
-To prerender dynamic routes, choose one from the following options:
-
--   Provide extra routes in the command line
--   Provide routes using a file
--   Prerender specific routes
-
-#### Provide extra routes in the command line
-
-While running the prerender command, you can provide extra routes.
-For example:
-
-<code-example format="shell" language="shell">
-
-ng run &lt;app-name&gt;:prerender --routes /product/1 /product/2
-
-</code-example>
-
-#### Providing extra routes using a file
-
-You can provide routes using a file to create static pages.
-This method is useful if you have a large number of routes to create. For example, product details for an e-commerce application, which might come from an external source, like a Database or Content Management System (CMS).
-
-To provide routes using a file, use the `--routes-file` option with the name of a `.txt` file containing the routes.
-
-For example, you could create this file by using a script to extract IDs from a database and save them to a `routes.txt` file:
-
-<code-example language="none" header="routes.txt">
-
-/products/1
-/products/555
-
-</code-example>
-
-When your `.txt` file is ready, run the following command to prerender the static files with dynamic values:
-
-<code-example format="shell" language="shell">
-
-ng run &lt;app-name&gt;:prerender --routes-file routes.txt
-
-</code-example>
-
-#### Prerendering specific routes
-
-You can also pass specific routes to the prerender command.
-If you choose this option, make sure to turn off the `guessRoutes` option.
-
-<code-example format="shell" language="shell">
-
-ng run &lt;app-name&gt;:prerender --no-guess-routes --routes /product/1 /product/2
-
-</code-example>
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
+# Предпросмотр статических страниц
 
 :date: 28.02.2022
+
+Angular Universal позволяет выполнять предварительный рендеринг страниц вашего приложения. **Пререндеринг** - это процесс, в котором динамическая страница обрабатывается во время сборки, генерируя статический HTML.
+
+## Как пререндерить страницу
+
+Для пререндеринга статической страницы убедитесь, что в вашем приложении добавлены возможности Server-Side Rendering (SSR).
+
+Для получения дополнительной информации смотрите [универсальное руководство](universal.md). После добавления SSR выполните следующую команду:
+
+```
+npm run prerender
+```
+
+### Опции сборки для пререндеринга
+
+Когда вы добавляете пререндеринг в свое приложение, доступны следующие параметры сборки:
+
+| Параметры       | Подробности                                                                                                                                             |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `browserTarget` | Укажите цель для сборки.                                                                                                                                |
+| `serverTarget`  | Укажите цель сервера, который будет использоваться для рендеринга приложения.                                                                           |
+| `routes`        | Определите массив дополнительных маршрутов для пререндера.                                                                                              |
+| `guessRoutes`   | Должен ли конструктор извлекать маршруты и угадывать пути для рендеринга. По умолчанию `true`.                                                          |
+| `routesFile`    | Укажите файл, содержащий список всех маршрутов для рендеринга, разделенных новыми строками. Эта опция полезна, если у вас большое количество маршрутов. |
+| `numProcesses`  | Укажите количество CPU, которые будут использоваться при выполнении команды пререндеринга.                                                              |
+
+### Пререндеринг динамических маршрутов
+
+Вы можете создавать динамические маршруты. Примером динамического маршрута является `product/:id`, где `id` задается динамически.
+
+Для пререндеринга динамических маршрутов выберите одну из следующих опций:
+
+-   Предоставить дополнительные маршруты в командной строке
+-   Предоставить маршруты с помощью файла
+-   Предпросмотр определенных маршрутов
+
+#### Предоставить дополнительные маршруты в командной строке
+
+Во время выполнения команды prerender вы можете указать дополнительные маршруты. Например:
+
+```
+ng run <app-name>:prerender --routes /product/1 /product/2
+```
+
+#### Предоставление дополнительных маршрутов с помощью файла
+
+Вы можете предоставлять маршруты с помощью файла для создания статических страниц.
+
+Этот метод полезен, если вам нужно создать большое количество маршрутов. Например, данные о продукции для приложения электронной коммерции, которые могут поступать из внешнего источника, такого как база данных или система управления контентом (CMS).
+
+Чтобы предоставить маршруты с помощью файла, используйте опцию `--routes-file` с именем файла `.txt`, содержащего маршруты.
+
+Например, вы можете создать этот файл с помощью сценария, который извлечет идентификаторы из базы данных и сохранит их в файле `routes.txt`:
+
+```txt
+/products/1
+/products/555
+```
+
+Когда ваш файл `.txt` будет готов, выполните следующую команду для рендеринга статических файлов с динамическими значениями:
+
+```shell
+ng run <app-name>:prerender --routes-file routes.txt
+```
+
+#### Пререндеринг определенных маршрутов
+
+Вы также можете передать определенные маршруты команде prerender. Если вы выбрали этот вариант, убедитесь, что вы отключили опцию `guessRoutes`.
+
+```shell
+ng run <app-name>:prerender --no-guess-routes --routes /product/1 /product/2
+```
