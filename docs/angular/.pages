@@ -153,16 +153,16 @@ nav:
         - property-binding-best-practices.md
         - lazy-loading-ngmodules.md
         - lightweight-injection-tokens.md
-#    - Инструменты Angular:
-#        - cli-builder.md
-#        - Процесс разработки:
-#            - deployment.md
+    - Инструменты Angular:
+        - Процесс разработки:
+            - deployment.md
 #            - AOT компилятор:
 #                - aot-compiler.md
 #                - angular-compiler-options.md
 #                - aot-metadata-errors.md
 #                - template-typecheck.md
 #            - build.md
+#        - cli-builder.md
 #        - language-service.md
 #        - devtools.md
 #        - Схемы:
