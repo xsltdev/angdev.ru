@@ -1,6 +1,10 @@
-# AOT metadata errors
+---
+description: Ниже перечислены ошибки метаданных, с которыми вы можете столкнуться, с пояснениями и предлагаемыми исправлениями
+---
 
-The following are metadata errors you may encounter, with explanations and suggested corrections.
+# Ошибки метаданных AOT
+
+Ниже перечислены ошибки метаданных, с которыми вы можете столкнуться, с пояснениями и предлагаемыми исправлениями.
 
 [Expression form not supported](#expression-form-not-supported) <br /> [Reference to a local (non-exported) symbol](#reference-to-a-local-symbol) <br />
 
