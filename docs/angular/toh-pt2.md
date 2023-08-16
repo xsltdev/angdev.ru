@@ -54,17 +54,15 @@ That displays an error since the `hero` property doesn't exist. To have access t
 
 <code-example path="toh-pt2/src/app/heroes/heroes.component.1.html" region="li"></code-example>
 
-The [`*ngFor`](guide/built-in-directives#ngFor) is Angular's _repeater_ directive. It repeats the host element for each element in a list.
+The [`*ngFor`](built-in-directives.md#ngFor) is Angular's _repeater_ directive. It repeats the host element for each element in a list.
 
 The syntax in this example is as follows:
 
-| Syntax | Details | | :------- | :--------------------------------------------------------------------------------- |
-
-| `<li>` | The host element. |
-
+| Syntax   | Details                                                                            |
+| :------- | :--------------------------------------------------------------------------------- |
+| `<li>`   | The host element.                                                                  |
 | `heroes` | Holds the mock heroes list from the `HeroesComponent` class, the mock heroes list. |
-
-| `hero` | Holds the current hero object for each iteration through the list. |
+| `hero`   | Holds the current hero object for each iteration through the list.                 |
 
 <div class="alert is-important">
 
@@ -80,7 +78,7 @@ The syntax in this example is as follows:
 
 Inside the `<li>` element, add a `<button>` element to wrap the hero's details, and then make the hero clickable. To improve accessibility, use HTML elements that are inherently interactive instead of adding an event listener to a non-interactive element. In this case, the interactive `<button>` element is used instead of adding an event to the `<li>` element.
 
-For more details on accessibility, see [Accessibility in Angular](guide/accessibility).
+For more details on accessibility, see [Accessibility in Angular](accessibility.md).
 
 </div>
 
@@ -90,7 +88,7 @@ For more details on accessibility, see [Accessibility in Angular](guide/accessib
 
 Список героев должен быть привлекательным и визуально реагировать, когда пользователи наводят курсор и выбирают героя из списка.
 
-В [первом уроке] (tutorial/tour-of-heroes/toh-pt0#app-wide-styles) вы задали основные стили для всего приложения в `styles.css`. Эта таблица стилей не включала стили для этого списка героев.
+В [первом уроке](toh-pt0.md#app-wide-styles) вы задали основные стили для всего приложения в `styles.css`. Эта таблица стилей не включала стили для этого списка героев.
 
 Вы можете добавить больше стилей в `styles.css` и продолжать расширять эту таблицу стилей по мере добавления компонентов.
 
@@ -124,7 +122,7 @@ Add a click event binding to the `<button>` in the `<li>` like this:
 
 <code-example header="heroes.component.html (template excerpt)" path="toh-pt2/src/app/heroes/heroes.component.1.html" region="selectedHero-click"></code-example>
 
-This is an example of Angular's [event binding](guide/event-binding) syntax.
+This is an example of Angular's [event binding](event-binding.md) syntax.
 
 The parentheses around `click` tell Angular to listen for the `<button>` element's `click` event. When the user clicks in the `<button>`, Angular executes the `onSelect(hero)` expression.
 
@@ -166,7 +164,7 @@ To help identify the selected hero, you can use the `.selected` CSS class in the
 
 </div>
 
-Angular's [class binding](guide/class-binding) can add and remove a CSS class conditionally. Add `[class.some-css-class]="some-condition"` to the element you want to style.
+Angular's [class binding](class-binding.md) can add and remove a CSS class conditionally. Add `[class.some-css-class]="some-condition"` to the element you want to style.
 
 Add the following `[class.selected]` binding to the `<button>` in the `HeroesComponent` template:
 

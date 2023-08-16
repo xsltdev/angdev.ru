@@ -18,7 +18,7 @@ A feature module collaborates with the root module and with other modules throug
 
 ## How to make a feature module
 
-Assuming you already have an application that you created with the [Angular CLI](cli), create a feature module using the CLI by entering the following command in the root project directory.
+Assuming you already have an application that you created with the [Angular CLI](https://angular.io/cli), create a feature module using the CLI by entering the following command in the root project directory.
 Replace `CustomerDashboard` with the name of your module.
 You can omit the "Module" suffix from the name because the CLI appends it:
 
@@ -36,10 +36,10 @@ import { NgModule } from '&commat;angular/core';
 import { CommonModule } from '&commat;angular/common';
 
 &commat;NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: []
+imports: [
+CommonModule
+],
+declarations: []
 })
 export class CustomerDashboardModule { }
 
@@ -105,9 +105,9 @@ Now, in addition to the title that renders by default, the `CustomerDashboardCom
 
 You may also be interested in the following:
 
-*   [Lazy Loading Modules with the Angular Router](guide/lazy-loading-ngmodules)
-*   [Providers](guide/providers)
-*   [Types of Feature Modules](guide/module-types)
+-   [Lazy Loading Modules with the Angular Router](lazy-loading-ngmodules.md)
+-   [Providers](providers.md)
+-   [Types of Feature Modules](module-types.md)
 
 <!-- links -->
 

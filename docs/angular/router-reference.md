@@ -16,7 +16,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 !!!note ""
 
-    Подробнее о стилях URL браузера смотрите [`LocationStrategy` и стили URL браузера](guide/router#browser-url-styles).
+    Подробнее о стилях URL браузера смотрите [`LocationStrategy` и стили URL браузера](router.md#browser-url-styles).
 
 ## Конфигурация {: #basics-config}
 
@@ -162,7 +162,7 @@ routerLinkActive="..."
 | `fragment`      | `Observable` URL [фрагмент](router-tutorial-toh.md#fragment), доступный всем маршрутам.                                                                                                                                                                                                       |
 | `outlet`        | Имя `RouterOutlet`, используемого для отображения маршрута. Для неименованного аутлета имя аутлета является основным.                                                                                                                                                                         |
 | `routeConfig`   | Конфигурация маршрута, используемая для маршрута, содержащая путь к источнику.                                                                                                                                                                                                                |
-| `parent`        | Родитель маршрута `ActivatedRoute`, если этот маршрут является [дочерним маршрутом] (guide/router-tutorial-toh#child-routing-component).                                                                                                                                                      |
+| `parent`        | Родитель маршрута `ActivatedRoute`, если этот маршрут является [дочерним маршрутом](router-tutorial-toh.md#child-routing-component).                                                                                                                                                          |
 | `firstChild`    | Содержит первый `ActivatedRoute` в списке дочерних маршрутов этого маршрута.                                                                                                                                                                                                                  |
 | `children`      | Содержит все [дочерние маршруты](router-tutorial-toh.md#child-routing-component), активированные под текущим маршрутом.                                                                                                                                                                       |
 

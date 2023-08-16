@@ -1,6 +1,6 @@
 # Рабочее пространство и структура файлов проекта
 
-Вы разрабатываете приложения в контексте рабочего пространства Angular [workspace](guide/glossary#workspace). Рабочее пространство содержит файлы для одного или нескольких [проектов](guide/glossary#project).
+Вы разрабатываете приложения в контексте рабочего пространства Angular [workspace](glossary.md#workspace). Рабочее пространство содержит файлы для одного или нескольких [проектов](glossary.md#project).
 
 Проект - это набор файлов, из которых состоит отдельное приложение или библиотека, доступная для совместного использования.
 
@@ -28,17 +28,17 @@ Angular также поддерживает рабочие пространст�
 
 ## Файлы конфигурации рабочего пространства
 
-Все проекты в рабочем пространстве имеют общий [CLI-контекст конфигурации](guide/workspace-config). Верхний уровень рабочего пространства содержит файлы конфигурации всего рабочего пространства, файлы конфигурации для приложения корневого уровня и вложенные папки для исходных и тестовых файлов приложения корневого уровня.
+Все проекты в рабочем пространстве имеют общий [CLI-контекст конфигурации](workspace-config.md). Верхний уровень рабочего пространства содержит файлы конфигурации всего рабочего пространства, файлы конфигурации для приложения корневого уровня и вложенные папки для исходных и тестовых файлов приложения корневого уровня.
 
 | Workspace configuration files | Purpose | |:--- |:--- |
 | `.editorconfig` | Configuration for code editors. See [EditorConfig](https://editorconfig.org). |
 | `.gitignore` | Specifies intentionally untracked files that [Git](https://git-scm.com) should ignore. |
 | `README.md` | Introductory documentation for the root application. |
-| `angular.json` | CLI configuration defaults for all projects in the workspace, including configuration options for build, serve, and test tools that the CLI uses, such as [Karma](https://karma-runner.github.io), and [Protractor](https://www.protractortest.org). For details, see [Angular Workspace Configuration](guide/workspace-config). |
-| `package.json` | Configures [npm package dependencies](guide/npm-packages) that are available to all projects in the workspace. See [npm documentation](https://docs.npmjs.com/files/package.json) for the specific format and contents of this file. |
+| `angular.json` | CLI configuration defaults for all projects in the workspace, including configuration options for build, serve, and test tools that the CLI uses, such as [Karma](https://karma-runner.github.io), and [Protractor](https://www.protractortest.org). For details, see [Angular Workspace Configuration](workspace-config.md). |
+| `package.json` | Configures [npm package dependencies](npm-packages.md) that are available to all projects in the workspace. See [npm documentation](https://docs.npmjs.com/files/package.json) for the specific format and contents of this file. |
 | `package-lock.json` | Provides version information for all packages installed into `node_modules` by the npm client. See [npm documentation](https://docs.npmjs.com/files/package-lock.json) for details. If you use the yarn client, this file will be [yarn.lock](https://yarnpkg.com/lang/en/docs/yarn-lock) instead. |
 | `src/` | Source files for the root-level application project. |
-| `node_modules/` | Provides [npm packages](guide/npm-packages) to the entire workspace. Workspace-wide `node_modules` dependencies are visible to all projects. |
+| `node_modules/` | Provides [npm packages](npm-packages.md) to the entire workspace. Workspace-wide `node_modules` dependencies are visible to all projects. |
 | `tsconfig.json` | The base [TypeScript](https://www.typescriptlang.org) configuration for projects in the workspace. All other configuration files inherit from this base file. For more information, see the [Configuration inheritance with extends](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#configuration-inheritance-with-extends) section of the TypeScript documentation.|
 
 ## Файлы проекта приложения
@@ -64,13 +64,13 @@ Angular также поддерживает рабочие пространст�
 | `assets/` | Contains image and other asset files to be copied as-is when you build your application. |
 | `favicon.ico` | An icon to use for this application in the bookmark bar. |
 | `index.html` | The main HTML page that is served when someone visits your site. The CLI automatically adds all JavaScript and CSS files when building your app, so you typically don't need to add any `<script>` or` <link>` tags here manually. |
-| `main.ts` | The main entry point for your application. Compiles the application with the [JIT compiler](guide/glossary#jit) and bootstraps the application's root module \(AppModule\) to run in the browser. You can also use the [AOT compiler](guide/aot-compiler) without changing any code by appending the `--aot` flag to the CLI `build` and `serve` commands. |
+| `main.ts` | The main entry point for your application. Compiles the application with the [JIT compiler](glossary.md#jit) and bootstraps the application's root module \(AppModule\) to run in the browser. You can also use the [AOT compiler](aot-compiler.md) without changing any code by appending the `--aot` flag to the CLI `build` and `serve` commands. |
 | `styles.css` | Lists CSS files that supply styles for a project. The extension reflects the style preprocessor you have configured for the project. |
 
 <div class="alert is-helpful">
 
 Новые проекты Angular по умолчанию используют строгий режим. Если это нежелательно, вы можете отказаться от него при создании проекта.
-Для получения дополнительной информации смотрите [Строгий режим](guide/strict-mode).
+Для получения дополнительной информации смотрите [Строгий режим](strict-mode.md).
 
 </div>
 
@@ -82,7 +82,7 @@ Inside the `src` folder, the `app` folder contains your project's logic and data
 
 | `app/app.config.ts` | Defines the application config logic that tells Angular how to assemble the application. As you add more providers to the app, they must be declared here.<br><br>_Only generated when using the `--standalone` option._ |
 
-| `app/app.component.ts` | Defines the logic for the application's root component, named `AppComponent`. The view associated with this root component becomes the root of the [view hierarchy](guide/glossary#view-hierarchy) as you add components and services to your application. |
+| `app/app.component.ts` | Defines the logic for the application's root component, named `AppComponent`. The view associated with this root component becomes the root of the [view hierarchy](glossary.md#view-hierarchy) as you add components and services to your application. |
 
 | `app/app.component.html` | Defines the HTML template associated with the root `AppComponent`. |
 
@@ -99,9 +99,9 @@ Inside the `src` folder, the `app` folder contains your project's logic and data
 Конфигурационные файлы для конкретного проекта [TypeScript](https://www.typescriptlang.org) наследуются от конфигурационного файла рабочего пространства `tsconfig.json`.
 
 | Файлы конфигурации для конкретного приложения | Цель | | |:--- |:--- |:--- |
-| `tsconfig.app.json` | Конфигурация для конкретного приложения [TypeScript](https://www.typescriptlang.org), включая параметры компилятора шаблонов TypeScript и Angular. Смотрите [TypeScript Configuration](guide/typescript-configuration) и [Angular Compiler Options](guide/angular-compiler-options). |
+| `tsconfig.app.json` | Конфигурация для конкретного приложения [TypeScript](https://www.typescriptlang.org), включая параметры компилятора шаблонов TypeScript и Angular. Смотрите [TypeScript Configuration](typescript-configuration.md) и [Angular Compiler Options](angular-compiler-options.md). |
 
-| `tsconfig.spec.json` | [TypeScript](https://www.typescriptlang.org) конфигурация для тестов приложения. Смотрите [TypeScript Configuration](guide/typescript-configuration). |
+| `tsconfig.spec.json` | [TypeScript](https://www.typescriptlang.org) конфигурация для тестов приложения. Смотрите [TypeScript Configuration](typescript-configuration.md). |
 
 <a id="multiple-projects"></a>
 
@@ -131,7 +131,7 @@ cd my-workspace ng generate application my-first-app
 
 Первое явно созданное приложение попадает в папку `projects` вместе со всеми остальными проектами в рабочей области. Вновь созданные библиотеки также добавляются в папку `projects`.
 
-Когда вы создаете проекты таким образом, файловая структура рабочего пространства полностью соответствует структуре [файла конфигурации рабочего пространства] (guide/workspace-config), `angular.json`.
+Когда вы создаете проекты таким образом, файловая структура рабочего пространства полностью соответствует структуре [файла конфигурации рабочего пространства](workspace-config.md), `angular.json`.
 
 <div class="filetree">     <div class="file">
         my-workspace
@@ -172,7 +172,7 @@ cd my-workspace ng generate application my-first-app
 
 ## Файлы проекта библиотеки
 
-Когда вы создаете библиотеку с помощью CLI \(с помощью такой команды, как `ng generate library my-lib`\), созданные файлы помещаются в папку `projects/` рабочего пространства. Более подробную информацию о создании собственных библиотек смотрите в [Создание библиотек](guide/creating-libraries).
+Когда вы создаете библиотеку с помощью CLI (с помощью такой команды, как `ng generate library my-lib`), созданные файлы помещаются в папку `projects/` рабочего пространства. Более подробную информацию о создании собственных библиотек смотрите в [Создание библиотек](creating-libraries.md).
 
 Библиотеки, в отличие от приложений, имеют свой собственный конфигурационный файл `package.json`.
 
@@ -182,10 +182,10 @@ cd my-workspace ng generate application my-first-app
 | `src/lib` | Contains your library project's logic and data. Like an application project, a library project can contain components, services, modules, directives, and pipes. |
 | `src/public-api.ts` | Specifies all files that are exported from your library. |
 | `ng-package.json` | Configuration file used by [ng-packagr](https://github.com/ng-packagr/ng-packagr) for building your library. |
-| `package.json` | Configures [npm package dependencies](guide/npm-packages) that are required for this library. |
-| `tsconfig.lib.json` | Library-specific [TypeScript](https://www.typescriptlang.org) configuration, including TypeScript and Angular template compiler options. See [TypeScript Configuration](guide/typescript-configuration). |
+| `package.json` | Configures [npm package dependencies](npm-packages.md) that are required for this library. |
+| `tsconfig.lib.json` | Library-specific [TypeScript](https://www.typescriptlang.org) configuration, including TypeScript and Angular template compiler options. See [TypeScript Configuration](typescript-configuration.md). |
 | `tsconfig.lib.prod.json` | Library-specific [TypeScript](https://www.typescriptlang.org) configuration that is used when building the library in production mode. |
-| `tsconfig.spec.json` | [TypeScript](https://www.typescriptlang.org) configuration for the library tests. See [TypeScript Configuration](guide/typescript-configuration). |
+| `tsconfig.spec.json` | [TypeScript](https://www.typescriptlang.org) configuration for the library tests. See [TypeScript Configuration](typescript-configuration.md). |
 
 <!-- links -->
 

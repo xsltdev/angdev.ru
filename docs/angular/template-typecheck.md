@@ -2,7 +2,7 @@
 
 ## Overview of template type checking
 
-Just as TypeScript catches type errors in your code, Angular checks the expressions and bindings within the templates of your application and can report any type errors it finds. Angular currently has three modes of doing this, depending on the value of the `fullTemplateTypeCheck` and `strictTemplates` flags in the [TypeScript configuration file](guide/typescript-configuration).
+Just as TypeScript catches type errors in your code, Angular checks the expressions and bindings within the templates of your application and can report any type errors it finds. Angular currently has three modes of doing this, depending on the value of the `fullTemplateTypeCheck` and `strictTemplates` flags in the [TypeScript configuration file](typescript-configuration.md).
 
 ### Basic mode
 
@@ -133,7 +133,7 @@ In strict mode, Angular knows that the `user` in the `<span>` has a type of `Use
 
 В случае ложных срабатываний, подобных этим, есть несколько вариантов:
 
--   Использовать функцию [`$any()` type-cast function](guide/template-expression-operators#any-type-cast-function) в определенных контекстах, чтобы отказаться от проверки типов для части выражения.
+-   Использовать функцию [`$any()` type-cast function](template-expression-operators.md#any-type-cast-function) в определенных контекстах, чтобы отказаться от проверки типов для части выражения.
 
 -   Отключить строгую проверку полностью, установив `strictTemplates: false` в конфигурационном файле TypeScript приложения, `tsconfig.json`.
 
@@ -208,7 +208,7 @@ TypeScript проверяет присвоение в соответствии �
 
 Избегайте ошибок типа во время выполнения, предоставляя более конкретные требования к типу в шаблоне для проверки типа шаблона. Сделайте требования к входным типам для ваших собственных директив как можно более конкретными, предоставив функции защиты шаблона в определении директивы.
 
-Смотрите [Улучшение проверки типов шаблонов для пользовательских директив](guide/structural-directives#directive-type-checks) в этом руководстве.
+Смотрите [Улучшение проверки типов шаблонов для пользовательских директив](structural-directives.md#directive-type-checks) в этом руководстве.
 
 ### Строгие проверки нуля
 
@@ -264,7 +264,7 @@ TypeScript проверяет присвоение в соответствии �
 
 Кроме того, можно предоставлять подсказки типов, специфичные для проверки типов шаблонов.
 
-Смотрите [Улучшение проверки типов шаблонов для пользовательских директив](guide/structural-directives#directive-type-checks), и [Коэрцитивность входных сеттеров](#input-setter-coercion).
+Смотрите [Улучшение проверки типов шаблонов для пользовательских директив](structural-directives.md#directive-type-checks), и [Коэрцитивность входных сеттеров](#input-setter-coercion).
 
 <a id="input-setter-coercion"></a>
 
@@ -370,7 +370,7 @@ static ngAcceptInputType_disabled: boolean&verbar;''; }
 
 ## Отключение проверки типов с помощью `$any()`.
 
-Отключите проверку выражения привязки, окружив выражение вызовом псевдофункции [`$any()` cast pseudo-function](guide/template-expression-operators). Компилятор рассматривает это как приведение к типу `any`, как в TypeScript, когда используется приведение `<any>` или `as any`.
+Отключите проверку выражения привязки, окружив выражение вызовом псевдофункции [`$any()` cast pseudo-function](template-expression-operators.md). Компилятор рассматривает это как приведение к типу `any`, как в TypeScript, когда используется приведение `<any>` или `as any`.
 
 В следующем примере приведение `person` к типу `any` подавляет ошибку `Property address does not exist`.
 

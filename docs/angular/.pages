@@ -156,9 +156,9 @@ nav:
     - Инструменты Angular:
         - Процесс разработки:
             - deployment.md
-#            - AOT компилятор:
-#                - aot-compiler.md
-#                - angular-compiler-options.md
+            - AOT компилятор:
+                - aot-compiler.md
+                - angular-compiler-options.md
 #                - aot-metadata-errors.md
 #                - template-typecheck.md
 #            - build.md

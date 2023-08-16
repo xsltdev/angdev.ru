@@ -132,5 +132,5 @@ Angular использует TypeScript, чтобы воспользоватьс
 
 <!-- vale Angular.Google_WordListSuggestions = NO -->
 
--   [ng generate interface](cli/generate#interface-command)
--   [ng generate](cli/generate)
+-   [ng generate interface](https://angular.io/cli/generate#interface-command)
+-   [ng generate](https://angular.io/cli/generate)

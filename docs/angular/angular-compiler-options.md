@@ -1,14 +1,31 @@
+---
+description: Когда вы используете опережающую компиляцию (AOT), вы можете контролировать компиляцию вашего приложения, указывая шаблонные опции компилятора в конфигурационном файле TypeScript
+---
+
 # Параметры компилятора Angular
 
-Когда вы используете [опережающую компиляцию (AOT)](guide/aot-compiler), вы можете контролировать компиляцию вашего приложения, указывая _шаблонные_ опции компилятора в [конфигурационном файле TypeScript](guide/typescript-configuration).
+:date: 19.04.2023
+
+Когда вы используете [опережающую компиляцию (AOT)](aot-compiler.md), вы можете контролировать компиляцию вашего приложения, указывая _шаблонные_ опции компилятора в [конфигурационном файле TypeScript](typescript-configuration.md).
 
 Объект опций шаблона, `angularCompilerOptions`, является родственным объекту `compilerOptions`, который предоставляет стандартные опции компилятору TypeScript.
 
-<code-example header="tsconfig.json" path="angular-compiler-options/tsconfig.json" region="angular-compiler-options"></code-example>
+```json
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./"
+        // ...
+    },
+    "angularCompilerOptions": {
+        "enableI18nLegacyMessageIdFormat": false,
+        "strictInjectionParameters": true
+        // ...
+    }
+}
+```
 
-<a id="tsconfig-extends"></a>
-
-## Наследование конфигурации с помощью extends
+## Наследование конфигурации с помощью extends {#tsconfig-extends}
 
 Как и компилятор TypeScript, компилятор Angular AOT также поддерживает `extends` в секции `angularCompilerOptions` конфигурационного файла TypeScript. Свойство `extends` находится на верхнем уровне, параллельно `compilerOptions` и `angularCompilerOptions`.
 
@@ -16,69 +33,73 @@
 
 Например:
 
-<code-example header="tsconfig.app.json" path="angular-compiler-options/tsconfig.app.json" region="angular-compiler-options-app"></code-example>
+```json
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./out-tsc/app"
+        // ...
+    },
+    "angularCompilerOptions": {
+        "strictTemplates": true,
+        "preserveWhitespaces": true
+        // ...
+    }
+}
+```
 
-For more information, see the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
+Более подробную информацию можно найти в [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
 
-## Template options
+## Опции шаблонов
 
-The following options are available for configuring the AOT template compiler.
+Для настройки компилятора шаблонов AOT доступны следующие опции.
 
 ### `annotationsAs`
 
-Modifies how Angular-specific annotations are emitted to improve tree-shaking. Non-Angular annotations are not affected.
+Определяет, как выдавать аннотации, специфичные для Angular, для улучшения древовидности. Неангулярные аннотации не затрагиваются.
 
-One of `static fields` or `decorators`. The default value is `static fields`.
+Одно из значений `static fields` или `decorators`. По умолчанию используется значение `static fields`.
 
--   By default, the compiler replaces decorators with a static field in the class, which allows advanced tree-shakers like [Closure compiler](https://github.com/google/closure-compiler) to remove unused classes
+-   По умолчанию компилятор заменяет декораторы на статическое поле в классе, что позволяет продвинутым древовидным компиляторам, таким как [Closure compiler](https://github.com/google/closure-compiler), удалять неиспользуемые классы.
 
--   The `decorators` value leaves the decorators in place, which makes compilation faster.
+-   Значение `decorators` оставляет декораторы на месте, что ускоряет компиляцию.
 
-    TypeScript emits calls to the `__decorate` helper.
+    TypeScript эмитирует вызовы помощника `__decorate`.
 
-    Use `--emitDecoratorMetadata` for runtime reflection.
+    Для отражения во время выполнения используйте `--emitDecoratorMetadata`.
 
-      <div class="alert is-helpful">
+    !!!note ""
 
-    **NOTE**: <br />
-
-    That the resulting code cannot tree-shake properly.
-
-      </div>
+        То, что полученный код не может корректно древовидно шифроваться.
 
 ### `annotateForClosureCompiler`
 
-<!-- vale Angular.Angular_Spelling = NO -->
-
 Если `true`, используйте [Tsickle](https://github.com/angular/tsickle) для аннотирования выдаваемого JavaScript комментариями [JSDoc](https://jsdoc.app), необходимыми [Closure Compiler](https://github.com/google/closure-compiler). По умолчанию `false`.
-
-<!-- vale Angular.Angular_Spelling = YES -->
 
 ### `compilationMode`
 
 Определяет режим компиляции, который будет использоваться. Доступны следующие режимы:
 
-| Режимы | Подробности | | :---------- | :-------------------------------------------------------------------------------------------------- |.
-
-| `'full'` | Генерирует полностью AOT-компилированный код в соответствии с версией Angular, которая используется в данный момент. |
-
-| `'partial'` | Генерирует код в стабильной, но промежуточной форме, подходящей для опубликованной библиотеки. |
+| Режимы      | Подробности                                                                                                          |
+| :---------- | :------------------------------------------------------------------------------------------------------------------- |
+| `'full'`    | Генерирует полностью AOT-компилированный код в соответствии с версией Angular, которая используется в данный момент. |
+| `'partial'` | Генерирует код в стабильной, но промежуточной форме, подходящей для опубликованной библиотеки.                       |
 
 Значение по умолчанию - `'full'`.
 
-### `disableExpressionLowering`.
+### `disableExpressionLowering`
 
-При значении `true`, установленном по умолчанию, преобразует код, который используется или может быть использован в аннотации, чтобы его можно было импортировать из модулей фабрики шаблонов. Более подробную информацию смотрите в [Переписывание метаданных](guide/aot-compiler#metadata-rewriting).
+При значении `true`, установленном по умолчанию, преобразует код, который используется или может быть использован в аннотации, чтобы его можно было импортировать из модулей фабрики шаблонов. Более подробную информацию смотрите в [Переписывание метаданных](aot-compiler.md#metadata-rewriting).
 
 При `false` отключает эту перезапись, требуя, чтобы перезапись выполнялась вручную.
 
-### `disableTypeScriptVersionCheck`.
+### `disableTypeScriptVersionCheck`
 
 Если `true`, компилятор не смотрит на версию TypeScript и не сообщает об ошибке, если используется неподдерживаемая версия TypeScript. Не рекомендуется, так как неподдерживаемые версии TypeScript могут иметь неопределенное поведение.
 
 По умолчанию `false`.
 
-### `enableI18nLegacyMessageIdFormat`.
+### `enableI18nLegacyMessageIdFormat`
 
 Указывает компилятору шаблонов Angular создавать унаследованные идентификаторы для сообщений, помеченных в шаблонах атрибутом `i18n`. Дополнительную информацию о маркировке сообщений для локализации смотрите в [Mark text for translations][aioguidei18ncommonpreparemarktextincomponenttemplate].
 
@@ -88,7 +109,7 @@ One of `static fields` or `decorators`. The default value is `static fields`.
 
 Новый формат сообщений более устойчив к изменениям пробельных символов, одинаков для всех форматов файлов перевода и может быть создан непосредственно из вызовов `$localize`. Это позволяет сообщениям `$localize` в коде приложения использовать тот же ID, что и идентичные сообщения `i18n` в шаблонах компонентов.
 
-### `enableResourceInlining`.
+### `enableResourceInlining`
 
 Если `true`, заменяет свойства `templateUrl` и `styleUrls` во всех декораторах `@Component` на встроенное содержимое в свойствах `template` и `styles`.
 
@@ -96,21 +117,19 @@ One of `static fields` or `decorators`. The default value is `static fields`.
 
 Для библиотечных проектов, созданных с помощью Angular CLI, конфигурация разработки по умолчанию имеет значение `true`.
 
-<a id="enablelegacytemplate"></a>
-
-### `enableLegacyTemplate`.
+### `enableLegacyTemplate`
 
 При `true` включает устаревший элемент `<template>` вместо `<ng-template>`. По умолчанию `false`.
 
 Может требоваться некоторыми сторонними библиотеками Angular.
 
-### `flatModuleId`.
+### `flatModuleId`
 
-ID модуля для импорта плоского модуля\\(когда `flatModuleOutFile` имеет значение `true`\). Ссылки, созданные компилятором шаблонов, используют это имя модуля при импорте символов из плоского модуля.
+ID модуля для импорта плоского модуля (когда `flatModuleOutFile` имеет значение `true`). Ссылки, созданные компилятором шаблонов, используют это имя модуля при импорте символов из плоского модуля.
 
 Игнорируется, если `flatModuleOutFile` равно `false`.
 
-### `flatModuleOutFile`.
+### `flatModuleOutFile`
 
 Если `true`, генерирует индекс плоского модуля по заданному имени файла и соответствующие метаданные плоского модуля. Используется для создания плоских модулей, которые упаковываются аналогично `@angular/core` и `@angular/common`.
 
@@ -125,37 +144,34 @@ ID модуля для импорта плоского модуля\\(когда
 Создается индекс плоского модуля `.d.ts` и `.js` с заданным именем `flatModuleOutFile` в том же месте, что и файл индекса библиотеки `.d.ts`.
 
 Например, если библиотека использует файл `public_api.ts` в качестве библиотечного индекса модуля, поле `tsconfig.json` `files` будет `["public_api.ts"]`. Опция `flatModuleOutFile` может быть установлена, например, в `"index.js"`, что создаст файлы `index.d.ts` и `index.metadata.json`.
+
 Поле `module` в `package.json` библиотеки будет `"index.js"`, а поле `typings` будет `"index.d.ts"`.
 
-### `fullTemplateTypeCheck`.
+### `fullTemplateTypeCheck`
 
-При рекомендуемом значении `true` включается фаза [binding expression validation](guide/aot-compiler#binding-expression-validation) компилятора шаблонов. Эта фаза использует TypeScript для проверки выражений связывания. Для получения дополнительной информации смотрите [Проверка типов шаблонов](guide/template-typecheck).
+При рекомендуемом значении `true` включается фаза [binding expression validation](aot-compiler.md#binding-expression-validation) компилятора шаблонов. Эта фаза использует TypeScript для проверки выражений связывания. Для получения дополнительной информации смотрите [Проверка типов шаблонов](template-typecheck.md).
 
 По умолчанию `false`, но при использовании команды Angular CLI `ng new --strict` в конфигурации нового проекта устанавливается значение `true`.
 
-<div class="alert is-important">
+!!!note ""
 
-Опция `fullTemplateTypeCheck` была упразднена в Angular 13 в пользу семейства опций компилятора `strictTemplates`.
+    Опция `fullTemplateTypeCheck` была упразднена в Angular 13 в пользу семейства опций компилятора `strictTemplates`.
 
-</div>
+### `generateCodeForLibraries`
 
-### `generateCodeForLibraries`.
-
-При `true` создает фабричные файлы\(`.ngfactory.js` и `.ngstyle.js`\) для файлов `.d.ts` с соответствующим файлом `.metadata.json`. Значение по умолчанию - `true`.
+При `true` создает фабричные файлы (`.ngfactory.js` и `.ngstyle.js`) для файлов `.d.ts` с соответствующим файлом `.metadata.json`. Значение по умолчанию - `true`.
 
 При значении `false` фабричные файлы создаются только для файлов `.ts`. Сделайте это при использовании фабричных сводок.
 
-### `preserveWhitespaces`.
+### `preserveWhitespaces`
 
 По умолчанию, когда `false`, удаляет пустые текстовые узлы из скомпилированных шаблонов, что приводит к меньшим размерам фабричных модулей шаблонов. Установите значение `true`, чтобы сохранить пустые текстовые узлы.
 
-<div class="alert is-helpful">
+!!!note ""
 
-При использовании гидратации рекомендуется использовать `preserveWhitespaces: false`, что является значением по умолчанию. Если вы решите включить сохранение пробельных символов, добавив `preserveWhitespaces: true` в tsconfig, возможно, вы столкнетесь с проблемами при работе с hydration. Эта конфигурация еще не полностью поддерживается. Убедитесь, что это значение также последовательно установлено в файлах tsconfig сервера и клиента. Более подробную информацию смотрите в руководстве [hydration guide](guide/hydration#preserve-whitespaces).
+    При использовании гидратации рекомендуется использовать `preserveWhitespaces: false`, что является значением по умолчанию. Если вы решите включить сохранение пробельных символов, добавив `preserveWhitespaces: true` в tsconfig, возможно, вы столкнетесь с проблемами при работе с hydration. Эта конфигурация еще не полностью поддерживается. Убедитесь, что это значение также последовательно установлено в файлах tsconfig сервера и клиента. Более подробную информацию смотрите в руководстве [hydration guide](hydration.md#preserve-whitespaces).
 
-</div>
-
-### `skipMetadataEmit`.
+### `skipMetadataEmit`
 
 Когда `true`, не создает файлы `.metadata.json`. По умолчанию `false`.
 
@@ -167,7 +183,7 @@ ID модуля для импорта плоского модуля\\(когда
 
 Вместо этого используйте бандлер, например [webpack](https://webpack.js.org).
 
-### `skipTemplateCodegen`.
+### `skipTemplateCodegen`
 
 При значении `true` не создает файлы `.ngfactory.js` и `.ngstyle.js`. Это отключает большую часть компилятора шаблонов и отключает отчет о диагностике шаблонов.
 
@@ -175,7 +191,7 @@ ID модуля для импорта плоского модуля\\(когда
 
 Для библиотечных проектов, созданных с помощью Angular CLI, конфигурация разработки по умолчанию имеет значение `true`.
 
-### `strictMetadataEmit`.
+### `strictMetadataEmit`
 
 При значении `true` сообщает об ошибке в файл `.metadata.json`, если `"skipMetadataEmit"` имеет значение `false`. По умолчанию `false`.
 
@@ -194,7 +210,7 @@ ID модуля для импорта плоского модуля\\(когда
 
 Для проектов библиотек, созданных с помощью Angular CLI, конфигурация разработки по умолчанию имеет значение `true`.
 
-### `strictInjectionParameters`.
+### `strictInjectionParameters`
 
 При `true` сообщает об ошибке для параметра, тип инъекции которого не может быть определен. При `false`, параметры конструктора классов, помеченных `@Injectable`, тип которых не может быть определен, выдают предупреждение.
 
@@ -202,32 +218,28 @@ ID модуля для импорта плоского модуля\\(когда
 
 Когда вы используете команду Angular CLI `ng new --strict`, в конфигурации созданного проекта устанавливается значение `true`.
 
-### `strictTemplates`.
+### `strictTemplates`
 
-При `true` включает [строгую проверку типов шаблонов] (guide/template-typecheck#strict-mode).
+При `true` включает [строгую проверку типов шаблонов](template-typecheck.md#strict-mode).
 
-Флаги строгости, которые включает эта опция, позволяют включать и выключать определенные типы строгой проверки типов шаблонов. Смотрите [устранение ошибок шаблонов](guide/template-typecheck#troubleshooting-template-errors).
+Флаги строгости, которые включает эта опция, позволяют включать и выключать определенные типы строгой проверки типов шаблонов. Смотрите [устранение ошибок шаблонов](template-typecheck.md#troubleshooting-template-errors).
 
 Когда вы используете команду Angular CLI `ng new --strict`, в конфигурации нового проекта устанавливается значение `true`.
 
-### `trace`.
+### `trace`
 
 Когда `true`, выводит дополнительную информацию при компиляции шаблонов. По умолчанию `false`.
 
-<a id="cli-options"></a>
-
-## Опции командной строки
+## Опции командной строки {#cli-options}
 
 В большинстве случаев вы взаимодействуете с Angular Compiler косвенно, используя Angular CLI. При отладке некоторых проблем вам может показаться полезным вызвать Angular Compiler напрямую. Вы можете использовать команду `ngc` из пакета `@angular/compiler-cli` npm для вызова компилятора из командной строки.
 
-Команда `ngc` - это просто обертка вокруг команды компилятора TypeScript `tsc` и настраивается в основном с помощью опций конфигурации `tsconfig.json`, документированных в [предыдущих разделах] (#angular-compiler-options).
+Команда `ngc` - это просто обертка вокруг команды компилятора TypeScript `tsc` и настраивается в основном с помощью опций конфигурации `tsconfig.json`, документированных в [предыдущих разделах](#angular-compiler-options).
 
 Помимо конфигурационного файла, для настройки `ngc` можно использовать [опции командной строки `tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
 
 <!-- links -->
 
-[aioguidei18ncommonpreparemarktextincomponenttemplate]: guide/i18n-common-prepare#mark-text-in-component-template 'Mark text in component template - Prepare component for translation | Angular'
+[aioguidei18ncommonpreparemarktextincomponenttemplate]: i18n-common-prepare.md#mark-text-in-component-template 'Mark text in component template - Prepare component for translation | Angular'
 
 <!-- end links -->
-
-:date: 19.04.2023

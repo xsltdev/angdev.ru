@@ -1,14 +1,14 @@
 # Providing dependencies in modules
 
-A provider is an instruction to the [Dependency Injection](guide/dependency-injection) system on how to obtain a value for a dependency.
+A provider is an instruction to the [Dependency Injection](dependency-injection.md) system on how to obtain a value for a dependency.
 Most of the time, these dependencies are services that you create and provide.
 
 For the final sample application using the provider that this page describes, see the <live-example></live-example>.
 
 ## Providing a service
 
-If you already have an application that was created with the [Angular CLI](cli), you can create a service using the [`ng generate`](cli/generate) CLI command in the root project directory.
-Replace *User* with the name of your service.
+If you already have an application that was created with the [Angular CLI](https://angular.io/cli), you can create a service using the [`ng generate`](https://angular.io/cli/generate) CLI command in the root project directory.
+Replace _User_ with the name of your service.
 
 <code-example format="shell" language="shell">
 
@@ -63,8 +63,8 @@ This means that any services listed in their provider arrays aren't available be
 When the Angular router lazy-loads a module, it creates a new injector.
 This injector is a child of the root application injector.
 Imagine a tree of injectors; there is a single root injector and then a child injector for each lazy loaded module.
-This child injector gets populated with all the module-specific providers, if any. 
-Look up resolution for every provider follows the [rules of dependency injection hierarchy](guide/hierarchical-dependency-injection#resolution-rules). 
+This child injector gets populated with all the module-specific providers, if any.
+Look up resolution for every provider follows the [rules of dependency injection hierarchy](hierarchical-dependency-injection.md#resolution-rules).
 
 Any component created within a lazy loaded module's context, such as by router navigation, gets its own local instance of child provided services, not the instance in the root application injector.
 Components in external modules continue to receive the instances created for the application root injector.
@@ -103,6 +103,7 @@ Generally, provide services the whole application needs in the root module and s
 The router works at the root level so if you put providers in a component, even `AppComponent`, lazy loaded modules, which rely on the router, can't see them.
 
 <!-- KW--Make a diagram here -->
+
 Register a provider with a component when you must limit a service instance to a component and its component tree, that is, its child components.
 For example, a user editing component, `UserEditorComponent`, that needs a private copy of a caching `UserService` should register the `UserService` with the `UserEditorComponent`.
 Then each new instance of the `UserEditorComponent` gets its own cached service instance.
@@ -114,23 +115,23 @@ Then each new instance of the `UserEditorComponent` gets its own cached service 
 
 Services are singletons within the scope of an injector, which means there is at most one instance of a service in a given injector.
 
-Angular DI has a [hierarchical injection system](guide/hierarchical-dependency-injection), which means that nested injectors can create their own service instances.
+Angular DI has a [hierarchical injection system](hierarchical-dependency-injection.md), which means that nested injectors can create their own service instances.
 Whenever Angular creates a new instance of a component that has `providers` specified in `@Component()`, it also creates a new child injector for that instance.
 Similarly, when a new NgModule is lazy-loaded at run time, Angular can create an injector for it with its own providers.
 
 Child modules and component injectors are independent of each other, and create their own separate instances of the provided services.
 When Angular destroys an NgModule or component instance, it also destroys that injector and that injector's service instances.
 
-For more information, see [Hierarchical injectors](guide/hierarchical-dependency-injection).
+For more information, see [Hierarchical injectors](hierarchical-dependency-injection.md).
 
 ## More on NgModules
 
 You may also be interested in:
 
-*   [Singleton Services](guide/singleton-services), which elaborates on the concepts covered on this page
-*   [Lazy Loading Modules](guide/lazy-loading-ngmodules)
-*   [Dependency providers](guide/dependency-injection-providers)
-*   [NgModule FAQ](guide/ngmodule-faq)
+-   [Singleton Services](singleton-services.md), which elaborates on the concepts covered on this page
+-   [Lazy Loading Modules](lazy-loading-ngmodules.md)
+-   [Dependency providers](dependency-injection-providers.md)
+-   [NgModule FAQ](ngmodule-faq.md)
 
 <!-- links -->
 

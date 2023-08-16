@@ -4,48 +4,48 @@
 
 A basic understanding of the following:
 
-*   [JavaScript Modules vs. NgModules](guide/ngmodule-vs-jsmodule)
+-   [JavaScript Modules vs. NgModules](ngmodule-vs-jsmodule.md)
 
 An NgModule describes how the application parts fit together.
-Every application has at least one Angular module, the *root* module, which must be present for bootstrapping the application on launch.
+Every application has at least one Angular module, the _root_ module, which must be present for bootstrapping the application on launch.
 By convention and by default, this NgModule is named `AppModule`.
 
-When you use the [Angular CLI](cli) command `ng new` to generate an app, the default `AppModule` looks like the following:
+When you use the [Angular CLI](https://angular.io/cli) command `ng new` to generate an app, the default `AppModule` looks like the following:
 
 <code-example format="typescript" language="typescript">
 
-/* JavaScript imports */
+/_ JavaScript imports _/
 import { BrowserModule } from '&commat;angular/platform-browser';
 import { NgModule } from '&commat;angular/core';
 
 import { AppComponent } from './app.component';
 
-/* the AppModule class with the &commat;NgModule decorator */
+/_ the AppModule class with the &commat;NgModule decorator _/
 &commat;NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+declarations: [
+AppComponent
+],
+imports: [
+BrowserModule
+],
+providers: [],
+bootstrap: [AppComponent]
 })
 export class AppModule { }
 
 </code-example>
 
-After the import statements is a class with the **`@NgModule`** [decorator](guide/glossary#decorator '"Decorator" explained').
+After the import statements is a class with the **`@NgModule`** [decorator](glossary.md#decorator '"Decorator" explained').
 
 The `@NgModule` decorator identifies `AppModule` as an `NgModule` class.
 `@NgModule` takes a metadata object that tells Angular how to compile and launch the application.
 
-| metadata object | Details |
-|:---             |:---     |
+| metadata object | Details                                                                                                     |
+| :-------------- | :---------------------------------------------------------------------------------------------------------- |
 | declarations    | This application's lone component.                                                                          |
 | imports         | Import `BrowserModule` to have browser-specific services such as DOM rendering, sanitization, and location. |
 | providers       | The service providers.                                                                                      |
-| bootstrap       | The *root* component that Angular creates and inserts into the `index.html` host web page.                  |
+| bootstrap       | The _root_ component that Angular creates and inserts into the `index.html` host web page.                  |
 
 The default application created by the Angular CLI only has one component, `AppComponent`, so it is in both the `declarations` and the `bootstrap` arrays.
 
@@ -59,7 +59,7 @@ As you create more components, add them to `declarations`.
 You must declare every component in exactly one `NgModule` class.
 If you use a component without declaring it, Angular returns an error message.
 
-The `declarations` array only takes declarables. Declarables are components, [directives](guide/attribute-directives), and [pipes](guide/pipes).
+The `declarations` array only takes declarables. Declarables are components, [directives](attribute-directives.md), and [pipes](pipes.md).
 All of a module's declarables must be in the `declarations` array.
 Declarables must belong to exactly one module. The compiler emits an error if you try to declare the same class in more than one module.
 
@@ -70,9 +70,9 @@ An example of what goes into a declarations array follows:
 <code-example format="typescript" language="typescript">
 
 declarations: [
-  YourComponent,
-  YourPipe,
-  YourDirective
+YourComponent,
+YourPipe,
+YourDirective
 ],
 
 </code-example>
@@ -105,8 +105,8 @@ And in the same file, add it to the `@NgModule` `declarations` array:
 
 Now you could use your `ItemDirective` in a component.
 This example uses `AppModule`, but you'd do it the same way for a feature module.
-For more about directives, see [Attribute Directives](guide/attribute-directives) and [Structural Directives](guide/structural-directives).
-You'd also use the same technique for [pipes](guide/pipes) and components.
+For more about directives, see [Attribute Directives](attribute-directives.md) and [Structural Directives](structural-directives.md).
+You'd also use the same technique for [pipes](pipes.md) and components.
 
 Remember, components, directives, and pipes belong to one module only.
 You only need to declare them once in your application because you share them by importing the necessary modules.
@@ -122,7 +122,7 @@ It tells Angular about other NgModules that this particular module needs to func
 <code-example header="src/app/app.module.ts (excerpt)" path="bootstrapping/src/app/app.module.ts" region="imports"></code-example>
 
 This list of modules are those that export components, directives, or pipes that component templates in this module reference.
-In this case, the component is `AppComponent`, which references components, directives, or pipes in `BrowserModule`, `FormsModule`, or  `HttpClientModule`.
+In this case, the component is `AppComponent`, which references components, directives, or pipes in `BrowserModule`, `FormsModule`, or `HttpClientModule`.
 A component template can reference another component, directive, or pipe when the referenced class is declared in this module, or the class was imported from another module.
 
 <a id="bootstrap-array"></a>
@@ -132,7 +132,7 @@ A component template can reference another component, directive, or pipe when th
 The providers array is where you list the services the application needs.
 When you list services here, they are available app-wide.
 You can scope them when using feature modules and lazy loading.
-For more information, see [Providers](guide/providers).
+For more information, see [Providers](providers.md).
 
 ## The `bootstrap` array
 
@@ -151,7 +151,7 @@ or you want to mount the `AppComponent` in a different DOM node that doesn't mat
 
 ## More about Angular Modules
 
-For more on NgModules you're likely to see frequently in applications, see [Frequently Used Modules](guide/frequent-ngmodules).
+For more on NgModules you're likely to see frequently in applications, see [Frequently Used Modules](frequent-ngmodules.md).
 
 <!-- links -->
 

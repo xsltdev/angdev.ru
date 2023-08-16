@@ -164,9 +164,9 @@
 
 <!-- vale Angular.Google_WordListSuggestions = NO -->
 
--   [Параметры маршрута](guide/router#accessing-query-parameters-and-fragments)
--   [Обзор маршрутизации в Angular](guide/routing-overview)
+-   [Параметры маршрута](router.md#accessing-query-parameters-and-fragments)
+-   [Обзор маршрутизации в Angular](routing-overview.md)
 
--   [Общие задачи маршрутизации](guide/router)
+-   [Общие задачи маршрутизации](router.md)
 
--   [Дополнительный оператор цепочки](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+-   [Дополнительный оператор цепочки](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Optional_chaining)

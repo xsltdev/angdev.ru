@@ -102,7 +102,7 @@ The browser refreshes and now the hero's name is displayed in capital letters.
 
 The word `uppercase` in the interpolation binding after the pipe <code>&verbar;</code> character, activates the built-in `UppercasePipe`.
 
-[Pipes](guide/pipes) are a good way to format strings, currency amounts, dates, and other display data. Angular ships with several built-in pipes and you can create your own.
+[Pipes](pipes.md) are a good way to format strings, currency amounts, dates, and other display data. Angular ships with several built-in pipes and you can create your own.
 
 ## Edit the hero
 
@@ -142,7 +142,7 @@ Refactor the details area in the `HeroesComponent` template so it looks like thi
 
 Angular необходимо знать, как части вашего приложения сочетаются друг с другом и какие другие файлы и библиотеки требуются приложению. Эта информация называется _метаданные_.
 
-Часть метаданных находится в декораторах `@Component`, которые вы добавили в классы компонентов. Другие важные метаданные находятся в декораторах [`@NgModule`](guide/ngmodules).
+Часть метаданных находится в декораторах `@Component`, которые вы добавили в классы компонентов. Другие важные метаданные находятся в декораторах [`@NgModule`](ngmodules.md).
 
 Самый важный декоратор `@NgModule` аннотирует класс верхнего уровня **AppModule**.
 
@@ -162,7 +162,7 @@ Angular необходимо знать, как части вашего прил
 
 ### Объявление `HeroesComponent`.
 
-Каждый компонент должен быть объявлен в _только одном_ [NgModule](guide/ngmodules).
+Каждый компонент должен быть объявлен в _только одном_ [NgModule](ngmodules.md).
 
 Вы не объявили `HeroesComponent`. Почему приложение сработало?
 

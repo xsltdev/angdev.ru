@@ -62,7 +62,7 @@ ng generate component hero-detail
 
 <code-example path="toh-pt3/src/app/hero-detail/hero-detail.component.ts" region="import-hero" header="src/app/hero-detail/hero-detail.component.ts (import Hero)"></code-example>.
 
-Свойство `hero` [должно быть свойством `Input`] (guide/inputs-outputs "Свойства ввода и вывода"),
+Свойство `hero` [должно быть свойством `Input`](inputs-outputs.md 'Свойства ввода и вывода'),
 
 аннотированным с помощью декоратора `@Input()`,
 
@@ -102,7 +102,7 @@ ng generate component hero-detail
 
 <code-example header="heroes.component.html (привязка HeroDetail)" path="toh-pt3/src/app/heroes/heroes.component.html" region="hero-detail-binding"></code-example>.
 
-`[hero]="selectedHero"` - это привязка [свойства] (guide/property-binding) Angular.
+`[hero]="selectedHero"` - это привязка [свойства](property-binding.md) Angular.
 
 Это _односторонняя_ привязка данных от свойства `selectedHero` компонента `HeroesComponent` к свойству `hero` целевого элемента, которое отображается на свойство `hero` компонента `HeroDetailComponent`.
 
@@ -118,7 +118,7 @@ ng generate component hero-detail
 
 ## Что изменилось?
 
-Как и [ранее] (tutorial/tour-of-heroes/toh-pt2), когда пользователь нажимает на имя героя, подробная информация о герое появляется под списком героев.
+Как и [ранее](tutorial/tour-of-heroes/toh-pt2), когда пользователь нажимает на имя героя, подробная информация о герое появляется под списком героев.
 
 Теперь `HeroDetailComponent` представляет эти детали вместо `HeroesComponent`.
 
@@ -154,8 +154,8 @@ ng generate component hero-detail
 
 -   Вы создали отдельный, многократно используемый `HeroDetailComponent`.
 
--   Вы использовали [связывание свойств](guide/property-binding), чтобы дать родительскому `HeroesComponent` контроль над дочерним `HeroDetailComponent`.
+-   Вы использовали [связывание свойств](property-binding.md), чтобы дать родительскому `HeroesComponent` контроль над дочерним `HeroDetailComponent`.
 
--   Вы использовали декоратор [`@Input`](guide/inputs-outputs)
+-   Вы использовали декоратор [`@Input`](inputs-outputs.md)
 
 чтобы сделать свойство `hero` доступным для привязки внешним `HeroesComponent`.

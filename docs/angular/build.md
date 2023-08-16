@@ -8,11 +8,11 @@
 
 Вы можете определить различные именованные конфигурации сборки для вашего проекта, такие как `development` и `staging`, с различными значениями по умолчанию.
 
-Каждая именованная конфигурация может иметь значения по умолчанию для любых опций, которые применяются к различным [builder targets](guide/glossary#target), таким как `build`, `serve` и `test`. Команды [Angular CLI](cli) `build`, `serve` и `test` могут затем заменить файлы на соответствующие версии для вашего целевого окружения.
+Каждая именованная конфигурация может иметь значения по умолчанию для любых опций, которые применяются к различным [builder targets](glossary.md#target), таким как `build`, `serve` и `test`. Команды [Angular CLI](https://angular.io/cli) `build`, `serve` и `test` могут затем заменить файлы на соответствующие версии для вашего целевого окружения.
 
 ### Настройка параметров по умолчанию для конкретного окружения
 
-Используя Angular CLI, начните с выполнения команды [generate environments](cli/generate#environments-command), показанной здесь, чтобы создать каталог `src/environments/` и настроить проект на использование этих файлов.
+Используя Angular CLI, начните с выполнения команды [generate environments](https://angular.io/cli/generate#environments-command), показанной здесь, чтобы создать каталог `src/environments/` и настроить проект на использование этих файлов.
 
 <code-example format="shell" language="shell">
 
@@ -257,7 +257,7 @@ ng build --configuration=staging
 
 По мере роста функциональности приложений увеличивается и их размер. CLI позволяет установить пороговые значения размеров в конфигурации, чтобы гарантировать, что части приложения не выйдут за пределы определенных вами границ.
 
-Определите границы размеров в конфигурационном файле CLI, `angular.json`, в разделе `budgets` для каждой [настроенной среды] (#app-environments).
+Определите границы размеров в конфигурационном файле CLI, `angular.json`, в разделе `budgets` для каждой [настроенной среды](#app-environments).
 
 <code-example format="json" language="json">
 
@@ -348,7 +348,7 @@ Angular CLI выводит предупреждения, если обнаруж
 
 Angular CLI использует [Browserslist](https://github.com/browserslist/browserslist) для обеспечения совместимости с различными версиями браузеров. [Autoprefixer](https://github.com/postcss/autoprefixer) используется для префиксации поставщиков CSS и [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env) для преобразования синтаксиса JavaScript.
 
-Внутри Angular CLI используется приведенная ниже конфигурация `browserslist`, которая соответствует [поддерживаемым браузерам](guide/browser-support) Angular.
+Внутри Angular CLI используется приведенная ниже конфигурация `browserslist`, которая соответствует [поддерживаемым браузерам](browser-support.md) Angular.
 
 <code-example format="none" language="text"> last 2 Chrome versions
 last 1 Firefox version
@@ -358,7 +358,7 @@ last 2 iOS major versions
 Firefox ESR
 </code-example>
 
-Чтобы переопределить внутреннюю конфигурацию, выполните команду [`ng generate config browserslist`](cli/generate#config-command), которая создаст файл конфигурации `.browserslistrc` в каталоге проекта.
+Чтобы переопределить внутреннюю конфигурацию, выполните команду [`ng generate config browserslist`](https://angular.io/cli/generate#config-command), которая создаст файл конфигурации `.browserslistrc` в каталоге проекта.
 
 Смотрите репозиторий [browserslist repository](https://github.com/browserslist/browserslist) для более подробных примеров того, как нацеливаться на определенные браузеры и версии.
 

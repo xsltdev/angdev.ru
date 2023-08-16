@@ -4,15 +4,15 @@ TypeScript is a primary language for Angular application development.
 It is a superset of JavaScript with design-time support for type safety and tooling.
 
 Browsers can't execute TypeScript directly.
-Typescript must be "transpiled" into JavaScript using the *tsc* compiler, which requires some configuration.
+Typescript must be "transpiled" into JavaScript using the _tsc_ compiler, which requires some configuration.
 
 This page covers some aspects of TypeScript configuration and the TypeScript environment
 that are important to Angular developers, including details about the following files:
 
-| Files                                                    | Details |
-|:---                                                      |:---     |
-| [tsconfig.json](guide/typescript-configuration#tsconfig) | TypeScript compiler configuration. |
-| [typings](guide/typescript-configuration#typings)        | TypesScript declaration files.     |
+| Files                                                 | Details                            |
+| :---------------------------------------------------- | :--------------------------------- |
+| [tsconfig.json](typescript-configuration.md#tsconfig) | TypeScript compiler configuration. |
+| [typings](typescript-configuration.md#typings)        | TypesScript declaration files.     |
 
 <a id="tsconfig"></a>
 
@@ -23,7 +23,7 @@ At the root `tsconfig.json` file specifies the base TypeScript and Angular compi
 
 <div class="alert is-helpful">
 
-See the [Angular compiler options](guide/angular-compiler-options) guide for information about what Angular specific options are available.
+See the [Angular compiler options](angular-compiler-options.md) guide for information about what Angular specific options are available.
 
 </div>
 
@@ -50,15 +50,15 @@ There is no correct answer and you can change the flag later.
 But your choice now can make a difference in larger projects, so it merits discussion.
 
 When the `noImplicitAny` flag is `false` \(the default\), and if the compiler cannot infer the variable type based on how it's used, the compiler silently defaults the type to `any`.
-That's what is meant by *implicit `any`*.
+That's what is meant by _implicit `any`_.
 
 When the `noImplicitAny` flag is `true` and the TypeScript compiler cannot infer the type, it still generates the JavaScript files, but it also **reports an error**.
 Many seasoned developers prefer this stricter setting because type checking catches more unintentional errors at compile time.
 
 You can set a variable's type to `any` even when the `noImplicitAny` flag is `true`.
 
-When the `noImplicitAny` flag is `true`, you may get *implicit index errors* as well.
-Most developers feel that *this particular error* is more annoying than helpful.
+When the `noImplicitAny` flag is `true`, you may get _implicit index errors_ as well.
+Most developers feel that _this particular error_ is more annoying than helpful.
 You can suppress them with the following additional flag:
 
 <code-example>
@@ -69,7 +69,7 @@ You can suppress them with the following additional flag:
 
 <div class="alert is-helpful">
 
-For more information about how the TypeScript configuration affects compilation, see [Angular Compiler Options](guide/angular-compiler-options) and [Template Type Checking](guide/template-typecheck).
+For more information about how the TypeScript configuration affects compilation, see [Angular Compiler Options](angular-compiler-options.md) and [Template Type Checking](template-typecheck.md).
 
 </div>
 
@@ -91,7 +91,7 @@ The `node_modules/@angular/core/` folder of any Angular application contains sev
 
 <div class="alert is-helpful">
 
-You don't need to do anything to get *typings* files for library packages that include `d.ts` files.
+You don't need to do anything to get _typings_ files for library packages that include `d.ts` files.
 Angular packages include them already.
 
 </div>
@@ -105,7 +105,7 @@ For more information, see [lib](https://www.typescriptlang.org/tsconfig#lib) in 
 
 ### Installable typings files
 
-Many libraries &mdash;jQuery, Jasmine, and Lodash among them&mdash; do *not* include `d.ts` files in their npm packages.
+Many libraries &mdash;jQuery, Jasmine, and Lodash among them&mdash; do _not_ include `d.ts` files in their npm packages.
 Fortunately, either their authors or community contributors have created separate `d.ts` files for these libraries and published them in well-known locations.
 
 You can install these typings with `npm` using the [`@types/*` scoped package](https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html).

@@ -15,7 +15,7 @@
 -   [Основы компонентов](architecture-components.md)
 -   [Основы шаблонов](glossary.md#template)
 
--   Приложение Angular &mdash; вы можете создать базовое приложение Angular, используя [Angular CLI](cli.md).
+-   Приложение Angular &mdash; вы можете создать базовое приложение Angular, используя [Angular CLI](https://angular.io/cli.md).
 
 ## Узнайте о маршрутизации Angular
 

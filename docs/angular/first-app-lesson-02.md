@@ -162,8 +162,5 @@
 
 Для получения дополнительной информации по темам, рассмотренным в этом уроке, посетите:
 
--   [`ng generate component`](cli/generate#component-command)
-
--   [`Ссылка на компонент`](api/core/Component)
-
--   [Обзор компонентов Angular](guide/component-overview)
+-   [`ng generate component`](https://angular.io/cli/generate#component-command)
+-   [Обзор компонентов Angular](component-overview.md)

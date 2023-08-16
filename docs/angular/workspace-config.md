@@ -1,6 +1,6 @@
 # Конфигурация рабочего пространства Angular
 
-Файл `angular.json` на корневом уровне рабочего пространства Angular [workspace](guide/glossary#workspace) предоставляет настройки по умолчанию для всего рабочего пространства и конкретного проекта. Они используются для инструментов сборки и разработки, предоставляемых Angular CLI. Значения путей, указанные в конфигурации, относятся к корневому каталогу рабочего пространства.
+Файл `angular.json` на корневом уровне рабочего пространства Angular [workspace](glossary.md#workspace) предоставляет настройки по умолчанию для всего рабочего пространства и конкретного проекта. Они используются для инструментов сборки и разработки, предоставляемых Angular CLI. Значения путей, указанные в конфигурации, относятся к корневому каталогу рабочего пространства.
 
 ## Общая структура JSON
 
@@ -15,9 +15,9 @@
 
 | `newProjectRoot` | Путь, где создаются новые проекты. Абсолютный или относительный к каталогу рабочей области. |
 
-| | `cli` | Набор опций, настраивающих [Angular CLI](cli). См. раздел [Angular CLI configuration options](#cli-configuration-options). |
+| | `cli` | Набор опций, настраивающих [Angular CLI](https://angular.io/cli). См. раздел [Angular CLI configuration options](#cli-configuration-options). |
 
-| `schematics` | Набор [schematics](guide/glossary#schematic), которые настраивают параметры по умолчанию подкоманды `ng generate` для данного рабочего пространства. См. раздел [Generation schematics](#schematics). |
+| `schematics` | Набор [schematics](glossary.md#schematic), которые настраивают параметры по умолчанию подкоманды `ng generate` для данного рабочего пространства. См. раздел [Generation schematics](#schematics). |
 
 | `projects` | Содержит подраздел для каждой библиотеки или приложения в рабочем пространстве, с опциями конфигурации для каждого проекта. |
 
@@ -46,7 +46,7 @@
 
 -   Other applications and libraries go into a `projects` directory in the workspace
 
-For more information, see [Workspace and project file structure](guide/file-structure).
+For more information, see [Workspace and project file structure](file-structure.md).
 
 </div>
 
@@ -57,9 +57,9 @@ For more information, see [Workspace and project file structure](guide/file-stru
 Следующие свойства конфигурации представляют собой набор опций, которые настраивают Angular CLI.
 
 | Свойство | Детали | Тип значения | | |:--- |:--- |:--- |:--- |:---.
-| `analytics` | Поделиться анонимными [данными об использовании] (cli/analytics) с командой Angular Team. | `boolean` &verbar; `ci` | `cache`.
+| `analytics` | Поделиться анонимными [данными об использовании](https://angular.io/cli/analytics) с командой Angular Team. | `boolean` &verbar; `ci` | `cache`.
 
-| `cache` | Управление [постоянным дисковым кэшем](cli/cache), используемым [Angular CLI Builders](guide/cli-builder). | [Опции кэша](#cache-options)|.
+| `cache` | Управление [постоянным дисковым кэшем](https://angular.io/cli/cache), используемым [Angular CLI Builders](cli-builder.md). | [Опции кэша](#cache-options)|.
 
 | `schematicCollections`| Список коллекций схем по умолчанию для использования. | `string[]` |
 
@@ -120,7 +120,7 @@ For more information, see [Workspace and project file structure](guide/file-stru
 
 ## Схемы генерации
 
-Angular generation [schematics](guide/glossary#schematic) - это инструкции по модификации проекта путем добавления файлов или изменения существующих файлов. Отдельные схемы для стандартных подкоманд Angular CLI `ng generate` собраны в пакете `@schematics/angular`.
+Angular generation [schematics](glossary.md#schematic) - это инструкции по модификации проекта путем добавления файлов или изменения существующих файлов. Отдельные схемы для стандартных подкоманд Angular CLI `ng generate` собраны в пакете `@schematics/angular`.
 
 Укажите имя схемы для подкоманды в формате `schematic-package:schematic-name`;
 
@@ -134,11 +134,11 @@ JSON-схемы для схем по умолчанию, используемы�
 
 ## Параметры конфигурации инструмента проекта
 
-Architect - это инструмент, который используется в Angular CLI для выполнения сложных задач, таких как компиляция и запуск тестов. Architect - это оболочка, которая запускает указанный [builder](guide/glossary#builder) для выполнения заданной задачи в соответствии с конфигурацией [target](guide/glossary#target).
+Architect - это инструмент, который используется в Angular CLI для выполнения сложных задач, таких как компиляция и запуск тестов. Architect - это оболочка, которая запускает указанный [builder](glossary.md#builder) для выполнения заданной задачи в соответствии с конфигурацией [target](glossary.md#target).
 
 Вы можете определить и настроить новые конструкторы и цели для расширения Angular CLI.
 
-Смотрите [Angular CLI Builders](guide/cli-builder).
+Смотрите [Angular CLI Builders](cli-builder.md).
 
 <a id="default-build-targets"></a>
 
@@ -204,11 +204,11 @@ Angular определяет конструкторы по умолчанию д
 | `architect/server` | Configures defaults for creating a Universal application with server-side rendering, using the `ng run <project>:server` command. |
 | `architect/app-shell` | Configures defaults for creating an application shell for a progressive web application \(PWA\), using the `ng run <project>:app-shell` command. |
 
-В целом, параметры, для которых можно настроить значения по умолчанию, соответствуют параметрам команд, перечисленным в [Angular CLI reference page](cli) для каждой команды.
+В целом, параметры, для которых можно настроить значения по умолчанию, соответствуют параметрам команд, перечисленным в [Angular CLI reference page](https://angular.io/cli) для каждой команды.
 
 <div class="alert is-helpful">
 
-**NOTE**: <br /> All options in the configuration file must use [camelCase](guide/glossary#case-conventions), rather than dash-case.
+**NOTE**: <br /> All options in the configuration file must use [camelCase](glossary.md#case-conventions), rather than dash-case.
 
 </div>
 
@@ -254,17 +254,17 @@ Angular CLI поставляется с двумя конфигурациями 
 
 ### Дополнительные опции сборки и тестирования
 
-Настраиваемые опции для сборки по умолчанию или целевой сборки в целом соответствуют опциям, доступным для команд [`ng build`](cli/build), [`ng serve`](cli/serve) и [`ng test`](cli/test). Подробнее об этих опциях и их возможных значениях смотрите в [Angular CLI Reference](cli).
+Настраиваемые опции для сборки по умолчанию или целевой сборки в целом соответствуют опциям, доступным для команд [`ng build`](https://angular.io/cli/build), [`ng serve`](https://angular.io/cli/serve) и [`ng test`](https://angular.io/cli/test). Подробнее об этих опциях и их возможных значениях смотрите в [Angular CLI Reference](https://angular.io/cli).
 
-Некоторые дополнительные опции могут быть установлены только через конфигурационный файл, либо путем прямого редактирования, либо с помощью команды [`ng config`](cli/config).
+Некоторые дополнительные опции могут быть установлены только через конфигурационный файл, либо путем прямого редактирования, либо с помощью команды [`ng config`](https://angular.io/cli/config).
 
 | Options properties | Details | |:--- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `assets` | An object containing paths to static assets to add to the global context of the project. The default paths point to the project's icon file and its `assets` directory. See more in the [Assets configuration](#asset-config) section. |
 | `styles` | An array of style files to add to the global context of the project. Angular CLI supports CSS imports and all major CSS preprocessors: [sass/scss](https://sass-lang.com) and [less](https://lesscss.org). See more in the [Styles and scripts configuration](#style-script-config) section. |
 | `stylePreprocessorOptions` | An object containing option-value pairs to pass to style preprocessors. See more in the [Styles and scripts configuration](#style-script-config) section. |
 | `scripts` | An object containing JavaScript script files to add to the global context of the project. The scripts are loaded exactly as if you had added them in a `<script>` tag inside `index.html`. See more in the [Styles and scripts configuration](#style-script-config) section. |
-| `budgets` | Default size-budget type and thresholds for all or parts of your application. You can configure the builder to report a warning or an error when the output reaches or exceeds a threshold size. See [Configure size budgets](guide/build#configure-size-budgets). \(Not available in `test` section.\) |
-| `fileReplacements` | An object containing files and their compile-time replacements. See more in [Configure target-specific file replacements](guide/build#configure-target-specific-file-replacements). |
+| `budgets` | Default size-budget type and thresholds for all or parts of your application. You can configure the builder to report a warning or an error when the output reaches or exceeds a threshold size. See [Configure size budgets](build.md#configure-size-budgets). \(Not available in `test` section.\) |
+| `fileReplacements` | An object containing files and their compile-time replacements. See more in [Configure target-specific file replacements](build.md#configure-target-specific-file-replacements). |
 `index` | Configures the generation of the application's HTML index. See more in [Index configuration](#index-config). \(Only available in `browser` section.\) | |
 
 <a id="complex-config"></a>
@@ -468,7 +468,7 @@ Angular CLI поставляется с двумя конфигурациями 
 <div class="alert is-helpful">
 
 **NOTE**: <br /> You also need to add any styles or scripts to the `test` builder if you need them for unit tests.
-See also [Using runtime-global libraries inside your application](guide/using-libraries#using-runtime-global-libraries-inside-your-app).
+See also [Using runtime-global libraries inside your application](using-libraries.md#using-runtime-global-libraries-inside-your-app).
 
 </div>
 
@@ -536,7 +536,7 @@ Several options can be used to fine-tune the optimization of an application.
 
 <div class="alert is-helpful">
 
-Для [Universal](guide/glossary#universal) вы можете уменьшить код, отображаемый в HTML-странице, установив оптимизацию стилей на `true`.
+Для [Universal](glossary.md#universal) вы можете уменьшить код, отображаемый в HTML-странице, установив оптимизацию стилей на `true`.
 
 </div>
 

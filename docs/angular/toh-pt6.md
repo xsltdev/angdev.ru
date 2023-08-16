@@ -514,6 +514,6 @@ Replace the `HeroSearchComponent` template with an `<input>` and a list of match
 
 -   Вы узнали, как использовать наблюдаемые объекты
 
-На этом мы завершаем учебник "Тур по героям". Вы готовы узнать больше о разработке Angular в разделе "Основы", начиная с руководства [Architecture](guide/architecture 'Architecture').
+На этом мы завершаем учебник "Тур по героям". Вы готовы узнать больше о разработке Angular в разделе "Основы", начиная с руководства [Architecture](architecture.md 'Architecture').
 
 :date: 28.02.2022

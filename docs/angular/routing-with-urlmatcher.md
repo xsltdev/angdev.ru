@@ -21,7 +21,7 @@ Angular Router поддерживает мощную стратегию соот
 -   JavaScript
 -   HTML
 -   CSS
--   [Angular CLI](cli.md)
+-   [Angular CLI](https://angular.io/cli.md)
 
 Если вы не знакомы с тем, как работает маршрутизатор Angular, просмотрите [Использование маршрутов Angular в одностраничном приложении](router-tutorial.md).
 

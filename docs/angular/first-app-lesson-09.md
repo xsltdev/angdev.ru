@@ -145,9 +145,7 @@
 
 <!-- vale Angular.Google_WordListSuggestions = NO -->
 
--   [Создание инжектируемого сервиса](guide/creating-injectable-service)
--   [Инъекция зависимостей в Angular](guide/dependency-injection-overview)
-
--   [ng generate service](cli/generate#service)
-
--   [ng generate](cli/generate)
+-   [Создание инжектируемого сервиса](creating-injectable-service.md)
+-   [Инъекция зависимостей в Angular](dependency-injection-overview.md)
+-   [ng generate service](https://angular.io/cli/generate#service)
+-   [ng generate](https://angular.io/cli/generate)

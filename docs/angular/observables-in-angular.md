@@ -4,13 +4,14 @@ Angular makes use of observables as an interface to handle a variety of common a
 For example:
 
 <!--todo: Have Alex review this -->
-<!-- *   You can define [custom events](guide/event-binding#custom-events-with-eventemitter) that send observable output data from a child to a parent component -->
-*   The HTTP module uses observables to handle AJAX requests and responses
-*   The Router and Forms modules use observables to listen for and respond to user-input events
+<!-- *   You can define [custom events](event-binding.md#custom-events-with-eventemitter) that send observable output data from a child to a parent component -->
+
+-   The HTTP module uses observables to handle AJAX requests and responses
+-   The Router and Forms modules use observables to listen for and respond to user-input events
 
 ## Transmitting data between components
 
-Angular provides an `EventEmitter` class that is used when publishing values from a component through the [`@Output()` decorator](guide/inputs-outputs#output).
+Angular provides an `EventEmitter` class that is used when publishing values from a component through the [`@Output()` decorator](inputs-outputs.md#output).
 `EventEmitter` extends [RxJS `Subject`](https://rxjs.dev/api/index/class/Subject), adding an `emit()` method so it can send arbitrary values.
 When you call `emit()`, it passes the emitted value to the `next()` method of any subscribed observer.
 
@@ -19,7 +20,7 @@ Here is the example component that listens for open and close events:
 
 <code-example format="typescript" language="typescript">
 
-&lt;app-zippy (open)="onOpen(&dollar;event)" (close)="onClose(&dollar;event)"&gt;&lt;/app-zippy&gt;
+&lt;app-zippy (open)="onOpen(\$event)" (close)="onClose(\$event)"&gt;&lt;/app-zippy&gt;
 
 </code-example>
 
@@ -33,12 +34,12 @@ Angular's `HttpClient` returns observables from HTTP method calls.
 For instance, `http.get('/api')` returns an observable.
 This provides several advantages over promise-based HTTP APIs:
 
-*   Observables do not mutate the server response \(as can occur through chained `.then()` calls on promises\).
+-   Observables do not mutate the server response \(as can occur through chained `.then()` calls on promises\).
     Instead, you can use a series of operators to transform values as needed.
 
-*   HTTP requests are cancellable through the `unsubscribe()` method
-*   Requests can be configured to get progress event updates
-*   Failed requests can be retried easily
+-   HTTP requests are cancellable through the `unsubscribe()` method
+-   Requests can be configured to get progress event updates
+-   Failed requests can be retried easily
 
 ## Async pipe
 

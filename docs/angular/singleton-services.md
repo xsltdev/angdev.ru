@@ -8,8 +8,8 @@ For a sample application using the app-wide singleton service that this page des
 
 There are two ways to make a service a singleton in Angular:
 
-*   Set the `providedIn` property of the `@Injectable()` to `"root"`
-*   Include the service in the `AppModule` or in a module that is only imported by the `AppModule`
+-   Set the `providedIn` property of the `@Injectable()` to `"root"`
+-   Include the service in the `AppModule` or in a module that is only imported by the `AppModule`
 
 <a id="providedIn"></a>
 
@@ -29,9 +29,9 @@ In applications built with Angular versions prior to 6.0, services are registere
 <code-example format="typescript" language="typescript">
 
 &commat;NgModule({
-  &hellip;
-  providers: [UserService],
-  &hellip;
+&hellip;
+providers: [UserService],
+&hellip;
 })
 
 </code-example>
@@ -51,15 +51,15 @@ This could result in multiple service instances and the service would no longer 
 
 There are multiple ways to prevent this:
 
-*   Use the [`providedIn` syntax](guide/singleton-services#providedIn) instead of registering the service in the module.
-*   Separate your services into their own module.
-*   Define `forRoot()` and `forChild()` methods in the module.
+-   Use the [`providedIn` syntax](singleton-services.md#providedIn) instead of registering the service in the module.
+-   Separate your services into their own module.
+-   Define `forRoot()` and `forChild()` methods in the module.
 
 <div class="alert is-helpful">
 
 **NOTE**: <br />
 There are two example applications where you can see this scenario; the more advanced <live-example noDownload name="ngmodules">NgModules live example</live-example>, which contains `forRoot()` and `forChild()` in the routing modules and the `GreetingModule`, and the simpler <live-example name="lazy-loading-ngmodules" noDownload>Lazy Loading live example</live-example>.
-For an introductory explanation see the [Lazy Loading Feature Modules](guide/lazy-loading-ngmodules) guide.
+For an introductory explanation see the [Lazy Loading Feature Modules](lazy-loading-ngmodules.md) guide.
 
 </div>
 
@@ -84,7 +84,7 @@ By using the `forRoot()` method, the root application module imports `RouterModu
 <div class="alert is-helpful">
 
 **NOTE**: <br />
-If you have a module which has both providers and declarations, you *can* use this technique to separate them out and you may see this pattern in legacy applications.
+If you have a module which has both providers and declarations, you _can_ use this technique to separate them out and you may see this pattern in legacy applications.
 However, since Angular 6.0, the best practice for providing services is with the `@Injectable()` `providedIn` property.
 
 </div>
@@ -93,8 +93,8 @@ However, since Angular 6.0, the best practice for providing services is with the
 
 `forRoot()` takes a service configuration object and returns a [ModuleWithProviders](api/core/ModuleWithProviders), which is a simple object with the following properties:
 
-| Properties  | Details |
-|:---         |:---     |
+| Properties  | Details                                     |
+| :---------- | :------------------------------------------ |
 | `ngModule`  | In this example, the `GreetingModule` class |
 | `providers` | The configured providers                    |
 
@@ -129,14 +129,14 @@ Remember to import `GreetingModule` as a Javascript import at the top of the fil
 ## Prevent reimport of the `GreetingModule`
 
 Only the root `AppModule` should import the `GreetingModule`.
-If a lazy-loaded module imports it too, the application can generate [multiple instances](guide/ngmodule-faq#q-why-bad) of a service.
+If a lazy-loaded module imports it too, the application can generate [multiple instances](ngmodule-faq.md#q-why-bad) of a service.
 
 To guard against a lazy loaded module re-importing `GreetingModule`, add the following `GreetingModule` constructor.
 
 <code-example header="src/app/greeting/greeting.module.ts" path="ngmodules/src/app/greeting/greeting.module.ts" region="ctor"></code-example>
 
 The constructor tells Angular to inject the `GreetingModule` into itself.
-The injection would be circular if Angular looked for `GreetingModule` in the *current* injector, but the `@SkipSelf()` decorator means "look for `GreetingModule` in an ancestor injector, above me in the injector hierarchy."
+The injection would be circular if Angular looked for `GreetingModule` in the _current_ injector, but the `@SkipSelf()` decorator means "look for `GreetingModule` in an ancestor injector, above me in the injector hierarchy."
 
 By default, the injector throws an error when it can't find a requested provider.
 The `@Optional()` decorator means not finding the service is OK.
@@ -160,9 +160,9 @@ Here are the two files in their entirety for reference:
 
 You may also be interested in:
 
-*   [Sharing Modules](guide/sharing-ngmodules), which elaborates on the concepts covered on this page
-*   [Lazy Loading Modules](guide/lazy-loading-ngmodules)
-*   [NgModule FAQ](guide/ngmodule-faq)
+-   [Sharing Modules](sharing-ngmodules.md), which elaborates on the concepts covered on this page
+-   [Lazy Loading Modules](lazy-loading-ngmodules.md)
+-   [NgModule FAQ](ngmodule-faq.md)
 
 <!-- links -->
 

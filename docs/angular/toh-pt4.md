@@ -14,7 +14,7 @@
 
 Компоненты не должны получать или сохранять данные напрямую и уж точно не должны представлять заведомо ложные данные. Они должны сосредоточиться на представлении данных и делегировать доступ к ним сервису.
 
-В этом руководстве создается `HeroService`, который все классы приложения могут использовать для получения героев. Вместо того чтобы создавать сервис с помощью ключевого слова [`new`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/new), используйте [_dependency injection_](guide/dependency-injection), который поддерживает Angular, чтобы внедрить его в конструктор `HeroesComponent`.
+В этом руководстве создается `HeroService`, который все классы приложения могут использовать для получения героев. Вместо того чтобы создавать сервис с помощью ключевого слова [`new`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/new), используйте [_dependency injection_](dependency-injection.md), который поддерживает Angular, чтобы внедрить его в конструктор `HeroesComponent`.
 
 Сервисы - это отличный способ обмена информацией между классами, которые _не знают друг друга_. Создайте следующий `MessageService` и инжектируйте его в эти два места.
 
@@ -81,7 +81,7 @@
 
 <div class="alert is-helpful">
 
-Чтобы узнать больше о провайдерах, смотрите раздел [Провайдеры](guide/providers). Чтобы узнать больше об инжекторах, см. руководство [Dependency Injection guide](guide/dependency-injection).
+Чтобы узнать больше о провайдерах, смотрите раздел [Провайдеры](providers.md). Чтобы узнать больше об инжекторах, см. руководство [Dependency Injection guide](dependency-injection.md).
 
 </div>
 
@@ -115,7 +115,7 @@
 
 Параметр одновременно определяет частное свойство `heroService` и идентифицирует его как место инъекции `HeroService`.
 
-Когда Angular создает `HeroesComponent`, система [Dependency Injection](guide/dependency-injection) устанавливает параметр `heroService` в синглтон экземпляра `HeroService`.
+Когда Angular создает `HeroesComponent`, система [Dependency Injection](dependency-injection.md) устанавливает параметр `heroService` в синглтон экземпляра `HeroService`.
 
 ### Добавьте `getHeroes()`.
 
@@ -133,7 +133,7 @@
 
 Он определенно не должен вызывать функцию, которая делает HTTP-запросы к удаленному серверу, как это сделала бы _реальная_ служба данных.
 
-Вместо этого вызовите `getHeroes()` внутри [_ngOnInit lifecycle hook_](guide/lifecycle-hooks) и позвольте Angular вызвать `ngOnInit()` в подходящее время _после_ создания экземпляра `HeroesComponent`.
+Вместо этого вызовите `getHeroes()` внутри [_ngOnInit lifecycle hook_](lifecycle-hooks.md) и позвольте Angular вызвать `ngOnInit()` в подходящее время _после_ создания экземпляра `HeroesComponent`.
 
 <code-example header="src/app/heroes/heroes.component.ts" path="toh-pt4/src/app/heroes/heroes.component.ts" region="ng-on-init"></code-example>.
 
@@ -155,13 +155,13 @@
 
 В этом руководстве `HeroService.getHeroes()` возвращает `Observable`, чтобы можно было использовать метод Angular `HttpClient.get` для получения героев
 
-и чтобы [`HttpClient.get()`](guide/http) возвращал `Observable`.
+и чтобы [`HttpClient.get()`](http.md) возвращал `Observable`.
 
 ### Observable `HeroService`.
 
 `Observable` является одним из ключевых классов в [библиотеке RxJS](https://rxjs.dev).
 
-В [учебнике по HTTP](tutorial/tour-of-heroes/toh-pt6) вы можете увидеть, как методы Angular `HttpClient` возвращают объекты RxJS `Observable`. Этот учебник имитирует получение данных с сервера с помощью функции RxJS `of()`.
+В [учебнике по HTTP](toh-pt6.md) вы можете увидеть, как методы Angular `HttpClient` возвращают объекты RxJS `Observable`. Этот учебник имитирует получение данных с сервера с помощью функции RxJS `of()`.
 
 Откройте файл `HeroService` и импортируйте символы `Observable` и `of` из RxJS.
 
@@ -175,7 +175,7 @@
 
 <div class="alert is-helpful">
 
-В [HTTP tutorial](tutorial/tour-of-heroes/toh-pt6) показано, как вызвать `HttpClient.get<Hero[]>()`, который также возвращает `Observable<Hero[]>`, выдающий _единственное значение_, массив героев из тела HTTP-ответа.
+В [HTTP tutorial](toh-pt6.md) показано, как вызвать `HttpClient.get<Hero[]>()`, который также возвращает `Observable<Hero[]>`, выдающий _единственное значение_, массив героев из тела HTTP-ответа.
 
 </div>
 
@@ -311,13 +311,13 @@ This template binds directly to the component's `messageService`.
 
 | `*ngFor` | Presents the list of messages in repeated `<div>` elements. |
 
-| Angular [event binding](guide/event-binding) | Binds the button's click event to `MessageService.clear()`. |
+| Angular [event binding](event-binding.md) | Binds the button's click event to `MessageService.clear()`. |
 
 The messages look better after you add the private CSS styles to `messages.component.css` as listed in one of the ["final code review"](#final-code-review) tabs below.
 
 ## Add MessageService to HeroesComponent
 
-The following example shows how to display a history of each time the user clicks on a hero. This helps when you get to the next section on [Routing](tutorial/tour-of-heroes/toh-pt5).
+The following example shows how to display a history of each time the user clicks on a hero. This helps when you get to the next section on [Routing](toh-pt5.md).
 
 <code-example header="src/app/heroes/heroes.component.ts" path="toh-pt4/src/app/heroes/heroes.component.ts"></code-example>.
 
@@ -347,7 +347,7 @@ The following example shows how to display a history of each time the user click
 
 -   Вы зарегистрировали `HeroService` как _провайдера_ своего сервиса на корневом уровне, чтобы его можно было внедрить в любое место приложения.
 
--   Вы использовали [Angular Dependency Injection](guide/dependency-injection), чтобы внедрить его в компонент.
+-   Вы использовали [Angular Dependency Injection](dependency-injection.md), чтобы внедрить его в компонент.
 
 -   Вы придали методу `HeroService` `get data` асинхронную сигнатуру.
 

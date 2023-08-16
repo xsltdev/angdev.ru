@@ -32,7 +32,7 @@
 -   JavaScript
 -   HTML
 -   CSS
--   [Angular CLI](cli.md).
+-   [Angular CLI](https://angular.io/cli.md).
 
 Вам может быть полезен учебник [Tour of Heroes](tour-of-heroes.md), но он не обязателен.
 

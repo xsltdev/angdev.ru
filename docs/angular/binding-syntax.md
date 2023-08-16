@@ -141,7 +141,7 @@ The binding punctuation of `[]`, `()`, `[()]`, and the prefix specify the direct
 
 -   Используйте `[()]` для двухстороннего связывания в последовательности вид - источник - вид.
 
-Поместите выражение или утверждение справа от знака равенства в двойные кавычки \(`""`\). Для получения дополнительной информации смотрите [Интерполяция](guide/interpolation) и [Шаблонные утверждения](guide/template-statements).
+Поместите выражение или утверждение справа от знака равенства в двойные кавычки \(`""`\). Для получения дополнительной информации смотрите [Интерполяция](interpolation.md) и [Шаблонные утверждения](template-statements.md).
 
 ## Типы и цели связывания
 
@@ -150,7 +150,7 @@ The binding punctuation of `[]`, `()`, `[()]`, and the prefix specify the direct
 В следующей таблице перечислены цели для различных типов привязки.
 
 | Type | Target | Examples | |:--- |:--- |:--- |
-| Property | Element property <br /> Component property <br /> Directive property | `alt`, `src`, `hero`, and `ngClass` in the following: <code-example path="template-syntax/src/app/app.component.html" region="property-binding-syntax-1"></code-example> <!-- For more information, see [Property Binding](guide/property-binding). --> |
+| Property | Element property <br /> Component property <br /> Directive property | `alt`, `src`, `hero`, and `ngClass` in the following: <code-example path="template-syntax/src/app/app.component.html" region="property-binding-syntax-1"></code-example> <!-- For more information, see [Property Binding](property-binding.md). --> |
 | Event | Element event <br /> Component event <br /> Directive event | `click`, `deleteRequest`, and `myClick` in the following: <code-example path="template-syntax/src/app/app.component.html" region="event-binding-syntax-1"></code-example> |
 | Two-way | Event and property | <code-example path="template-syntax/src/app/app.component.html" region="2-way-binding-syntax-1"></code-example> |
 | Attribute | Attribute \(the exception\) | <code-example path="template-syntax/src/app/app.component.html" region="attribute-binding-syntax-1"></code-example> |

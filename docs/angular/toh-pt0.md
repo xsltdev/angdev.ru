@@ -20,11 +20,11 @@
 
 ## Настройка среды
 
-Чтобы настроить среду разработки, следуйте инструкциям в [Local Environment Setup](guide/setup-local 'Setting up for Local Development').
+Чтобы настроить среду разработки, следуйте инструкциям в [Local Environment Setup](setup-local.md 'Setting up for Local Development').
 
 ## Создайте новое рабочее пространство и начальное приложение
 
-Вы разрабатываете приложения в контексте Angular [workspace](guide/glossary#workspace). Рабочее пространство\_ содержит файлы для одного или нескольких [проектов](guide/glossary#project).
+Вы разрабатываете приложения в контексте Angular [workspace](glossary.md#workspace). Рабочее пространство\_ содержит файлы для одного или нескольких [проектов](glossary.md#project).
 
 _Проект_ - это набор файлов, составляющих приложение или библиотеку.
 

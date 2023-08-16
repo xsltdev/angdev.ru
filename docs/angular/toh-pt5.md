@@ -285,7 +285,7 @@ URL типа `~/detail/11` будет хорошим URL для перехода
 
 <code-example header="src/app/dashboard/dashboard.component.html (ссылки на героев)" path="toh-pt5/src/app/dashboard/dashboard.component.html" region="click"></code-example>.
 
-Вы используете Angular [interpolation binding](guide/interpolation) внутри повторителя `*ngFor` для вставки `hero.id` текущей итерации в каждый [`routerLink`](#routerlink).
+Вы используете Angular [interpolation binding](interpolation.md) внутри повторителя `*ngFor` для вставки `hero.id` текущей итерации в каждый [`routerLink`](#routerlink).
 
 <a id="heroes-component-links"></a>
 
@@ -345,7 +345,7 @@ Add a `routerLink` attribute to the anchor that's the same as in the dashboard t
 
 ### Извлечение параметра маршрута `id`
 
-В `ngOnInit()` [lifecycle hook](guide/lifecycle-hooks#oninit) вызовите `getHero()` и определите его следующим образом.
+В `ngOnInit()` [lifecycle hook](lifecycle-hooks.md#oninit) вызовите `getHero()` и определите его следующим образом.
 
 <code-example header="src/app/hero-detail/hero-detail.component.ts" path="toh-pt5/src/app/hero-detail/hero-detail.component.ts" region="ngOnInit"></code-example>.
 

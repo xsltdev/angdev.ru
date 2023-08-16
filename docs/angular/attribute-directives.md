@@ -37,7 +37,7 @@
 
     `ElementRef` предоставляет прямой доступ к основному элементу DOM через свойство `nativeElement`.
 
-3.  Добавьте `ElementRef` в `constructor()` директивы для [inject](guide/dependency-injection) ссылки на основной элемент DOM, элемент, к которому вы применяете `appHighlight`.
+3.  Добавьте `ElementRef` в `constructor()` директивы для [inject](dependency-injection.md) ссылки на основной элемент DOM, элемент, к которому вы применяете `appHighlight`.
 
 4.  Добавьте логику в класс `HighlightDirective`, которая устанавливает желтый фон.
 

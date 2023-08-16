@@ -114,5 +114,5 @@
 
 <!-- vale Angular.Google_WordListSuggestions = NO -->
 
--   [Обзор маршрутизации в Angular](guide/routing-overview)
--   [Общие задачи маршрутизации](guide/router)
+-   [Обзор маршрутизации в Angular](routing-overview.md)
+-   [Общие задачи маршрутизации](router.md)

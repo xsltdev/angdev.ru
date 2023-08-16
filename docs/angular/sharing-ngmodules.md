@@ -15,10 +15,10 @@ import { NewItemDirective } from './new-item.directive';
 import { OrdersPipe } from './orders.pipe';
 
 &commat;NgModule({
- imports:      [ CommonModule ],
- declarations: [ CustomerComponent, NewItemDirective, OrdersPipe ],
- exports:      [ CustomerComponent, NewItemDirective, OrdersPipe,
-                 CommonModule, FormsModule ]
+imports: [ CommonModule ],
+declarations: [ CustomerComponent, NewItemDirective, OrdersPipe ],
+exports: [ CustomerComponent, NewItemDirective, OrdersPipe,
+CommonModule, FormsModule ]
 })
 export class SharedModule { }
 
@@ -26,9 +26,9 @@ export class SharedModule { }
 
 Notice the following:
 
-*   It imports the `CommonModule` because the module's component needs common directives
-*   It declares and exports the utility pipe, directive, and component classes
-*   It re-exports the `CommonModule` and `FormsModule`
+-   It imports the `CommonModule` because the module's component needs common directives
+-   It declares and exports the utility pipe, directive, and component classes
+-   It re-exports the `CommonModule` and `FormsModule`
 
 By re-exporting `CommonModule` and `FormsModule`, any other module that imports this `SharedModule`, gets access to directives like `NgIf` and `NgFor` from `CommonModule` and can bind to component properties with `[(ngModel)]`, a directive in the `FormsModule`.
 
@@ -39,8 +39,8 @@ This way, you can give other modules access to `FormsModule` without having to i
 
 You may also be interested in the following:
 
-*   [Providers](guide/providers)
-*   [Types of Feature Modules](guide/module-types)
+-   [Providers](providers.md)
+-   [Types of Feature Modules](module-types.md)
 
 <!-- links -->
 
