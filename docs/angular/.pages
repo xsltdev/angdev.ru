@@ -159,12 +159,12 @@ nav:
             - AOT компилятор:
                 - aot-compiler.md
                 - angular-compiler-options.md
-#                - aot-metadata-errors.md
-#                - template-typecheck.md
-#            - build.md
-#        - cli-builder.md
-#        - language-service.md
-#        - devtools.md
+                - aot-metadata-errors.md
+                - template-typecheck.md
+            - build.md
+        - cli-builder.md
+        - language-service.md
+        - devtools.md
 #        - Схемы:
 #            - schematics.md
 #            - schematics-authoring.md

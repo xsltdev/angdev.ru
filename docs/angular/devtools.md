@@ -1,32 +1,29 @@
-# DevTools Overview
+---
+description: Angular DevTools - это расширение для браузера, предоставляющее возможности отладки и профилирования приложений Angular
+---
 
-Angular DevTools is a browser extension that provides debugging and profiling capabilities for Angular applications. Angular DevTools supports Angular v12 and later when compiled with the [optimization configuration option](workspace-config.md#optimization-configuration) disabled (`{optimization:false}`).
+# DevTools Обзор
 
-<iframe allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/bavWOHZM6zE"></iframe>
+:date: 28.02.2022
+
+**Angular DevTools** - это расширение для браузера, предоставляющее возможности отладки и профилирования приложений Angular. Angular DevTools поддерживает Angular v12 и более поздние версии при компиляции с отключенной опцией [optimization configuration option](workspace-config.md#optimization-configuration) (`{optimization:false}`).
+
+<iframe width="100%" height="400" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/bavWOHZM6zE"></iframe>
 
 Angular DevTools можно найти в [Chrome Web Store](https://chrome.google.com/webstore/detail/angular-developer-tools/ienfalfjdbdpebioblfackkekamfmbnh) и в [Firefox Addons](https://addons.mozilla.org/en-GB/firefox/addon/angular-devtools/).
 
 После установки Angular DevTools найдите расширение на вкладке Angular в DevTools вашего браузера.
 
-<div class="lightbox">
-
-<img alt="devtools" src="generated/images/guide/devtools/devtools.png">
-
-</div>
+![devtools](devtools.png)
 
 Когда вы откроете расширение, вы увидите две дополнительные вкладки:
 
-| Tabs | Details | | :------------------------ | :--------------------------------------------------------------------------------------------------------------------- | .
+| Tabs                      | Details                                                                                                                                |
+| :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------- |
+| [Компоненты](#components) | Позволяет исследовать компоненты и директивы в вашем приложении, просматривать или редактировать их состояние.                         |
+| [Profiler](#profiler)     | Позволяет профилировать приложение и понять, что является узким местом в производительности во время выполнения обнаружения изменений. |
 
-| [Компоненты](#components) | Позволяет исследовать компоненты и директивы в вашем приложении, просматривать или редактировать их состояние. |
-
-| [Profiler](#profiler) | Позволяет профилировать приложение и понять, что является узким местом в производительности во время выполнения обнаружения изменений. |
-
-<div class="lightbox">
-
-<img alt="devtools tabs" src="generated/images/guide/devtools/devtools-tabs.png">
-
-</div>
+![devtools tabs](devtools-tabs.png)
 
 В правом верхнем углу Angular DevTools вы увидите, какая версия Angular запущена на странице, а также хэш последнего коммита для расширения.
 
@@ -36,15 +33,11 @@ Angular DevTools можно найти в [Chrome Web Store](https://chrome.goog
 
 Чтобы сообщить о проблеме с Profiler, экспортируйте запись Profiler, нажав на кнопку **Save Profile**, а затем прикрепите этот экспорт в виде файла к проблеме.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Убедитесь, что запись Profiler не содержит никакой конфиденциальной информации.
+    Убедитесь, что запись Profiler не содержит никакой конфиденциальной информации.
 
-</div>
-
-<a id="components"></a>
-
-## Отладка вашего приложения
+## Отладка вашего приложения {#components}
 
 Вкладка **Компоненты** позволяет исследовать структуру вашего приложения. Вы можете визуализировать и проверять экземпляры компонентов и директив, а также просматривать или изменять их состояние.
 
@@ -52,11 +45,7 @@ Angular DevTools можно найти в [Chrome Web Store](https://chrome.goog
 
 ### Исследовать структуру приложения
 
-<div class="lightbox">
-
-<img alt="component-explorer" src="generated/images/guide/devtools/component-explorer.png">
-
-</div>
+![component-explorer](component-explorer.png)
 
 На предыдущем снимке экрана вы можете видеть дерево компонентов приложения.
 
@@ -68,21 +57,16 @@ Angular DevTools можно найти в [Chrome Web Store](https://chrome.goog
 
 Перемещайтесь по дереву компонентов с помощью мыши или следующих сочетаний клавиш:
 
-| Сочетание клавиш | Детали | | :-------------------- | :--------------------------------- |.
-
-| Стрелки вверх и вниз | Выберите предыдущий и следующий узлы |
-
-| | Стрелки влево и вправо | Свернуть и развернуть узел |
+| Сочетание клавиш       | Детали                               |
+| :--------------------- | :----------------------------------- |
+| Стрелки вверх и вниз   | Выберите предыдущий и следующий узлы |
+| Стрелки влево и вправо | Свернуть и развернуть узел           |
 
 Чтобы найти компонент или директиву по имени, используйте поле поиска над деревом компонентов. Чтобы перейти к следующему поисковому запросу, нажмите `Enter`.
 
 Чтобы перейти к предыдущему поиску, нажмите `Shift + Enter`.
 
-<div class="lightbox">
-
-<img alt="search" src="generated/images/guide/devtools/search.png">
-
-</div>
+![search](search.png)
 
 ### Переход к узловому элементу
 
@@ -92,11 +76,7 @@ Angular DevTools можно найти в [Chrome Web Store](https://chrome.goog
 
 Для компонентов Angular DevTools также позволяет перейти к определению компонента на вкладке источника. После выбора определенного компонента нажмите на значок в правом верхнем углу представления свойств:
 
-<div class="lightbox">
-
-<img alt="navigate source" src="generated/images/guide/devtools/navigate-source.png">
-
-</div>
+![navigate source](navigate-source.png)
 
 ### Обновить значение свойства
 
@@ -106,21 +86,13 @@ Angular DevTools можно найти в [Chrome Web Store](https://chrome.goog
 
 Введите новое значение и нажмите `Enter`.
 
-<div class="lightbox">
-
-<img alt="update property" src="generated/images/guide/devtools/update-property.png">
-
-</div>
+![update property](update-property.png)
 
 ### Доступ к выбранному компоненту или директиве в консоли
 
 В качестве ярлыка в консоли Angular DevTools предоставляет доступ к экземплярам недавно выбранных компонентов или директив. Введите `$ng0`, чтобы получить ссылку на экземпляр текущего выбранного компонента или директивы, и `$ng1` для ранее выбранного экземпляра.
 
-<div class="lightbox">
-
-<img alt="access console" src="generated/images/guide/devtools/access-console.png">
-
-</div>
+![access console](access-console.png)
 
 ### Выберите директиву или компонент
 
@@ -128,72 +100,47 @@ Angular DevTools можно найти в [Chrome Web Store](https://chrome.goog
 
 Расширение распознает связанные директивы и/или компоненты и позволит вам выбрать соответствующий элемент в дереве компонентов.
 
-<div class="lightbox">
+![selecting dom node](inspect-element.png)
 
-<img alt="selecting dom node" src="generated/images/guide/devtools/inspect-element.png">
-
-</div>
-
-<a id="profiler"></a>
-
-## Профиль вашего приложения
+## Профиль вашего приложения {#profiler}
 
 Вкладка **Profiler** позволяет вам предварительно просмотреть выполнение обнаружения изменений в Angular.
 
-<div class="lightbox">
-
-<img alt="profiler" src="generated/images/guide/devtools/profiler.png">
-
-</div>
+![profiler](profiler.png)
 
 Профилировщик позволяет начать профилирование или импортировать существующий профиль. Чтобы начать профилирование приложения, наведите курсор на круг в левом верхнем углу вкладки **Профилировщик** и нажмите **Начать запись**.
 
 Во время профилирования Angular DevTools фиксирует события выполнения, такие как обнаружение изменений и выполнение крючков жизненного цикла. Чтобы закончить запись, снова нажмите на круг, чтобы **Остановить запись**.
 
-Вы также можете импортировать существующую запись. Подробнее об этой возможности читайте в разделе [Импорт записи](#).
+Вы также можете импортировать существующую запись. Подробнее об этой возможности читайте в разделе "Импорт записи".
 
 ### Понимание выполнения вашего приложения
 
 На следующем снимке экрана показан стандартный вид профайлера после завершения записи.
 
-<div class="lightbox">
-
-<img alt="default profiler view" src="generated/images/guide/devtools/default-profiler-view.png">
-
-</div>
+![default profiler view](default-profiler-view.png)
 
 В верхней части представления вы можете увидеть последовательность полос, каждая из которых символизирует циклы обнаружения изменений в вашем приложении. Чем выше столбик, тем дольше ваше приложение находилось в этом цикле.
+
 Когда вы выбираете столбик, DevTools отображает гистограмму со всеми компонентами и директивами, которые он зафиксировал во время этого цикла.
 
-<div class="lightbox">
-
-<img alt="profiler selected bar" src="generated/images/guide/devtools/profiler-selected-bar.png">
-
-</div>
+![profiler selected bar](profiler-selected-bar.png)
 
 Ранее на временной шкале обнаружения изменений вы можете узнать, сколько времени Angular провел в этом цикле. Angular DevTools пытается оценить падение кадров в этот момент, чтобы указать, когда выполнение вашего приложения может повлиять на пользовательский опыт.
 
-Angular DevTools также указывает, что вызвало обнаружение изменений\(то есть, источник\).
+Angular DevTools также указывает, что вызвало обнаружение изменений (то есть, источник).
 
 ### Понимание выполнения компонентов
 
 Когда вы нажимаете на панель, вы получаете подробное представление о том, сколько времени ваше приложение провело в конкретной директиве или компоненте:
 
-<div class="lightbox">
-
-<img alt="directive details" src="generated/images/guide/devtools/directive-details.png">
-
-</div>
+![directive details](directive-details.png)
 
 На рисунке показано общее время, затраченное директивой NgforOf, и какой метод был вызван в ней. Здесь также показана родительская иерархия выбранной директивы.
 
 ### Иерархические представления
 
-<div class="lightbox">
-
-<img alt="flame graph view" src="generated/images/guide/devtools/flame-graph-view.png">
-
-</div>
+![flame graph view](flame-graph-view.png)
 
 Вы также можете предварительно просмотреть выполнение обнаружения изменений в виде пламенного графа. Каждая плитка в графе представляет элемент на экране в определенной позиции в дереве рендеринга.
 
@@ -209,21 +156,13 @@ Angular DevTools также указывает, что вызвало обнар
 
 В этом представлении все плитки, в которых Angular выполнил обнаружение изменений, окрашены в зеленый цвет, а остальные - в серый:
 
-<div class="lightbox">
-
-<img alt="debugging onpush" src="generated/images/guide/devtools/debugging-onpush.png">
-
-</div>
+![debugging onpush](debugging-onpush.png)
 
 ### Импорт записи
 
 Нажмите кнопку **Сохранить профиль** в левом верхнем углу записанного сеанса профилирования, чтобы экспортировать его в файл JSON и сохранить на диске. Затем импортируйте файл в начальном представлении профилировщика, нажав на вход **Выбрать файл**:
 
-<div class="lightbox">
-
-<img alt="save profile" src="generated/images/guide/devtools/save-profile.png">
-
-</div>
+![save profile](save-profile.png)
 
 <!-- links -->
 
@@ -231,4 +170,6 @@ Angular DevTools также указывает, что вызвало обнар
 
 <!-- end links -->
 
-:date: 28.02.2022
+## Ссылки
+
+-   [DevTools Overview](https://angular.io/guide/devtools)
