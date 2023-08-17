@@ -171,21 +171,21 @@ nav:
             - schematics-for-libraries.md
     - Туториалы:
         - Ваше первое приложение:
-            - first-app.md
-            - first-app-lesson-01.md
-            - first-app-lesson-02.md
-            - first-app-lesson-03.md
-            - first-app-lesson-04.md
-            - first-app-lesson-05.md
-            - first-app-lesson-06.md
-            - first-app-lesson-07.md
-            - first-app-lesson-08.md
-            - first-app-lesson-09.md
-            - first-app-lesson-10.md
-            - first-app-lesson-11.md
-            - first-app-lesson-12.md
-            - first-app-lesson-13.md
-            - first-app-lesson-14.md
+            - Первое приложение Angular: first-app.md
+            - 1. Hello world: first-app-lesson-01.md
+            - 2. Создание компонента Home: first-app-lesson-02.md
+            - 3. Создание компонента HousingLocation: first-app-lesson-03.md
+            - 4. Создание интерфейса: first-app-lesson-04.md
+            - 5. Добавление входного параметра: first-app-lesson-05.md
+            - 6. Добавление привязки свойств: first-app-lesson-06.md
+            - 7. Добавление интерполяции: first-app-lesson-07.md
+            - 8. Использование ngFor для вывода списка объектов: first-app-lesson-08.md
+            - 9. Сервисы Angular: first-app-lesson-09.md
+            - 10. Добавление маршрутов: first-app-lesson-10.md
+            - 11. Интеграция страницы подробностей: first-app-lesson-11.md
+            - 12. Добавление формы: first-app-lesson-12.md
+            - 13. Добавление функции поиска: first-app-lesson-13.md
+            - 14. Добавьте HTTP-коммуникацию: first-app-lesson-14.md
 #        - Тур героев:
 #            - toh.md
 #            - toh-pt0.md

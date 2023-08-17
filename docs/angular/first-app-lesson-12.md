@@ -1,4 +1,8 @@
-# Первое приложение Angular урок 12 - Добавление формы в приложение Angular
+---
+description: Этот урок демонстрирует, как добавить форму, собирающую данные пользователя, в приложение Angular. Этот урок начинается с функционального приложения Angular и показывает, как добавить в него форму
+---
+
+# Урок 12: Добавление формы в приложение Angular
 
 Этот урок демонстрирует, как добавить форму, собирающую данные пользователя, в приложение Angular. Этот урок начинается с функционального приложения Angular и показывает, как добавить в него форму.
 
@@ -12,15 +16,15 @@
 
 -   Использовать код, созданный в Уроке 11, в своей интегрированной среде разработки (IDE).
 
--   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-11"></live-example> из Урока 11, где вы можете:
+-   Начните с примера кода из предыдущего урока. Выберите код из Урока 11, где вы можете:
 
-    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
+    -   Использовать [живой пример](https://angular.io/generated/live-examples/first-app-lesson-11/stackblitz.html) в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-    -   Использовать _download пример_ и открыть его в вашей IDE.
+    -   Использовать [download пример](https://angular.io/generated/zips/first-app-lesson-11/first-app-lesson-11.zip) и открыть его в вашей IDE.
 
 Если вы не просмотрели введение, посетите [Введение в Angular tutorial](first-app.md), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть [готовый код](https://angular.io/generated/live-examples/first-app-lesson-12/stackblitz.html) для этого урока.
 
 ## После завершения
 
@@ -40,9 +44,15 @@
 
 1.  В `src/app/housing.service.ts`, внутри класса `HousingService`, вставьте этот метод в нижней части определения класса.
 
-    <code-example header="Submit method in src/app/housing.service.ts" path="first-app-lesson-12/src/app/housing.service.ts" region="submit-method"></code-example>.
+    ```ts
+    submitApplication(firstName: string, lastName: string, email: string) {
+        console.log(
+    		`Homes application received: firstName: ${firstName}, lastName: ${lastName}, email: ${email}.`
+    	);
+    }
+    ```
 
-1.  Убедитесь, что приложение собирается без ошибок.
+2.  Убедитесь, что приложение собирается без ошибок.
 
     Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
@@ -54,25 +64,50 @@
 
 1.  После оператора `import` в верхней части файла добавьте следующий код для импорта классов форм Angular.
 
-    <code-example header="Forms imports in src/app/details/details.component.ts" path="first-app-lesson-12/src/app/details/details.component.ts" region="form-imports"></code-example>.
+    ```ts
+    import {
+        FormControl,
+        FormGroup,
+        ReactiveFormsModule,
+    } from '@angular/forms';
+    ```
 
-1.  В метаданных декоратора `DetailsComponent` обновите свойство `imports` следующим кодом:
+2.  В метаданных декоратора `DetailsComponent` обновите свойство `imports` следующим кодом:
 
-    <code-example header="imports directive in src/app/details/details.component.ts" path="first-app-lesson-12/src/app/details/details.component.ts" region="component-imports"></code-example>.
+    ```ts
+    imports: [
+    	CommonModule,
+    	ReactiveFormsModule
+    ],
+    ```
 
-1.  В классе `DetailsComponent`, перед методом `constructor()`, добавьте следующий код для создания объекта формы.
+3.  В классе `DetailsComponent`, перед методом `constructor()`, добавьте следующий код для создания объекта формы.
 
-    <code-example header="template directive in src/app/details/details.component.ts" path="first-app-lesson-12/src/app/details/details.component.ts" region="form-code"></code-example>.
+    ```ts
+    applyForm = new FormGroup({
+        firstName: new FormControl(''),
+        lastName: new FormControl(''),
+        email: new FormControl(''),
+    });
+    ```
 
     В Angular `FormGroup` и `FormControl` - это типы, которые позволяют создавать формы. Тип `FormControl` может предоставлять значение по умолчанию и формировать данные формы. В данном примере `firstName` - это `string`, а значение по умолчанию - пустая строка.
 
-1.  В классе `DetailsComponent` после метода `constructor()` добавьте следующий код для обработки клика **Apply now**.
+4.  В классе `DetailsComponent` после метода `constructor()` добавьте следующий код для обработки клика **Apply now**.
 
-    <code-example header="template directive in src/app/details/details.component.ts" path="first-app-lesson-12/src/app/details/details.component.ts" region="form-submit"></code-example>.
+    ```ts
+    submitApplication() {
+    	this.housingService.submitApplication(
+    		this.applyForm.value.firstName ?? '',
+    		this.applyForm.value.lastName ?? '',
+    		this.applyForm.value.email ?? ''
+    	);
+    }
+    ```
 
     Эта кнопка еще не существует - вы добавите ее в следующем шаге. В приведенном выше коде `FormControl` может возвращать `null`. Этот код использует оператор nullish coalescing, чтобы по умолчанию вернуть пустую строку, если значение `null`.
 
-1.  Убедитесь, что приложение собирается без ошибок.
+5.  Убедитесь, что приложение собирается без ошибок.
 
     Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
@@ -82,21 +117,50 @@
 
 В панели **Edit** вашей IDE, в `src/app/details/details.component.ts`:
 
-1. В метаданных декоратора `DetailsComponent` обновите HTML `template`, чтобы добавить разметку формы в соответствии со следующим кодом.
+1.  В метаданных декоратора `DetailsComponent` обновите HTML `template`, чтобы добавить разметку формы в соответствии со следующим кодом.
 
-    <code-example header="template directive in src/app/details/details.component.ts" path="first-app-lesson-12/src/app/details/details.component.ts" region="component-template"></code-example>.
+    ```ts
+    template: `
+    <article>
+    	<img class="listing-photo" [src]="housingLocation?.photo"
+    	alt="Exterior photo of {{housingLocation?.name}}"/>
+    	<section class="listing-description">
+    	<h2 class="listing-heading">{{housingLocation?.name}}</h2>
+    	<p class="listing-location">{{housingLocation?.city}}, {{housingLocation?.state}}</p>
+    	</section>
+    	<section class="listing-features">
+    	<h2 class="section-heading">About this housing location</h2>
+    	<ul>
+    		<li>Units available: {{housingLocation?.availableUnits}}</li>
+    		<li>Does this location have wifi: {{housingLocation?.wifi}}</li>
+    		<li>Does this location have laundry: {{housingLocation?.laundry}}</li>
+    	</ul>
+    	</section>
+    	<section class="listing-apply">
+    	<h2 class="section-heading">Apply now to live here</h2>
+    	<form [formGroup]="applyForm" (submit)="submitApplication()">
+    		<label for="first-name">First Name</label>
+    		<input id="first-name" type="text" formControlName="firstName">
+
+    		<label for="last-name">Last Name</label>
+    		<input id="last-name" type="text" formControlName="lastName">
+
+    		<label for="email">Email</label>
+    		<input id="email" type="email" formControlName="email">
+    		<button type="submit" class="primary">Apply now</button>
+    	</form>
+    	</section>
+    </article>
+    `,
+    ```
 
     Теперь шаблон включает обработчик события `(submit)="submitApplication()"`. Angular использует синтаксис круглых скобок вокруг имени события для создания определяемых событий в коде шаблона. Код справа от знака равенства - это код, который должен быть выполнен при срабатывании этого события. Вы можете привязываться к событиям браузера и пользовательским событиям.
 
-1. Убедитесь, что приложение создается без ошибок.
+2.  Убедитесь, что приложение создается без ошибок.
 
     Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
-     <section class="lightbox">
-
-     <img alt="страница с формой для подачи заявки на проживание в этом месте" src="generated/images/guide/faa/homes-app-lesson-12-step-3.png">
-
-     </section>
+    ![страница с формой для подачи заявки на проживание в этом месте](homes-app-lesson-12-step-3.png)
 
 ### Шаг 4 - Проверка новой формы вашего приложения
 
@@ -104,25 +168,25 @@
 
 1.  В панели **Terminal** вашей IDE запустите `ng serve`, если он еще не запущен.
 
-1.  В браузере откройте ваше приложение по адресу `http://localhost:4200`.
+2.  В браузере откройте ваше приложение по адресу `http://localhost:4200`.
 
-1.  В приложении щелкните правой кнопкой мыши и в контекстном меню выберите **Inspect**.
+3.  В приложении щелкните правой кнопкой мыши и в контекстном меню выберите **Inspect**.
 
-1.  В окне инструментов разработчика выберите вкладку **Консоль**.
+4.  В окне инструментов разработчика выберите вкладку **Консоль**.
 
     Убедитесь, что окно инструментов разработчика видно для следующих шагов
 
-1.  В вашем приложении:
+5.  В вашем приложении:
 
     1.  Выберите местоположение жилья и нажмите **Узнать больше**, чтобы увидеть подробную информацию о доме.
 
-    1.  На странице сведений о доме прокрутите страницу в самый низ, чтобы найти новую форму.
+    2.  На странице сведений о доме прокрутите страницу в самый низ, чтобы найти новую форму.
 
-    1.  Введите данные в поля формы - подойдут любые данные.
+    3.  Введите данные в поля формы - подойдут любые данные.
 
-    1.  Выберите **Применить сейчас**, чтобы отправить данные.
+    4.  Выберите **Применить сейчас**, чтобы отправить данные.
 
-1.  В окне инструментов разработчика просмотрите вывод журнала, чтобы найти данные формы.
+6.  В окне инструментов разработчика просмотрите вывод журнала, чтобы найти данные формы.
 
 ## Обзор урока
 
@@ -132,7 +196,7 @@
 
 -   подключить данные, полученные в форме, к форме с помощью обработчика событий.
 
-Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код для него в <live-example></live-example>.
+Если у вас возникли трудности с этим уроком, вы можете просмотреть [готовый код](https://angular.io/generated/live-examples/first-app-lesson-12/stackblitz.html) для него.
 
 ## Следующие шаги
 
@@ -144,3 +208,7 @@
 
 -   [Angular Forms](forms.md)
 -   [Обработка событий](event-binding.md)
+
+## Ссылки
+
+-   [Lesson 12: Adding a form to your Angular app](https://angular.io/tutorial/first-app/first-app-lesson-12)

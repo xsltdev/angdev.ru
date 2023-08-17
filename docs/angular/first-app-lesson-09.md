@@ -1,4 +1,8 @@
-# Первое приложение Angular урок 09 - Сервисы Angular
+---
+description: Этот урок демонстрирует, как создать службу Angular и использовать инъекцию зависимостей для включения ее в ваше приложение
+---
+
+# Урок 9: Сервисы Angular
 
 Этот урок демонстрирует, как создать службу Angular и использовать инъекцию зависимостей для включения ее в ваше приложение.
 
@@ -10,15 +14,15 @@
 
 -   Использовать код, созданный в Уроке 8, в своей интегрированной среде разработки (IDE).
 
--   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-08"></live-example> из Урока 8, где вы можете:
+-   Начните с примера кода из предыдущего урока. Выберите код из Урока 8, где вы можете:
 
-    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
+    -   Использовать [живой пример](https://angular.io/generated/live-examples/first-app-lesson-08/stackblitz.html) в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-    -   Использовать _download пример_ и открыть его в вашей IDE.
+    -   Использовать [download пример](https://angular.io/generated/zips/first-app-lesson-08/first-app-lesson-08.zip) и открыть его в вашей IDE.
 
 Если вы не просмотрели введение, посетите [Введение в Angular tutorial](first-app.md), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть [готовый код](https://angular.io/generated/live-examples/first-app-lesson-09/stackblitz.html) для этого урока.
 
 ## После завершения
 
@@ -50,7 +54,7 @@
 
 Выполните эти шаги над кодом приложения в вашей IDE.
 
-### Шаг 1 - Создайте новый сервис для вашего приложения.
+### Шаг 1 - Создайте новый сервис для вашего приложения
 
 Этот шаг создает инжектируемую службу для вашего приложения.
 
@@ -58,17 +62,15 @@
 
 1.  В каталоге проекта перейдите в каталог `first-app`.
 
-1.  В директории `first-app` выполните эту команду для создания новой службы.
+2.  В директории `first-app` выполните эту команду для создания новой службы.
 
-    <code-example format="shell" language="shell">
-
+    ```shell
     ng generate service housing --skip-tests
+    ```
 
-    </code-example
+3.  Запустите `ng serve`, чтобы создать приложение и передать его на `http://localhost:4200`.
 
-1.  Запустите `ng serve`, чтобы создать приложение и передать его на `http://localhost:4200`.
-
-1.  Убедитесь, что приложение собирается без ошибок.
+4.  Убедитесь, что приложение собирается без ошибок.
 
     Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
@@ -81,27 +83,39 @@
 В панели **Edit** вашей IDE:
 
 1.  В `src/app/home/home/home.component.ts`, из `HomeComponent`, скопируйте переменную `housingLocationList` и ее значение массива.
-1.  В `src/app/house.service.ts`:
+2.  В `src/app/house.service.ts`:
 
     1.  Внутрь класса `HousingService` вставьте переменную, которую вы скопировали из `HomeComponent` в предыдущем шаге.
 
-    1.  Внутри класса `HousingService` вставьте эти функции после данных, которые вы только что скопировали.
+    2.  Внутри класса `HousingService` вставьте эти функции после данных, которые вы только что скопировали.
 
         Эти функции позволяют зависимостям получать доступ к данным сервиса.
 
-        <code-example header="Функции сервиса в src/app/housing.service.ts" path="first-app-lesson-09/src/app/housing.service.ts" region="service-functions"></code-example>.
+        ```ts
+        getAllHousingLocations(): HousingLocation[] {
+        	return this.housingLocationList;
+        }
+
+        getHousingLocationById(id: number): HousingLocation | undefined {
+        	return this.housingLocationList.find(
+        		housingLocation => housingLocation.id === id
+        	);
+        }
+        ```
 
         Эти функции понадобятся вам в одном из следующих уроков. Пока же достаточно понять, что эти функции возвращают либо конкретное `HousingLocation` по id, либо весь список.
 
-    1.  Добавьте импорт на уровне файла для `HousingLocation`.
+    3.  Добавьте импорт на уровне файла для `HousingLocation`.
 
-        <code-example header="Import HousingLocation type in src/app/housing.service.ts" path="first-app-lesson-09/src/app/housing.service.ts" region="import-housing-location"></code-example>.
+        ```ts
+        import { HousingLocation } from './housinglocation';
+        ```
 
-1.  Убедитесь, что приложение собирается без ошибок.
+3.  Убедитесь, что приложение собирается без ошибок.
 
     Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
-### Шаг 3 - Внедрение новой службы в `HomeComponent`.
+### Шаг 3 - Внедрение новой службы в `HomeComponent`
 
 Этот шаг внедряет новый сервис в `HomeComponent` вашего приложения, чтобы он мог считывать данные приложения из сервиса. В следующем уроке вы замените статические данные на живой источник данных, чтобы получать данные, как в реальном приложении.
 
@@ -109,19 +123,30 @@
 
 1.  В верхней части `src/app/home/home/home.component.ts` добавьте `inject` к элементам, импортированным из `@angular/common`. Это импортирует функцию `inject` в класс `HomeComponent`.
 
-    <code-example header="Update to src/app/home/home/home.component.ts" path="first-app-lesson-09/src/app/home/home.component.ts" region="import-inject"></code-example>.
+    ```ts
+    import { Component, inject } from '@angular/core';
+    ```
 
-1.  Добавьте новый импорт на уровне файла для `HousingService`:
+2.  Добавьте новый импорт на уровне файла для `HousingService`:
 
-    <code-example header="Add import to src/app/home/home/home.component.ts" path="first-app-lesson-09/src/app/home/home.component.ts" region="import-service"></code-example>
+    ```ts
+    import { HousingService } from '../housing.service';
+    ```
 
-1.  Из `HomeComponent` удалите `housingLocationList`, удалите записи массива и присвойте `housingLocationList` значение пустого массива (`[]`). Через несколько шагов вы обновите код, чтобы получить данные из `HousingService`.
+3.  Из `HomeComponent` удалите `housingLocationList`, удалите записи массива и присвойте `housingLocationList` значение пустого массива (`[]`). Через несколько шагов вы обновите код, чтобы получить данные из `HousingService`.
 
-1.  В `HomeComponent` добавьте этот код, чтобы внедрить новый сервис и инициализировать данные для приложения. Конструктор" - это первая функция, которая запускается при создании этого компонента. Код в `конструкторе` присвоит `housingLocationList` значение, возвращаемое вызовом `getAllHousingLocations`.
+4.  В `HomeComponent` добавьте этот код, чтобы внедрить новый сервис и инициализировать данные для приложения. Конструктор" - это первая функция, которая запускается при создании этого компонента. Код в `конструкторе` присвоит `housingLocationList` значение, возвращаемое вызовом `getAllHousingLocations`.
 
-    <code-example header="Initialize data from service in src/app/home/home/home.component.ts" path="first-app-lesson-09/src/app/home/home.component.ts" region="use-new-service"></code-example>.
+    ```ts
+    housingLocationList: HousingLocation[] = [];
+    housingService: HousingService = inject(HousingService);
 
-1.  Сохраните изменения в `src/app/home/home/home.component.ts` и убедитесь, что ваше приложение собирается без ошибок.
+    constructor() {
+    	this.housingLocationList = this.housingService.getAllHousingLocations();
+    }
+    ```
+
+5.  Сохраните изменения в `src/app/home/home/home.component.ts` и убедитесь, что ваше приложение собирается без ошибок.
 
     Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
@@ -149,3 +174,7 @@
 -   [Инъекция зависимостей в Angular](dependency-injection-overview.md)
 -   [ng generate service](https://angular.io/cli/generate#service)
 -   [ng generate](https://angular.io/cli/generate)
+
+## Ссылки
+
+-   [Lesson 9: Angular services](https://angular.io/tutorial/first-app/first-app-lesson-09)

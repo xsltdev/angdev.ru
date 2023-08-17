@@ -1,4 +1,8 @@
-# Урок 13 - Добавление функции поиска в ваше приложение
+---
+description: Этот обучающий урок демонстрирует, как добавить функцию поиска в ваше приложение Angular
+---
+
+# Урок 13: Добавление функции поиска в ваше приложение
 
 Этот обучающий урок демонстрирует, как добавить функцию поиска в ваше приложение Angular.
 
@@ -12,20 +16,19 @@
 
 -   Использовать код, созданный в Уроке 12, в своей интегрированной среде разработки (IDE).
 
--   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-12"></live-example> из Урока 12, где вы можете:
+-   Начните с примера кода из предыдущего урока. Выберите код из Урока 12, где вы можете:
 
-    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
+    -   Использовать [живой пример](https://angular.io/generated/live-examples/first-app-lesson-12/stackblitz.html) в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-    -   Использовать _download пример_ и открыть его в вашей IDE.
+    -   Использовать [download пример](https://angular.io/generated/zips/first-app-lesson-12/first-app-lesson-12.zip) и открыть его в вашей IDE.
 
 Если вы не просмотрели введение, посетите [Введение в Angular tutorial](first-app.md), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть [готовый код](https://angular.io/generated/live-examples/first-app-lesson-13/stackblitz.html) для этого урока.
 
 ## После завершения
 
 -   Ваше приложение будет использовать данные из формы для поиска подходящего жилья
-
 -   Ваше приложение будет отображать только подходящие места для жилья.
 
 ## Шаги урока
@@ -38,13 +41,20 @@
 
 1.  В `src/app/home/home.component.ts` добавьте новое свойство к классу под названием `filteredLocationList`.
 
-    <code-example header="Add the filtered results property" path="first-app-lesson-13/src/app/home/home.component.ts" region="add-filtered-location-list"></code-example>.
+    ```ts
+    filteredLocationList: HousingLocation[] = [];
+    ```
 
     Список `filteredLocationList` содержит значения, которые соответствуют критериям поиска, введенным пользователем.
 
-1.  По умолчанию при загрузке страницы `filteredLocationList` должен содержать полный набор значений местоположений жилья. Обновите `конструктор` для `HomeComponent`, чтобы установить это значение.
+2.  По умолчанию при загрузке страницы `filteredLocationList` должен содержать полный набор значений местоположений жилья. Обновите `конструктор` для `HomeComponent`, чтобы установить это значение.
 
-    <code-example header="Set the value of filteredLocationList" path="first-app-lesson-13/src/app/home/home.component.ts" region="update-constructor"></code-example>.
+    ```ts
+    constructor() {
+    	this.housingLocationList = this.housingService.getAllHousingLocations();
+    	this.filteredLocationList = this.housingLocationList;
+    }
+    ```
 
 ### Шаг 2 - Обновление шаблона домашнего компонента
 
@@ -52,31 +62,38 @@
 
 1.  Обновите шаблон `HomeComponent`, чтобы включить переменную шаблона во входные данные под названием `#filter`.
 
-    <code-example header="Добавить переменную шаблона в шаблон HomeComponent" format="html" language="html">
-
-        &lt;input type="text" placeholder="Фильтр по городу" #filter&gt;
-
-    </code-example>
+    ```html
+    <input
+        type="text"
+        placeholder="Filter by city"
+        #filter
+    />
+    ```
 
     В этом примере используется [переменная шаблона](template-reference-variables.md) для получения доступа к input в качестве его значения.
 
-1.  Далее обновите шаблон компонента, чтобы прикрепить обработчик события к кнопке "поиск".
+2.  Далее обновите шаблон компонента, чтобы прикрепить обработчик события к кнопке "поиск".
 
-    <code-example header="Привязать событие нажатия" format="html" language="html">
-
-        &lt;button class="primary" type="button" (click)="filterResults(filter.value)"&gt;Search&lt;/button&gt;
-
-    </code-example>
+    ```html
+    <button
+        class="primary"
+        type="button"
+        (click)="filterResults(filter.value)"
+    >
+        Search
+    </button>
+    ```
 
     Привязавшись к событию click на кнопке, вы можете вызвать функцию `filterResults`. Аргументом функции является свойство `value` переменной шаблона `filter`. Точнее, свойство `.value` из HTML-элемента `input`.
 
-1.  Последнее обновление шаблона касается директивы `ngFor`. Обновите значение `ngFor`, чтобы перебирать значения из массива `filteredLocationList`.
+3.  Последнее обновление шаблона касается директивы `ngFor`. Обновите значение `ngFor`, чтобы перебирать значения из массива `filteredLocationList`.
 
-    <code-example header="Обновление значения директивы ngFor" format="html" language="html">
-
-        &lt;app-housing-location *ngFor="let housingLocation of filteredLocationList" [housingLocation]="housingLocation"&gt;&lt;/app-housing-location&gt;
-
-    </code-example>
+    ```html
+    <app-housing-location
+        *ngFor="let housingLocation of filteredLocationList"
+        [housingLocation]="housingLocation"
+    ></app-housing-location>
+    ```
 
 ### Шаг 3 - Реализация функции обработчика события
 
@@ -84,27 +101,34 @@
 
 1.  Обновите класс `HomeComponent`, чтобы включить в него реализацию функции `filterResults`.
 
-    <code-example header="Add the filterResults function implementation" path="first-app-lesson-13/src/app/home/home.component.ts" region="add-filter-results-fn"></code-example>.
+    ```ts
+    filterResults(text: string) {
+    	if (!text) {
+    		this.filteredLocationList = this.housingLocationList;
+    	}
+
+    	this.filteredLocationList = this.housingLocationList.filter(
+    		housingLocation => housingLocation?.city.toLowerCase().includes(text.toLowerCase())
+    	);
+    }
+    ```
 
     Эта функция использует функцию фильтра `String` для сравнения значения параметра `text` со свойством `housingLocation.city`. Вы можете обновить эту функцию для сравнения с любым свойством или несколькими свойствами, чтобы сделать это более интересным упражнением.
 
-1.  Сохраните свой код.
+2.  Сохраните свой код.
 
-1.  Обновите браузер и убедитесь, что при нажатии кнопки "Поиск" после ввода текста можно выполнить поиск данных о местоположении жилья по городу.
+3.  Обновите браузер и убедитесь, что при нажатии кнопки "Поиск" после ввода текста можно выполнить поиск данных о местоположении жилья по городу.
 
-<section class="lightbox">
- <img alt="filtered search results based on user input" src="generated/images/guide/faa/homes-app-lesson-13-step-3.png">
-</section>
+    ![filtered search results based on user input](homes-app-lesson-13-step-3.png)
 
 ## Обзор урока
 
 В этом уроке вы обновили свое приложение, чтобы:
 
 -   использовать переменные шаблона для взаимодействия со значениями шаблона
-
 -   добавить функциональность поиска с помощью привязки событий и функций массива.
 
-Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код в <live-example></live-example>.
+Если у вас возникли трудности с этим уроком, вы можете просмотреть [готовый код](https://angular.io/generated/live-examples/first-app-lesson-13/stackblitz.html).
 
 ## Следующие шаги
 
@@ -116,3 +140,7 @@
 
 -   [Переменные шаблона](template-reference-variables.md)
 -   [Обработка событий](event-binding.md)
+
+## Ссылки
+
+-   [Lesson 13: Add the search feature to your app](https://angular.io/tutorial/first-app/first-app-lesson-13)

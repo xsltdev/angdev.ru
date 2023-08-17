@@ -1,4 +1,8 @@
-# Урок 10 - Добавление маршрутов в приложение
+---
+description: Этот обучающий урок демонстрирует, как добавить маршруты в приложение
+---
+
+# Урок 10: Добавление маршрутов в приложение
 
 Этот обучающий урок демонстрирует, как добавить маршруты в приложение.
 
@@ -10,23 +14,21 @@
 
 -   Использовать код, созданный в Уроке 9, в своей интегрированной среде разработки (IDE).
 
--   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-09"></live-example> из Урока 9, где вы можете:
+-   Начните с примера кода из предыдущего урока. Выберите код из Урока 9, где вы можете:
 
-    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
+    -   Использовать [живой пример](https://angular.io/generated/live-examples/first-app-lesson-09/stackblitz.html) в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-    -   Использовать _download пример_ и открыть его в вашей IDE.
+    -   Использовать [download пример](https://angular.io/generated/zips/first-app-lesson-09/first-app-lesson-09.zip) и открыть его в вашей IDE.
 
 Если вы не просмотрели введение, посетите [Введение в Angular tutorial](first-app.md), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть [готовый код](https://angular.io/generated/live-examples/first-app-lesson-10/stackblitz.html) для этого урока.
 
 ## После завершения
 
 По окончании этого урока ваше приложение будет поддерживать маршрутизацию.
 
 ## Концептуальный обзор маршрутизации
-
-<!-- markdownLint-disable MD001 -->
 
 В этом уроке рассказывается о маршрутизации в Angular. Маршрутизация - это возможность перехода от одного компонента приложения к другому. В [одностраничных приложениях (SPA)](router-tutorial.md#using-angular-routes-in-a-single-page-application) обновляется только часть страницы, чтобы представить пользователю запрошенное представление.
 
@@ -40,13 +42,11 @@
 
 ### Шаг 1 - Создание компонента подробностей по умолчанию.
 
-1. В терминале введите следующую команду для создания `DetailsComponent`:
+1.  В терминале введите следующую команду для создания `DetailsComponent`:
 
-    <code-example format="shell" language="shell">
-
+    ```shell
     ng generate component details --standalone --inline-template --skip-tests
-
-    </code-example>.
+    ```
 
     Этот компонент будет представлять собой страницу подробностей, которая предоставляет более подробную информацию о данном жилье.
 
@@ -54,29 +54,59 @@
 
 1.  В директории `src/app` создайте файл `routes.ts`. В этом файле мы будем определять маршруты в приложении.
 
-1.  В файле `main.ts` сделайте следующие обновления, чтобы включить маршрутизацию в приложении:
+2.  В файле `main.ts` сделайте следующие обновления, чтобы включить маршрутизацию в приложении:
 
     1.  Импортируйте файл routes и функцию `provideRouter`:
 
-        <code-example header="Import routing details in src/main.ts" path="first-app-lesson-10/src/main.ts" region="add-router-imports"></code-example>.
+        ```ts
+        import { provideRouter } from '@angular/router';
+        import routeConfig from './app/routes';
+        ```
 
-    1.  Обновите вызов `bootstrapApplication`, чтобы включить конфигурацию маршрутизации:
+    2.  Обновите вызов `bootstrapApplication`, чтобы включить конфигурацию маршрутизации:
 
-        <code-example header="Add router configuration in src/main.ts" path="first-app-lesson-10/src/main.ts" region="add-router-config"></code-example>.
+        ```ts
+        bootstrapApplication(AppComponent, {
+            providers: [
+                provideProtractorTestingSupport(),
+                provideRouter(routeConfig),
+            ],
+        }).catch((err) => console.error(err));
+        ```
 
-1.  В `src/app/app.component.ts` обновите компонент для использования маршрутизации:
+3.  В `src/app/app.component.ts` обновите компонент для использования маршрутизации:
 
     1.  Добавьте импорт на уровне файла для `RoutingModule`:
 
-        <code-example header="Import RouterModule in src/app/app.component.ts" path="first-app-lesson-10/src/app/app.component.ts" region="import-router-module"></code-example>.
+        ```ts
+        import { RouterModule } from '@angular/router';
+        ```
 
-    1.  Добавьте `RouterModule` в метаданные импорта `@Component`.
+    2.  Добавьте `RouterModule` в метаданные импорта `@Component`.
 
-        <code-example header="Import RouterModule in src/app/app.component.ts" path="first-app-lesson-10/src/app/app.component.ts" region="import-router-module-deco"></code-example>.
+        ```ts
+        imports: [
+        	HomeComponent,
+        	RouterModule,
+        ],
+        ```
 
-    1.  В свойстве `template` замените тег `<app-home></app-home>` на директиву `<router-outlet>` и добавьте ссылку на главную страницу. Ваш код должен соответствовать этому коду:
+    3.  В свойстве `template` замените тег `<app-home></app-home>` на директиву `<router-outlet>` и добавьте ссылку на главную страницу. Ваш код должен соответствовать этому коду:
 
-        <code-example header="Add router-outlet in src/app/app.component.ts" path="first-app-lesson-10/src/app/app/app.component.ts" region="add-router-outlet"></code-example>.
+        ```ts
+        template: `
+        <main>
+        	<a [routerLink]="['/']">
+        	<header class="brand-name">
+        		<img class="brand-logo" src="/assets/logo.svg" alt="logo" aria-hidden="true">
+        	</header>
+        	</a>
+        	<section class="content">
+        	<router-outlet></router-outlet>
+        	</section>
+        </main>
+        `,
+        ```
 
 ### Шаг 3 - Добавление маршрута в новый компонент
 
@@ -86,15 +116,34 @@
 
     1.  Добавьте импорт на уровне файла для `HomeComponent`, `DetailsComponent` и типа `Routes`, которые вы будете использовать в определениях маршрутов.
 
-        <code-example header="Import components and Routes" path="first-app-lesson-10/src/app/routes.ts" region="import-routes-components"></code-example>.
+        ```ts
+        import { Routes } from '@angular/router';
+        import { HomeComponent } from './home/home.component';
+        import { DetailsComponent } from './details/details.component';
+        ```
 
-    1.  Определите переменную `routeConfig` типа `Routes` и определите два маршрута для приложения:
+    2.  Определите переменную `routeConfig` типа `Routes` и определите два маршрута для приложения:
 
-        <code-example header="Add routes to the app" path="first-app-lesson-10/src/app/routes.ts" region="define-app-routes"></code-example>.
+        ```ts
+        const routeConfig: Routes = [
+            {
+                path: '',
+                component: HomeComponent,
+                title: 'Home page',
+            },
+            {
+                path: 'details/:id',
+                component: DetailsComponent,
+                title: 'Home details',
+            },
+        ];
 
-        Записи в массиве `routeConfig` представляют маршруты в приложении. Первая запись перемещает к `HomeComponent`, когда url совпадает с `''`''. Вторая запись использует некоторое специальное форматирование, которое будет рассмотрено в одном из следующих уроков.
+        export default routeConfig;
+        ```
 
-1.  Сохраните все изменения и убедитесь, что приложение работает в браузере. Приложение должно по-прежнему отображать список мест расположения жилья.
+        Записи в массиве `routeConfig` представляют маршруты в приложении. Первая запись перемещает к `HomeComponent`, когда url совпадает с `''`. Вторая запись использует некоторое специальное форматирование, которое будет рассмотрено в одном из следующих уроков.
+
+2.  Сохраните все изменения и убедитесь, что приложение работает в браузере. Приложение должно по-прежнему отображать список мест расположения жилья.
 
 ## Обзор урока
 
@@ -102,7 +151,7 @@
 
 Вы делаете большие успехи в работе над своим приложением, молодцы.
 
-Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код для него в <live-example></live-example>.
+Если у вас возникли трудности с этим уроком, вы можете просмотреть [готовый код](https://angular.io/generated/live-examples/first-app-lesson-10/stackblitz.html) для него.
 
 ## Следующие шаги
 
@@ -112,7 +161,9 @@
 
 Для получения дополнительной информации о темах, рассмотренных в этом уроке, посетите сайт:
 
-<!-- vale Angular.Google_WordListSuggestions = NO -->
-
 -   [Обзор маршрутизации в Angular](routing-overview.md)
 -   [Общие задачи маршрутизации](router.md)
+
+## Ссылки
+
+-   [Lesson 10: Add routes to the application](https://angular.io/tutorial/first-app/first-app-lesson-10)

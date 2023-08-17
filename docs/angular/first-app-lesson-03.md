@@ -2,7 +2,7 @@
 description: Этот урок демонстрирует, как добавить компонент HousingLocation в ваше приложение Angular
 ---
 
-# Первое приложение Angular урок 3 - Создание компонента HousingLocation приложения
+# Урок 3: Создание компонента HousingLocation
 
 Этот урок демонстрирует, как добавить компонент `HousingLocation` в ваше приложение Angular.
 
