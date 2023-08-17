@@ -1,16 +1,22 @@
+---
+description: В этом руководстве показано, как развернуть приложение Tour of Heroes для отображения списка героев
+---
+
 # Отображение списка выбора
+
+:date: 23.05.2022
 
 В этом руководстве показано, как:
 
 -   Развернуть приложение Tour of Heroes для отображения списка героев.
-
 -   Позволить пользователям выбрать героя и отобразить его подробную информацию.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Пример приложения, которое описывается на этой странице, см. в <live-example></live-example>.
+    Пример приложения, которое описывается на этой странице, см.:
 
-</div>
+    -   [Живой пример](https://angular.io/generated/live-examples/toh-pt2/stackblitz.html)
+    -   [Скачать](https://angular.io/generated/zips/toh-pt2/toh-pt2.zip)
 
 ## Создайте героев
 
@@ -20,71 +26,91 @@
 
 Файл должен выглядеть следующим образом.
 
-<code-example header="src/app/mock-heroes.ts" path="toh-pt2/src/app/mock-heroes.ts"></code-example>.
+```ts
+import { Hero } from './hero';
+
+export const HEROES: Hero[] = [
+    { id: 12, name: 'Dr. Nice' },
+    { id: 13, name: 'Bombasto' },
+    { id: 14, name: 'Celeritas' },
+    { id: 15, name: 'Magneta' },
+    { id: 16, name: 'RubberMan' },
+    { id: 17, name: 'Dynama' },
+    { id: 18, name: 'Dr. IQ' },
+    { id: 19, name: 'Magma' },
+    { id: 20, name: 'Tornado' },
+];
+```
 
 ## Отображение героев
 
 Откройте файл класса `HeroesComponent` и импортируйте макет `HEROES`.
 
-<code-example header="src/app/heroes/heroes.component.ts (import HEROES)" path="toh-pt2/src/app/heroes/heroes.component.ts" region="import-heroes"></code-example>.
+```ts
+import { HEROES } from '../mock-heroes';
+```
 
 В классе `HeroesComponent` определите свойство компонента под названием `heroes`, чтобы открыть массив `HEROES` для привязки.
 
-<code-example header="src/app/heroes/heroes.component.ts" path="toh-pt2/src/app/heroes/heroes.component.ts" region="component"></code-example>
+```ts
+export class HeroesComponent {
+    heroes = HEROES;
+}
+```
 
-### List heroes with `*ngFor`
+### Список героев с помощью `*ngFor`
 
-Open the `HeroesComponent` template file and make the following changes:
+Откройте файл шаблона `HeroesComponent` и внесите в него следующие изменения:
 
-1.  Add an `<h2>` at the top.
+1.  Добавьте `<h2>` в верхней части.
+2.  Ниже `<h2>` добавьте элемент `<ul>`.
+3.  В элемент `<ul>` вставьте элемент `<li>`.
+4.  Поместите `<button>` внутрь `<li>` который отображает свойства `hero` внутри элементов `<span>`.
+5.  Добавьте CSS-классы для стилизации компонента.
 
-2.  Below the `<h2>`, add a `<ul>` element.
+чтобы он выглядел следующим образом:
 
-3.  In the `<ul>` element, insert an `<li>`.
+```html
+<h2>My Heroes</h2>
+<ul class="heroes">
+    <li>
+        <button type="button">
+            <span class="badge">{{hero.id}}</span>
+            <span class="name">{{hero.name}}</span>
+        </button>
+    </li>
+</ul>
+```
 
-4.  Place a `<button>` inside the `<li>` that displays properties of a `hero` inside `<span>` elements.
+В результате будет выдана ошибка, поскольку свойство `hero` не существует. Чтобы получить доступ к каждому отдельному герою и перечислить их всех, добавьте `*ngFor` к `<li>` для итерации по списку героев:
 
-5.  Add CSS classes to style the component.
+```html
+<li *ngFor="let hero of heroes"></li>
+```
 
-to look like this:
+Директива [`*ngFor`](built-in-directives.md#ngFor) - это директива Angular _repeater_. Она повторяет ведущий элемент для каждого элемента списка.
 
-<code-example header="heroes.component.html (heroes template)" path="toh-pt2/src/app/heroes/heroes.component.1.html" region="list"></code-example>
+Синтаксис в данном примере выглядит следующим образом:
 
-That displays an error since the `hero` property doesn't exist. To have access to each individual hero and list them all, add an `*ngFor` to the `<li>` to iterate through the list of heroes:
+| Синтаксис | Детали                                                                 |
+| :-------- | :--------------------------------------------------------------------- |
+| `<li>`    | Принимающий элемент.                                                   |
+| `heroes`  | Хранит список героев из класса `HeroesComponent`, список героев-макет. |
+| `hero`    | Удерживает объект текущего героя для каждой итерации по списку.        |
 
-<code-example path="toh-pt2/src/app/heroes/heroes.component.1.html" region="li"></code-example>
+!!!warning ""
 
-The [`*ngFor`](built-in-directives.md#ngFor) is Angular's _repeater_ directive. It repeats the host element for each element in a list.
-
-The syntax in this example is as follows:
-
-| Syntax   | Details                                                                            |
-| :------- | :--------------------------------------------------------------------------------- |
-| `<li>`   | The host element.                                                                  |
-| `heroes` | Holds the mock heroes list from the `HeroesComponent` class, the mock heroes list. |
-| `hero`   | Holds the current hero object for each iteration through the list.                 |
-
-<div class="alert is-important">
-
-Не забудьте поставить звездочку `*` перед `ngFor`. Это важная часть синтаксиса.
-
-</div>
+    Не забудьте поставить звездочку `*` перед `ngFor`. Это важная часть синтаксиса.
 
 После обновления браузера появится список героев.
 
-<div class="callout is-helpful">
+!!!note "Интерактивные элементы"
 
-<header>Interactive elements</header>
+    Внутри элемента `<li>` добавьте элемент `<button>` для обертывания информации о герое, а затем сделайте его кликабельным. Для повышения доступности используйте элементы HTML, которые по своей сути являются интерактивными, вместо того чтобы добавлять слушатель событий к неинтерактивному элементу. В данном случае вместо добавления события к элементу `<li>` используется интерактивный элемент `<button>`.
 
-Inside the `<li>` element, add a `<button>` element to wrap the hero's details, and then make the hero clickable. To improve accessibility, use HTML elements that are inherently interactive instead of adding an event listener to a non-interactive element. In this case, the interactive `<button>` element is used instead of adding an event to the `<li>` element.
+    Подробнее о доступности см. в [Accessibility in Angular](accessibility.md).
 
-For more details on accessibility, see [Accessibility in Angular](accessibility.md).
-
-</div>
-
-<a id="styles"></a>
-
-### Стиль героев
+### Стиль героев {#styles}
 
 Список героев должен быть привлекательным и визуально реагировать, когда пользователи наводят курсор и выбирают героя из списка.
 
@@ -100,41 +126,56 @@ For more details on accessibility, see [Accessibility in Angular](accessibility.
 
 Когда `ng generate` создал `HeroesComponent`, он создал пустую таблицу стилей `heroes.component.css` для `HeroesComponent` и указал на нее в `@Component.styleUrls` следующим образом.
 
-<code-example header="src/app/heroes/heroes.component.ts (@Component)" path="toh-pt2/src/app/heroes/heroes.component.ts" region="metadata"></code-example>.
+```ts
+@Component({
+  selector: 'app-heroes',
+  templateUrl: './heroes.component.html',
+  styleUrls: ['./heroes.component.css']
+})
+```
 
 Откройте файл `heroes.component.css` и вставьте частные CSS стили для `HeroesComponent` из [финального обзора кода](#final-code-review).
 
-<div class="alert is-important">
+!!!warning ""
 
-Стили и таблицы стилей, определенные в метаданных `@Component`, привязаны к конкретному компоненту. Стили `heroes.component.css` применяются только к `HeroesComponent` и не влияют на внешний HTML или HTML в любом другом компоненте.
+    Стили и таблицы стилей, определенные в метаданных `@Component`, привязаны к конкретному компоненту. Стили `heroes.component.css` применяются только к `HeroesComponent` и не влияют на внешний HTML или HTML в любом другом компоненте.
 
-</div>
+## Просмотр подробностей
 
-## Viewing details
+Когда пользователь щелкает на герое в списке, компонент должен отображать информацию о выбранном герое в нижней части страницы.
 
-When the user clicks a hero in the list, the component should display the selected hero's details at the bottom of the page.
+Код, приведенный в этом разделе, прослушивает событие щелчка по элементу героя и отображает/обновляет информацию о нем.
 
-The code in this section listens for the hero item click event and display/update the hero details.
+### Добавьте привязку к событию щелчка мыши
 
-### Add a click event binding
+Добавьте привязку события щелчка к `<button>` в `<li>` следующим образом:
 
-Add a click event binding to the `<button>` in the `<li>` like this:
+```html
+<li *ngFor="let hero of heroes">
+    <button type="button" (click)="onSelect(hero)">
+        <!-- ... -->
+    </button>
+</li>
+```
 
-<code-example header="heroes.component.html (template excerpt)" path="toh-pt2/src/app/heroes/heroes.component.1.html" region="selectedHero-click"></code-example>
+Это пример синтаксиса Angular [event binding](event-binding.md).
 
-This is an example of Angular's [event binding](event-binding.md) syntax.
+Круглые скобки вокруг `click` указывают Angular на необходимость прослушивания события `click` элемента `<button>`. Когда пользователь щелкает на элементе `<button>`, Angular выполняет выражение `onSelect(hero)`.
 
-The parentheses around `click` tell Angular to listen for the `<button>` element's `click` event. When the user clicks in the `<button>`, Angular executes the `onSelect(hero)` expression.
+В следующем разделе определим метод `onSelect()` в `HeroesComponent` для отображения героя, который был определен в выражении `*ngFor`.
 
-In the next section, define an `onSelect()` method in `HeroesComponent` to display the hero that was defined in the `*ngFor` expression.
+### Добавьте обработчик события щелчка мыши
 
-### Add the click event handler
+Переименуйте свойство `hero` компонента в `selectedHero`, но не присваивайте ему никакого значения, поскольку при запуске приложения не существует _выбранного героя_.
 
-Rename the component's `hero` property to `selectedHero` but don't assign any value to it since there is no _selected hero_ when the application starts.
+Добавьте следующий метод `onSelect()`, который присваивает щелкнутому герою из шаблона значение `selectedHero` компонента.
 
-Add the following `onSelect()` method, which assigns the clicked hero from the template to the component's `selectedHero`.
-
-<code-example header="src/app/heroes/heroes.component.ts (onSelect)" path="toh-pt2/src/app/heroes/heroes.component.ts" region="on-select"></code-example>.
+```ts
+selectedHero?: Hero;
+onSelect(hero: Hero): void {
+  this.selectedHero = hero;
+}
+```
 
 ### Добавьте раздел подробностей
 
@@ -144,60 +185,212 @@ Add the following `onSelect()` method, which assigns the clicked hero from the t
 
 Добавьте следующее в `heroes.component.html` под секцией списка:
 
-<code-example header="heroes.component.html (selected hero details)" path="toh-pt2/src/app/heroes/heroes.component.html" region="selectedHero-details"></code-example>
-
-The hero details should only be displayed when a hero is selected. When a component is created initially, there is no selected hero. Add the `*ngIf` directive to the `<div>` that wraps the hero details. This directive tells Angular to render the section only when the `selectedHero` is defined after it has been selected by clicking on a hero.
-
-<div class="alert is-important">
-
-Не забывайте о символе звездочки `*` перед `ngIf`. Это критически важная часть синтаксиса.
-
+```html
+<div *ngIf="selectedHero">
+    <h2>{{selectedHero.name | uppercase}} Details</h2>
+    <div>id: {{selectedHero.id}}</div>
+    <div>
+        <label for="hero-name">Hero name: </label>
+        <input
+            id="hero-name"
+            [(ngModel)]="selectedHero.name"
+            placeholder="name"
+        />
+    </div>
 </div>
+```
 
-### Style the selected hero
+Информация о герое должна отображаться только в том случае, если герой выбран. Когда компонент создается изначально, выбранного героя нет. Добавьте директиву `*ngIf` в `<div>`, который оборачивает детали героя. Эта директива указывает Angular на то, что секция должна отображаться только в том случае, если определено `selectedHero` после того, как герой был выбран щелчком на нем.
 
-To help identify the selected hero, you can use the `.selected` CSS class in the [styles you added earlier](#styles). To apply the `.selected` class to the `<li>` when the user clicks it, use class binding.
+!!!note ""
 
-<div class="lightbox">
+    Не забывайте о символе звездочки `*` перед `ngIf`. Это критически важная часть синтаксиса.
 
-<img alt="Selected hero with dark background and light text that differentiates it from unselected list items" src="generated/images/guide/toh/heroes-list-selected.png">
+### Стиль выбранного героя
 
-</div>
+Для идентификации выбранного героя можно использовать CSS-класс `.selected` в стилях, добавленных ранее. Чтобы применить класс `.selected` к элементу `<li>`, когда пользователь щелкнет на нем, используйте привязку класса.
 
-Angular's [class binding](class-binding.md) can add and remove a CSS class conditionally. Add `[class.some-css-class]="some-condition"` to the element you want to style.
+![Selected hero with dark background and light text that differentiates it from unselected list items](heroes-list-selected.png)
 
-Add the following `[class.selected]` binding to the `<button>` in the `HeroesComponent` template:
+С помощью [class binding](class-binding.md) в Angular можно условно добавлять и удалять CSS-класс. Добавьте `[class.some-css-class]="some-condition"` к элементу, который вы хотите стилизовать.
 
-<code-example header="heroes.component.html (toggle the 'selected' CSS class)" path="toh-pt2/src/app/heroes/heroes.component.1.html" region="class-selected"></code-example>
+Добавьте следующую привязку `[class.selected]` к элементу `<button>` в шаблоне `HeroesComponent`:
 
-When the current row hero is the same as the `selectedHero`, Angular adds the `selected` CSS class. When the two heroes are different, Angular removes the class.
+```html
+[class.selected]="hero === selectedHero"
+```
 
-The finished `<li>` looks like this:
+Если герой текущей строки совпадает с `selectedHero`, Angular добавляет CSS-класс `selected`. Когда оба героя разные, Angular удаляет класс.
 
-<code-example header="heroes.component.html (герой элемента списка)" path="toh-pt2/src/app/heroes/heroes.component.html" region="li"></code-example>.
+Готовый `<li>` выглядит следующим образом:
 
-<a id="final-code-review"></a>
+```html
+<li *ngFor="let hero of heroes">
+    <button
+        [class.selected]="hero === selectedHero"
+        type="button"
+        (click)="onSelect(hero)"
+    >
+        <span class="badge">{{hero.id}}</span>
+        <span class="name">{{hero.name}}</span>
+    </button>
+</li>
+```
 
-## Окончательный обзор кода
+## Окончательный обзор кода {#final-code-review}
 
 Здесь находятся файлы кода, обсуждаемые на этой странице, включая стили `HeroesComponent`.
 
-<code-tabs> <code-pane header="src/app/mock-heroes.ts" path="toh-pt2/src/app/mock-heroes.ts"></code-pane>
-<code-pane header="src/app/heroes/heroes.component.ts" path="toh-pt2/src/app/heroes/heroes.component.ts"></code-pane>
-<code-pane header="src/app/heroes/heroes.component.html" path="toh-pt2/src/app/heroes/heroes.component.html"></code-pane>
-<code-pane header="src/app/heroes/heroes.component.css" path="toh-pt2/src/app/heroes/heroes.component.css"></code-pane>
-</code-tabs>
+=== "src/app/mock-heroes.ts"
+
+    ```ts
+    import { Hero } from './hero';
+
+    export const HEROES: Hero[] = [
+    	{ id: 12, name: 'Dr. Nice' },
+    	{ id: 13, name: 'Bombasto' },
+    	{ id: 14, name: 'Celeritas' },
+    	{ id: 15, name: 'Magneta' },
+    	{ id: 16, name: 'RubberMan' },
+    	{ id: 17, name: 'Dynama' },
+    	{ id: 18, name: 'Dr. IQ' },
+    	{ id: 19, name: 'Magma' },
+    	{ id: 20, name: 'Tornado' },
+    ];
+    ```
+
+=== "src/app/heroes/heroes.component.ts"
+
+    ```ts
+    import { Component } from '@angular/core';
+    import { Hero } from '../hero';
+    import { HEROES } from '../mock-heroes';
+
+    @Component({
+    	selector: 'app-heroes',
+    	templateUrl: './heroes.component.html',
+    	styleUrls: ['./heroes.component.css'],
+    })
+    export class HeroesComponent {
+    	heroes = HEROES;
+    	selectedHero?: Hero;
+
+    	onSelect(hero: Hero): void {
+    		this.selectedHero = hero;
+    	}
+    }
+    ```
+
+=== "src/app/heroes/heroes.component.html"
+
+    ```html
+    <h2>My Heroes</h2>
+    <ul class="heroes">
+    	<li *ngFor="let hero of heroes">
+    		<button
+    			[class.selected]="hero === selectedHero"
+    			type="button"
+    			(click)="onSelect(hero)"
+    		>
+    			<span class="badge">{{hero.id}}</span>
+    			<span class="name">{{hero.name}}</span>
+    		</button>
+    	</li>
+    </ul>
+
+    <div *ngIf="selectedHero">
+    	<h2>{{selectedHero.name | uppercase}} Details</h2>
+    	<div>id: {{selectedHero.id}}</div>
+    	<div>
+    		<label for="hero-name">Hero name: </label>
+    		<input
+    			id="hero-name"
+    			[(ngModel)]="selectedHero.name"
+    			placeholder="name"
+    		/>
+    	</div>
+    </div>
+    ```
+
+=== "src/app/heroes/heroes.component.css"
+
+    ```css
+    /* HeroesComponent's private CSS styles */
+    .heroes {
+    	margin: 0 0 2em 0;
+    	list-style-type: none;
+    	padding: 0;
+    	width: 15em;
+    }
+
+    .heroes li {
+    	display: flex;
+    }
+
+    .heroes button {
+    	flex: 1;
+    	cursor: pointer;
+    	position: relative;
+    	left: 0;
+    	background-color: #eee;
+    	margin: 0.5em;
+    	padding: 0;
+    	border-radius: 4px;
+    	display: flex;
+    	align-items: stretch;
+    	height: 1.8em;
+    }
+
+    .heroes button:hover {
+    	color: #2c3a41;
+    	background-color: #e6e6e6;
+    	left: 0.1em;
+    }
+
+    .heroes button:active {
+    	background-color: #525252;
+    	color: #fafafa;
+    }
+
+    .heroes button.selected {
+    	background-color: black;
+    	color: white;
+    }
+
+    .heroes button.selected:hover {
+    	background-color: #505050;
+    	color: white;
+    }
+
+    .heroes button.selected:active {
+    	background-color: black;
+    	color: white;
+    }
+
+    .heroes .badge {
+    	display: inline-block;
+    	font-size: small;
+    	color: white;
+    	padding: 0.8em 0.7em 0 0.7em;
+    	background-color: #405061;
+    	line-height: 1em;
+    	margin-right: 0.8em;
+    	border-radius: 4px 0 0 4px;
+    }
+
+    .heroes .name {
+    	align-self: center;
+    }
+    ```
 
 ## Резюме
 
 -   Приложение Tour of Heroes отображает список героев с подробным представлением.
-
 -   Пользователь может выбрать героя и просмотреть его подробную информацию.
-
 -   Вы использовали `*ngFor` для отображения списка.
-
 -   Вы использовали `*ngIf` для условного включения или исключения блока HTML.
-
 -   Вы можете переключить класс стиля CSS с помощью привязки `class`.
 
-:date: 23.05.2022
+## Ссылки
+
+-   [Display a selection list](https://angular.io/tutorial/tour-of-heroes/toh-pt2)

@@ -186,15 +186,15 @@ nav:
             - 12. Добавление формы: first-app-lesson-12.md
             - 13. Добавление функции поиска: first-app-lesson-13.md
             - 14. Добавьте HTTP-коммуникацию: first-app-lesson-14.md
-#        - Тур героев:
-#            - toh.md
-#            - toh-pt0.md
-#            - toh-pt1.md
-#            - toh-pt2.md
-#            - toh-pt3.md
-#            - toh-pt4.md
-#            - toh-pt5.md
-#            - toh-pt6.md
+        - Тур героев:
+            - toh.md
+            - toh-pt0.md
+            - toh-pt1.md
+            - toh-pt2.md
+            - toh-pt3.md
+            - toh-pt4.md
+            - toh-pt5.md
+            - toh-pt6.md
 #        - forms.md
 #    - Справка:
 #        - Концептуальная справка:
