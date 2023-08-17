@@ -123,7 +123,7 @@ Angular поддерживает два подхода к проектирова
 
 1.  Реагируйте на событие нажатия кнопки в HTML, добавляя данные в модель.
 
-1.  Обработка отправки формы с помощью выходного свойства [`ngSubmit`](api/forms/NgForm#properties) формы.
+1.  Обработка отправки формы с помощью выходного свойства [`ngSubmit`](https://angular.io/api/forms/NgForm#properties) формы.
 
     -   Отключите кнопку **Submit**, пока форма не станет валидной.
 
@@ -177,7 +177,7 @@ Angular поддерживает два подхода к проектирова
 
 1.  The form makes the hero applicant choose one superpower from a fixed list of agency-approved powers.
     The predefined list of `powers` is part of the data model, maintained internally in `HeroFormComponent`.
-    The Angular [NgForOf directive](api/common/NgForOf 'API reference') iterates over the data values to populate the `<select>` element.
+    The Angular [NgForOf directive](https://angular.io/api/common/NgForOf 'API reference') iterates over the data values to populate the `<select>` element.
 
     <code-example header="src/app/hero-form/hero-form.component.html (powers)" path="forms/src/app/hero-form/hero-form.component.html" region="powers"></code-example>
 
@@ -215,7 +215,7 @@ The `ngModel` directive declared in the `FormsModule` lets you bind controls in 
 
 ### Доступ к общему состоянию формы
 
-Когда вы импортировали `FormsModule` в свой компонент, Angular автоматически создал и присоединил директиву [NgForm](api/forms/NgForm 'API reference for NgForm') к тегу `<form>` в шаблоне (поскольку `NgForm` имеет селектор `form`, который соответствует элементам `<form>`).
+Когда вы импортировали `FormsModule` в свой компонент, Angular автоматически создал и присоединил директиву [NgForm](https://angular.io/api/forms/NgForm 'API reference for NgForm') к тегу `<form>` в шаблоне (поскольку `NgForm` имеет селектор `form`, который соответствует элементам `<form>`).
 
 Чтобы получить доступ к `NgForm` и общему состоянию формы, объявите переменную [template reference variable](template-reference-variables.md).
 
@@ -254,7 +254,7 @@ Any unique value will do, but using a descriptive name is helpful.
 1.  Add similar `[(ngModel)]` bindings and `name` attributes to **Alter Ego** and **Hero Power**.
 1.  You can now remove the diagnostic messages that show interpolated values.
 
-1.  To confirm that two-way data binding works for the entire hero model, add a new text binding with the [`json`](api/common/JsonPipe) pipe at the top to the component's template, which serializes the data to a string.
+1.  To confirm that two-way data binding works for the entire hero model, add a new text binding with the [`json`](https://angular.io/api/common/JsonPipe) pipe at the top to the component's template, which serializes the data to a string.
 
     After these revisions, the form template should look like the following:
 
@@ -387,7 +387,7 @@ To define and show an error message when appropriate, take the following steps.
 
     <div class="alert is-helpful">
 
-    The template reference variable \(`#name`\) is set to `"ngModel"` because that is the value of the [`NgModel.exportAs`](api/core/Directive#exportAs) property.
+    The template reference variable \(`#name`\) is set to `"ngModel"` because that is the value of the [`NgModel.exportAs`](https://angular.io/api/core/Directive#exportAs) property.
 
     This property tells Angular how to link a reference variable to a directive.
 
@@ -464,7 +464,7 @@ This exercise shows how you can respond to a native HTML button-click event by a
 
 Чтобы отреагировать на это событие, выполните следующие действия.
 
-1.  Привяжите свойство события формы [`ngSubmit`](api/forms/NgForm#properties) к методу `onSubmit()` компонента hero-form.
+1.  Привяжите свойство события формы [`ngSubmit`](https://angular.io/api/forms/NgForm#properties) к методу `onSubmit()` компонента hero-form.
 
     <code-example header="src/app/hero-form/hero-form.component.html (ngSubmit)" path="forms/src/app/hero-form/hero-form.component.html" region="ngSubmit"></code-example>.
 

@@ -169,23 +169,23 @@ nav:
             - schematics.md
             - schematics-authoring.md
             - schematics-for-libraries.md
-#    - Туториалы:
-#        - Ваше первое приложение:
-#            - first-app.md
-#            - first-app-lesson-01.md
-#            - first-app-lesson-02.md
-#            - first-app-lesson-03.md
-#            - first-app-lesson-04.md
-#            - first-app-lesson-05.md
-#            - first-app-lesson-06.md
-#            - first-app-lesson-07.md
-#            - first-app-lesson-08.md
-#            - first-app-lesson-09.md
-#            - first-app-lesson-10.md
-#            - first-app-lesson-11.md
-#            - first-app-lesson-12.md
-#            - first-app-lesson-13.md
-#            - first-app-lesson-14.md
+    - Туториалы:
+        - Ваше первое приложение:
+            - first-app.md
+            - first-app-lesson-01.md
+            - first-app-lesson-02.md
+            - first-app-lesson-03.md
+            - first-app-lesson-04.md
+            - first-app-lesson-05.md
+            - first-app-lesson-06.md
+            - first-app-lesson-07.md
+            - first-app-lesson-08.md
+            - first-app-lesson-09.md
+            - first-app-lesson-10.md
+            - first-app-lesson-11.md
+            - first-app-lesson-12.md
+            - first-app-lesson-13.md
+            - first-app-lesson-14.md
 #        - Тур героев:
 #            - toh.md
 #            - toh-pt0.md

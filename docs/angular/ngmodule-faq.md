@@ -163,7 +163,7 @@ The `forRoot()` static method is a convention that makes it easy for developers 
 A good example of `forRoot()` is the `RouterModule.forRoot()` method.
 
 Applications pass a `Routes` array to `RouterModule.forRoot()` in order to configure the app-wide `Router` service with routes.
-`RouterModule.forRoot()` returns a [ModuleWithProviders](api/core/ModuleWithProviders).
+`RouterModule.forRoot()` returns a [ModuleWithProviders](https://angular.io/api/core/ModuleWithProviders).
 You add that result to the `imports` list of the root `AppModule`.
 
 Only call and import a `forRoot()` result in the root application module, `AppModule`.

@@ -1,3 +1,7 @@
+---
+description: Этот обучающий урок демонстрирует, как создать компонент @Input(), использовать его для передачи данных компоненту для настройки
+---
+
 # Урок 5 - Добавление входного параметра в компонент
 
 Этот обучающий урок демонстрирует, как создать компонент `@Input()`, использовать его для передачи данных компоненту для настройки.
@@ -12,13 +16,13 @@
 
 -   Начните с примера кода из предыдущего урока. Выберите <live-example name="first-app-lesson-04"></live-example> из Урока 4, где вы можете:
 
-    -   Использовать _живой пример_ в StackBlitz, где интерфейс StackBlitz является вашей IDE.
+    -   Использовать [живой пример](https://angular.io/generated/live-examples/first-app-lesson-04/stackblitz.html) в StackBlitz, где интерфейс StackBlitz является вашей IDE.
 
-    -   Использовать _download пример_ и открыть его в вашей IDE.
+    -   Использовать [download пример](https://angular.io/generated/zips/first-app-lesson-04/first-app-lesson-04.zip) и открыть его в вашей IDE.
 
-Если вы не просмотрели введение, посетите [Введение в Angular tutorial](tutorial/first-app), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
+Если вы не просмотрели введение, посетите [Введение в Angular tutorial](first-app.md), чтобы убедиться, что у вас есть все необходимое для завершения этого урока.
 
-Если у вас возникнут трудности во время этого урока, вы можете просмотреть готовый код для этого урока в <live-example></live-example> для этого урока.
+Если у вас возникнут трудности во время этого урока, вы можете просмотреть [готовый код](https://angular.io/generated/live-examples/first-app-lesson-05/stackblitz.html) для этого урока.
 
 ## После завершения
 
@@ -46,27 +50,35 @@
 
 1.  Перейдите в `src/app/housing-location/housing-location.component.ts`.
 
-1.  Обновите импорты файла, чтобы включить `Input` и `HousingLocation`:
+2.  Обновите импорты файла, чтобы включить `Input` и `HousingLocation`:
 
-    <code-example header="Import HousingLocationComponent and Input in src/app/housing-location/housing-location.component.ts" path="first-app-lesson-05/src/app/housing-location/housing-location.component.ts" region="add-imports"></code-example>.
+    ```ts
+    import { Component, Input } from '@angular/core';
+    import { CommonModule } from '@angular/common';
+    import { HousingLocation } from '../housinglocation';
+    ```
 
 ### Шаг 2 - Добавление свойства Input
 
 1.  В том же файле добавьте свойство `housingLocation` типа `HousingLocation` в класс `HousingLocationComponent`. Добавьте `!` после имени свойства и префикс с декоратором `@Input()`:
 
-    <code-example header="Import HousingLocationComponent and Input in src/app/housing-location/housing-location.component.ts" path="first-app-lesson-05/src/app/housing-location/housing-location.component.ts" region="add-housing-location-property"></code-example>.
+    ```ts
+    export class HousingLocationComponent {
+        @Input() housingLocation!: HousingLocation;
+    }
+    ```
 
-    Вы должны добавить `!`, потому что вход ожидает передачу значения. В данном случае значение по умолчанию отсутствует. В нашем примере приложения мы знаем, что значение будет передано - так задумано. Восклицательный знак называется оператором утверждения non-null и сообщает компилятору TypeScript, что значение этого свойства не будет равно null или undefined.
+    Вы должны добавить `!`, потому что вход ожидает передачу значения. В данном случае значение по умолчанию отсутствует. В нашем примере приложения мы знаем, что значение будет передано - так задумано. Восклицательный знак называется оператором утверждения non-null и сообщает компилятору TypeScript, что значение этого свойства не будет равно `null` или `undefined`.
 
-1.  Сохраните изменения и подтвердите, что в приложении нет ошибок.
+2.  Сохраните изменения и подтвердите, что в приложении нет ошибок.
 
-1.  Исправьте все ошибки, прежде чем переходить к следующему шагу.
+3.  Исправьте все ошибки, прежде чем переходить к следующему шагу.
 
 ## Обзор урока
 
 В этом уроке вы создали новое свойство, оформленное с помощью декоратора `@Input()`. Вы также использовали оператор утверждения non-null, чтобы сообщить компилятору, что значение нового свойства не будет `null` или `undefined`.
 
-Если у вас возникли трудности с этим уроком, вы можете просмотреть готовый код для него в <live-example></live-example>.
+Если у вас возникли трудности с этим уроком, вы можете просмотреть [готовый код](https://angular.io/generated/live-examples/first-app-lesson-05/stackblitz.html) для него.
 
 ## Следующие шаги
 
@@ -75,3 +87,7 @@
 ## Для получения дополнительной информации о темах, рассмотренных в этом уроке, посетите:
 
 -   [Обмен данными между дочерними и родительскими директивами и компонентами](inputs-outputs.md)
+
+## Ссылки
+
+-   [Lesson 5: Add an input parameter to the component](https://angular.io/tutorial/first-app/first-app-lesson-05)

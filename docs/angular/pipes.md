@@ -14,18 +14,18 @@ For the sample application used in this topic, see the <live-example></live-exam
 Angular provides built-in pipes for typical data transformations, including transformations for internationalization \(i18n\), which use locale information to format data.
 The following are commonly used built-in pipes for data formatting:
 
-| Pipes                                       | Details                                                                                      |
-| :------------------------------------------ | :------------------------------------------------------------------------------------------- |
-| [`DatePipe`](api/common/DatePipe)           | Formats a date value according to locale rules.                                              |
-| [`UpperCasePipe`](api/common/UpperCasePipe) | Transforms text to all upper case.                                                           |
-| [`LowerCasePipe`](api/common/LowerCasePipe) | Transforms text to all lower case.                                                           |
-| [`CurrencyPipe`](api/common/CurrencyPipe)   | Transforms a number to a currency string, formatted according to locale rules.               |
-| [`DecimalPipe`](api/common/DecimalPipe)     | Transforms a number into a string with a decimal point, formatted according to locale rules. |
-| [`PercentPipe`](api/common/PercentPipe)     | Transforms a number to a percentage string, formatted according to locale rules.             |
+| Pipes                                                          | Details                                                                                      |
+| :------------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
+| [`DatePipe`](https://angular.io/api/common/DatePipe)           | Formats a date value according to locale rules.                                              |
+| [`UpperCasePipe`](https://angular.io/api/common/UpperCasePipe) | Transforms text to all upper case.                                                           |
+| [`LowerCasePipe`](https://angular.io/api/common/LowerCasePipe) | Transforms text to all lower case.                                                           |
+| [`CurrencyPipe`](https://angular.io/api/common/CurrencyPipe)   | Transforms a number to a currency string, formatted according to locale rules.               |
+| [`DecimalPipe`](https://angular.io/api/common/DecimalPipe)     | Transforms a number into a string with a decimal point, formatted according to locale rules. |
+| [`PercentPipe`](https://angular.io/api/common/PercentPipe)     | Transforms a number to a percentage string, formatted according to locale rules.             |
 
 <div class="alert is-helpful">
 
--   For a complete list of built-in pipes, see the [pipes API documentation](api/common#pipes 'Pipes API reference summary').
+-   For a complete list of built-in pipes, see the [pipes API documentation](https://angular.io/api/common#pipes 'Pipes API reference summary').
 -   To learn more about using pipes for internationalization \(i18n\) efforts, see [formatting data based on locale][aioguidei18ncommonformatdatalocale].
 
 </div>
@@ -42,7 +42,7 @@ To use pipes you should have a basic understanding of the following:
 
 ## Using a pipe in a template
 
-To apply a pipe, use the pipe \(`|`) character within a template expression as shown in the following code example, along with the _name_ of the pipe, which is `date` for the built-in [`DatePipe`](api/common/DatePipe).
+To apply a pipe, use the pipe \(`|`) character within a template expression as shown in the following code example, along with the _name_ of the pipe, which is `date` for the built-in [`DatePipe`](https://angular.io/api/common/DatePipe).
 The tabs in the example show the following:
 
 | Files                         | Details                                                                                             |
@@ -55,14 +55,14 @@ The tabs in the example show the following:
     <code-pane header="src/app/hero-birthday1.component.ts" path="pipes/src/app/hero-birthday1.component.ts"></code-pane>
 </code-tabs>
 
-The component's `birthday` value flows through the pipe operator, `|` to the [`date`](api/common/DatePipe) function.
+The component's `birthday` value flows through the pipe operator, `|` to the [`date`](https://angular.io/api/common/DatePipe) function.
 
 <a id="parameterizing-a-pipe"></a>
 
 ## Transforming data with parameters and chained pipes
 
 Use optional parameters to fine-tune a pipe's output.
-For example, use the [`CurrencyPipe`](api/common/CurrencyPipe 'API reference') with a country code such as EUR as a parameter.
+For example, use the [`CurrencyPipe`](https://angular.io/api/common/CurrencyPipe 'API reference') with a country code such as EUR as a parameter.
 The template expression `{{ amount | currency:'EUR' }}` transforms the `amount` to currency in euros.
 Follow the pipe name \(`currency`\) with a colon \(`:`\) character and the parameter value \(`'EUR'`\).
 
@@ -70,14 +70,14 @@ If the pipe accepts multiple parameters, separate the values with colons.
 For example, `{{ amount | currency:'EUR':'Euros '}}` adds the second parameter, the string literal `'Euros '`, to the output string.
 Use any valid template expression as a parameter, such as a string literal or a component property.
 
-Some pipes require at least one parameter and allow more optional parameters, such as [`SlicePipe`](api/common/SlicePipe 'API reference for SlicePipe').
+Some pipes require at least one parameter and allow more optional parameters, such as [`SlicePipe`](https://angular.io/api/common/SlicePipe 'API reference for SlicePipe').
 For example, `{{ slice:1:5 }}` creates a new array or string containing a subset of the elements starting with element `1` and ending with element `5`.
 
 ### Example: Formatting a date
 
 The tabs in the following example demonstrates toggling between two different formats \(`'shortDate'` and `'fullDate'`\):
 
--   The `app.component.html` template uses a format parameter for the [`DatePipe`](api/common/DatePipe) \(named `date`\) to show the date as **04/15/88**.
+-   The `app.component.html` template uses a format parameter for the [`DatePipe`](https://angular.io/api/common/DatePipe) \(named `date`\) to show the date as **04/15/88**.
 -   The `hero-birthday2.component.ts` component binds the pipe's format parameter to the component's `format` property in the `template` section, and adds a button for a click event bound to the component's `toggleFormat()` method.
 -   The `hero-birthday2.component.ts` component's `toggleFormat()` method toggles the component's `format` property between a short form \(`'shortDate'`\) and a longer form \(`'fullDate'`\).
 
@@ -91,7 +91,7 @@ Clicking the **Toggle Format** button alternates the date format between **04/15
 
 <div class="alert is-helpful">
 
-For `date` pipe format options, see [DatePipe](api/common/DatePipe 'DatePipe API Reference page').
+For `date` pipe format options, see [DatePipe](https://angular.io/api/common/DatePipe 'DatePipe API Reference page').
 
 </div>
 
@@ -117,7 +117,7 @@ Then, use your custom pipe in template expressions, the same way you use built-i
 
 ### Marking a class as a pipe
 
-To mark a class as a pipe and supply configuration metadata, apply the [`@Pipe`](api/core/Pipe 'API reference for Pipe') [decorator](glossary.md#decorator--decoration 'Definition for decorator') to the class.
+To mark a class as a pipe and supply configuration metadata, apply the [`@Pipe`](https://angular.io/api/core/Pipe 'API reference for Pipe') [decorator](glossary.md#decorator--decoration 'Definition for decorator') to the class.
 Use [UpperCamelCase](glossary.md#case-types 'Definition of case types') \(the general convention for class names\) for the pipe class name, and [camelCase](glossary.md#case-types 'Definition of case types') for the corresponding `name` string.
 Do not use hyphens in the `name`.
 For details and more examples, see [Pipe names](styleguide.md#pipe-names 'Pipe names in the Angular coding style guide').
@@ -137,7 +137,7 @@ Use `name` in template expressions as you would for a built-in pipe.
 
 ### Using the PipeTransform interface
 
-Implement the [`PipeTransform`](api/core/PipeTransform 'API reference for PipeTransform') interface in your custom pipe class to perform the transformation.
+Implement the [`PipeTransform`](https://angular.io/api/core/PipeTransform 'API reference for PipeTransform') interface in your custom pipe class to perform the transformation.
 
 Angular invokes the `transform` method with the value of a binding as the first argument, and any parameters as the second argument in list form, and returns the transformed value.
 
@@ -322,7 +322,7 @@ For details and examples of observables, see the [Observables Overview](observab
 
 </div>
 
-Use the built-in [`AsyncPipe`](api/common/AsyncPipe 'API description of AsyncPipe') to accept an observable as input and subscribe to the input automatically.
+Use the built-in [`AsyncPipe`](https://angular.io/api/common/AsyncPipe 'API description of AsyncPipe') to accept an observable as input and subscribe to the input automatically.
 Without this pipe, your component code would have to subscribe to the observable to consume its values, extract the resolved values, expose them for binding, and unsubscribe when the observable is destroyed in order to prevent memory leaks.
 `AsyncPipe` is an impure pipe that saves boilerplate code in your component to maintain the subscription and keep delivering values from that observable as they arrive.
 
@@ -376,7 +376,7 @@ Heroes as JSON: [ { "name": "Windstorm", "canFly": true }, { "name": "Bombasto",
 
 <div class="alert is-helpful">
 
-The built-in [JsonPipe](api/common/JsonPipe 'API description for JsonPipe') provides a way to diagnose a mysteriously failing data binding or to inspect an object for future binding.
+The built-in [JsonPipe](https://angular.io/api/common/JsonPipe 'API description for JsonPipe') provides a way to diagnose a mysteriously failing data binding or to inspect an object for future binding.
 
 </div>
 

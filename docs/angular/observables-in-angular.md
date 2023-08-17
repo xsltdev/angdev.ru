@@ -15,7 +15,7 @@ Angular provides an `EventEmitter` class that is used when publishing values fro
 `EventEmitter` extends [RxJS `Subject`](https://rxjs.dev/api/index/class/Subject), adding an `emit()` method so it can send arbitrary values.
 When you call `emit()`, it passes the emitted value to the `next()` method of any subscribed observer.
 
-A good example of usage can be found in the [EventEmitter](api/core/EventEmitter) documentation.
+A good example of usage can be found in the [EventEmitter](https://angular.io/api/core/EventEmitter) documentation.
 Here is the example component that listens for open and close events:
 
 <code-example format="typescript" language="typescript">
@@ -43,7 +43,7 @@ This provides several advantages over promise-based HTTP APIs:
 
 ## Async pipe
 
-The [AsyncPipe](api/common/AsyncPipe) subscribes to an observable or promise and returns the latest value it has emitted.
+The [AsyncPipe](https://angular.io/api/common/AsyncPipe) subscribes to an observable or promise and returns the latest value it has emitted.
 When a new value is emitted, the pipe marks the component to be checked for changes.
 
 The following example binds the `time` observable to the component's view.
@@ -53,13 +53,13 @@ The observable continuously updates the view with the current time.
 
 ## Router
 
-[`Router.events`](api/router/Router#events) provides events as observables.
+[`Router.events`](https://angular.io/api/router/Router#events) provides events as observables.
 You can use the `filter()` operator from RxJS to look for events of interest, and subscribe to them in order to make decisions based on the sequence of events in the navigation process.
 Here's an example:
 
 <code-example header="Router events" path="observables-in-angular/src/main.ts" region="router"></code-example>
 
-The [ActivatedRoute](api/router/ActivatedRoute) is an injected router service that makes use of observables to get information about a route path and parameters.
+The [ActivatedRoute](https://angular.io/api/router/ActivatedRoute) is an injected router service that makes use of observables to get information about a route path and parameters.
 For example, `ActivatedRoute.url` contains an observable that reports the route path or paths.
 Here's an example:
 
@@ -68,7 +68,7 @@ Here's an example:
 ## Reactive forms
 
 Reactive forms have properties that use observables to monitor form control values.
-The [`FormControl`](api/forms/FormControl) properties `valueChanges` and `statusChanges` contain observables that raise change events.
+The [`FormControl`](https://angular.io/api/forms/FormControl) properties `valueChanges` and `statusChanges` contain observables that raise change events.
 Subscribing to an observable form-control property is a way of triggering application logic within the component class.
 For example:
 

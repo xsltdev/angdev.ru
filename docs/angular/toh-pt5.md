@@ -144,7 +144,7 @@ ng generate module app-routing --flat --module=app
 
 <code-example header="src/app/app.component.html (heroes RouterLink)" path="toh-pt5/src/app/app.component.html" region="heroes"></code-example>
 
-Атрибут [`routerLink`](#routerlink) установлен в `"/heroes"`, строку, которую маршрутизатор сопоставляет с маршрутом к `HeroesComponent`. Атрибут `routerLink` является селектором для директивы [`RouterLink`](api/router/RouterLink), которая превращает клики пользователя в навигацию по маршрутизатору.
+Атрибут [`routerLink`](#routerlink) установлен в `"/heroes"`, строку, которую маршрутизатор сопоставляет с маршрутом к `HeroesComponent`. Атрибут `routerLink` является селектором для директивы [`RouterLink`](https://angular.io/api/router/RouterLink), которая превращает клики пользователя в навигацию по маршрутизатору.
 
 Это еще одна из публичных директив в `RouterModule`.
 
@@ -335,13 +335,13 @@ Add a `routerLink` attribute to the anchor that's the same as in the dashboard t
 
 <code-example header="src/app/hero-detail/hero-detail.component.ts" path="toh-pt5/src/app/hero-detail/hero-detail.component.ts" region="ctor"></code-example>.
 
-В [`ActivatedRoute`](api/router/ActivatedRoute) хранится информация о маршруте к данному экземпляру `HeroDetailComponent`. Этот компонент интересуют параметры маршрута, извлеченные из URL.
+В [`ActivatedRoute`](https://angular.io/api/router/ActivatedRoute) хранится информация о маршруте к данному экземпляру `HeroDetailComponent`. Этот компонент интересуют параметры маршрута, извлеченные из URL.
 
 Параметр "id" - это `id` героя для отображения.
 
-Сервис [`HeroService`](tutorial/tour-of-heroes/toh-pt4) получает данные о героях с удаленного сервера, и этот компонент использует их для получения героя для отображения.
+Сервис [`HeroService`](toh-pt4.md) получает данные о героях с удаленного сервера, и этот компонент использует их для получения героя для отображения.
 
-[`location`](api/common/Location) - это сервис Angular для взаимодействия с браузером. Этот сервис позволяет вам вернуться к предыдущему представлению.
+[`location`](https://angular.io/api/common/Location) - это сервис Angular для взаимодействия с браузером. Этот сервис позволяет вам вернуться к предыдущему представлению.
 
 ### Извлечение параметра маршрута `id`
 
@@ -373,7 +373,7 @@ Add a `routerLink` attribute to the anchor that's the same as in the dashboard t
 
 </div>
 
-Как и [`getHeroes()`](tutorial/tour-of-heroes/toh-pt4#observable-heroservice), `getHero()` имеет асинхронную сигнатуру. Она возвращает _макет героя_ как `Observable`, используя функцию RxJS `of()`.
+Как и [`getHeroes()`](toh-pt4.md#observable-heroservice), `getHero()` имеет асинхронную сигнатуру. Она возвращает _макет героя_ как `Observable`, используя функцию RxJS `of()`.
 
 Вы можете переписать `getHero()` как настоящий `Http` запрос без необходимости изменять `HeroDetailComponent`, который его вызывает.
 

@@ -157,7 +157,7 @@ Angular обрабатывает _все_ привязки данных один
 
 Трубы Angular позволяют объявлять преобразования отображения-значения в HTML шаблона. Класс с декоратором `@Pipe` определяет функцию, которая преобразует входные значения в выходные значения для отображения в представлении.
 
-Angular определяет различные трубы, такие как [date](api/common/DatePipe) и [currency](api/common/CurrencyPipe). Полный список см. в [Pipes API list](api?type=pipe). Вы также можете определить новые трубы.
+Angular определяет различные трубы, такие как [date](https://angular.io/api/common/DatePipe) и [currency](https://angular.io/api/common/CurrencyPipe). Полный список см. в [Pipes API list](https://angular.io/api?type=pipe). Вы также можете определить новые трубы.
 
 Чтобы указать преобразование значений в шаблоне HTML, используйте оператор [pipe operator (`|`)](pipes.md).
 

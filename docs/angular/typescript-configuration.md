@@ -124,7 +124,7 @@ For instance, to install typings for `chai` you run `npm install @types/chai --s
 ### `target`
 
 By default, the target is `ES2022`. To control ECMA syntax use the [Browserslist](https://github.com/browserslist/browserslist) configuration file.
-For more information, see the [configuring browser compatibility](/guide/build#configuring-browser-compatibility) guide.
+For more information, see the [configuring browser compatibility](build.md#configuring-browser-compatibility) guide.
 
 <!-- links -->
 

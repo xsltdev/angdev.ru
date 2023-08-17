@@ -178,7 +178,7 @@ API данных сервера определяет форму данных JSO
 
 Большинство веб-интерфейсов поддерживают запрос _get by id_ в форме `:baseURL/:id`.
 
-Здесь _базовый URL_ - это `heroesURL`, определенный в разделе [Heroes and HTTP](tutorial/tour-of-heroes/toh-pt6#heroes-and-http) в `api/heroes`, а _id_ - это номер героя, который вы хотите получить. Например, `api/heroes/11`.
+Здесь _базовый URL_ - это `heroesURL`, определенный в разделе [Heroes and HTTP](toh-pt6.md#heroes-and-http) в `api/heroes`, а _id_ - это номер героя, который вы хотите получить. Например, `api/heroes/11`.
 
 Обновите метод `HeroService` `getHero()` следующим образом, чтобы сделать этот запрос:
 

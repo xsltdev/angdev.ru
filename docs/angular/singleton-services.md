@@ -20,7 +20,7 @@ This tells Angular to provide the service in the application root.
 
 <code-example path="providers/src/app/user.service.0.ts"  header="src/app/user.service.ts"></code-example>
 
-For more detailed information on services, see the [Services](tutorial/tour-of-heroes/toh-pt4) chapter of the [Tour of Heroes tutorial](tutorial/tour-of-heroes).
+For more detailed information on services, see the [Services](toh-pt4.md) chapter of the [Tour of Heroes tutorial](toh.md).
 
 ### NgModule `providers` array
 
@@ -91,7 +91,7 @@ However, since Angular 6.0, the best practice for providing services is with the
 
 ### How `forRoot()` works
 
-`forRoot()` takes a service configuration object and returns a [ModuleWithProviders](api/core/ModuleWithProviders), which is a simple object with the following properties:
+`forRoot()` takes a service configuration object and returns a [ModuleWithProviders](https://angular.io/api/core/ModuleWithProviders), which is a simple object with the following properties:
 
 | Properties  | Details                                     |
 | :---------- | :------------------------------------------ |

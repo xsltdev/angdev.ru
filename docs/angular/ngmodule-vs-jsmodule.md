@@ -71,7 +71,7 @@ It then configures the `@NgModule` with the following arrays:
     A new application project's root NgModule has only one component, called `AppComponent`.
 
 -   `imports`: Other NgModules you are using, so that you can use their declarables.
-    The newly generated root NgModule imports [`BrowserModule`](api/platform-browser/BrowserModule 'BrowserModule NgModule') in order to use browser-specific services such as [DOM](https://www.w3.org/TR/DOM-Level-2-Core/introduction.html 'Definition of Document Object Model') rendering, sanitization, and location.
+    The newly generated root NgModule imports [`BrowserModule`](https://angular.io/api/platform-browser/BrowserModule 'BrowserModule NgModule') in order to use browser-specific services such as [DOM](https://www.w3.org/TR/DOM-Level-2-Core/introduction.html 'Definition of Document Object Model') rendering, sanitization, and location.
 
 -   `providers`: Providers of services that components in other NgModules can use.
     There are no providers in a newly generated root NgModule.
