@@ -165,10 +165,10 @@ nav:
         - cli-builder.md
         - language-service.md
         - devtools.md
-#        - Схемы:
-#            - schematics.md
-#            - schematics-authoring.md
-#            - schematics-for-libraries.md
+        - Схемы:
+            - schematics.md
+            - schematics-authoring.md
+            - schematics-for-libraries.md
 #    - Туториалы:
 #        - Ваше первое приложение:
 #            - first-app.md
