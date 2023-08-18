@@ -195,11 +195,11 @@ nav:
             - toh-pt4.md
             - toh-pt5.md
             - toh-pt6.md
-#        - forms.md
-#    - Справка:
-#        - Концептуальная справка:
-#            - Концепции Angular:
-#                - architecture.md
+        - forms.md
+    - Справка:
+        - Концептуальная справка:
+            - Концепции Angular:
+                - architecture.md
 #                - architecture-modules.md
 #                - architecture-components.md
 #                - architecture-services.md
