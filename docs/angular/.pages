@@ -200,7 +200,7 @@ nav:
         - Концептуальная справка:
             - Концепции Angular:
                 - architecture.md
-#                - architecture-modules.md
+                - architecture-modules.md
 #                - architecture-components.md
 #                - architecture-services.md
 #                - architecture-next-steps.md
