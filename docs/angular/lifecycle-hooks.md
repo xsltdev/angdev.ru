@@ -120,7 +120,7 @@ class Counter {
 }
 ```
 
-Как и `ngOnDestroy`, `DestroyRef` работает в любом сервисе, директиве, компоненте или трубе Angular.
+Как и `ngOnDestroy`, `DestroyRef` работает в любом сервисе, директиве, компоненте или пайпе Angular.
 
 ### takeUntilDestroyed
 

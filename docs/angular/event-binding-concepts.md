@@ -1,46 +1,50 @@
+---
+description: При привязке событий Angular настраивает обработчик события для целевого события. Вы можете использовать привязку событий с собственными пользовательскими событиями
+---
 
-# How event binding works
+# Как работает привязка событий
 
-In an event binding, Angular configures an event handler for the target event.
-You can use event binding with your own custom events.
+:date: 28.02.2022
 
-When the component or directive raises the event, the handler executes the template statement.
-The template statement performs an action in response to the event.
+При привязке событий Angular настраивает обработчик события для целевого события. Вы можете использовать привязку событий с собственными пользовательскими событиями.
 
-## Handling events
+Когда компонент или директива вызывает событие, обработчик выполняет оператор шаблона. Шаблонный оператор выполняет действие в ответ на событие.
 
-A common way to handle events is to pass the event object, `$event`, to the method handling the event.
-The `$event` object often contains information the method needs, such as a user's name or an image URL.
+## Обработка событий
 
-The target event determines the shape of the `$event` object.
-If the target event is a native DOM element event, then `$event` is a [DOM event object](https://developer.mozilla.org/docs/Web/Events), with properties such as `target` and `target.value`.
+Обычно для обработки событий в метод, обрабатывающий событие, передается объект события `$event`. Объект `$event` часто содержит необходимую методу информацию, например, имя пользователя или URL-адрес изображения.
 
-In the following example the code sets the `<input>` `value` property by binding to the `name` property.
+Целевое событие определяет форму объекта `$event`. Если целевое событие является собственным событием элемента DOM, то `$event` - это [DOM event object](https://developer.mozilla.org/docs/Web/Events), со свойствами `target` и `target.value`.
 
-<code-example header="src/app/app.component.html" path="event-binding/src/app/app.component.html" region="event-binding-3"></code-example>
+В следующем примере код устанавливает свойство `<input>` `value` путем привязки к свойству `name`.
 
-With this example, the following actions occur:
+```html
+<input
+    [value]="currentItem.name"
+    (input)="currentItem.name=getValue($event)"
+/>
+```
 
-1.  The code binds to the `input` event of the `<input>` element, which allows the code to listen for changes.
-1.  When the user makes changes, the component raises the `input` event.
-1.  The binding executes the statement within a context that includes the DOM event object, `$event`.
-1.  Angular retrieves the changed text by calling `getValue($event.target)` and updates the `name` property.
+В данном примере выполняются следующие действия:
 
-If the event belongs to a directive or component, `$event` has the shape that the directive or component produces.
+1.  Код привязывается к событию `input` элемента `<input>`, что позволяет ему прослушивать изменения.
+2.  Когда пользователь вносит изменения, компонент поднимает событие `input`.
+3.  Привязка выполняет оператор в контексте, включающем объект события DOM, `$event`.
+4.  Ангуляр извлекает измененный текст вызовом `getValue($event.target)` и обновляет свойство `name`.
 
-<div class="alert is-helpful">
+Если событие принадлежит директиве или компоненту, то `$event` имеет ту форму, которую создает директива или компонент.
 
-The type of `$event.target` is only `EventTarget` in the template.
-In the `getValue()` method, the target is cast to an `HTMLInputElement` to allow type-safe access to its `value` property.
+!!!note ""
 
-<code-example path="event-binding/src/app/app.component.ts" region="getValue"></code-example>
+    Тип `$event.target` в шаблоне только `EventTarget`.
+    В методе `getValue()` цель приводится к `HTMLInputElement`, чтобы обеспечить безопасный для типа доступ к ее свойству `value`.
 
-</div>
+    ```ts
+    getValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+    }
+    ```
 
-<!-- links -->
+## Ссылки
 
-<!-- external links -->
-
-<!-- end links -->
-
-@reviewed 2022-02-28
+-   [How event binding works](https://angular.io/guide/event-binding-concepts)

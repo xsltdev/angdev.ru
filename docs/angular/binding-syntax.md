@@ -1,33 +1,37 @@
+---
+description: Привязка данных автоматически поддерживает страницу в актуальном состоянии на основе состояния вашего приложения
+---
+
 # Синтаксис связывания данных
+
+:date: 28.02.2022
 
 Привязка данных автоматически поддерживает страницу в актуальном состоянии на основе состояния вашего приложения. Вы используете привязку данных для указания таких вещей, как источник изображения, состояние кнопки или данные для конкретного пользователя.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Смотрите <live-example></live-example> для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
+    Смотрите [код](https://angular.io/generated/live-examples/binding-syntax/stackblitz.html) для рабочего примера, содержащего фрагменты кода, приведенные в этом руководстве.
 
-</div>
+## Привязка данных и HTML
 
-## Data binding and HTML
+Разработчики могут настраивать HTML, указывая атрибуты со строковыми значениями. В следующем примере атрибуты `class`, `src` и `disabled` изменяют элементы `div`, `img` и `button` соответственно.
 
-Developers can customize HTML by specifying attributes with string values. In the following example, `class`, `src`, and `disabled` modify the `<div>`, `<img>`, and `<button>` elements respectively.
-
-<code-example format="html" language="html">
-
-&lt;div class="special"&gt;Обычный старый HTML&lt;/div&gt; &lt;img src="images/item.png"&gt;
-&lt;кнопка отключена&gt;Сохранить&lt;/button&gt;
-
-</code-example>
+```html
+<div class="special">Plain old HTML</div>
+<img src="images/item.png" />
+<button disabled>Save</button>
+```
 
 Используйте привязку данных для управления такими вещами, как состояние кнопки:
 
-<code-example header="src/app/app.component.html" path="binding-syntax/src/app/app/app.component.html" region="disabled-button"></code-example>.
+```html
+<!-- Bind button disabled state to `isUnchanged` property -->
+<button type="button" [disabled]="isUnchanged">Save</button>
+```
 
 Обратите внимание, что привязка происходит к свойству `disabled` DOM-элемента кнопки, а не к атрибуту. Привязка данных работает со свойствами элементов DOM, компонентов и директив, а не с атрибутами HTML.
 
-<a id="html-attribute-vs-dom-property"></a>
-
-### Атрибуты HTML и свойства DOM
+### Атрибуты HTML и свойства DOM {#html-attribute-vs-dom-property}
 
 Angular binding различает атрибуты HTML и свойства DOM.
 
@@ -35,53 +39,43 @@ Angular binding различает атрибуты HTML и свойства DOM
 
 -   Некоторые атрибуты HTML имеют соответствие 1:1 со свойствами; например,
 
-      <code-example format="html" hideCopy language="html">
-
+    ```html
     id
-
-      </code-example>
+    ```
 
 -   Некоторые атрибуты HTML не имеют соответствующих свойств; например,
 
-      <code-example format="html" hideCopy language="html">
-
-    aria-\*
-
-      </code-example>
+    ```html
+    aria-*
+    ```
 
 -   Некоторые свойства DOM не имеют соответствующих атрибутов; например,
 
-      <code-example format="html" hideCopy language="html">
-
+    ```html
     textContent
+    ```
 
-      </code-example>
+!!!warning ""
 
-<div class="alert is-important">
+    Помните, что атрибуты HTML и свойства DOM - это разные вещи, даже если они имеют одинаковые имена.
 
-Помните, что атрибуты HTML и свойства DOM - это разные вещи, даже если они имеют одинаковые имена.
+В Angular единственная роль HTML-атрибутов заключается в инициализации состояния элементов и директив.
 
-</div>
+Когда вы пишете привязку данных, вы имеете дело исключительно со свойствами и событиями DOM целевого объекта.
 
-In Angular, the only role of HTML attributes is to initialize element and directive state.
+#### Пример 1: `<input>`
 
-When you write a data binding, you're dealing exclusively with the DOM properties and events of the target object.
+Когда браузер отображает `<input type="text" value="Sarah">`, он создает соответствующий узел DOM со свойством `value` и инициализирует это `value` значением "Sarah".
 
-#### Example 1: an `<input>`
-
-When the browser renders `<input type="text" value="Sarah">`, it creates a corresponding DOM node with a `value` property and initializes that `value` to "Sarah".
-
-<code-example format="html" language="html">
-
-&lt;input type="text" value="Сара"&gt;
-
-</code-example>
+```html
+<input type="text" value="Sarah" />
+```
 
 Когда пользователь вводит `Sally` в `<input>`, свойство элемента DOM `value` становится `Sally`. Однако, если посмотреть на HTML-атрибут `value`, используя `input.getAttribute('value')`, можно увидеть, что атрибут остается неизменным &mdash; он возвращает "Sarah".
 
 HTML-атрибут `value` определяет начальное значение; свойство DOM `value` - это текущее значение.
 
-Чтобы увидеть атрибуты в сравнении со свойствами DOM в работающем приложении, смотрите <live-example name="binding-syntax"></live-example> специально для синтаксиса связывания.
+Чтобы увидеть атрибуты в сравнении со свойствами DOM в работающем приложении, смотрите [живой пример](https://angular.io/generated/live-examples/binding-syntax/stackblitz.html) специально для синтаксиса связывания.
 
 #### Пример 2: отключенная кнопка
 
@@ -89,59 +83,52 @@ HTML-атрибут `value` определяет начальное значен
 
 Когда вы добавляете атрибут `disabled`, вы инициализируете свойство `disabled` кнопки значением `true`, которое отключает кнопку.
 
-<code-example format="html" language="html">
+```html
+<button disabled>Test Button</button>
+```
 
-&lt;button disabled&gt;Кнопка тестирования&lt;/button&gt;
+Добавление и удаление атрибута `disabled` отключает и включает кнопку. Однако значение атрибута не имеет значения, поэтому нельзя включить кнопку, написав `<button disabled="false">Still Disabled</button>`.
 
-</code-example>
+Для управления состоянием кнопки вместо этого следует установить свойство `disabled`.
 
-Adding and removing the `disabled` attribute disables and enables the button. However, the value of the attribute is irrelevant, which is why you cannot enable a button by writing `<button disabled="false">Still Disabled</button>`.
+#### Сравнение свойств и атрибутов
 
-To control the state of the button, set the `disabled` property instead.
+Хотя технически можно установить привязку атрибута `[attr.disabled]`, значения отличаются тем, что привязка свойства должна быть булевым значением, а соответствующая привязка атрибута зависит от того, является ли значение `null` или нет. Рассмотрим следующее:
 
-#### Property and attribute comparison
-
-Though you could technically set the `[attr.disabled]` attribute binding, the values are different in that the property binding must be a boolean value, while its corresponding attribute binding relies on whether the value is `null` or not. Consider the following:
-
-<code-example format="html" language="html">
-
-&lt;input [disabled]="условие ? true : false"&gt; &lt;input [attr.disabled]="условие ? 'disabled' : null"&gt;
-
-</code-example>
+```html
+<input [disabled]="condition ? true : false" />
+<input [attr.disabled]="condition ? 'disabled' : null" />
+```
 
 В первой строке, использующей свойство `disabled`, используется булево значение. Вторая строка, использующая атрибут disabled, проверяет значение `null`.
 
 Как правило, следует использовать привязку к свойствам, а не к атрибутам, поскольку булево значение легко читается, синтаксис короче, а свойство более эффективно.
 
-Чтобы увидеть пример кнопки `disabled` в работающем приложении, посмотрите <live-example></live-example>. В этом примере показано, как переключить свойство disabled из компонента.
+Чтобы увидеть пример кнопки `disabled` в работающем приложении, посмотрите [живой пример](https://angular.io/generated/live-examples/binding-syntax/stackblitz.html). В этом примере показано, как переключить свойство disabled из компонента.
 
 ## Типы привязки данных
 
 Angular предоставляет три категории привязки данных в зависимости от направления потока данных:
 
 -   От источника к представлению
-
 -   От представления к источнику
-
 -   В двусторонней последовательности от представления к источнику и от источника к представлению.
 
-| Type | Syntax | Category | |:--- |:--- |:--- |
-| Interpolation <br /> Property <br /> Attribute <br /> Class <br /> Style | <code-example> {{expression}} &NewLine;[target]="expression" </code-example> | One-way from data source to view target |
+| Тип                                                                      | Синтаксис                                                                | Категория                                                      |
+| :----------------------------------------------------------------------- | :----------------------------------------------------------------------- | :------------------------------------------------------------- |
+| Interpolation <br /> Property <br /> Attribute <br /> Class <br /> Style | <code> {{expression}} </code> <br /> <code>[target]="expression" </code> | Односторонний переход от источника данных к объекту просмотра  |
+| Event                                                                    | <code> (target)="statement" </code>                                      | Односторонний переход от цели представления к источнику данных |
+| Двусторонний                                                             | <code> [(target)]="expression" </code>                                   | Двусторонний                                                   |
 
-| Event | <code-example> (target)="statement" </code-example> | One-way from view target to data source |
+Типы привязок, отличные от интерполяции, имеют имя цели, расположенное слева от знака равенства. Целью привязки является свойство или событие, которое вы окружаете символами квадратных скобок (`[ ]`), круглых скобок (`( )`) или обоими символами (`[( )`).
 
-| Two-way | <code-example> [(target)]="expression" </code-example> | Two-way |
-
-Binding types other than interpolation have a target name to the left of the equal sign. The target of a binding is a property or event, which you surround with square bracket \(`[ ]`\) characters, parenthesis \(`( )`\) characters, or both \(`[( )]`\) characters.
-
-The binding punctuation of `[]`, `()`, `[()]`, and the prefix specify the direction of data flow.
+Пунктуация привязки в виде `[]`, `()`, `[()]` и префикс задают направление потока данных.
 
 -   Используйте `[]` для привязки источника к представлению
 -   Используйте `()` для привязки от представления к источнику
-
 -   Используйте `[()]` для двухстороннего связывания в последовательности вид - источник - вид.
 
-Поместите выражение или утверждение справа от знака равенства в двойные кавычки \(`""`\). Для получения дополнительной информации смотрите [Интерполяция](interpolation.md) и [Шаблонные утверждения](template-statements.md).
+Поместите выражение или утверждение справа от знака равенства в двойные кавычки (`""`). Для получения дополнительной информации смотрите [Интерполяция](interpolation.md) и [Шаблонные утверждения](template-statements.md).
 
 ## Типы и цели связывания
 
@@ -149,18 +136,67 @@ The binding punctuation of `[]`, `()`, `[()]`, and the prefix specify the direct
 
 В следующей таблице перечислены цели для различных типов привязки.
 
-| Type | Target | Examples | |:--- |:--- |:--- |
-| Property | Element property <br /> Component property <br /> Directive property | `alt`, `src`, `hero`, and `ngClass` in the following: <code-example path="template-syntax/src/app/app.component.html" region="property-binding-syntax-1"></code-example> <!-- For more information, see [Property Binding](property-binding.md). --> |
-| Event | Element event <br /> Component event <br /> Directive event | `click`, `deleteRequest`, and `myClick` in the following: <code-example path="template-syntax/src/app/app.component.html" region="event-binding-syntax-1"></code-example> |
-| Two-way | Event and property | <code-example path="template-syntax/src/app/app.component.html" region="2-way-binding-syntax-1"></code-example> |
-| Attribute | Attribute \(the exception\) | <code-example path="template-syntax/src/app/app.component.html" region="attribute-binding-syntax-1"></code-example> |
-| Class | `class` property | <code-example path="template-syntax/src/app/app.component.html" region="class-binding-syntax-1"></code-example> |
-| Style | `style` property | <code-example path="template-syntax/src/app/app.component.html" region="style-binding-syntax-1"></code-example> |
+### Свойство
 
-<!-- links -->
+Свойство элемента, свойство компонента, свойство директивы
 
-<!-- external links -->
+`alt`, `src`, `hero` и `ngClass` в следующих:
 
-<!-- end links -->
+```html
+<img [alt]="hero.name" [src]="heroImageUrl" />
+<app-hero-detail [hero]="currentHero"></app-hero-detail>
+<div [ngClass]="{'special': isSpecial}"></div>
+```
 
-@ просмотрено 2022-02-28
+### Событие
+
+Событие элемента, событие компонента, событие директивы
+
+`click`, `deleteRequest` и `myClick` в следующем:
+
+```html
+<button type="button" (click)="onSave()">Save</button>
+<app-hero-detail
+    (deleteRequest)="deleteHero()"
+></app-hero-detail>
+<div (myClick)="clicked=$event" clickable>click me</div>
+```
+
+### Двусторонний
+
+Событие и собственность
+
+```html
+<input [(ngModel)]="name" />
+```
+
+### Атрибут
+
+Атрибут (исключение)
+
+```html
+<button type="button" [attr.aria-label]="help">help</button>
+```
+
+### Класс
+
+Свойство `class`
+
+```html
+<div [class.special]="isSpecial">Special</div>
+```
+
+### Стиль
+
+свойство `style`
+
+```html
+<button
+    type="button"
+    [style.color]="isSpecial ? 'red' : 'green'"
+></button>
+```
+
+## Ссылки
+
+-   [Binding syntax](https://angular.io/guide/binding-syntax)

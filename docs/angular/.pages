@@ -201,12 +201,12 @@ nav:
             - Концепции Angular:
                 - architecture.md
                 - architecture-modules.md
-#                - architecture-components.md
-#                - architecture-services.md
-#                - architecture-next-steps.md
-#                - binding-syntax.md
-#                - event-binding-concepts.md
-#                - template-reference-variables.md
+                - architecture-components.md
+                - architecture-services.md
+                - architecture-next-steps.md
+                - binding-syntax.md
+                - event-binding-concepts.md
+                - template-reference-variables.md
 #            - Рабочее пространство и структура проекта:
 #                - file-structure.md
 #                - workspace-config.md
