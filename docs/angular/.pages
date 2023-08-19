@@ -207,8 +207,8 @@ nav:
                 - binding-syntax.md
                 - event-binding-concepts.md
                 - template-reference-variables.md
-#            - Рабочее пространство и структура проекта:
-#                - file-structure.md
+            - Рабочее пространство и структура проекта:
+                - file-structure.md
 #                - workspace-config.md
 #                - npm-packages.md
 #                - typescript-configuration.md
