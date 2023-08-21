@@ -1,175 +1,130 @@
-# Guidelines for creating NgModules
+---
+description: В этой теме представлен концептуальный обзор различных категорий NgModules, которые можно создавать для организации кода в модульную структуру
+---
 
-This topic provides a conceptual overview of the different categories of [NgModules](glossary.md#ngmodule 'Definition of NgModule') you can create in order to organize your code in a modular structure.
-These categories are not cast in stone &mdash;they are suggestions.
-You may want to create NgModules for other purposes, or combine the characteristics of some of these categories.
+# Руководство по созданию NgModules
 
-NgModules are a great way to organize an application and keep code related to a specific functionality or feature separate from other code.
-Use NgModules to consolidate [components](glossary.md#component 'Definition of component'), [directives](glossary.md#directive 'Definition of directive'), and [pipes](glossary.md#pipe 'Definition of pipe') into cohesive blocks of functionality.
-Focus each block on a feature or business domain, a workflow or navigation flow, a common collection of utilities, or one or more [providers](glossary.md#provider 'Definition of provider') for [services](glossary.md#service 'Definition of service').
+:date: 28.02.2022
 
-For more about NgModules, see [Organizing your app with NgModules](ngmodules.md 'Organizing your app with NgModules').
+В этой теме представлен концептуальный обзор различных категорий [NgModules](glossary.md#ngmodule 'Definition of NgModule'), которые можно создавать для организации кода в модульную структуру. Эти категории не являются застывшими &mdash; это предложения. Возможно, вы захотите создать NgModules для других целей или объединить характеристики некоторых из этих категорий.
 
-<div class="alert is-helpful">
+NgModules - это отличный способ организовать приложение и отделить код, связанный с определенной функциональностью или возможностями, от остального кода. Используйте NgModules для объединения [компонентов](glossary.md#component 'Определение компонента'), [директив](glossary.md#directive 'Определение директивы') и [пайпов](glossary.md#pipe 'Определение пайпа') в целостные функциональные блоки. Сосредоточьте каждый блок на функции или бизнес-области, рабочем процессе или навигационном потоке, общей коллекции утилит или одном или нескольких [providers](glossary.md#provider 'Определение провайдера') для [services](glossary.md#service 'Определение сервиса').
 
-For the example application used in NgModules-related topics, see the <live-example name="ngmodules"></live-example>.
+Подробнее о NgModules см. в разделе [Organizing your app with NgModules](ngmodules.md 'Organizing your app with NgModules').
 
-</div>
+!!!note ""
 
-## Summary of NgModule categories
+    [Пример приложения](https://angular.io/generated/live-examples/ngmodules/stackblitz.html), используемого в темах, связанных с NgModules.
 
-All applications start by [bootstrapping a root NgModule](bootstrapping.md 'Launching an app with a root NgModule').
-You can organize your other NgModules any way you want.
+## Краткое описание категорий NgModule
 
-This topic provides some guidelines for the following general categories of NgModules:
+Все приложения начинаются с [загрузки корневого NgModule](bootstrapping.md 'Запуск приложения с корневым NgModule'). Остальные NgModules можно организовать любым удобным способом.
 
-| Category            | Details                                                                                                                                  |
-| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| [Domain](#domain)   | Is organized around a feature, business domain, or user experience.                                                                      |
-| [Routed](#routed)   | Is the top component of the NgModule. Acts as the destination of a [router](glossary.md#router 'Definition of router') navigation route. |
-| [Routing](#routing) | Provides the routing configuration for another NgModule.                                                                                 |
-| [Service](#service) | Provides utility services such as data access and messaging.                                                                             |
-| [Widget](#widget)   | Makes a component, directive, or pipe available to other NgModules.                                                                      |
-| [Shared](#shared)   | Makes a set of components, directives, and pipes available to other NgModules.                                                           |
+В данной теме приведены некоторые рекомендации для следующих общих категорий NgModules:
 
-The following table summarizes the key characteristics of each category.
+| Категория           | Подробнее                                                                                                                                                     |
+| :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Domain](#domain)   | Организован вокруг функции, бизнес-области или пользовательского опыта.                                                                                       |
+| [Routed](#routed)   | Является верхним компонентом модуля NgModule. Действует как конечный пункт навигационного маршрута [router](glossary.md#router 'Определение маршрутизатора'). |
+| [Routing](#routing) | Предоставляет конфигурацию маршрутизации для другого NgModule.                                                                                                |
+| [Service](#service) | Обеспечивает такие полезные сервисы, как доступ к данным и обмен сообщениями.                                                                                 |
+| [Widget](#widget)   | Делает компонент, директиву или пайп доступными для других NgModules.                                                                                         |
+| [Shared](#shared)   | Делает набор компонентов, директив и пайпов доступным для других NgModules.                                                                                   |
 
-| NgModule | Declarations | Providers    | Exports       | Imported by                  |
-| :------- | :----------- | :----------- | :------------ | :--------------------------- |
-| Domain   | Yes          | Rare         | Top component | Another domain, `AppModule`  |
-| Routed   | Yes          | Rare         | No            | None                         |
-| Routing  | No           | Yes (Guards) | RouterModule  | Another domain (for routing) |
-| Service  | No           | Yes          | No            | `AppModule`                  |
-| Widget   | Yes          | Rare         | Yes           | Another domain               |
-| Shared   | Yes          | No           | Yes           | Another domain               |
+В следующей таблице приведены основные характеристики каждой категории.
 
-<a id="domain"></a>
+| NgModule           | Declarations | Providers   | Exports           | Imported by                      |
+| :----------------- | :----------- | :---------- | :---------------- | :------------------------------- |
+| Домен              | Да           | Редко       | Верхний компонент | Другой домен, `AppModule`        |
+| Маршрутизированный | Да           | Редко       | Нет               | Нет                              |
+| Маршрутизация      | Нет          | Да (охрана) | RouterModule      | Другой домен (для маршрутизации) |
+| Сервис             | Нет          | Да          | Нет               | Нет                              |
+| Виджет             | Да           | Редкий      | Да                | Другой домен                     |
+| Shared             | Да           | Нет         | Да                | Другой домен                     |
 
-## Domain NgModules
+## Доменные NgModules {#domain}
 
-Use a domain NgModule to deliver a user experience dedicated to a particular feature or application domain, such as editing a customer or placing an order.
-One example is `ContactModule` in the <live-example name="ngmodules"></live-example>.
+Используйте доменные NgModule для создания пользовательского опыта, предназначенного для определенной функции или области приложения, например, для редактирования клиента или оформления заказа. Примером может служить `ContactModule` в [живом примере](https://angular.io/generated/live-examples/ngmodules/stackblitz.html).
 
-A domain NgModule organizes the code related to a certain function, containing all of the components, routing, and templates that make up the function.
-Your top component in the domain NgModule acts as the feature or domain's root, and is the only component you export.
-Private supporting subcomponents descend from it.
+Доменный NgModule организует код, связанный с определенной функцией, содержащий все компоненты, маршрутизацию и шаблоны, составляющие эту функцию. Верхний компонент NgModule домена выступает в качестве корня функции или домена и является единственным экспортируемым компонентом. От него отходят частные поддерживающие подкомпоненты.
 
-Import a domain NgModule exactly once into another NgModule, such as a domain NgModule, or into the root NgModule (`AppModule`) of an application that contains only a few NgModules.
+Доменный NgModule можно импортировать ровно один раз в другой NgModule, например, в NgModule домена, или в корневой NgModule (`AppModule`) приложения, содержащего всего несколько NgModules.
 
-Domain NgModules consist mostly of declarations.
-You rarely include providers.
-If you do, the lifetime of the provided services should be the same as the lifetime of the NgModule.
+Доменные NgModules состоят в основном из деклараций. В них редко включаются провайдеры. Если это происходит, то время жизни предоставляемых сервисов должно совпадать со временем жизни NgModule.
 
-<div class="alert is-helpful">
+!!!note ""
 
-For more information about lifecycles, see [Hooking into the component lifecycle](lifecycle-hooks.md 'Hooking into the component lifecycle').
+    Более подробную информацию о жизненных циклах см. в разделе [Hooking into the component lifecycle](lifecycle-hooks.md 'Hooking into the component lifecycle').
 
-</div>
+## Маршрутизируемые NgModules {#routed}
 
-<a id="routed"></a>
+Используйте маршрутизируемый NgModule для всех [lazy-loaded NgModules](lazy-loading-ngmodules.md 'Lazy-loading an NgModule'). Используйте верхний компонент NgModule в качестве пункта назначения маршрута навигации. Маршрутизируемые NgModules ничего не экспортируют, поскольку их компоненты никогда не появляются в шаблоне внешнего компонента.
 
-## Routed NgModules
+Не импортируйте лениво загруженный маршрутизируемый NgModule в другой NgModule, так как это вызовет ускоренную загрузку, что перечеркивает цель ленивой загрузки.
 
-Use a routed NgModule for all [lazy-loaded NgModules](lazy-loading-ngmodules.md 'Lazy-loading an NgModule').
-Use the top component of the NgModule as the destination of a router navigation route.
-Routed NgModules don't export anything because their components never appear in the template of an external component.
+Маршрутизируемые NgModules редко имеют провайдеров, поскольку вы загружаете маршрутизируемый NgModule только при необходимости (например, для маршрутизации). Сервисы, перечисленные в массиве `provider` NgModules, будут недоступны, поскольку корневой инжектор не будет знать о лениво загруженном NgModule. Если вы включаете провайдеров, то время жизни предоставляемых сервисов должно быть таким же, как и время жизни NgModule. Не предоставляйте общеприкладные [singleton services](singleton-services.md) в маршрутизируемом NgModule или в NgModule, который импортируется маршрутизируемым NgModule.
 
-Don't import a lazy-loaded routed NgModule into another NgModule, as this would trigger an eager load, defeating the purpose of lazy loading.
+!!!note ""
 
-Routed NgModules rarely have providers because you load a routed NgModule only when needed \(such as for routing\).
-Services listed in the NgModules' `provider` array would not be available because the root injector wouldn't know about the lazy-loaded NgModule.
-If you include providers, the lifetime of the provided services should be the same as the lifetime of the NgModule.
-Don't provide app-wide [singleton services](singleton-services.md) in a routed NgModule or in an NgModule that the routed NgModule imports.
+    Более подробную информацию о провайдерах и лениво загружаемых маршрутизируемых NgModules см. в разделе [Limiting provider scope](providers.md#limiting-provider-scope-by-lazy-loading-modules 'Обеспечение зависимостей: Ограничение области видимости провайдера').
 
-<div class="alert is-helpful">
+## Маршрутизация NgModules {#routing}
 
-For more information about providers and lazy-loaded routed NgModules, see [Limiting provider scope](providers.md#limiting-provider-scope-by-lazy-loading-modules 'Providing dependencies: Limiting provider scope').
+Используйте NgModule маршрутизации для предоставления конфигурации маршрутизации для NgModule домена, тем самым отделяя проблемы маршрутизации от NgModule домена-компаньона. Примером может служить `ContactRoutingModule` в [живом примере](https://angular.io/generated/live-examples/ngmodules/stackblitz.html), который обеспечивает маршрутизацию для своего сопутствующего доменного NgModule `ContactModule`.
 
-</div>
+!!!note ""
 
-<a id="routing"></a>
+    Обзор и подробности о маршрутизации см. в разделе [In-app navigation: routing to views](router.md 'In-app navigation: routing to views').
 
-## Routing NgModules
+С помощью модуля маршрутизации NgModule можно выполнить следующие задачи:
 
-Use a routing NgModule to provide the routing configuration for a domain NgModule, thereby separating routing concerns from its companion domain NgModule.
-One example is `ContactRoutingModule` in the <live-example name="ngmodules"></live-example>, which provides the routing for its companion domain NgModule `ContactModule`.
+-   Определить маршруты
+-   Добавить конфигурацию маршрутизатора в импорт NgModule
+-   Добавить провайдеров guard и resolver в провайдеры NgModule.
 
-<div class="alert is-helpful">
+Имя NgModule маршрутизации должно быть параллельно имени NgModule-компаньона с использованием суффикса `Routing`. Например, `ContactModule` в `contact.module.ts` имеет NgModule маршрутизации с именем `ContactRoutingModule` в `contact-routing.module.ts`.
 
-For an overview and details about routing, see [In-app navigation: routing to views](router.md 'In-app navigation: routing to views').
+Импортируйте NgModule маршрутизации только в NgModule-компаньон. Если NgModule-компаньон является корневым `AppModule`, то `AppRoutingModule` добавляет конфигурацию маршрутизатора к своим импортам с помощью функции `RouterModule.forRoot(routes)`. Все остальные NgModules маршрутизации являются дочерними модулями, которые импортируют `RouterModule.forChild(routes)`.
 
-</div>
+В своем Ng-модуле маршрутизации реэкспортируйте `RouterModule` в качестве удобства, чтобы компоненты Ng-модуля-компаньона имели доступ к директивам маршрутизатора, таким как `RouterLink` и `RouterOutlet`.
 
-Use a routing NgModule to do the following tasks:
+Не используйте декларации в NgModule для маршрутизации. Компоненты, директивы и пайпы находятся в ведении NgModule домена-компаньона, а не NgModule маршрутизации.
 
--   Define routes
--   Add router configuration to the NgModule's import
--   Add guard and resolver service providers to the NgModule's providers
+## Сервисные NgModules {#service}
 
-The name of the routing NgModule should parallel the name of its companion NgModule, using the suffix `Routing`.
-For example, `ContactModule` in `contact.module.ts` has a routing NgModule named `ContactRoutingModule` in `contact-routing.module.ts`.
+Сервисный NgModule используется для предоставления полезной услуги, такой как доступ к данным или обмен сообщениями. Идеальные сервисные NgModules состоят исключительно из провайдеров и не имеют деклараций. Хорошим примером сервисного NgModule является `HttpClientModule` в Angular.
 
-Import a routing NgModule only into its companion NgModule.
-If the companion NgModule is the root `AppModule`, the `AppRoutingModule` adds router configuration to its imports with `RouterModule.forRoot(routes)`.
-All other routing NgModules are children that import `RouterModule.forChild(routes)`.
+Для импорта сервисных NgModules используйте только корневой `AppModule`.
 
-In your routing NgModule, re-export the `RouterModule` as a convenience so that components of the companion NgModule have access to router directives such as `RouterLink` and `RouterOutlet`.
+## Виджет NgModules {#widget}
 
-Don't use declarations in a routing NgModule.
-Components, directives, and pipes are the responsibility of the companion domain NgModule, not the routing NgModule.
+Используйте NgModule виджета, чтобы сделать компонент, директиву или пайп доступными для внешних NgModules. Импортируйте NgModules виджетов в любые NgModules, которым нужны виджеты в их шаблонах. Многие библиотеки компонентов пользовательского интерфейса сторонних производителей предоставляются в виде виджетов NgModules.
 
-<a id="service"></a>
+Виджетный NgModule должен состоять исключительно из деклараций, большинство из которых экспортируются. В редких случаях в нем могут присутствовать провайдеры.
 
-## Service NgModules
+## Общие модули NgModules {#shared}
 
-Use a service NgModule to provide a utility service such as data access or messaging.
-Ideal service NgModules consist entirely of providers and have no declarations.
-Angular's `HttpClientModule` is a good example of a service NgModule.
+Поместите часто используемые директивы, пайпы и компоненты в один NgModule, обычно называемый `SharedModule`, а затем импортируйте только этот NgModule везде, где он нужен в других частях вашего приложения. Вы можете импортировать общий NgModule в NgModules вашего домена, включая [lazy-loaded NgModules](lazy-loading-ngmodules.md 'Lazy-loading an NgModule'). Одним из примеров является `SharedModule` в [живом примере](https://angular.io/generated/live-examples/ngmodules/stackblitz.html), который предоставляет пользовательский пайп `AwesomePipe` и директиву `HighlightDirective`.
 
-Use only the root `AppModule` to import service NgModules.
+Общие модули NgModules не должны включать провайдеров, равно как и любые импортированные или реэкспортированные модули NgModules не должны включать провайдеров.
 
-<a id="widget"></a>
+О том, как использовать общие модули для организации и оптимизации кода, читайте в разделе [Sharing NgModules in an app] (sharing-ngmodules.md 'Sharing NgModules in an app').
 
-## Widget NgModules
+## Следующие шаги
 
-Use a widget NgModule to make a component, directive, or pipe available to external NgModules.
-Import widget NgModules into any NgModules that need the widgets in their templates.
-Many third-party UI component libraries are provided as widget NgModules.
+Возможно, вас также заинтересует следующее:
 
-A widget NgModule should consist entirely of declarations, most of them exported.
-It would rarely have providers.
+-   Подробнее о NgModules см. в разделе [Organizing your app with NgModules](ngmodules.md 'Organizing your app with NgModules')
+-   Подробнее о корневом NgModule см. в разделе [Запуск приложения с корневым NgModule](bootstrapping.md 'Launching an app with a root NgModule').
+-   Чтобы узнать о часто используемых модулях Angular NgModules и о том, как импортировать их в свое приложение, смотрите раздел [Frequently-used modules](frequent-ngmodules.md 'Часто используемые модули').
+-   Полное описание свойств метаданных NgModule приведено в разделе [Использование метаданных NgModule](ngmodule-api.md 'Using the NgModule metadata').
 
-<a id="shared"></a>
+Если вы хотите управлять загрузкой NgModule и использованием зависимостей и сервисов, см. следующее:
 
-## Shared NgModules
+-   О том, как загружать NgModules с нетерпением при запуске приложения или лениво загружать NgModules асинхронно с помощью маршрутизатора, см. раздел [Lazy-loading feature modules](lazy-loading-ngmodules.md).
+-   Чтобы понять, как предоставить сервис или другую зависимость для вашего приложения, смотрите раздел [Providing Dependencies for an NgModule](providers.md 'Providing Dependencies for an NgModule').
+-   О том, как создать синглтон-сервис для использования в NgModules, см. раздел [Making a service a singleton](singleton-services.md 'Making a service a singleton').
 
-Put commonly used directives, pipes, and components into one NgModule, typically named `SharedModule`, and then import just that NgModule wherever you need it in other parts of your application.
-You can import the shared NgModule in your domain NgModules, including [lazy-loaded NgModules](lazy-loading-ngmodules.md 'Lazy-loading an NgModule').
-One example is `SharedModule` in the <live-example name="ngmodules"></live-example>, which provides the `AwesomePipe` custom pipe and `HighlightDirective` directive.
+## Ссылки
 
-Shared NgModules should not include providers, nor should any of its imported or re-exported NgModules include providers.
-
-To learn how to use shared modules to organize and streamline your code, see [Sharing NgModules in an app](sharing-ngmodules.md 'Sharing NgModules in an app').
-
-## Next steps
-
-You may also be interested in the following:
-
--   For more about NgModules, see [Organizing your app with NgModules](ngmodules.md 'Organizing your app with NgModules')
--   To learn more about the root NgModule, see [Launching an app with a root NgModule](bootstrapping.md 'Launching an app with a root NgModule')
--   To learn about frequently used Angular NgModules and how to import them into your app, see [Frequently-used modules](frequent-ngmodules.md 'Frequently-used modules')
--   For a complete description of the NgModule metadata properties, see [Using the NgModule metadata](ngmodule-api.md 'Using the NgModule metadata')
-
-If you want to manage NgModule loading and the use of dependencies and services, see the following:
-
--   To learn about loading NgModules eagerly when the application starts, or lazy-loading NgModules asynchronously by the router, see [Lazy-loading feature modules](lazy-loading-ngmodules.md)
--   To understand how to provide a service or other dependency for your app, see [Providing Dependencies for an NgModule](providers.md 'Providing Dependencies for an NgModule')
--   To learn how to create a singleton service to use in NgModules, see [Making a service a singleton](singleton-services.md 'Making a service a singleton')
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-@reviewed 2022-02-28
+-   [Guidelines for creating NgModules](https://angular.io/guide/module-types)

@@ -1,162 +1,148 @@
-# Launching your app with a root module
+---
+description: Модуль NgModule описывает, как части приложения сочетаются друг с другом. Каждое приложение имеет как минимум один модуль Angular, корневой модуль, который должен присутствовать для загрузки приложения при запуске
+---
 
-## Prerequisites
+# Запуск приложения с корневым модулем
 
-A basic understanding of the following:
+:date: 28.02.2022
 
--   [JavaScript Modules vs. NgModules](ngmodule-vs-jsmodule.md)
+## Предварительные условия
 
-An NgModule describes how the application parts fit together.
-Every application has at least one Angular module, the _root_ module, which must be present for bootstrapping the application on launch.
-By convention and by default, this NgModule is named `AppModule`.
+Базовое понимание следующего:
 
-When you use the [Angular CLI](https://angular.io/cli) command `ng new` to generate an app, the default `AppModule` looks like the following:
+-   [JavaScript-модули против Ng-модулей](ngmodule-vs-jsmodule.md)
 
-<code-example format="typescript" language="typescript">
+Модуль NgModule описывает, как части приложения сочетаются друг с другом. Каждое приложение имеет как минимум один модуль Angular, _корневой_ модуль, который должен присутствовать для загрузки приложения при запуске. По соглашению и по умолчанию этот NgModule называется `AppModule`.
 
-/_ JavaScript imports _/
-import { BrowserModule } from '&commat;angular/platform-browser';
-import { NgModule } from '&commat;angular/core';
+Когда вы используете команду [Angular CLI](https://angular.io/cli) `ng new` для генерации приложения, по умолчанию `AppModule` выглядит следующим образом:
+
+```ts
+/* JavaScript imports */
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
-/_ the AppModule class with the &commat;NgModule decorator _/
-&commat;NgModule({
-declarations: [
-AppComponent
-],
-imports: [
-BrowserModule
-],
-providers: [],
-bootstrap: [AppComponent]
+/* the AppModule class with the @NgModule decorator */
+@NgModule({
+    declarations: [AppComponent],
+    imports: [BrowserModule],
+    providers: [],
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
+```
 
-</code-example>
+После операторов импорта находится класс с декоратором **`@NgModule`** [decorator] (glossary.md#decorator ''Decorator'').
 
-After the import statements is a class with the **`@NgModule`** [decorator](glossary.md#decorator '"Decorator" explained').
+Декоратор `@NgModule` идентифицирует `AppModule` как класс `NgModule`. Декоратор `@NgModule` принимает объект метаданных, который указывает Angular, как скомпилировать и запустить приложение.
 
-The `@NgModule` decorator identifies `AppModule` as an `NgModule` class.
-`@NgModule` takes a metadata object that tells Angular how to compile and launch the application.
+| Объект метаданных | Подробности                                                                                                                                      |
+| :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `declarations`    | Одинокий компонент этого приложения.                                                                                                             |
+| `imports`         | Импортируйте `BrowserModule`, чтобы иметь специфические для браузера сервисы, такие как рендеринг DOM, дезинфекция и определение местоположения. |
+| `providers`       | Поставщики услуг.                                                                                                                                |
+| `bootstrap`       | _корневой_ компонент, который Angular создает и вставляет в хост-страницу `index.html`.                                                          |
 
-| metadata object | Details                                                                                                     |
-| :-------------- | :---------------------------------------------------------------------------------------------------------- |
-| declarations    | This application's lone component.                                                                          |
-| imports         | Import `BrowserModule` to have browser-specific services such as DOM rendering, sanitization, and location. |
-| providers       | The service providers.                                                                                      |
-| bootstrap       | The _root_ component that Angular creates and inserts into the `index.html` host web page.                  |
+Приложение по умолчанию, созданное с помощью Angular CLI, содержит только один компонент, `AppComponent`, поэтому он находится в массивах `declarations` и `bootstrap`.
 
-The default application created by the Angular CLI only has one component, `AppComponent`, so it is in both the `declarations` and the `bootstrap` arrays.
+## Массив `declarations` {#declarations}
 
-<a id="declarations"></a>
+Массив `declarations` модуля сообщает Angular, какие компоненты принадлежат этому модулю. По мере создания новых компонентов добавляйте их в `declarations`.
 
-## The `declarations` array
+Каждый компонент должен быть объявлен только в одном классе `NgModule`. Если вы используете компонент без его объявления, Angular возвращает сообщение об ошибке.
 
-The module's `declarations` array tells Angular which components belong to that module.
-As you create more components, add them to `declarations`.
+Массив `declarations` принимает только декларируемые компоненты. Декларируемые компоненты - это компоненты, [директивы](attribute-directives.md) и [пайпы](pipes.md). Все декларируемые модули должны находиться в массиве `declarations`. Декларируемые объекты должны принадлежать только одному модулю. При попытке объявить один и тот же класс более чем в одном модуле компилятор выдает ошибку.
 
-You must declare every component in exactly one `NgModule` class.
-If you use a component without declaring it, Angular returns an error message.
+Эти объявленные классы видны в модуле, но невидимы для компонентов другого модуля, если только они не экспортированы из этого модуля и другой модуль не импортирует этот класс.
 
-The `declarations` array only takes declarables. Declarables are components, [directives](attribute-directives.md), and [pipes](pipes.md).
-All of a module's declarables must be in the `declarations` array.
-Declarables must belong to exactly one module. The compiler emits an error if you try to declare the same class in more than one module.
+Ниже приведен пример того, что входит в массив объявлений:
 
-These declared classes are visible within the module but invisible to components in a different module, unless they are exported from this module and the other module imports this one.
-
-An example of what goes into a declarations array follows:
-
-<code-example format="typescript" language="typescript">
-
+```ts
 declarations: [
-YourComponent,
-YourPipe,
-YourDirective
+  YourComponent,
+  YourPipe,
+  YourDirective
 ],
+```
 
-</code-example>
+Объявляемая переменная может принадлежать только одному модулю, поэтому объявляйте ее только в одном `@NgModule`. Когда она понадобится в другом месте, импортируйте модуль, содержащий нужную вам декларируемую переменную.
 
-A declarable can only belong to one module, so only declare it in one `@NgModule`.
-When you need it elsewhere, import the module that contains the declarable you need.
+### Использование директив в `@NgModule`
 
-### Using directives with `@NgModule`
+Используйте массив `declarations` для директив. Чтобы использовать директиву, компонент или пайп в модуле, необходимо выполнить несколько действий:
 
-Use the `declarations` array for directives.
-To use a directive, component, or pipe in a module, you must do a few things:
+1.  Экспортировать ее из файла, в котором она была написана.
+2.  Импортировать ее в соответствующий модуль.
+3.  Объявить его в массиве `@NgModule` `declarations`.
 
-1.  Export it from the file where you wrote it.
-1.  Import it into the appropriate module.
-1.  Declare it in the `@NgModule` `declarations` array.
+Эти три шага выглядят следующим образом. В файле, в котором создается директива, экспортируйте ее. Следующий пример с именем `ItemDirective` представляет собой структуру директив по умолчанию, которую CLI генерирует в собственном файле `item.directive.ts`:
 
-Those three steps look like the following. In the file where you create your directive, export it.
-The following example, named `ItemDirective` is the default directive structure that the CLI generates in its own file, `item.directive.ts`:
+```ts
+import { Directive } from '@angular/core';
 
-<code-example header="src/app/item.directive.ts" path="bootstrapping/src/app/item.directive.ts" region="directive"></code-example>
+@Directive({
+    selector: '[appItem]',
+})
+export class ItemDirective {
+    // code goes here
+    constructor() {}
+}
+```
 
-The key point here is that you have to export it, so that you can import it elsewhere.
-Next, import it into the `NgModule`, in this example `app.module.ts`, with a JavaScript import statement:
+Ключевым моментом здесь является то, что вы должны экспортировать его, чтобы иметь возможность импортировать его в другом месте. Затем импортируйте его в `NgModule`, в данном примере `app.module.ts`, с помощью оператора JavaScript import:
 
-<code-example header="src/app/app.module.ts" path="bootstrapping/src/app/app.module.ts" region="directive-import"></code-example>
+```ts
+import { ItemDirective } from './item.directive';
+```
 
-And in the same file, add it to the `@NgModule` `declarations` array:
+И в том же файле добавьте его в массив `@NgModule` `declarations`:
 
-<code-example header="src/app/app.module.ts" path="bootstrapping/src/app/app.module.ts" region="declarations"></code-example>
+```ts
+declarations: [
+  AppComponent,
+  ItemDirective
+],
+```
 
-Now you could use your `ItemDirective` in a component.
-This example uses `AppModule`, but you'd do it the same way for a feature module.
-For more about directives, see [Attribute Directives](attribute-directives.md) and [Structural Directives](structural-directives.md).
-You'd also use the same technique for [pipes](pipes.md) and components.
+Теперь можно использовать `ItemDirective` в компоненте. В данном примере используется `AppModule`, но аналогичным образом можно поступить и с функциональным модулем. Подробнее о директивах см. в разделах [Attribute Directives](attribute-directives.md) и [Structural Directives](structural-directives.md). Аналогичная техника используется для пайпов [pipes](pipes.md) и компонентов.
 
-Remember, components, directives, and pipes belong to one module only.
-You only need to declare them once in your application because you share them by importing the necessary modules.
-This saves you time and helps keep your application lean.
+Помните, что компоненты, директивы и пайпы принадлежат только одному модулю. В приложении их нужно объявлять только один раз, поскольку они используются совместно, импортируя необходимые модули. Это экономит время и помогает сохранить компактность приложения.
 
-<a id="imports"></a>
+## Массив `imports` {#imports}
 
-## The `imports` array
+Массив `imports` модуля отображается исключительно в объекте метаданных `@NgModule`. Он сообщает Angular о других модулях NgModules, которые необходимы данному модулю для правильной работы.
 
-The module's `imports` array appears exclusively in the `@NgModule` metadata object.
-It tells Angular about other NgModules that this particular module needs to function properly.
+```ts
+imports: [
+  BrowserModule,
+  FormsModule,
+  HttpClientModule
+],
+```
 
-<code-example header="src/app/app.module.ts (excerpt)" path="bootstrapping/src/app/app.module.ts" region="imports"></code-example>
+В этот список входят модули, экспортирующие компоненты, директивы или пайпы, на которые ссылаются шаблоны компонентов в этом модуле. В данном случае речь идет о компоненте `AppComponent`, который ссылается на компоненты, директивы или пайпы в модулях `BrowserModule`, `FormsModule` или `HttpClientModule`. Шаблон компонента может ссылаться на другой компонент, директиву или пайп, если ссылающийся класс объявлен в этом модуле или импортирован из другого модуля.
 
-This list of modules are those that export components, directives, or pipes that component templates in this module reference.
-In this case, the component is `AppComponent`, which references components, directives, or pipes in `BrowserModule`, `FormsModule`, or `HttpClientModule`.
-A component template can reference another component, directive, or pipe when the referenced class is declared in this module, or the class was imported from another module.
+## Массив `providers` {#bootstrap-array}
 
-<a id="bootstrap-array"></a>
+В массиве providers перечисляются сервисы, необходимые приложению. Когда вы перечисляете сервисы в этом массиве, они становятся доступными для всего приложения. При использовании функциональных модулей и "ленивой" загрузки их можно выделить. Более подробную информацию можно найти в разделе [Providers](providers.md).
 
-## The `providers` array
+## Массив `bootstrap`
 
-The providers array is where you list the services the application needs.
-When you list services here, they are available app-wide.
-You can scope them when using feature modules and lazy loading.
-For more information, see [Providers](providers.md).
+При запуске приложения происходит загрузка корневого `AppModule`, который также называется `entryComponent`. Кроме всего прочего, в процессе загрузки создаются компоненты, перечисленные в массиве `bootstrap`, и каждый из них вставляется в DOM браузера.
 
-## The `bootstrap` array
+Каждый загружаемый компонент является основой собственного дерева компонентов. Вставка загружаемого компонента обычно вызывает каскад созданий компонентов, которые заполняют это дерево.
 
-The application launches by bootstrapping the root `AppModule`, which is also referred to as an `entryComponent`.
-Among other things, the bootstrapping process creates the component\(s\) listed in the `bootstrap` array and inserts each one into the browser DOM.
+Хотя на веб-странице можно разместить более одного дерева компонентов, большинство приложений имеют только одно дерево компонентов и загружают один корневой компонент.
 
-Each bootstrapped component is the base of its own tree of components.
-Inserting a bootstrapped component usually triggers a cascade of component creations that fill out that tree.
+Этот единственный корневой компонент обычно называется `AppComponent` и находится в массиве `bootstrap` корневого модуля.
 
-While you can put more than one component tree on a host web page, most applications have only one component tree and bootstrap a single root component.
+В ситуации, когда требуется загрузить компонент на основе ответа API или установить `AppComponent` в другой узел DOM, не соответствующий селектору компонента, обратитесь к документации `ApplicationRef.bootstrap()`.
 
-This one root component is usually called `AppComponent` and is in the root module's `bootstrap` array.
+## Подробнее о модулях Angular
 
-In a situation where you want to bootstrap a component based on an API response,
-or you want to mount the `AppComponent` in a different DOM node that doesn't match the component selector, please refer to `ApplicationRef.bootstrap()` documentation.
+Подробнее о модулях NgModules, которые часто встречаются в приложениях, см. в разделе [Frequently Used Modules](frequent-ngmodules.md).
 
-## More about Angular Modules
+## Ссылки
 
-For more on NgModules you're likely to see frequently in applications, see [Frequently Used Modules](frequent-ngmodules.md).
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-@reviewed 2022-02-28
+-   [Launching your app with a root module](https://angular.io/guide/bootstrapping)

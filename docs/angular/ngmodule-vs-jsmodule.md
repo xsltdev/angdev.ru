@@ -1,94 +1,91 @@
-# JavaScript modules vs. NgModules
+---
+description: Модули JavaScript и модули NgModules могут помочь вам в модульном построении кода, но они очень разные. В приложениях Angular используются оба вида модулей
+---
 
-JavaScript modules and NgModules can help you modularize your code, but they are very different.
-Angular applications rely on both kinds of modules.
+# Модули JavaScript против NgModules
 
-## JavaScript modules: Files containing code
+:date: 28.02.2022
 
-A [JavaScript module](https://javascript.info/modules 'JavaScript.Info - Modules') is an individual file with JavaScript code, usually containing a class or a library of functions for a specific purpose within your application.
-JavaScript modules let you spread your work across multiple files.
+Модули JavaScript и модули NgModules могут помочь вам в модульном построении кода, но они очень разные. В приложениях Angular используются оба вида модулей.
 
-<div class="alert is-helpful">
+## Модули JavaScript: Файлы, содержащие код
 
-To learn more about JavaScript modules, see [ES6 In Depth: Modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules).
-For the module specification, see the [6th Edition of the ECMAScript standard](https://www.ecma-international.org/ecma-262/6.0/#sec-modules).
+Модуль [JavaScript](https://learn.javascript.ru/modules) - это отдельный файл с кодом JavaScript, обычно содержащий класс или библиотеку функций для конкретной цели в вашем приложении. Модули JavaScript позволяют распределить работу по нескольким файлам.
 
-</div>
+!!!note ""
 
-To make the code in a JavaScript module available to other modules, use an `export` statement at the end of the relevant code in the module, such as the following:
+    Подробнее о модулях JavaScript см. в статье [ES6 In Depth: Modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules). Спецификацию модулей см. в [6th Edition of the ECMAScript standard](https://www.ecma-international.org/ecma-262/6.0/#sec-modules).
 
-<code-example format="typescript" language="typescript">
+Чтобы сделать код в модуле JavaScript доступным для других модулей, используйте оператор `export` в конце соответствующего кода модуля, как, например, в следующем примере:
 
-export class AppComponent { &hellip; }
+```ts
+export class AppComponent {
+    /* … */
+}
+```
 
-</code-example>
+Если код этого модуля нужен в другом модуле, используйте оператор `import` следующим образом:
 
-When you need that module's code in another module, use an `import` statement as follows:
+```ts
+import { AppComponent } from './app.component';
+```
 
-<code-example format="typescript" language="typescript">
+Каждый модуль имеет свою собственную область видимости верхнего уровня. Другими словами, переменные и функции верхнего уровня в модуле не видны в других скриптах или модулях. Каждый модуль предоставляет пространство имен для идентификаторов, чтобы предотвратить их столкновение с идентификаторами в других модулях. При наличии нескольких модулей можно предотвратить случайное появление глобальных переменных, создав единое глобальное пространство имен и добавив к нему подмодули.
+
+Сам фреймворк Angular загружается как набор JavaScript-модулей.
+
+## NgModules: Классы с метаданными для компиляции
+
+[NgModule](glossary.md#ngmodule 'Определение NgModule') - это класс, помеченный декоратором `@NgModule` с объектом метаданных, который описывает, как данная часть приложения сочетается с другими частями. NgModules специфичны для Angular. Хотя классы с декоратором `@NgModule` по традиции хранятся в собственных файлах, они отличаются от модулей JavaScript тем, что включают в себя эти метаданные.
+
+Метаданные `@NgModule` играют важную роль в управлении процессом компиляции Angular, который преобразует написанный вами код приложения в высокопроизводительный JavaScript-код. Метаданные описывают, как скомпилировать шаблон компонента и как создать [инжектор](glossary.md#injector 'Определение инжектора') во время выполнения. Она определяет [компоненты](glossary.md#component 'Определение компонента'), [директивы](glossary.md#directive 'Определение директивы') и [пайпы](glossary.md#pipe 'Определение пайпа') NgModule, а также делает некоторые из них общедоступными через свойство `exports`, чтобы внешние компоненты могли их использовать. Вы также можете использовать NgModule для добавления провайдеров [providers](glossary.md#provider 'Определение провайдера') для сервисов [services](glossary.md#service 'Определение сервиса'), чтобы эти сервисы были доступны в других частях вашего приложения.
+
+Вместо того чтобы определять все классы-члены в одном огромном файле в виде JavaScript-модуля, объявите, какие компоненты, директивы и пайпы принадлежат модулю NgModule, в списке `@NgModule.declarations`. Такие классы называются [declarables] (glossary.md#declarable 'Определение declarable'). Модуль NgModule может экспортировать только те декларируемые классы, которыми он владеет сам или импортирует из других модулей NgModules. Он не может объявлять или экспортировать классы другого типа. Декларируемые классы - это единственные классы, которые имеют значение для процесса компиляции Angular.
+
+Полное описание свойств метаданных NgModule приведено в разделе [Использование метаданных NgModule](ngmodule-api.md 'Using the NgModule metadata').
+
+## Пример, в котором используются оба варианта
+
+Корневой NgModule `AppModule`, сгенерированный с помощью [Angular CLI](https://angular.io/cli) для нового проекта приложения, демонстрирует использование обоих видов модулей:
+
+```ts
+// imports
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
-</code-example>
+// @NgModule decorator with its metadata
+@NgModule({
+    declarations: [AppComponent],
+    imports: [BrowserModule],
+    providers: [],
+    bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
 
-Each module has its own top-level scope.
-In other words, top-level variables and functions in a module are not seen in other scripts or modules.
-Each module provides a namespace for identifiers to prevent them from clashing with identifiers in other modules.
-With multiple modules, you can prevent accidental global variables by creating a single global namespace and adding submodules to it.
+Корневой модуль NgModule начинается с операторов `import` для импорта модулей JavaScript.
+Затем он конфигурирует `@NgModule` со следующими массивами:
 
-The Angular framework itself is loaded as a set of JavaScript modules.
+-   `declarations`: Компоненты, директивы и пайпы, принадлежащие NgModule.
+    Корневой NgModule нового проекта приложения имеет только один компонент, называемый `AppComponent`.
 
-## NgModules: Classes with metadata for compiling
+-   `imports`: Другие используемые вами NgModules, чтобы вы могли использовать их декларируемые элементы.
+    Вновь созданный корневой NgModule импортирует [`BrowserModule`](https://angular.io/api/platform-browser/BrowserModule 'BrowserModule NgModule'), чтобы использовать специфические для браузера сервисы, такие как [DOM](https://www.w3.org/TR/DOM-Level-2-Core/introduction.html 'Definition of Document Object Model') рендеринг, санация и размещение.
 
-An [NgModule](glossary.md#ngmodule 'Definition of NgModule') is a class marked by the `@NgModule` decorator with a metadata object that describes how that particular part of the application fits together with the other parts.
-NgModules are specific to Angular.
-While classes with an `@NgModule` decorator are by convention kept in their own files, they differ from JavaScript modules because they include this metadata.
+-   `providers`: Провайдеры сервисов, которые могут использовать компоненты других NgModules.
+    В новом корневом NgModule провайдеры отсутствуют.
 
-The `@NgModule` metadata plays an important role in guiding the Angular compilation process that converts the application code you write into highly performant JavaScript code.
-The metadata describes how to compile a component's template and how to create an [injector](glossary.md#injector 'Definition of injector') at runtime.
-It identifies the NgModule's [components](glossary.md#component 'Definition of component'), [directives](glossary.md#directive 'Definition of directive'), and [pipes](glossary.md#pipe 'Definition of pipe)'),
-and makes some of them public through the `exports` property so that external components can use them.
-You can also use an NgModule to add [providers](glossary.md#provider 'Definition of provider') for [services](glossary.md#service 'Definition of a service'), so that the services are available elsewhere in your application.
+-   `bootstrap`: Компонент, который Angular создает и вставляет в хост-страницу `index.html`, тем самым загружая приложение.
+    Этот компонент, `AppComponent`, появляется как в массивах `declarations`, так и в массиве `bootstrap`.
 
-Rather than defining all member classes in one giant file as a JavaScript module, declare which components, directives, and pipes belong to the NgModule in the `@NgModule.declarations` list.
-These classes are called [declarables](glossary.md#declarable 'Definition of a declarable').
-An NgModule can export only the declarable classes it owns or imports from other NgModules.
-It doesn't declare or export any other kind of class.
-Declarables are the only classes that matter to the Angular compilation process.
+## Следующие шаги
 
-For a complete description of the NgModule metadata properties, see [Using the NgModule metadata](ngmodule-api.md 'Using the NgModule metadata').
+-   Подробнее о модулях NgModules см. в разделе [Organizing your app with NgModules](ngmodules.md 'Organizing your app with NgModules').
+-   Подробнее о корневом NgModule см. в разделе [Запуск приложения с корневым NgModule](bootstrapping.md 'Запуск приложения с корневым NgModule').
+-   О часто используемых модулях Angular NgModules и о том, как импортировать их в свое приложение, читайте в разделе [Frequently-used modules](frequent-ngmodules.md 'Часто используемые модули').
 
-## An example that uses both
+## Ссылки
 
-The root NgModule `AppModule` generated by the [Angular CLI](https://angular.io/cli) for a new application project demonstrates how you use both kinds of modules:
-
-<code-example header="src/app/app.module.ts (default AppModule)" path="ngmodules/src/app/app.module.1.ts"></code-example>
-
-The root NgModule starts with `import` statements to import JavaScript modules.
-It then configures the `@NgModule` with the following arrays:
-
--   `declarations`: The components, directives, and pipes that belong to the NgModule.
-    A new application project's root NgModule has only one component, called `AppComponent`.
-
--   `imports`: Other NgModules you are using, so that you can use their declarables.
-    The newly generated root NgModule imports [`BrowserModule`](https://angular.io/api/platform-browser/BrowserModule 'BrowserModule NgModule') in order to use browser-specific services such as [DOM](https://www.w3.org/TR/DOM-Level-2-Core/introduction.html 'Definition of Document Object Model') rendering, sanitization, and location.
-
--   `providers`: Providers of services that components in other NgModules can use.
-    There are no providers in a newly generated root NgModule.
-
--   `bootstrap`: The component that Angular creates and inserts into the `index.html` host web page, thereby bootstrapping the application.
-    This component, `AppComponent`, appears in both the `declarations` and the `bootstrap` arrays.
-
-## Next steps
-
--   For more about NgModules, see [Organizing your app with NgModules](ngmodules.md 'Organizing your app with NgModules').
--   To learn more about the root NgModule, see [Launching an app with a root NgModule](bootstrapping.md 'Launching an app with a root NgModule').
--   To learn about frequently used Angular NgModules and how to import them into your app, see [Frequently-used modules](frequent-ngmodules.md 'Frequently-used modules').
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-@reviewed 2022-02-28
+-   [JavaScript modules vs. NgModules](https://angular.io/guide/ngmodule-vs-jsmodule)

@@ -211,14 +211,14 @@ nav:
                 - file-structure.md
                 - workspace-config.md
                 - npm-packages.md
-#                - typescript-configuration.md
-#            - NgModules:
-#                - ngmodules.md
-#                - ngmodule-vs-jsmodule.md
-#                - bootstrapping.md
-#                - frequent-ngmodules.md
-#                - module-types.md
-#                - feature-modules.md
+                - typescript-configuration.md
+            - NgModules:
+                - ngmodules.md
+                - ngmodule-vs-jsmodule.md
+                - bootstrapping.md
+                - frequent-ngmodules.md
+                - module-types.md
+                - feature-modules.md
 #                - providers.md
 #                - singleton-services.md
 #                - sharing-ngmodules.md
@@ -231,5 +231,5 @@ nav:
 #                - practical-observable-usage.md
 #                - comparing-observables.md
 #            - dependency-injection-in-action.md
-#        - glossary.md
+        - glossary.md
 #    - ...
