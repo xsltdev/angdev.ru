@@ -1,4 +1,10 @@
+---
+description: Angular Framework, Angular CLI и компоненты, используемые в приложениях Angular, упакованы как npm-пакеты и распространяются с помощью npm-регистра
+---
+
 # Зависимости npm рабочего пространства
+
+:date: 28.02.2022
 
 Angular Framework, Angular CLI и компоненты, используемые в приложениях Angular, упакованы как [npm-пакеты](https://docs.npmjs.com/getting-started/what-is-npm 'Что такое npm?') и распространяются с помощью [npm-регистра](https://docs.npmjs.com).
 
@@ -6,15 +12,13 @@ Angular Framework, Angular CLI и компоненты, используемые
 
 В качестве альтернативы вы можете использовать [yarn client](https://yarnpkg.com) для загрузки и установки пакетов npm.
 
-<div class="alert is-helpful">
+!!!note ""
 
-Информацию о необходимых версиях и установке `Node.js` и `npm` смотрите в [Local Environment Setup](setup-local.md 'Setting up for Local Development').
+    Информацию о необходимых версиях и установке `Node.js` и `npm` смотрите в [Local Environment Setup](setup-local.md 'Setting up for Local Development').
 
-Если на вашей машине уже запущены проекты, использующие другие версии Node.js и npm, воспользуйтесь [nvm](https://github.com/creationix/nvm) для управления несколькими версиями Node.js и npm.
+    Если на вашей машине уже запущены проекты, использующие другие версии Node.js и npm, воспользуйтесь [nvm](https://github.com/creationix/nvm) для управления несколькими версиями Node.js и npm.
 
-</div>
-
-## `package.json`.
+## `package.json`
 
 И `npm`, и `yarn` устанавливают пакеты, которые определены в файле [`package.json`](https://docs.npmjs.com/files/package.json).
 
@@ -31,18 +35,13 @@ Angular Framework, Angular CLI и компоненты, используемые
 | [Зависимости](npm-packages.md#dependencies)         | Необходимые для _запуска_ приложения.                     |
 | [DevDependencies](npm-packages.md#dev-dependencies) | Необходимы только для _разработки_ и _сборки_ приложений. |
 
-<div class="alert is-helpful">
+!!!note ""
 
-**LIBRARY DEVELOPERS**: <br /> By default, the CLI command [`ng generate library`](https://angular.io/cli/generate) creates a `package.json` for the new library.
-That `package.json` is used when publishing the library to npm.
+    По умолчанию команда CLI [`ng generate library`](https://angular.io/cli/generate) создает `package.json` для новой библиотеки. Этот `package.json` используется при публикации библиотеки в npm.
 
-For more information, see the CLI wiki page [Library Support](creating-libraries.md).
+    Более подробную информацию можно найти на вики-странице CLI [Library Support](creating-libraries.md).
 
-</div>
-
-<a id="dependencies"></a>
-
-## Зависимости
+## Зависимости {#dependencies}
 
 Пакеты, перечисленные в разделе `dependencies` файла `package.json`, необходимы для _запуска_ приложений.
 
@@ -56,26 +55,22 @@ For more information, see the CLI wiki page [Library Support](creating-libraries
 
 Чтобы добавить новую зависимость, используйте команду [`ng add`](https://angular.io/cli/add).
 
-<a id="angular-packages"></a>
-
-### Пакеты Angular
+### Пакеты Angular {#angular-packages}
 
 Следующие пакеты Angular включены в качестве зависимостей в файл по умолчанию `package.json` для нового рабочего пространства Angular. Полный список пакетов Angular см. в [API reference](https://angular.io/api?type=package).
 
-| Package name                                                           | Details                                                                                                                                                                                                                                                                                                                                                                    |
-| :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`@angular/animations`](https://angular.io/api/animations)             | Angular's animations library makes it easy to define and apply animation effects such as page and list transitions. For more information, see the [Animations guide](animations.md).                                                                                                                                                                                       |
-| [`@angular/common`](https://angular.io/api/common)                     | The commonly-needed services, pipes, and directives provided by the Angular team. The [`HttpClientModule`](https://angular.io/api/common/http/HttpClientModule) is also here, in the [`@angular/common/http`](https://angular.io/api/common/http) subfolder. For more information, see the [HttpClient guide](understanding-communicating-with-http.md).                   |
-| `@angular/compiler`                                                    | Angular's template compiler. It understands templates and can convert them to code that makes the application run and render. Typically you don't interact with the compiler directly; rather, you use it indirectly using `platform-browser-dynamic` when JIT compiling in the browser. For more information, see the [Ahead-of-time Compilation guide](aot-compiler.md). |
-| [`@angular/core`](https://angular.io/api/core)                         | Critical runtime parts of the framework that are needed by every application. Includes all metadata decorators, `Component`, `Directive`, dependency injection, and the component lifecycle hooks.                                                                                                                                                                         |
-| [`@angular/forms`](https://angular.io/api/forms)                       | Support for both [template-driven](forms.md) and [reactive forms](reactive-forms.md). For information about choosing the best forms approach for your app, see [Introduction to forms](forms-overview.md).                                                                                                                                                                 |
-| [`@angular/platform-browser`](https://angular.io/api/platform-browser) | Everything DOM and browser related, especially the pieces that help render into the DOM. This package also includes the `bootstrapModuleFactory()` method for bootstrapping applications for production builds that pre-compile with [AOT](aot-compiler.md).                                                                                                               |
-| [`@angular/platform-browser-dynamic`](https://angular.io/api/platform-browser-dynamic)    | Includes [providers](https://angular.io/api/core/Provider) and methods to compile and run the application on the client using the [JIT compiler](aot-compiler.md).                                                                                                                                                                                                                            |
-| [`@angular/router`](https://angular.io/api/router)                                        | The router module navigates among your application pages when the browser URL changes. For more information, see [Routing and Navigation](router.md).                                                                                                                                                                                                                      |
+| Название пакета                                                                        | Подробнее                                                                                                                                                                                                                                                                                                                                                                                        |
+| :------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`@angular/animations`](https://angular.io/api/animations)                             | Библиотека анимации Angular позволяет легко определять и применять анимационные эффекты, такие как переходы между страницами и списками. Более подробную информацию можно найти в руководстве [Animations guide](animations.md).                                                                                                                                                                 |
+| [`@angular/common`](https://angular.io/api/common)                                     | Часто используемые сервисы, трубы и директивы, предоставляемые командой Angular. Модуль [`HttpClientModule`](https://angular.io/api/common/http/HttpClientModule) также находится здесь, в подпапке [`@angular/common/http`](https://angular.io/api/common/http). Для получения дополнительной информации см. руководство [HttpClient](understanding-communicating-with-http.md).                |
+| `@angular/compiler`                                                                    | Компилятор шаблонов Angular. Он понимает шаблоны и может преобразовывать их в код, обеспечивающий запуск и рендеринг приложения. Обычно вы не взаимодействуете с компилятором напрямую, а используете его косвенно с помощью `platform-browser-dynamic` при JIT-компиляции в браузере. Более подробную информацию можно найти в руководстве [Ahead-of-time Compilation guide] (aot-compiler.md). |
+| [`@angular/core`](https://angular.io/api/core)                                         | Критические части фреймворка, необходимые каждому приложению. Включает в себя все декораторы метаданных, `Component`, `Directive`, инъекцию зависимостей и хуки жизненного цикла компонентов.                                                                                                                                                                                                    |
+| [`@angular/forms`](https://angular.io/api/forms)                                       | Поддержка как [template-driven](forms.md), так и [reactive forms](reactive-forms.md). Информацию о выборе оптимального подхода к созданию форм для вашего приложения см. в разделе [Введение в формы](forms-overview.md).                                                                                                                                                                        |
+| [`@angular/platform-browser`](https://angular.io/api/platform-browser)                 | Все, что связано с DOM и браузером, особенно те части, которые помогают рендерить в DOM. Этот пакет также включает метод `bootstrapModuleFactory()` для загрузки приложений для производственных сборок, которые предварительно компилируются с помощью [AOT] (aot-compiler.md).                                                                                                                 |
+| [`@angular/platform-browser-dynamic`](https://angular.io/api/platform-browser-dynamic) | Включает [провайдеров](https://angular.io/api/core/Provider) и методы компиляции и запуска приложения на клиенте с помощью [JIT-компилятора](aot-compiler.md).                                                                                                                                                                                                                                   |
+| [`@angular/router`](https://angular.io/api/router)                                     | Модуль маршрутизатора осуществляет навигацию между страницами вашего приложения при изменении URL-адреса браузера. Более подробная информация приведена в разделе [Маршрутизация и навигация](router.md).                                                                                                                                                                                        |
 
-<a id="support-packages"></a>
-
-### Пакеты поддержки
+### Пакеты поддержки {#support-packages}
 
 Следующие пакеты поддержки включены в качестве зависимостей в файл по умолчанию `package.json` для нового рабочего пространства Angular.
 
@@ -84,59 +79,49 @@ For more information, see the CLI wiki page [Library Support](creating-libraries
 | [`rxjs`](https://github.com/ReactiveX/rxjs)     | Многие API Angular возвращают [_observables_](glossary.md#observable). RxJS является реализацией предложенной спецификации [Observables](https://github.com/tc39/proposal-observable), которая в настоящее время находится на рассмотрении комитета [TC39](https://www.ecma-international.org/memento/tc39.htm), определяющего стандарты для языка JavaScript.                                                        |
 | [`zone.js`](https://github.com/angular/zone.js) | Angular полагается на zone.js для запуска процессов обнаружения изменений Angular, когда собственные операции JavaScript вызывают события. Zone.js является реализацией [спецификации](https://gist.github.com/mhevery/63fdcdf7c65886051d55), которая в настоящее время находится на рассмотрении комитета [TC39](https://www.ecma-international.org/memento/tc39.htm), определяющего стандарты для языка JavaScript. |
 
-<a id="polyfills"></a>
-
-### Пакеты полифиллов
+### Пакеты полифиллов {#polyfills}
 
 Во многих браузерах отсутствует встроенная поддержка некоторых функций в последних стандартах HTML, которые необходимы Angular. [_Полифиллы_](<https://en.wikipedia.org/wiki/Polyfill_(программирование)>) могут эмулировать недостающие возможности.
 
 В руководстве [Browser Support](browser-support.md) объясняется, каким браузерам нужны полифиллы и как их можно добавить.
 
-<a id="dev-dependencies"></a>
-
-## DevDependencies
+## DevDependencies {#dev-dependencies}
 
 Пакеты, перечисленные в секции `devDependencies` файла `package.json`, помогают вам разрабатывать приложение на вашей локальной машине. Вы не развертываете их вместе с производственным приложением.
 
 Чтобы добавить новую `devDependency`, используйте одну из следующих команд:
 
-<code-example format="shell" language="shell">
+```shell
+npm install --save-dev <package-name>
+```
 
-npm install --save-dev &lt;package-name&gt;
+---
 
-</code-example>
-
-<code-example format="shell" language="shell">
-
-yarn add --dev &lt;package-name&gt;
-
-</code-example>
+```shell
+yarn add --dev <package-name>
+```
 
 Следующие `devDependencies` предоставляются в файле по умолчанию `package.json` для нового рабочего пространства Angular.
 
-| Package name | Details | |:--- |:--- |
-| [`@angular-devkit/build-angular`](https://github.com/angular/angular-cli) | The Angular build tools. |
-| [`@angular/cli`](https://github.com/angular/angular-cli) | The Angular CLI tools. |
-| `@angular/compiler-cli` | The Angular compiler, which is invoked by the Angular CLI's `ng build` and `ng serve` commands. |
-| `@types/... ` | TypeScript definition files for 3rd party libraries such as Jasmine and Node.js. |
-| `jasmine/... ` | Packages to support the [Jasmine](https://jasmine.github.io) test library. |
-| `karma/... ` | Packages to support the [karma](https://www.npmjs.com/package/karma) test runner. |
-| [`typescript`](https://www.npmjs.com/package/typescript) | The TypeScript language server, including the _tsc_ TypeScript compiler. |
+| Package name                                                              | Details                                                                               |
+| :------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ |
+| [`@angular-devkit/build-angular`](https://github.com/angular/angular-cli) | Инструменты сборки Angular.                                                           |
+| [`@angular/cli`](https://github.com/angular/angular-cli)                  | Инструменты Angular CLI.                                                              |
+| `@angular/compiler-cli`                                                   | Компилятор Angular, который вызывается командами Angular CLI `ng build` и `ng serve`. |
+| `@types/...`                                                              | Файлы определений TypeScript для сторонних библиотек, таких как Jasmine и Node.js.    |
+| `jasmine/...`                                                             | Пакеты для поддержки тестовой библиотеки [Jasmine](https://jasmine.github.io).        |
+| `karma/...`                                                               | Пакеты для поддержки тестового прогона [karma](https://www.npmjs.com/package/karma).  |
+| [`typescript`](https://www.npmjs.com/package/typescript)                  | Сервер языка TypeScript, включающий компилятор TypeScript _tsc_.                      |
 
 ## Связанная информация
 
 Информацию о том, как Angular CLI работает с пакетами, можно найти в следующих руководствах:
 
-| Темы | Подробности | |:--- |:--- |:--- |
+| Темы                              | Подробности                                                  |
+| :-------------------------------- | :----------------------------------------------------------- |
+| [Сборка и обслуживание](build.md) | Как пакеты собираются вместе для создания сборки разработки  |
+| [Развертывание](deployment.md)    | Как пакеты объединяются для создания производственной сборки |
 
-| [Сборка и обслуживание](build.md) | Как пакеты собираются вместе для создания сборки разработки |
+## Ссылки
 
-| [Развертывание](deployment.md) | Как пакеты объединяются для создания производственной сборки |
-
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-@ просмотрено 2022-02-28
+-   [Workspace npm dependencies](https://angular.io/guide/npm-packages)
