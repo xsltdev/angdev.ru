@@ -219,11 +219,11 @@ nav:
                 - frequent-ngmodules.md
                 - module-types.md
                 - feature-modules.md
-#                - providers.md
-#                - singleton-services.md
-#                - sharing-ngmodules.md
-#                - ngmodule-api.md
-#                - ngmodule-faq.md
+                - providers.md
+                - singleton-services.md
+                - sharing-ngmodules.md
+                - ngmodule-api.md
+                - ngmodule-faq.md
 #            - Observables и RxJS:
 #                - observables.md
 #                - rx-library.md

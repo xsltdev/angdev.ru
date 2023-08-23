@@ -1,491 +1,385 @@
-# NgModule FAQ
+---
+description: Эта страница отвечает на вопросы, которые задают многие разработчики о проектировании и реализации NgModule
+---
 
-NgModules help organize an application into cohesive blocks of functionality.
+# FAQ по NgModule
 
-This page answers the questions many developers ask about NgModule design and implementation.
+:date: 28.02.2022
 
-## What classes should I add to the `declarations` array?
+Модули NgModules помогают организовать приложение в целостные функциональные блоки.
 
-Add [declarable](bootstrapping.md#the-declarations-array) classes &mdash;components, directives, and pipes&mdash; to a `declarations` list.
+Эта страница отвечает на вопросы, которые задают многие разработчики о проектировании и реализации NgModule.
 
-Declare these classes in _exactly one_ module of the application.
-Declare them in a module if they belong to that particular module.
+## Какие классы следует добавить в массив `declarations`?
+
+Добавьте [декларируемые](bootstrapping.md#the-declarations-array) классы &mdash;компоненты, директивы и пайпы &mdash; в список `declarations`.
+
+Объявите эти классы в _только одном_ модуле приложения. Объявляйте их в модуле, если они принадлежат именно этому модулю.
 
 <a id="q-declarable"></a>
 
-## What is a `declarable`?
+## Что такое `декларируемый`?
 
-Declarables are the class types &mdash;components, directives, and pipes&mdash; that you can add to a module's `declarations` list.
-They're the only classes that you can add to `declarations`.
+Declarables - это типы классов &mdash; компоненты, директивы и пайпы &mdash; которые можно добавить в список `declarations` модуля. Это единственные классы, которые можно добавлять в `declarations`.
 
-## What classes should I _not_ add to `declarations`?
+## Какие классы не следует _не_ добавлять в `declarations`?
 
-Add only [declarable](bootstrapping.md#the-declarations-array) classes to an NgModule's `declarations` list.
+Добавляйте в список `declarations` модуля NgModule только [декларируемые](bootstrapping.md#the-declarations-array) классы.
 
-Do _not_ declare the following:
+Не следует _не_ объявлять следующее:
 
--   A class that's already declared in another module, whether an application module, &commat;NgModule, or third-party module.
--   An array of directives imported from another module.
-    For example, don't declare `FORMS_DIRECTIVES` from `@angular/forms` because the `FormsModule` already declares it.
+-   Класс, который уже объявлен в другом модуле, будь то модуль приложения, &commat;NgModule или модуль стороннего разработчика.
+-   Массив директив, импортированных из другого модуля.
+    Например, не объявляйте `FORMS_DIRECTIVES` из `@angular/forms`, так как в модуле `FormsModule` он уже объявлен.
 
--   Module classes.
--   Service classes.
--   Non-Angular classes and objects, such as strings, numbers, functions, entity models, configurations, business logic, and helper classes.
+-   Классы модулей.
+-   Сервисные классы.
+-   Неангулярные классы и объекты, такие как строки, числа, функции, модели сущностей, конфигурации, бизнес-логика и вспомогательные классы.
 
-## Why list the same component in multiple `NgModule` properties?
+## Зачем указывать один и тот же компонент в нескольких свойствах `NgModule`?
 
-`AppComponent` is often listed in both `declarations` and `bootstrap`.
-You might see the same component listed in `declarations` and `exports`.
+Компонент `AppComponent` часто указывается в свойствах `declarations` и `bootstrap`.
+Вы можете увидеть один и тот же компонент в свойствах `declarations` и `exports`.
 
-While that seems redundant, these properties have different functions.
-Membership in one list doesn't imply membership in another list.
+Хотя это кажется излишним, эти свойства имеют разные функции.
+Принадлежность к одному списку не означает принадлежности к другому списку.
 
--   `AppComponent` could be declared in this module but not bootstrapped.
--   `AppComponent` could be bootstrapped in this module but declared in a different feature module.
--   A component could be imported from another application module \(so you can't declare it\) and re-exported by this module.
--   A component could be exported for inclusion in an external component's template as well as dynamically loaded in a pop-up dialog.
+-   `AppComponent` может быть объявлен в этом модуле, но не загружен.
+-   `AppComponent` может быть загружен в этом модуле, но объявлен в другом функциональном модуле.
+-   Компонент может быть импортирован из другого прикладного модуля (поэтому его нельзя объявить) и реэкспортирован этим модулем.
+-   Компонент может быть экспортирован для включения в шаблон внешнего компонента, а также динамически загружаться во всплывающем диалоге.
 
-## What does "Can't bind to 'x' since it isn't a known property of 'y'" mean?
+## Что означает ошибка "Невозможно привязать к 'x', так как это не является известным свойством 'y'"?
 
-This error often means that you haven't declared the directive "x" or haven't imported the NgModule to which "x" belongs.
+Эта ошибка часто означает, что вы не объявили директиву "x" или не импортировали модуль NgModule, к которому относится "x".
 
-<div class="alert is-helpful">
+!!!warning ""
 
-Perhaps you declared "x" in an application submodule but forgot to export it.
-The "x" class isn't visible to other modules until you add it to the `exports` list.
+    Возможно, вы объявили "x" в подмодуле приложения, но забыли его экспортировать. Класс "x" не будет виден другим модулям, пока вы не добавите его в список `exports`.
 
-</div>
+## Что нужно импортировать?
 
-## What should I import?
+Импортируйте NgModules, чьи публичные (экспортируемые) [декларируемые классы](bootstrapping.md#the-declarations-array) необходимо использовать в шаблонах компонентов этого модуля.
 
-Import NgModules whose public (exported) [declarable classes](bootstrapping.md#the-declarations-array)
-you need to reference in this module's component templates.
+Это всегда означает импорт `CommonModule` из `@angular/common` для доступа к директивам Angular, таким как `NgIf` и `NgFor`. Вы можете импортировать его напрямую или из другого NgModule, который [реэкспортирует](ngmodule-faq.md#q-reexport) его.
 
-This always means importing `CommonModule` from `@angular/common` for access to
-the Angular directives such as `NgIf` and `NgFor`.
-You can import it directly or from another NgModule that [re-exports](ngmodule-faq.md#q-reexport) it.
+Импортируйте `FormsModule` из `@angular/forms`, если ваши компоненты имеют выражения двустороннего связывания `[(ngModel)]`.
 
-Import `FormsModule` from `@angular/forms`
-if your components have `[(ngModel)]` two-way binding expressions.
+Импортируйте модули _shared_ и _feature_, если компоненты этого модуля включают их компоненты, директивы и пайпы.
 
-Import _shared_ and _feature_ modules when this module's components incorporate their
-components, directives, and pipes.
-
-Import [BrowserModule](ngmodule-faq.md#q-browser-vs-common-module) only in the root `AppModule`.
+Импортируйте [BrowserModule](ngmodule-faq.md#q-browser-vs-common-module) только в корневой `AppModule`.
 
 <a id="q-browser-vs-common-module"></a>
 
-## Should I import `BrowserModule` or `CommonModule`?
+## Что импортировать: `BrowserModule` или `CommonModule`?
 
-The root application module, `AppModule`, of almost every browser application should import `BrowserModule` from `@angular/platform-browser`.
+Корневой модуль приложения, `AppModule`, практически любого браузерного приложения должен импортировать `BrowserModule` из `@angular/platform-browser`.
 
-`BrowserModule` provides services that are essential to launch and run a browser application.
+`BrowserModule` предоставляет сервисы, необходимые для запуска и работы браузерного приложения.
 
-`BrowserModule` also re-exports `CommonModule` from `@angular/common`,
-which means that components in the `AppModule` also have access to
-the Angular directives every application needs, such as `NgIf` and `NgFor`.
+`BrowserModule` также реэкспортирует `CommonModule` из `@angular/common`, что означает, что компоненты в `AppModule` также имеют доступ к директивам Angular, необходимым каждому приложению, таким как `NgIf` и `NgFor`.
 
-Do not import `BrowserModule` in any other module.
-_Feature modules_ and _lazy-loaded modules_ should import `CommonModule` instead.
-They need the common directives.
-They don't need to re-install the app-wide providers.
+Не импортируйте `BrowserModule` в любой другой модуль. Модули _Feature_ и _lazy-loaded_ должны импортировать `CommonModule` вместо этого. Им нужны общие директивы. Им не нужно переустанавливать общеприкладные провайдеры.
 
-Importing `CommonModule` also frees feature modules for use on _any_ target platform, not just browsers.
+Импорт `CommonModule` также освобождает функциональные модули для использования на _любой_ целевой платформе, а не только в браузерах.
 
 <a id="q-reimport"></a>
 
-## What if I import the same module twice?
+## Что делать, если я импортирую один и тот же модуль дважды?
 
-That's not a problem.
-When three modules all import Module 'A', Angular evaluates Module 'A' once, the first time it encounters it, and doesn't do so again.
+Это не проблема. Когда три модуля импортируют модуль 'A', Angular оценивает модуль 'A' один раз, когда встречает его в первый раз, и больше не делает этого.
 
-That's true at whatever level `A` appears in a hierarchy of imported NgModules.
-When Module 'B' imports Module 'A', Module 'C' imports 'B', and Module 'D' imports `[C, B, A]`, then 'D' triggers the evaluation of 'C', which triggers the evaluation of 'B', which evaluates 'A'.
-When Angular gets to the 'B' and 'A' in 'D', they're already cached and ready to go.
+Это справедливо для любого уровня `A` в иерархии импортируемых NgModules. Если модуль 'B' импортирует модуль 'A', модуль 'C' импортирует 'B', а модуль 'D' импортирует `[C, B, A]`, то 'D' вызывает оценку 'C', которая вызывает оценку 'B', которая оценивает 'A'. Когда Angular добирается до 'B' и 'A' в 'D', они уже кэшированы и готовы к работе.
 
-Angular doesn't like NgModules with circular references, so don't let Module 'A' import Module 'B', which imports Module 'A'.
+Angular не любит NgModules с круговыми ссылками, поэтому не позволяйте модулю 'A' импортировать модуль 'B', который импортирует модуль 'A'.
 
 <a id="q-reexport"></a>
 
-## What should I export?
+## Что нужно экспортировать?
 
-Export [declarable](bootstrapping.md#the-declarations-array) classes that components in _other_ NgModules are able to reference in their templates.
-These are your _public_ classes.
-If you don't export a declarable class, it stays _private_, visible only to other components declared in this NgModule.
+Экспортируйте [декларируемые](bootstrapping.md#the-declarations-array) классы, на которые компоненты в _других_ NgModules могут ссылаться в своих шаблонах. Это ваши _общественные_ классы. Если вы не экспортируете декларируемый класс, он остается _частным_, видимым только для других компонентов, объявленных в данном NgModule.
 
-You _can_ export any declarable class &mdash;components, directives, and pipes&mdash; whether
-it's declared in this NgModule or in an imported NgModule.
+Вы _можете_ экспортировать любой декларируемый класс &mdash; компоненты, директивы и пайпы&mdash; независимо от того, объявлен ли он в данном NgModule или в импортированном NgModule.
 
-You _can_ re-export entire imported NgModules, which effectively re-export all of their exported classes.
-An NgModule can even export a module that it doesn't import.
+Вы _можете_ реэкспортировать целые импортированные NgModules, которые фактически реэкспортируют все экспортированные классы. NgModule может даже экспортировать модуль, который он не импортирует.
 
-## What should I _not_ export?
+## Что не следует экспортировать?
 
-Don't export the following:
+Не экспортируйте следующее:
 
--   Private components, directives, and pipes that you need only within components declared in this NgModule.
-    If you don't want another NgModule to see it, don't export it.
+-   Приватные компоненты, директивы и пайпы, которые нужны только в компонентах, объявленных в данном NgModule.
+    Если вы не хотите, чтобы другой NgModule видел его, не экспортируйте его.
 
--   Non-declarable objects such as services, functions, configurations, and entity models.
--   Components that are only loaded dynamically by the router or by bootstrapping.
-    Such components can never be selected in another component's template.
-    While there's no harm in exporting them, there's also no benefit.
+-   Недекларируемые объекты, такие как сервисы, функции, конфигурации и модели сущностей.
+-   Компоненты, которые загружаются динамически только маршрутизатором или при загрузке.
+    Такие компоненты никогда не могут быть выбраны в шаблоне другого компонента.
+    Вреда от их экспорта нет, но нет и пользы.
 
--   Pure service modules that don't have public \(exported\) declarations.
-    For example, there's no point in re-exporting `HttpClientModule` because it doesn't export anything.
-    Its only purpose is to add http service providers to the application as a whole.
+-   Чистые сервисные модули, не имеющие публичных (экспортируемых) деклараций.
+    Например, нет смысла реэкспортировать `HttpClientModule`, поскольку он ничего не экспортирует.
+    Его единственное назначение - добавление провайдеров http-сервисов в приложение в целом.
 
-## Can I re-export classes and modules?
+## Можно ли реэкспортировать классы и модули?
 
-Absolutely.
+Безусловно.
 
-NgModules are a great way to selectively aggregate classes from other NgModules and re-export them in a consolidated, convenience module.
+NgModules - это отличный способ выборочно объединить классы из других NgModules и реэкспортировать их в консолидированный, удобный модуль.
 
-An NgModule can re-export entire NgModules, which effectively re-exports all of their exported classes.
-Angular's own `BrowserModule` exports a couple of NgModules like this:
+Модуль NgModule может реэкспортировать целые модули NgModules, которые фактически реэкспортируют все экспортированные классы. Собственный модуль Angular `BrowserModule` экспортирует несколько NgModules подобным образом:
 
-<code-example format="typescript" language="typescript">
+```ts
+exports: [CommonModule, ApplicationModule];
+```
 
-exports: [CommonModule, ApplicationModule]
+Модуль NgModule может экспортировать комбинацию своих собственных деклараций, выбранных импортированных классов и импортированных модулей NgModules.
 
-</code-example>
+Не стоит заниматься реэкспортом чистых сервисных модулей. Чистые сервисные модули не экспортируют [декларируемые](bootstrapping.md#the-declarations-array) классы, которые может использовать другой NgModule. Например, нет смысла реэкспортировать `HttpClientModule`, поскольку он ничего не экспортирует. Его единственное назначение - добавление провайдеров http-сервисов в приложение в целом.
 
-An NgModule can export a combination of its own declarations, selected imported classes, and imported NgModules.
+## Что такое метод `forRoot()`?
 
-Don't bother re-exporting pure service modules.
-Pure service modules don't export [declarable](bootstrapping.md#the-declarations-array) classes that another NgModule could use.
-For example, there's no point in re-exporting `HttpClientModule` because it doesn't export anything.
-Its only purpose is to add http service providers to the application as a whole.
+Статический метод `forRoot()` - это соглашение, облегчающее разработчикам конфигурирование сервисов и провайдеров, которые должны быть синглтонами. Хорошим примером метода `forRoot()` является метод `RouterModule.forRoot()`.
 
-## What is the `forRoot()` method?
+Приложения передают массив `Routes` в `RouterModule.forRoot()`, чтобы сконфигурировать общеприкладной сервис `Router` с маршрутами. `RouterModule.forRoot()` возвращает [ModuleWithProviders](https://angular.io/api/core/ModuleWithProviders). Вы добавляете этот результат в список `импортов` корневого `AppModule`.
 
-The `forRoot()` static method is a convention that makes it easy for developers to configure services and providers that are intended to be singletons.
-A good example of `forRoot()` is the `RouterModule.forRoot()` method.
+Вызывайте и импортируйте результат `forRoot()` только в корневом модуле приложения, `AppModule`. Избегайте импортировать его в любой другой модуль, особенно в модуль с ленивой загрузкой. Более подробную информацию о `forRoot()` см. в разделе [паттерн `forRoot()`](singleton-services.md#the-forroot-pattern) руководства [Singleton Services](singleton-services.md).
 
-Applications pass a `Routes` array to `RouterModule.forRoot()` in order to configure the app-wide `Router` service with routes.
-`RouterModule.forRoot()` returns a [ModuleWithProviders](https://angular.io/api/core/ModuleWithProviders).
-You add that result to the `imports` list of the root `AppModule`.
+!!!warning ""
 
-Only call and import a `forRoot()` result in the root application module, `AppModule`.
-Avoid importing it in any other module, particularly in a lazy-loaded module.
-For more information on `forRoot()` see [the `forRoot()` pattern](singleton-services.md#the-forroot-pattern) section of the [Singleton Services](singleton-services.md) guide.
+    Импорт `forRoot()` может быть использован в модуле, отличном от `AppModule`.
+    Важно отметить, что `forRoot()` должен быть вызван только один раз, а модуль, импортирующий `forRoot()`, должен быть доступен корневому `ModuleInjector`.
+    Для получения дополнительной информации обратитесь к руководству по [Иерархическим инжекторам](hierarchical-dependency-injection.md#moduleinjector).
 
-<div class="alert is-helpful">
+Для сервиса вместо использования `forRoot()` следует указать `providedIn: 'root'` в декораторе сервиса `@Injectable()`, что делает сервис автоматически доступным для всего приложения и, таким образом, синглтоном по умолчанию.
 
-**NOTE**: <br />
-The `forRoot()` import can be used in a module other than `AppModule`.
-Importantly, `forRoot()` should only be called once, and the module that imports the `forRoot()` needs to be available to the root `ModuleInjector`.
-For more information, refer to the guide on [Hierarchical injectors](hierarchical-dependency-injection.md#moduleinjector).
+`RouterModule` также предлагает статический метод `forChild()` для конфигурирования маршрутов лениво загружаемых модулей.
 
-</div>
+`forRoot()` и `forChild()` - это условные названия методов, конфигурирующих сервисы в корневых и функциональных модулях соответственно.
 
-For a service, instead of using `forRoot()`, specify `providedIn: 'root'` on the service's `@Injectable()` decorator, which makes the service automatically available to the whole application and thus singleton by default.
+При написании аналогичных модулей с настраиваемыми поставщиками услуг следуйте этому соглашению.
 
-`RouterModule` also offers a `forChild()` static method for configuring the routes of lazy-loaded modules.
+## Почему сервис, предоставляемый в функциональном модуле, виден везде?
 
-`forRoot()` and `forChild()` are conventional names for methods that configure services in root and feature modules respectively.
+Провайдеры, перечисленные в `@NgModule.providers` загружаемого модуля, имеют область видимости приложения. Добавление провайдера в `@NgModule.providers` фактически публикует сервис для всего приложения.
 
-Follow this convention when you write similar modules with configurable service providers.
+При импорте NgModule Angular добавляет провайдеров сервиса модуля (содержимое списка `providers`) в инжектор корня приложения.
 
-## Why is a service provided in a feature module visible everywhere?
+Это делает провайдера видимым для каждого класса в приложении, который знает маркер поиска провайдера, или его имя.
 
-Providers listed in the `@NgModule.providers` of a bootstrapped module have application scope.
-Adding a service provider to `@NgModule.providers` effectively publishes the service to the entire application.
+Расширяемость за счет импорта NgModule является основной целью системы NgModule. Включение провайдеров NgModule в инжектор приложения позволяет библиотеке модулей легко обогатить все приложение новыми сервисами. Добавив один раз модуль `HttpClientModule`, каждый компонент приложения сможет выполнять HTTP-запросы.
 
-When you import an NgModule,
-Angular adds the module's service providers \(the contents of its `providers` list\) to the application root injector.
+Однако это может показаться нежелательным сюрпризом, если вы ожидаете, что сервисы модуля будут видны только компонентам, объявленным этим функциональным модулем. Если модуль `HeroModule` предоставляет сервис `HeroService`, а корневой модуль `AppModule` импортирует `HeroModule`, то любой класс, знающий _тип_ сервиса `HeroService`, может использовать этот сервис, а не только классы, объявленные в модуле `HeroModule`.
 
-This makes the provider visible to every class in the application that knows the provider's lookup token, or name.
-
-Extensibility through NgModule imports is a primary goal of the NgModule system.
-Merging NgModule providers into the application injector makes it easy for a module library to enrich the entire application with new services.
-By adding the `HttpClientModule` once, every application component can make HTTP requests.
-
-However, this might feel like an unwelcome surprise if you expect the module's services to be visible only to the components declared by that feature module.
-If the `HeroModule` provides the `HeroService` and the root `AppModule` imports `HeroModule`, any class that knows the `HeroService` _type_ can inject that service, not just the classes declared in the `HeroModule`.
-
-To limit access to a service, consider lazy loading the NgModule that provides that service.
-See [How do I restrict service scope to a module?](ngmodule-faq.md#service-scope) for more information.
+Чтобы ограничить доступ к сервису, рассмотрите возможность ленивой загрузки модуля NgModule, предоставляющего этот сервис. Дополнительную информацию см. в разделе [How do I restrict service scope to a module?](ngmodule-faq.md#service-scope).
 
 <a id="q-lazy-loaded-module-provider-visibility"></a>
 
-## Why is a service provided in a lazy-loaded module visible only to that module?
+## Почему сервис, предоставляемый в лениво загружаемом модуле, виден только этому модулю?
 
-Unlike providers of the modules loaded at launch, providers of lazy-loaded modules are _module-scoped_.
+В отличие от провайдеров модулей, загружаемых при запуске, провайдеры лениво загружаемых модулей являются _модульно-скопированными_.
 
-When the Angular router lazy-loads a module, it creates a new execution context.
-That [context has its own injector](ngmodule-faq.md#q-why-child-injector 'Why Angular creates a child injector'), which is a direct child of the application injector.
+Когда маршрутизатор Angular лениво загружает модуль, он создает новый контекст выполнения. Этот [контекст имеет собственный инжектор](ngmodule-faq.md#q-why-child-injector 'Почему Angular создает дочерний инжектор'), который является прямым дочерним инжектором приложения.
 
-The router adds the lazy module's providers and the providers of its imported NgModules to this child injector.
+Маршрутизатор добавляет провайдеры ленивого модуля и провайдеры его импортированных NgModules в этот дочерний инжектор.
 
-These providers are insulated from changes to application providers with the same lookup token.
-When the router creates a component within the lazy-loaded context,
-Angular prefers service instances created from these providers to the service instances of the application root injector.
+Эти провайдеры изолированы от изменений провайдеров приложений с тем же маркером поиска. Когда маршрутизатор создает компонент в контексте lazy-loaded, Angular предпочитает экземпляры сервисов, созданные на основе этих провайдеров, экземплярам сервисов корневого инжектора приложения.
 
-## What if two modules provide the same service?
+## Что делать, если два модуля предоставляют один и тот же сервис?
 
-When two imported modules, loaded at the same time, list a provider with the same token, the second module's provider "wins".
-That's because both providers are added to the same injector.
+Если в двух одновременно загруженных импортируемых модулях указан провайдер с одинаковым токеном, то "побеждает" провайдер второго модуля. Это происходит потому, что оба провайдера добавлены в один и тот же инжектор.
 
-When Angular looks to inject a service for that token, it creates and delivers the instance created by the second provider.
+Когда Angular ищет возможность инжектировать сервис для этого токена, он создает и доставляет экземпляр, созданный вторым провайдером.
 
-_Every_ class that injects this service gets the instance created by the second provider.
-Even classes declared within the first module get the instance created by the second provider.
+Каждый класс, инжектирующий этот сервис, получает экземпляр, созданный вторым провайдером. Даже классы, объявленные внутри первого модуля, получают экземпляр, созданный вторым провайдером.
 
-If NgModule A provides a service for token 'X' and imports an NgModule B that also provides a service for token 'X', then NgModule A's service definition "wins".
+Если модуль NgModule A предоставляет сервис для маркера 'X' и импортирует модуль NgModule B, который также предоставляет сервис для маркера 'X', то определение сервиса модуля NgModule A "побеждает".
 
-The service provided by the root `AppModule` takes precedence over services provided by imported NgModules.
-The `AppModule` always wins.
+Сервис, предоставляемый корневым `AppModule`, имеет приоритет над сервисами, предоставляемыми импортированными NgModules. Всегда побеждает `AppModule`.
 
 <a id="service-scope"></a>
 
-## How do I restrict service scope to a module?
+## Как ограничить область действия сервиса в модуле?
 
-When a module is loaded at application launch, its `@NgModule.providers` have _application-wide scope_; that is, they are available for injection throughout the application.
+Когда модуль загружается при запуске приложения, его `@NgModule.providers` имеют _обширную область применения_, то есть они доступны для инъекции во всем приложении.
 
-Imported providers are easily replaced by providers from another imported NgModule.
-Such replacement might be by design.
-It could be unintentional and have adverse consequences.
+Импортированные провайдеры легко заменяются провайдерами из другого импортированного NgModule. Такая замена может быть запланирована. Она может быть непреднамеренной и иметь неблагоприятные последствия.
 
-As a general rule, import modules with providers _exactly once_, preferably in the application's _root module_.
-That's also usually the best place to configure, wrap, and override them.
+Как правило, импортировать модули с провайдерами следует _только один раз_, предпочтительно в _корневом модуле_ приложения. Это также, как правило, лучшее место для их конфигурирования, обертывания и переопределения.
 
-Suppose a module requires a customized `HttpBackend` that adds a special header for all Http requests.
-If another module elsewhere in the application also customizes `HttpBackend` or merely imports the `HttpClientModule`, it could override this module's `HttpBackend` provider, losing the special header.
-The server will reject http requests from this module.
+Допустим, модуль требует настроить `HttpBackend`, который добавляет специальный заголовок для всех Http-запросов. Если другой модуль в другом месте приложения также настраивает `HttpBackend` или просто импортирует `HttpClientModule`, он может переопределить провайдер `HttpBackend` этого модуля, потеряв специальный заголовок. Сервер будет отклонять http-запросы от этого модуля.
 
-To avoid this problem, import the `HttpClientModule` only in the `AppModule`, the application _root module_.
+Чтобы избежать этой проблемы, импортируйте `HttpClientModule` только в `AppModule`, корневом модуле приложения.
 
-If you must guard against this kind of "provider corruption", _don't rely on a launch-time module's `providers`_.
+Если необходимо защититься от подобного "повреждения провайдера", не полагайтесь на `провайдеры` запускаемого модуля.
 
-Load the module lazily if you can.
-Angular gives a [lazy-loaded module](ngmodule-faq.md#q-lazy-loaded-module-provider-visibility) its own child injector.
-The module's providers are visible only within the component tree created with this injector.
+Если есть возможность, загрузите модуль лениво. Angular предоставляет [lazy-loaded module](ngmodule-faq.md#q-lazy-loaded-module-provider-visibility) свой собственный дочерний инжектор. Провайдеры модуля видны только в дереве компонентов, созданных с помощью этого инжектора.
 
-If you must load the module eagerly, when the application starts, _provide the service in a component instead._
+Если при запуске приложения необходимо загрузить модуль нетерпеливо, то вместо этого следует предоставить сервис в компоненте.
 
-Continuing with the same example, suppose the components of a module truly require a private, custom `HttpBackend`.
+Продолжая тот же пример, предположим, что компонентам модуля действительно требуется частный, пользовательский `HttpBackend`.
 
-Create a "top component" that acts as the root for all of the module's components.
-Add the custom `HttpBackend` provider to the top component's `providers` list rather than the module's `providers`.
-Recall that Angular creates a child injector for each component instance and populates the injector with the component's own providers.
+Создайте "верхний компонент", который будет являться корневым для всех компонентов модуля. Добавьте пользовательский провайдер `HttpBackend` в список `providers` верхнего компонента, а не в список `providers` модуля. Напомним, что Angular создает дочерний инжектор для каждого экземпляра компонента и заполняет его собственными провайдерами компонента.
 
-When a child of this component asks for the `HttpBackend` service,
-Angular provides the local `HttpBackend` service, not the version provided in the application root injector.
-Child components make proper HTTP requests no matter what other modules do to `HttpBackend`.
+Когда дочерний компонент запрашивает сервис `HttpBackend`, Angular предоставляет локальный сервис `HttpBackend`, а не версию, указанную в инжекторе корня приложения. Дочерние компоненты выполняют корректные HTTP-запросы независимо от того, что другие модули делают с `HttpBackend`.
 
-Be sure to create module components as children of this module's top component.
+Обязательно создавайте компоненты модуля как дочерние компоненты верхнего компонента этого модуля.
 
-You can embed the child components in the top component's template.
-Alternatively, make the top component a routing host by giving it a `<router-outlet>`.
-Define child routes and let the router load module components into that outlet.
+Дочерние компоненты можно встраивать в шаблон верхнего компонента. В качестве альтернативы можно сделать верхний компонент узлом маршрутизации, присвоив ему `<router-outlet>`. Определите дочерние маршруты и позвольте маршрутизатору загружать компоненты модуля в этот аутлет.
 
-Though you can limit access to a service by providing it in a lazy loaded module or providing it in a component, providing services in a component can lead to multiple instances of those services.
-Thus, the lazy loading is preferable.
+Хотя можно ограничить доступ к сервису, предоставив его в лениво загружаемом модуле или в компоненте, предоставление сервисов в компоненте может привести к появлению множества экземпляров этих сервисов. Таким образом, ленивая загрузка является более предпочтительной.
 
 <a id="q-root-component-or-module"></a>
 
-## Should I add application-wide providers to the root `AppModule` or the root `AppComponent`?
+## Следует ли добавлять провайдеров для всего приложения в корневой `AppModule` или в корневой `AppComponent`?
 
-Define application-wide providers by specifying `providedIn: 'root'` on its `@Injectable()` decorator \(in the case of services\) or at `InjectionToken` construction \(in the case where tokens are provided\).
-Providers that are created this way automatically are made available to the entire application and don't need to be listed in any module.
+Определите провайдеров для всего приложения, указав `providedIn: 'root'` в его декораторе `@Injectable()` (в случае сервисов) или при конструировании `InjectionToken` (в случае предоставления токенов). Провайдеры, созданные таким образом, автоматически становятся доступны всему приложению и не нуждаются в указании в каком-либо модуле.
 
-If a provider cannot be configured in this way \(perhaps because it has no sensible default value\), then register application-wide providers in the root `AppModule`, not in the `AppComponent`.
+Если провайдер не может быть сконфигурирован таким образом (возможно, потому что он не имеет разумного значения по умолчанию), то регистрируйте провайдеры для всего приложения в корневом `AppModule`, а не в `AppComponent`.
 
-Lazy-loaded modules and their components can inject `AppModule` services; they can't inject `AppComponent` services.
+Лениво загруженные модули и их компоненты могут инжектировать сервисы `AppModule`; они не могут инжектировать сервисы `AppComponent`.
 
-Register a service in `AppComponent` providers _only_ if the service must be hidden
-from components outside the `AppComponent` tree.
-This is a rare use case.
+Регистрируйте сервис в провайдерах `AppComponent` только\_ в том случае, если сервис должен быть скрыт от компонентов вне дерева `AppComponent`. Это редкий случай использования.
 
-More generally, [prefer registering providers in NgModules](ngmodule-faq.md#q-component-or-module) to registering in components.
+В общем случае [предпочтительнее регистрировать провайдеров в NgModules](ngmodule-faq.md#q-component-or-module), чем в компонентах.
 
-### Discussion
+### Обсуждение
 
-Angular registers all startup module providers with the application root injector.
-The services that root injector providers create have application scope, which means they are available to the entire application.
+Angular регистрирует всех провайдеров стартовых модулей в корневом инжекторе приложения. Сервисы, которые создают провайдеры корневого инжектора, имеют область видимости приложения, что означает, что они доступны всему приложению.
 
-Certain services, such as the `Router`, only work when you register them in the application root injector.
+Некоторые сервисы, например `Router`, работают только при регистрации их в инжекторе корня приложения.
 
-By contrast, Angular registers `AppComponent` providers with the `AppComponent`'s own injector.
-`AppComponent` services are available only to that component and its component tree.
-They have component scope.
+В отличие от этого, Angular регистрирует провайдеров `AppComponent` в собственном инжекторе `AppComponent`. Сервисы `AppComponent` доступны только для этого компонента и его дерева компонентов. Они имеют область видимости компонента.
 
-The `AppComponent`'s injector is a child of the root injector, one down in the injector hierarchy.
-For applications that don't use the router, that's almost the entire application.
-But in routed applications, routing operates at the root level where `AppComponent` services don't exist.
-This means that lazy-loaded modules can't reach them.
+Инжектор `AppComponent` является дочерним по отношению к корневому инжектору, расположенному на один уровень ниже в иерархии инжекторов. Для приложений, не использующих маршрутизатор, это почти все приложение. Но в маршрутизируемых приложениях маршрутизация работает на корневом уровне, где сервисы `AppComponent` не существуют. Это означает, что лениво загружаемые модули не могут до них добраться.
 
 <a id="q-component-or-module"></a>
 
-## Should I add other providers to a module or a component?
+## Нужно ли добавлять другие провайдеры в модуль или компонент?
 
-Providers should be configured using `@Injectable` syntax.
-If possible, they should be provided in the application root \(`providedIn: 'root'`\).
-Services that are configured this way are lazily loaded if they are only used from a lazily loaded context.
+Провайдеры должны быть сконфигурированы с использованием синтаксиса `@Injectable`. По возможности их следует предоставлять в корне приложения (`providedIn: 'root'`). Сервисы, сконфигурированные таким образом, считаются lazily loaded, если они используются только из lazily loaded контекста.
 
-If it's the consumer's decision whether a provider is available application-wide or not, then register providers in modules \(`@NgModule.providers`\) instead of registering in components \(`@Component.providers`\).
+Если потребитель решает, доступен ли провайдер в масштабах всего приложения или нет, то регистрируйте провайдеров в модулях (`@NgModule.providers`), а не в компонентах (`@Component.providers`).
 
-Register a provider with a component when you _must_ limit the scope of a service instance to that component and its component tree.
-Apply the same reasoning to registering a provider with a directive.
+Регистрируйте провайдера в компоненте, если вы _должны_ ограничить область действия экземпляра сервиса только этим компонентом и его деревом компонентов. Аналогичные рассуждения применимы и к регистрации провайдера в директиве.
 
-For example, an editing component that needs a private copy of a caching service should register the service with the component.
-Then each new instance of the component gets its own cached service instance.
-The changes that editor makes in its service don't touch the instances elsewhere in the application.
+Например, компонент редактирования, которому нужна частная копия сервиса кэширования, должен зарегистрировать этот сервис в компоненте. Тогда каждый новый экземпляр компонента получает свой собственный экземпляр кэширующего сервиса. Изменения, которые редактор вносит в свой сервис, не затрагивают экземпляры в других частях приложения.
 
-[Always register _application-wide_ services with the root `AppModule`](ngmodule-faq.md#q-root-component-or-module), not the root `AppComponent`.
+[Всегда регистрируйте сервисы _в масштабах приложения_ в корневом `AppModule`](ngmodule-faq.md#q-root-component-or-module), а не в корневом `AppComponent`.
 
 <a id="q-why-bad"></a>
 
-## Why is it bad if a shared module provides a service to a lazy-loaded module?
+## Почему плохо, если разделяемый модуль предоставляет сервис лениво загружаемому модулю?
 
-### The eagerly loaded scenario
+### Сценарий с нетерпеливой загрузкой
 
-When an eagerly loaded module provides a service, for example a `UserService`, that service is available application-wide.
-If the root module provides `UserService` and imports another module that provides the same `UserService`, Angular registers one of them in the root application injector (see [What if I import the same module twice?](ngmodule-faq.md#q-reimport)).
+Когда загружаемый с нетерпением модуль предоставляет сервис, например `UserService`, этот сервис доступен во всем приложении. Если корневой модуль предоставляет `UserService` и импортирует другой модуль, предоставляющий тот же `UserService`, Angular регистрирует один из них в инжекторе корневого приложения (см. [What if I import the same module twice?](ngmodule-faq.md#q-reimport)).
 
-Then, when some component injects `UserService`, Angular finds it in the application root injector, and delivers the app-wide singleton service.
-No problem.
+Затем, когда какой-либо компонент инжектирует `UserService`, Angular находит его в инжекторе корня приложения и доставляет синглтонный сервис в масштабах всего приложения. Никаких проблем.
 
-### The lazy loaded scenario
+### Сценарий с ленивой загрузкой
 
-Now consider a lazy loaded module that also provides a service called `UserService`.
+Теперь рассмотрим лениво загружаемый модуль, который также предоставляет сервис под названием `UserService`.
 
-When the router lazy loads a module, it creates a child injector and registers the `UserService` provider with that child injector.
-The child injector is _not_ the root injector.
+Когда маршрутизатор лениво загружает модуль, он создает дочерний инжектор и регистрирует провайдер `UserService` в этом дочернем инжекторе. Дочерний инжектор не является корневым инжектором.
 
-When Angular creates a lazy component for that module and injects `UserService`, it finds a `UserService` provider in the lazy module's _child injector_
-and creates a _new_ instance of the `UserService`.
-This is an entirely different `UserService` instance than the app-wide singleton version that Angular injected in one of the eagerly loaded components.
+Когда Angular создает ленивый компонент для этого модуля и инжектирует `UserService`, он находит провайдер `UserService` в _дочернем инжекторе_ ленивого модуля и создает _новый_ экземпляр `UserService`. Это совершенно другой экземпляр `UserService`, чем та версия синглтона, которую Angular инжектировал в один из нетерпеливо загружаемых компонентов.
 
-This scenario causes your application to create a new instance every time, instead of using the singleton.
-
-<!--todo: KW--What does this cause? I wasn't able to get the suggestion of this to work from
-the current FAQ:
-To demonstrate, run the <live-example name="ngmodule">live example</live-example>.
-Modify the `SharedModule` so that it provides the `UserService` rather than the `CoreModule`.
-Then toggle between the "Contact" and "Heroes" links a few times.
-The username goes bonkers as the Angular creates a new `UserService` instance each time.
-I'd like to see the error so I can include it.-->
+Такой сценарий заставляет приложение каждый раз создавать новый экземпляр, вместо того чтобы использовать синглтон.
 
 <a id="q-why-child-injector"></a>
 
-## Why does lazy loading create a child injector?
+## Почему при ленивой загрузке создается дочерний инжектор?
 
-Angular adds `@NgModule.providers` to the application root injector, unless the NgModule is lazy-loaded.
-For a lazy-loaded NgModule, Angular creates a _child injector_ and adds the module's providers to the child injector.
+Angular добавляет `@NgModule.providers` в инжектор корня приложения, если только NgModule не загружен лениво. Для лениво загружаемого NgModule Angular создает _дочерний инжектор_ и добавляет провайдеры модуля в дочерний инжектор.
 
-This means that an NgModule behaves differently depending on whether it's loaded during application start or lazy-loaded later.
-Neglecting that difference can lead to [adverse consequences](ngmodule-faq.md#q-why-bad).
+Это означает, что NgModule ведет себя по-разному в зависимости от того, загружен ли он при старте приложения или лениво загружен позже. Пренебрежение этим различием может привести к [неблагоприятным последствиям](ngmodule-faq.md#q-why-bad).
 
-Why doesn't Angular add lazy-loaded providers to the application root injector as it does for eagerly loaded NgModules?
+Почему Angular не добавляет лениво загружаемые провайдеры в инжектор корня приложения, как это делается для нетерпеливо загружаемых NgModules?
 
-The answer is grounded in a fundamental characteristic of the Angular dependency-injection system.
-An injector can add providers _until it's first used_.
-Once an injector starts creating and delivering services, its provider list is frozen; no new providers are allowed.
+Ответ кроется в фундаментальной характеристике системы инжекции зависимостей Angular. Инжектор может добавлять провайдеров _до тех пор, пока он не будет впервые использован_. Как только инжектор начинает создавать и предоставлять сервисы, его список провайдеров замораживается; добавление новых провайдеров не допускается.
 
-When an application starts, Angular first configures the root injector with the providers of all eagerly loaded NgModules _before_ creating its first component and injecting any of the provided services.
-Once the application begins, the application root injector is closed to new providers.
+Когда приложение запускается, Angular сначала конфигурирует корневой инжектор с провайдерами всех загруженных NgModules, прежде чем создать первый компонент и инжектировать любой из предоставленных сервисов. После запуска приложения корневой инжектор закрывается для новых провайдеров.
 
-Time passes and application logic triggers lazy loading of an NgModule.
-Angular must add the lazy-loaded module's providers to an injector somewhere.
-It can't add them to the application root injector because that injector is closed to new providers.
-So Angular creates a new child injector for the lazy-loaded module context.
+Проходит время, и логика приложения запускает ленивую загрузку NgModule. Angular должен добавить провайдеры лениво загружаемого модуля в инжектор. Он не может добавить их в инжектор корня приложения, поскольку этот инжектор закрыт для новых провайдеров. Поэтому Angular создает новый дочерний инжектор для контекста лениво загружаемого модуля.
 
 <a id="q-is-it-loaded"></a>
 
-## How can I tell if an NgModule or service was previously loaded?
+## Как определить, был ли ранее загружен NgModule или сервис?
 
-Some NgModules and their services should be loaded only once by the root `AppModule`.
-Importing the module a second time by lazy loading a module could [produce errant behavior](ngmodule-faq.md#q-why-bad) that may be difficult to detect and diagnose.
+Некоторые модули NgModules и их сервисы должны загружаться только один раз корневым `AppModule`. Импортирование модуля второй раз путем ленивой загрузки может [привести к ошибочному поведению](ngmodule-faq.md#q-why-bad), которое трудно обнаружить и диагностировать.
 
-To prevent this issue, write a constructor that attempts to inject the module or service from the root application injector.
-If the injection succeeds, the class has been loaded a second time.
-You can throw an error or take other remedial action.
+Для предотвращения этой проблемы следует написать конструктор, который пытается инжектировать модуль или сервис из инжектора корневого приложения. Если инъекция прошла успешно, то класс был загружен второй раз. Можно выбросить ошибку или предпринять другие меры по исправлению ситуации.
 
-Certain NgModules, such as `BrowserModule`, implement such a guard.
-Here is a custom constructor for an NgModule called `GreetingModule`.
+Некоторые модули NgModules, например `BrowserModule`, реализуют подобную защиту. Здесь приведен пользовательский конструктор для NgModule под названием `GreetingModule`.
 
-<code-example header="src/app/greeting/greeting.module.ts (Constructor)" path="ngmodules/src/app/greeting/greeting.module.ts" region="ctor"></code-example>
+```ts
+constructor(@Optional() @SkipSelf() parentModule?: GreetingModule) {
+  if (parentModule) {
+    throw new Error(
+      'GreetingModule is already loaded. Import it in the AppModule only');
+  }
+}
+```
 
-## What kinds of modules should I have and how should I use them?
+## Какие типы модулей должны быть у меня и как их использовать?
 
-Every application is different.
-Developers have various levels of experience and comfort with the available choices.
-Some suggestions and guidelines appear to have wide appeal.
+Каждое приложение отличается от другого. Разработчики имеют различный уровень опыта и комфорта при работе с имеющимися вариантами. Некоторые предложения и рекомендации, как представляется, имеют широкую популярность.
 
 ### `SharedModule`
 
-`SharedModule` is a conventional name for an `NgModule` with the components, directives, and pipes that you use everywhere in your application.
-This module should consist entirely of `declarations`, most of them exported.
+`SharedModule` - это условное название для `NgModule` с компонентами, директивами и пайпами, которые вы используете повсеместно в своем приложении. Этот модуль должен полностью состоять из `деклараций`, большинство из которых экспортируются.
 
-The `SharedModule` may re-export other widget modules, such as `CommonModule`, `FormsModule`, and NgModules with the UI controls that you use most widely.
+Модуль `SharedModule` может реэкспортировать другие модули виджетов, такие как `CommonModule`, `FormsModule` и NgModules с элементами управления пользовательским интерфейсом, которые вы используете наиболее широко.
 
-The `SharedModule` should not have `providers` for reasons [explained previously](ngmodule-faq.md#q-why-bad).
-Nor should any of its imported or re-exported modules have `providers`.
+По причинам [объясненным ранее](ngmodule-faq.md#q-why-bad) `SharedModule` не должен иметь `providers`. Также ни один из его импортируемых или реэкспортируемых модулей не должен иметь `providers`.
 
-Import the `SharedModule` in your _feature_ modules, both those loaded when the application starts and those you lazy load later.
+Импортируйте `SharedModule` в свои _функциональные_ модули, как те, которые загружаются при старте приложения, так и те, которые вы лениво загружаете позже.
 
 ### Feature Modules
 
-Feature modules are modules you create around specific application business domains, user workflows, and utility collections.
-They support your application by containing a particular feature, such as routes, services, widgets, etc.
-To conceptualize what a feature module might be in your app, consider that if you would put the files related to a certain functionality, like a search, in one folder, that the contents of that folder would be a feature module that you might call your `SearchModule`.
-It would contain all of the components, routing, and templates that would make up the search functionality.
+Модули Feature - это модули, создаваемые для определенных бизнес-доменов приложения, рабочих процессов пользователей и коллекций утилит. Они поддерживают работу приложения и содержат определенные функции, такие как маршруты, сервисы, виджеты и т.д. Чтобы представить себе, что может представлять собой функциональный модуль в вашем приложении, подумайте, что если вы поместите файлы, относящиеся к определенной функциональности, например поиску, в одну папку, то содержимое этой папки будет представлять собой функциональный модуль, который вы можете назвать `SearchModule`. Он будет содержать все компоненты, маршрутизацию и шаблоны, составляющие функциональность поиска.
 
-For more information, see [Feature Modules](feature-modules.md) and [Module Types](module-types.md)
+Более подробную информацию можно найти в разделах [Feature Modules](feature-modules.md) и [Module Types](module-types.md)
 
-## What's the difference between NgModules and JavaScript Modules?
+## В чем разница между NgModules и JavaScript Modules?
 
-In an Angular app, NgModules and JavaScript modules work together.
+В Angular-приложении NgModules и JavaScript-модули работают вместе.
 
-In modern JavaScript, every file is a module (see the [Modules](https://exploringjs.com/es6/ch_modules.html) page of the Exploring ES6 website).
-Within each file you write an `export` statement to make parts of the module public.
+В современном JavaScript каждый файл является модулем (см. страницу [Modules](https://exploringjs.com/es6/ch_modules.html) на сайте Exploring ES6). Внутри каждого файла вы пишете оператор `export`, чтобы сделать части модуля общедоступными.
 
-An Angular NgModule is a class with the `@NgModule` decorator &mdash;JavaScript modules don't have to have the `@NgModule` decorator.
-Angular's `NgModule` has `imports` and `exports` and they serve a similar purpose.
+Angular NgModule - это класс с декоратором `@NgModule` &mdash; JavaScript-модули не обязательно должны иметь декоратор `@NgModule`. В Angular у `NgModule` есть `imports` и `exports`, и они служат аналогичной цели.
 
-You _import_ other NgModules so you can use their exported classes in component templates.
-You _export_ this NgModule's classes so they can be imported and used by components of _other_ NgModules.
+Вы _импортируете_ другие NgModules, чтобы использовать их экспортированные классы в шаблонах компонентов. Вы _экспортируете_ классы этого NgModule, чтобы они могли быть импортированы и использованы компонентами _других_ NgModules.
 
-For more information, see [JavaScript Modules vs. NgModules](ngmodule-vs-jsmodule.md).
+Для получения дополнительной информации см. раздел [JavaScript Modules vs. NgModules](ngmodule-vs-jsmodule.md).
 
 <a id="q-template-reference"></a>
 
-## How does Angular find components, directives, and pipes in a template? What is a **template reference**?
+## Как Angular находит компоненты, директивы и пайпы в шаблоне? Что такое **ссылка на шаблон**?
 
-The [Angular compiler](ngmodule-faq.md#q-angular-compiler) looks inside component templates for other components, directives, and pipes.
-When it finds one, that's a template reference.
+Компилятор [Angular compiler](ngmodule-faq.md#q-angular-compiler) ищет в шаблонах компонентов другие компоненты, директивы и пайпы. Если он находит таковые, это и есть ссылка на шаблон.
 
-The Angular compiler finds a component or directive in a template when it can match the _selector_ of that component or directive to some HTML in that template.
+Компилятор Angular находит компонент или директиву в шаблоне, если он может сопоставить _селектор_ этого компонента или директивы с некоторым HTML в этом шаблоне.
 
-The compiler finds a pipe if the pipe's _name_ appears within the pipe syntax of the template HTML.
+Компилятор находит пайп, если его _имя_ встречается в синтаксисе пайпа в HTML шаблона.
 
-Angular only matches selectors and pipe names for classes that are declared by this module or exported by a module that this module imports.
+Angular сопоставляет селекторы и имена пайпов только для классов, объявленных этим модулем или экспортированных модулем, который этот модуль импортирует.
 
 <a id="q-angular-compiler"></a>
 
-## What is the Angular compiler?
+## Что такое компилятор Angular?
 
-The Angular compiler converts the application code you write into highly performant JavaScript code.
-The `@NgModule` metadata plays an important role in guiding the compilation process.
+Компилятор Angular преобразует написанный вами код приложения в высокопроизводительный JavaScript-код. Метаданные `@NgModule` играют важную роль в управлении процессом компиляции.
 
-The code you write isn't immediately executable.
-For example, components have templates that contain custom elements, attribute directives, Angular binding declarations, and some peculiar syntax that clearly isn't native HTML.
+Написанный вами код не является сразу исполняемым. Например, в компонентах есть шаблоны, содержащие пользовательские элементы, директивы атрибутов, объявления привязок Angular, а также своеобразный синтаксис, который явно не является родным HTML.
 
-The Angular compiler reads the template markup, combines it with the corresponding component class code, and emits _component factories_.
+Компилятор Angular считывает разметку шаблона, комбинирует ее с кодом соответствующего класса компонента и создает _фабрики компонентов_.
 
-A component factory creates a pure, 100% JavaScript representation of the component that incorporates everything described in its `@Component` metadata:
-The HTML, the binding instructions, the attached styles.
+Фабрика компонентов создает чистое, 100% JavaScript-представление компонента, включающее в себя все, что описано в метаданных `@Component`: HTML, инструкции по связыванию, присоединенные стили.
 
-Because directives and pipes appear in component templates, the Angular compiler incorporates them into compiled component code too.
+Поскольку директивы и пайпы появляются в шаблонах компонентов, компилятор Angular также включает их в скомпилированный код компонента.
 
-`@NgModule` metadata tells the Angular compiler what components to compile for this module and how to link this module with other modules.
+Метаданные `@NgModule` указывают компилятору Angular, какие компоненты компилировать для данного модуля и как связать этот модуль с другими модулями.
 
-<!-- links -->
+## Ссылки
 
-<!-- external links -->
-
-<!-- end links -->
-
-@reviewed 2022-02-28
+-   [NgModule FAQ](https://angular.io/guide/ngmodule-faq)

@@ -1,54 +1,104 @@
-# NgModule API
+---
+description: На высоком уровне NgModules - это способ организации Angular-приложений, который достигается за счет метаданных в декораторе @NgModule
+---
 
-At a high level, NgModules are a way to organize Angular applications and they accomplish this through the metadata in the `@NgModule` decorator.
-The metadata falls into three categories:
+# API NgModule
 
-| Category                 | Details                                                                                                                                                                                                         |
-| :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Static                   | Compiler configuration which tells the compiler about directive selectors and where in templates the directives should be applied through selector matching. This is configured using the `declarations` array. |
-| Runtime                  | Injector configuration using the `providers` array.                                                                                                                                                             |
-| Composability / Grouping | Bringing NgModules together and making them available using the `imports` and `exports` arrays.                                                                                                                 |
+:date: 28.02.2022
 
-<code-example format="typescript" language="typescript">
+На высоком уровне NgModules - это способ организации Angular-приложений, который достигается за счет метаданных в декораторе `@NgModule`. Метаданные делятся на три категории:
 
-&commat;NgModule({
-// Static, that is compiler configuration
-declarations: [], // Configure the selectors
+| Категория                | Подробности                                                                                                                                                                                                                          |
+| :----------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Static                   | Конфигурация компилятора, которая сообщает компилятору о селекторах директив и о том, где в шаблонах эти директивы должны быть применены через сопоставление селекторов. Эта конфигурация задается с помощью массива `declarations`. |
+| Runtime                  | Конфигурация инжектора с помощью массива `providers`.                                                                                                                                                                                |
+| Composability / Grouping | Объединение NgModules и обеспечение их доступности с помощью массивов `imports` и `exports`.                                                                                                                                         |
 
-// Runtime, or injector configuration
-providers: [], // Runtime injector configuration
+```ts
+@NgModule({
+  // Static, that is compiler configuration
+  declarations: [], // Configure the selectors
 
-// Composability / Grouping
-imports: [], // composing NgModules together
-exports: [] // making NgModules available to other parts of the app
+  // Runtime, or injector configuration
+  providers: [], // Runtime injector configuration
+
+  // Composability / Grouping
+  imports: [], // composing NgModules together
+  exports: [] // making NgModules available to other parts of the app
 })
+```
 
-</code-example>
+## Метаданные `@NgModule`
 
-## `@NgModule` metadata
+Далее приведены свойства метаданных `@NgModule`.
 
-The following table summarizes the `@NgModule` metadata properties.
+### `declarations`
 
-| Property       | Details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `declarations` | A list of [declarable](ngmodule-faq.md#q-declarable) classes (_components_, _directives_, and _pipes_) that _belong to this module_. <ol> <li> When compiling a template, you need to determine a set of selectors which should be used for triggering their corresponding directives. </li> <li> The template is compiled within the context of an NgModule &mdash;the NgModule within which the template's component is declared&mdash; which determines the set of selectors using the following rules: <ul> <li> All selectors of directives listed in `declarations`. </li> <li> All selectors of directives exported from imported NgModules. </li> </ul> </li> </ol> Components, directives, and pipes must belong to _exactly_ one module. The compiler emits an error if you try to declare the same class in more than one module. Be careful not to re-declare a class that is imported directly or indirectly from another module.                                                                                                                                                                                                                                                |
-| `providers`    | A list of dependency-injection providers. <br /> Angular registers these providers with the NgModule's injector. If it is the NgModule used for bootstrapping then it is the root injector. <br /> These services become available for injection into any component, directive, pipe or service which is a child of this injector. <br /> A lazy-loaded module has its own injector which is typically a child of the application root injector. <br /> Lazy-loaded services are scoped to the lazy module's injector. If a lazy-loaded module also provides the `UserService`, any component created within that module's context \(such as by router navigation\) gets the local instance of the service, not the instance in the root application injector. <br /> Components in external modules continue to receive the instance provided by their injectors. <br /> For more information on injector hierarchy and scoping, see [Providers](providers.md) and the [DI Guide](dependency-injection.md).                                                                                                                                                                                  |
-| `imports`      | A list of modules which should be folded into this module. Folded means it is as if all the imported NgModule's exported properties were declared here. <br /> Specifically, it is as if the list of modules whose exported components, directives, or pipes are referenced by the component templates were declared in this module. <br /> A component template can [reference](ngmodule-faq.md#q-template-reference) another component, directive, or pipe when the reference is declared in this module or if the imported module has exported it. For example, a component can use the `NgIf` and `NgFor` directives only if the module has imported the Angular `CommonModule` \(perhaps indirectly by importing `BrowserModule`\). <br /> You can import many standard directives from the `CommonModule` but some familiar directives belong to other modules. For example, you can use `[(ngModel)]` only after importing the Angular `FormsModule`.                                                                                                                                                                                                                                  |
-| `exports`      | A list of declarations &mdash;_component_, _directive_, and _pipe_ classes&mdash; that an importing module can use. <br /> Exported declarations are the module's _public API_. A component in another module can [use](ngmodule-faq.md#q-template-reference) _this_ module's `UserComponent` if it imports this module and this module exports `UserComponent`. <br /> Declarations are private by default. If this module does _not_ export `UserComponent`, then only the components within _this_ module can use `UserComponent`. <br /> Importing a module does _not_ automatically re-export the imported module's imports. Module 'B' can't use `ngIf` just because it imported module 'A' which imported `CommonModule`. Module 'B' must import `CommonModule` itself. <br /> A module can list another module among its `exports`, in which case all of that module's public components, directives, and pipes are exported. <br /> [Re-export](ngmodule-faq.md#q-reexport) makes module transitivity explicit. If Module 'A' re-exports `CommonModule` and Module 'B' imports Module 'A', Module 'B' components can use `ngIf` even though 'B' itself didn't import `CommonModule`. |
-| `bootstrap`    | A list of components that are automatically bootstrapped. <br /> Usually there's only one component in this list, the _root component_ of the application. <br /> Angular can launch with multiple bootstrap components, each with its own location in the host web page.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+Список [декларируемых](ngmodule-faq.md#q-declarable) классов (_компонентов_, _директив_ и _пайпов_), которые _принадлежат данному модулю_.
 
-## More on NgModules
+-   При компиляции шаблона необходимо определить набор селекторов, которые должны использоваться для запуска соответствующих им директив.
+-   Шаблон компилируется в контексте NgModule &mdash; того NgModule, в котором объявлен компонент шаблона &mdash; который определяет набор селекторов по следующим правилам:
+    -   Все селекторы директив, перечисленных в `declarations`.
+    -   Все селекторы директив, экспортированных из импортированных NgModules.
 
-You may also be interested in the following:
+Компоненты, директивы и пайпы должны принадлежать _точно_ одному модулю. При попытке объявить один и тот же класс более чем в одном модуле компилятор выдает ошибку. Будьте осторожны и не объявляйте повторно класс, который прямо или косвенно импортируется из другого модуля.
+
+### `providers`
+
+Список провайдеров инжекции зависимостей.
+
+Angular регистрирует эти провайдеры в инжекторе NgModule. Если это NgModule, используемый для bootstrapping, то это корневой инжектор.
+
+Эти сервисы становятся доступными для инжекции в любой компонент, директиву, пайп или сервис, являющийся дочерним по отношению к этому инжектору.
+
+Лениво загружаемый модуль имеет свой собственный инжектор, который обычно является дочерним по отношению к корневому инжектору приложения.
+
+Сервисы, загружаемые ленивым модулем, привязываются к инжектору ленивого модуля. Если лениво загружаемый модуль также предоставляет `UserService`, то любой компонент, созданный в контексте этого модуля (например, при навигации по маршрутизатору), получает локальный экземпляр сервиса, а не экземпляр в инжекторе корневого приложения.
+
+Компоненты во внешних модулях продолжают получать экземпляр, предоставленный их инжекторами.
+
+Более подробную информацию об иерархии инжекторов и их масштабировании можно найти в [Providers](providers.md) и в [DI Guide](dependency-injection.md).
+
+### `imports`
+
+Список модулей, которые должны быть свернуты в данный модуль. Сложить - это значит, как если бы все экспортируемые свойства импортируемого модуля NgModule были объявлены здесь.
+
+Точнее, как если бы в этом модуле был объявлен список модулей, на экспортируемые компоненты, директивы или пайпы которых ссылаются шаблоны компонентов.
+
+Шаблон компонента может [ссылаться](ngmodule-faq.md#q-template-reference) на другой компонент, директиву или пайп, если ссылка объявлена в этом модуле или если импортируемый модуль экспортировал его. Например, компонент может использовать директивы `NgIf` и `NgFor` только в том случае, если модуль импортировал Angular `CommonModule` (возможно, косвенно, путем импорта `BrowserModule`).
+
+Многие стандартные директивы можно импортировать из `CommonModule`, но некоторые знакомые директивы принадлежат другим модулям. Например, использовать `[(ngModel)]` можно только после импорта модуля Angular `FormsModule`.
+
+### `exports`
+
+Список деклараций &mdash; _компонентных_, _директивных_ и _трубных_ классов &mdash; которые может использовать импортирующий модуль.
+
+Экспортируемые декларации являются _публичным API_ модуля. Компонент другого модуля может [использовать](ngmodule-faq.md#q-template-reference) `UserComponent` _этого_ модуля, если он импортирует этот модуль и этот модуль экспортирует `UserComponent`.
+
+По умолчанию декларации являются приватными. Если этот модуль не экспортирует `UserComponent`, то только компоненты внутри модуля _this_ могут использовать `UserComponent`.
+
+Импорт модуля не приводит к автоматическому реэкспорту импортов импортируемого модуля. Модуль 'B' не может использовать `ngIf` только потому, что он импортировал модуль 'A', который импортировал `CommonModule`. Модуль 'B' должен сам импортировать `CommonModule`.
+
+Модуль может перечислить другой модуль среди своих `экспортов`, и тогда все публичные компоненты, директивы и пайпы этого модуля будут экспортированы.
+
+[Re-export](ngmodule-faq.md#q-reexport) делает транзитивность модулей явной. Если модуль 'A' реэкспортирует `CommonModule`, а модуль 'B' импортирует модуль 'A', то компоненты модуля 'B' могут использовать `ngIf`, даже если сам модуль 'B' не импортировал `CommonModule`.
+
+### `bootstrap`
+
+Список компонентов, которые автоматически загружаются.
+
+Обычно в этом списке присутствует только один компонент - _корневой компонент_ приложения.
+
+Angular может запускаться с несколькими компонентами bootstrap, каждый из которых имеет свое собственное местоположение на главной веб-странице.
+
+## Подробнее о NgModules
+
+Возможно, вас также заинтересует следующее:
 
 -   [Feature Modules](feature-modules.md)
--   [Providers](providers.md)
--   [Types of Feature Modules](module-types.md)
+-   [Провайдеры](providers.md)
+-   [Типы функциональных модулей](module-types.md)
 
-<!-- links -->
+## Ссылки
 
-<!-- external links -->
-
-<!-- end links -->
-
-@reviewed 2022-02-28
+-   [NgModule API](https://angular.io/guide/ngmodule-api)

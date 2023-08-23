@@ -1,51 +1,59 @@
-# Sharing modules
+---
+description: Создание общих модулей позволяет упорядочить и оптимизировать код. Вы можете поместить часто используемые директивы, пайпы и компоненты в один модуль, а затем импортировать этот модуль в другие части приложения
+---
 
-Creating shared modules allows you to organize and streamline your code.
-You can put commonly used directives, pipes, and components into one module and then import just that module wherever you need it in other parts of your application.
+# Совместное использование модулей
 
-Consider the following module from an imaginary app:
+:date: 28.02.2022
 
-<code-example format="typescript" language="typescript">
+Создание общих модулей позволяет упорядочить и оптимизировать код. Вы можете поместить часто используемые директивы, пайпы и компоненты в один модуль, а затем импортировать этот модуль в другие части приложения.
 
-import { CommonModule } from '&commat;angular/common';
-import { NgModule } from '&commat;angular/core';
-import { FormsModule } from '&commat;angular/forms';
+Рассмотрим следующий модуль из воображаемого приложения:
+
+```ts
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CustomerComponent } from './customer.component';
 import { NewItemDirective } from './new-item.directive';
 import { OrdersPipe } from './orders.pipe';
 
-&commat;NgModule({
-imports: [ CommonModule ],
-declarations: [ CustomerComponent, NewItemDirective, OrdersPipe ],
-exports: [ CustomerComponent, NewItemDirective, OrdersPipe,
-CommonModule, FormsModule ]
+@NgModule({
+    imports: [CommonModule],
+    declarations: [
+        CustomerComponent,
+        NewItemDirective,
+        OrdersPipe,
+    ],
+    exports: [
+        CustomerComponent,
+        NewItemDirective,
+        OrdersPipe,
+        CommonModule,
+        FormsModule,
+    ],
 })
-export class SharedModule { }
+export class SharedModule {}
+```
 
-</code-example>
+Обратите внимание на следующее:
 
-Notice the following:
+-   Он импортирует `CommonModule`, поскольку компоненту модуля нужны общие директивы
+-   Объявляются и экспортируются классы пайпов, директив и компонентов
+-   Он реэкспортирует `CommonModule` и `FormsModule`.
 
--   It imports the `CommonModule` because the module's component needs common directives
--   It declares and exports the utility pipe, directive, and component classes
--   It re-exports the `CommonModule` and `FormsModule`
+В результате реэкспорта `CommonModule` и `FormsModule` любой другой модуль, импортирующий этот `SharedModule`, получает доступ к директивам `NgIf` и `NgFor` из `CommonModule` и может связываться со свойствами компонента с помощью `[(ngModel)]`, директивы в `FormsModule`.
 
-By re-exporting `CommonModule` and `FormsModule`, any other module that imports this `SharedModule`, gets access to directives like `NgIf` and `NgFor` from `CommonModule` and can bind to component properties with `[(ngModel)]`, a directive in the `FormsModule`.
+Даже если компоненты, объявленные `SharedModule`, могут не связываться с `[(ngModel)]` и нет необходимости в импорте `FormsModule`, `SharedModule` может экспортировать `FormsModule`, не указывая его среди своих `импортов`.
+Таким образом, вы можете предоставить другим модулям доступ к `FormsModule` без необходимости импортировать его непосредственно в декоратор `@NgModule`.
 
-Even though the components declared by `SharedModule` might not bind with `[(ngModel)]` and there may be no need for `SharedModule` to import `FormsModule`, `SharedModule` can still export `FormsModule` without listing it among its `imports`.
-This way, you can give other modules access to `FormsModule` without having to import it directly into the `@NgModule` decorator.
+## Подробнее о NgModules
 
-## More on NgModules
+Возможно, вас также заинтересует следующее:
 
-You may also be interested in the following:
+-   [Провайдеры](providers.md)
+-   [Типы функциональных модулей](module-types.md)
 
--   [Providers](providers.md)
--   [Types of Feature Modules](module-types.md)
+## Ссылки
 
-<!-- links -->
-
-<!-- external links -->
-
-<!-- end links -->
-
-@reviewed 2022-02-28
+-   [Sharing modules](https://angular.io/guide/sharing-ngmodules)

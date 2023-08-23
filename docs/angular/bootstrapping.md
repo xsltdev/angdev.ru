@@ -33,7 +33,7 @@ import { AppComponent } from './app.component';
 export class AppModule {}
 ```
 
-После операторов импорта находится класс с декоратором **`@NgModule`** [decorator] (glossary.md#decorator ''Decorator'').
+После операторов импорта находится класс с декоратором **`@NgModule`** [decorator](glossary.md#decorator ''Decorator'').
 
 Декоратор `@NgModule` идентифицирует `AppModule` как класс `NgModule`. Декоратор `@NgModule` принимает объект метаданных, который указывает Angular, как скомпилировать и запустить приложение.
 
