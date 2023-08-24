@@ -18,7 +18,7 @@ hide:
 
     Перевод официальной документации
 
-    **[:octicons-arrow-right-24: Angular 16](angular/index.md)** _(в процессе перевода)_
+    **[:octicons-arrow-right-24: Angular](angular/index.md)** <small>v16</small>
 
     [:octicons-arrow-right-24: Angular](archive/angular9/setup-and-configuration.md) <small>v9</small>
 
