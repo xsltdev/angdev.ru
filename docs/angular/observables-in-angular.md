@@ -1,83 +1,167 @@
-# Observables in Angular
+# Наблюдаемые значения в Angular
 
-Angular makes use of observables as an interface to handle a variety of common asynchronous operations.
-For example:
+:date: 28.02.2022
 
-<!--todo: Have Alex review this -->
-<!-- *   You can define [custom events](event-binding.md#custom-events-with-eventemitter) that send observable output data from a child to a parent component -->
+Angular использует наблюдаемые значения в качестве интерфейса для обработки множества распространенных асинхронных операций. Например:
 
--   The HTTP module uses observables to handle AJAX requests and responses
--   The Router and Forms modules use observables to listen for and respond to user-input events
+-   Модуль HTTP использует наблюдаемые значения для обработки AJAX-запросов и ответов
+-   Модули Router и Forms используют наблюдаемые значения для прослушивания и реагирования на события, связанные с вводом данных пользователем
 
-## Transmitting data between components
+## Передача данных между компонентами
 
-Angular provides an `EventEmitter` class that is used when publishing values from a component through the [`@Output()` decorator](inputs-outputs.md#output).
-`EventEmitter` extends [RxJS `Subject`](https://rxjs.dev/api/index/class/Subject), adding an `emit()` method so it can send arbitrary values.
-When you call `emit()`, it passes the emitted value to the `next()` method of any subscribed observer.
+Angular предоставляет класс `EventEmitter`, который используется при публикации значений из компонента через декоратор [`@Output()`](inputs-outputs.md#output). `EventEmitter` расширяет [RxJS `Subject`](https://rxjs.dev/api/index/class/Subject), добавляя метод `emit()`, чтобы можно было отправлять произвольные значения. Когда вы вызываете `emit()`, он передает переданное значение методу `next()` любого подписанного наблюдателя.
 
-A good example of usage can be found in the [EventEmitter](https://angular.io/api/core/EventEmitter) documentation.
-Here is the example component that listens for open and close events:
+Хороший пример использования можно найти в документации [EventEmitter](https://angular.io/api/core/EventEmitter). Здесь приведен пример компонента, который прослушивает события открытия и закрытия:
 
-<code-example format="typescript" language="typescript">
+```ts
+<app-zippy (open)="onOpen($event)" (close)="onClose($event)"></app-zippy>
+```
 
-&lt;app-zippy (open)="onOpen(\$event)" (close)="onClose(\$event)"&gt;&lt;/app-zippy&gt;
+Вот определение компонента:
 
-</code-example>
+```ts
+@Component({
+    selector: 'app-zippy',
+    template: `
+        <div class="zippy">
+            <button type="button" (click)="toggle()">
+                Toggle
+            </button>
+            <div [hidden]="!visible">
+                <ng-content></ng-content>
+            </div>
+        </div>
+    `,
+})
+export class ZippyComponent {
+    visible = true;
+    @Output() open = new EventEmitter<any>();
+    @Output() close = new EventEmitter<any>();
 
-Here is the component definition:
-
-<code-example header="EventEmitter" path="observables-in-angular/src/main.ts" region="eventemitter"></code-example>
+    toggle() {
+        this.visible = !this.visible;
+        if (this.visible) {
+            this.open.emit(null);
+        } else {
+            this.close.emit(null);
+        }
+    }
+}
+```
 
 ## HTTP
 
-Angular's `HttpClient` returns observables from HTTP method calls.
-For instance, `http.get('/api')` returns an observable.
-This provides several advantages over promise-based HTTP APIs:
+Angular `HttpClient` возвращает наблюдаемые значения из вызовов HTTP-методов. Например, `http.get('/api')` возвращает наблюдаемое значение. Это дает ряд преимуществ по сравнению с HTTP API, основанными на промисах:
 
--   Observables do not mutate the server response \(as can occur through chained `.then()` calls on promises\).
-    Instead, you can use a series of operators to transform values as needed.
+-   Наблюдаемые значения не изменяют ответ сервера (как это может происходить при цепочке вызовов `.then()` на промисах).
 
--   HTTP requests are cancellable through the `unsubscribe()` method
--   Requests can be configured to get progress event updates
--   Failed requests can be retried easily
+    Вместо этого можно использовать ряд операторов для преобразования значений по мере необходимости.
 
-## Async pipe
+-   HTTP-запросы можно отменить с помощью метода `unsubscribe()`.
+-   Запросы могут быть настроены на получение обновлений о событиях выполнения
+-   Неудачные запросы могут быть легко повторены
 
-The [AsyncPipe](https://angular.io/api/common/AsyncPipe) subscribes to an observable or promise and returns the latest value it has emitted.
-When a new value is emitted, the pipe marks the component to be checked for changes.
+## Асинхронный пайп
 
-The following example binds the `time` observable to the component's view.
-The observable continuously updates the view with the current time.
+[AsyncPipe](https://angular.io/api/common/AsyncPipe) подписывается на наблюдаемое значение или промис и возвращает последнее выданное им значение. Когда выдается новое значение, пайп помечает компонент для проверки на изменения.
 
-<code-example header="Using async pipe" path="observables-in-angular/src/main.ts" region="pipe"></code-example>
+В следующем примере наблюдаемое значение `time` привязывается к представлению компонента. Наблюдаемое значение постоянно обновляет представление текущим временем.
+
+```ts
+@Component({
+    selector: 'async-observable-pipe',
+    template: `<div>
+        <code>observable|async</code>: Time:
+        {{ time | async }}
+    </div>`,
+})
+export class AsyncObservablePipeComponent {
+    time = new Observable<string>((observer) => {
+        setInterval(
+            () => observer.next(new Date().toString()),
+            1000
+        );
+    });
+}
+```
 
 ## Router
 
-[`Router.events`](https://angular.io/api/router/Router#events) provides events as observables.
-You can use the `filter()` operator from RxJS to look for events of interest, and subscribe to them in order to make decisions based on the sequence of events in the navigation process.
-Here's an example:
+[`Router.events`](https://angular.io/api/router/Router#events) предоставляет события в виде наблюдаемых значений. Вы можете использовать оператор `filter()` из RxJS для поиска интересующих вас событий и подписки на них, чтобы принимать решения, основанные на последовательности событий в процессе навигации. Приведем пример:
 
-<code-example header="Router events" path="observables-in-angular/src/main.ts" region="router"></code-example>
+```ts
+import { Router, NavigationStart } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
-The [ActivatedRoute](https://angular.io/api/router/ActivatedRoute) is an injected router service that makes use of observables to get information about a route path and parameters.
-For example, `ActivatedRoute.url` contains an observable that reports the route path or paths.
-Here's an example:
+@Component({
+    selector: 'app-routable',
+    template: 'Routable1Component template',
+})
+export class Routable1Component implements OnInit {
+    navStart: Observable<NavigationStart>;
 
-<code-example header="ActivatedRoute" path="observables-in-angular/src/main.ts" region="activated_route"></code-example>
+    constructor(router: Router) {
+        // Create a new Observable that publishes only the NavigationStart event
+        this.navStart = router.events.pipe(
+            filter((evt) => evt instanceof NavigationStart)
+        ) as Observable<NavigationStart>;
+    }
 
-## Reactive forms
+    ngOnInit() {
+        this.navStart.subscribe(() =>
+            console.log('Navigation Started!')
+        );
+    }
+}
+```
 
-Reactive forms have properties that use observables to monitor form control values.
-The [`FormControl`](https://angular.io/api/forms/FormControl) properties `valueChanges` and `statusChanges` contain observables that raise change events.
-Subscribing to an observable form-control property is a way of triggering application logic within the component class.
-For example:
+[ActivatedRoute](https://angular.io/api/router/ActivatedRoute) - это инжектируемый сервис маршрутизатора, использующий наблюдаемые значения для получения информации о пути маршрута и параметрах. Например, `ActivatedRoute.url` содержит наблюдаемое значение, сообщающее о пути или путях маршрута. Вот пример:
 
-<code-example header="Reactive forms" path="observables-in-angular/src/main.ts" region="forms"></code-example>
+```ts
+import { ActivatedRoute } from '@angular/router';
 
-<!-- links -->
+@Component({
+    selector: 'app-routable',
+    template: 'Routable2Component template',
+})
+export class Routable2Component implements OnInit {
+    constructor(private activatedRoute: ActivatedRoute) {}
 
-<!-- external links -->
+    ngOnInit() {
+        this.activatedRoute.url.subscribe((url) =>
+            console.log('The URL changed to: ' + url)
+        );
+    }
+}
+```
 
-<!-- end links -->
+## Реактивные формы
 
-@reviewed 2022-02-28
+Реактивные формы имеют свойства, использующие наблюдаемые значения для отслеживания значений элементов управления формой. Свойства [`FormControl`](https://angular.io/api/forms/FormControl) `valueChanges` и `statusChanges` содержат наблюдаемые значения, вызывающие события изменения. Подписка на наблюдаемое значение свойства элемента управления формой позволяет задействовать прикладную логику в классе компонента. Например:
+
+```ts
+import { FormGroup } from '@angular/forms';
+
+@Component({
+    selector: 'my-component',
+    template: 'MyComponent Template',
+})
+export class MyComponent implements OnInit {
+    nameChangeLog: string[] = [];
+    heroForm!: FormGroup;
+
+    ngOnInit() {
+        this.logNameChange();
+    }
+    logNameChange() {
+        const nameControl = this.heroForm.get('name');
+        nameControl?.valueChanges.forEach((value: string) =>
+            this.nameChangeLog.push(value)
+        );
+    }
+}
+```
+
+## Ссылки
+
+-   [Observables in Angular](https://angular.io/guide/observables-in-angular)

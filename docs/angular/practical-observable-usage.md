@@ -1,35 +1,82 @@
-# Practical observable usage
+---
+description: Приведем несколько примеров областей, в которых наблюдаемые значения особенно полезны
+---
 
-Here are some examples of domains in which observables are particularly useful.
+# Практическое использование наблюдаемых значений
 
-## Type-ahead suggestions
+:date: 28.02.2022
 
-Observables can simplify the implementation of type-ahead suggestions.
-Typically, a type-ahead has to do a series of separate tasks:
+Приведем несколько примеров областей, в которых наблюдаемые значения особенно полезны.
 
-*   Listen for data from an input
-*   Trim the value \(remove whitespace\) and make sure it's a minimum length
-*   Debounce \(so as not to send off API requests for every keystroke, but instead wait for a break in keystrokes\)
-*   Don't send a request if the value stays the same \(rapidly hit a character, then backspace, for instance\)
-*   Cancel ongoing AJAX requests if their results will be invalidated by the updated results
+## Предложения с опережением типа
 
-Writing this in full JavaScript can be quite involved.
-With observables, you can use a simple series of RxJS operators:
+Наблюдаемые значения могут упростить реализацию предложений с заголовочными типами. Как правило, для этого необходимо выполнить ряд отдельных задач:
 
-<code-example header="Typeahead" path="practical-observable-usage/src/typeahead.ts"></code-example>
+-   Прослушать данные, поступающие на вход
+-   Обрезать значение (удалить пробелы) и убедиться, что оно имеет минимальную длину
+-   Отставание (чтобы не посылать API-запросы на каждое нажатие клавиши, а дождаться паузы в нажатиях)
+-   Не отправлять запрос, если значение остается неизменным (например, быстро нажимается символ, затем backspace)
+-   Отменять текущие AJAX-запросы, если их результаты будут аннулированы обновленными результатами.
 
-## Exponential backoff
+Написать все это на JavaScript может быть довольно сложно. С помощью наблюдаемых значений можно использовать простую серию операторов RxJS:
 
-Exponential backoff is a technique in which you retry an API after failure, making the time in between retries longer after each consecutive failure, with a maximum number of retries after which the request is considered to have failed.
-This can be quite complex to implement with promises and other methods of tracking AJAX calls.
-With observables, it is very easy:
+```ts
+import { fromEvent, Observable } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+import {
+    debounceTime,
+    distinctUntilChanged,
+    filter,
+    map,
+    switchMap,
+} from 'rxjs/operators';
 
-<code-example header="Exponential backoff" path="practical-observable-usage/src/backoff.ts"></code-example>
+const searchBox = document.getElementById(
+    'search-box'
+) as HTMLInputElement;
 
-<!-- links -->
+const typeahead = fromEvent(searchBox, 'input').pipe(
+    map((e) => (e.target as HTMLInputElement).value),
+    filter((text) => text.length > 2),
+    debounceTime(10),
+    distinctUntilChanged(),
+    switchMap((searchTerm) =>
+        ajax(`/api/endpoint?search=${searchTerm}`)
+    )
+);
 
-<!-- external links -->
+typeahead.subscribe((data) => {
+    // Handle the data from the API
+});
+```
 
-<!-- end links -->
+## Экспоненциальный откат
 
-@reviewed 2022-02-28
+Экспоненциальный откат - это метод, при котором повторные попытки выполнения запроса к API выполняются после неудачи, причем время между попытками увеличивается после каждой последующей неудачи, а максимальное количество попыток, после которых запрос считается неудачным. Это может быть довольно сложно реализовать с помощью промисов и других методов отслеживания вызовов AJAX. С помощью наблюдаемых значений это очень просто:
+
+```ts
+import { timer } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+import { retry } from 'rxjs/operators';
+
+export function backoff(
+    maxTries: number,
+    initialDelay: number
+) {
+    return retry({
+        count: maxTries,
+        delay: (error, retryCount) =>
+            timer(initialDelay * retryCount ** 2),
+    });
+}
+
+ajax('/api/endpoint')
+    .pipe(backoff(3, 250))
+    .subscribe(function handleData(data) {
+        /* ... */
+    });
+```
+
+## Ссылки
+
+-   [Practical observable usage](https://angular.io/guide/practical-observable-usage)

@@ -224,12 +224,10 @@ nav:
                 - sharing-ngmodules.md
                 - ngmodule-api.md
                 - ngmodule-faq.md
-#            - Observables и RxJS:
-#                - observables.md
-#                - rx-library.md
-#                - observables-in-angular.md
-#                - practical-observable-usage.md
-#                - comparing-observables.md
-#            - dependency-injection-in-action.md
+            - Observables и RxJS:
+                - observables.md
+                - rx-library.md
+                - observables-in-angular.md
+                - practical-observable-usage.md
+            - dependency-injection-in-action.md
         - glossary.md
-#    - ...
