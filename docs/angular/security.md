@@ -352,7 +352,7 @@ Angular имеет встроенную поддержку для предотв
 
 Вредоносный код на `evil.com` не может.
 
-Angular `HttpClient` имеет встроенную поддержку клиентской части этой техники. Подробнее об этом читайте в руководстве [HttpClient guide](http.md#security-xsrf-protection).
+Angular `HttpClient` имеет встроенную поддержку клиентской части этой техники. Подробнее об этом читайте в руководстве [HttpClient guide](understanding-communicating-with-http.md#security-xsrf-protection).
 
 Информацию о CSRF на Open Web Application Security Project (OWASP), смотрите [Cross-Site Request Forgery (CSRF)](https://owasp.org/www-community/attacks/csrf) и [Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html). Документ Стэнфордского университета [Robust Defenses for Cross-Site Request Forgery](https://seclab.stanford.edu/websec/csrf/csrf.pdf) является богатым источником подробностей.
 

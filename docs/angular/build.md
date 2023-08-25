@@ -272,7 +272,7 @@ Angular CLI выводит предупреждения, если обнаруж
 
 Angular CLI использует [Browserslist](https://github.com/browserslist/browserslist) для обеспечения совместимости с различными версиями браузеров. [Autoprefixer](https://github.com/postcss/autoprefixer) используется для префиксации поставщиков CSS и [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env) для преобразования синтаксиса JavaScript.
 
-Внутри Angular CLI используется приведенная ниже конфигурация `browserslist`, которая соответствует [поддерживаемым браузерам](browser-support.md) Angular.
+Внутри Angular CLI используется приведенная ниже конфигурация `browserslist`, которая соответствует [поддерживаемым браузерам](https://angular.io/guide/browser-support) Angular.
 
 ```
 last 2 Chrome versions

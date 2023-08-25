@@ -37,7 +37,7 @@ export class ConfigService {
 }
 ```
 
-Сервис `HttpClient` использует [observables](glossary.ts#observable 'Observable definition') для всех транзакций. Вы должны импортировать RxJS observable и символы операторов, которые появляются в фрагментах примера.
+Сервис `HttpClient` использует [observables](glossary.md#observable 'Observable definition') для всех транзакций. Вы должны импортировать RxJS observable и символы операторов, которые появляются в фрагментах примера.
 
 Эти импорты `ConfigService` являются типичными.
 

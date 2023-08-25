@@ -87,7 +87,7 @@ updateHero(hero: Hero): Observable<Hero> {
 }
 ```
 
-Как и для любого из HTTP методов, возвращающих наблюдаемую, вызывающий `HeroesComponent.update()` [должен `subscribe()`](http-request-data-from-server.ts#always-subscribe 'Почему вы всегда должны подписываться.') на наблюдаемую, возвращаемую из `HttpClient.put()`, чтобы инициировать запрос.
+Как и для любого из HTTP методов, возвращающих наблюдаемую, вызывающий `HeroesComponent.update()` [должен `subscribe()`](http-request-data-from-server.md#always-subscribe 'Почему вы всегда должны подписываться.') на наблюдаемую, возвращаемую из `HttpClient.put()`, чтобы инициировать запрос.
 
 ## Добавление и обновление заголовков
 

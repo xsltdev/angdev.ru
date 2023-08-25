@@ -1,4 +1,10 @@
+---
+description: Используйте пайпы для преобразования строк, валютных сумм, дат и других данных для отображения
+---
+
 # Понимание пайпов
+
+:date: 1.04.2022
 
 Используйте [пайпы](glossary.md#pipe) для преобразования строк, валютных сумм, дат и других данных для отображения.
 
@@ -42,4 +48,6 @@ Angular предоставляет встроенные пайпы для тип
 
 [aioguidei18ncommonformatdatalocale]: i18n-common-format-data-locale.md
 
-:date: 1.04.2022
+## Ссылки
+
+-   [Understanding Pipes](https://angular.io/guide/pipes-overview)

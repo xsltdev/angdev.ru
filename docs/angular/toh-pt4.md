@@ -181,7 +181,7 @@ this.heroes = this.heroService.getHeroes();
 
 В этом руководстве `HeroService.getHeroes()` возвращает `Observable`, чтобы можно было использовать метод Angular `HttpClient.get` для получения героев
 
-и чтобы [`HttpClient.get()`](http.md) возвращал `Observable`.
+и чтобы [`HttpClient.get()`](understanding-communicating-with-http.md) возвращал `Observable`.
 
 ### Observable `HeroService`
 

@@ -83,7 +83,7 @@ Angular Framework, Angular CLI и компоненты, используемые
 
 Во многих браузерах отсутствует встроенная поддержка некоторых функций в последних стандартах HTML, которые необходимы Angular. [_Полифиллы_](<https://en.wikipedia.org/wiki/Polyfill_(программирование)>) могут эмулировать недостающие возможности.
 
-В руководстве [Browser Support](browser-support.md) объясняется, каким браузерам нужны полифиллы и как их можно добавить.
+В руководстве [Browser Support](https://angular.io/guide/browser-support) объясняется, каким браузерам нужны полифиллы и как их можно добавить.
 
 ## DevDependencies {#dev-dependencies}
 
@@ -103,7 +103,7 @@ yarn add --dev <package-name>
 
 Следующие `devDependencies` предоставляются в файле по умолчанию `package.json` для нового рабочего пространства Angular.
 
-| Package name                                                              | Details                                                                               |
+| Название пакета                                                           | Подробнее                                                                             |
 | :------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ |
 | [`@angular-devkit/build-angular`](https://github.com/angular/angular-cli) | Инструменты сборки Angular.                                                           |
 | [`@angular/cli`](https://github.com/angular/angular-cli)                  | Инструменты Angular CLI.                                                              |

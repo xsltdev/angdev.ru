@@ -1,368 +1,601 @@
-# Transforming Data Using Pipes
+---
+description: Используйте пайпы для преобразования строк, сумм валют, дат и других данных для отображения на экране
+---
 
-Use [pipes](glossary.md#pipe 'Definition of a pipe') to transform strings, currency amounts, dates, and other data for display.
-Pipes are simple functions to use in [template expressions](glossary.md#template-expression 'Definition of template expression') to accept an input value and return a transformed value.
-Pipes are useful because you can use them throughout your application, while only declaring each pipe once.
-For example, you would use a pipe to show a date as **April 15, 1988** rather than the raw string format.
+# Преобразование данных с помощью пайпов
 
-<div class="alert is-helpful">
+:date: 28.02.2022
 
-For the sample application used in this topic, see the <live-example></live-example>.
+Используйте [пайпы](glossary.md#pipe 'Определение пайпа') для преобразования строк, сумм валют, дат и других данных для отображения на экране. Пайпы - это простые функции, которые можно использовать в [шаблонных выражениях](glossary.md#template-expression 'Определение шаблонного выражения') для приема входного значения и возврата преобразованного значения. Пайпы полезны тем, что их можно использовать во всем приложении, объявляя каждый пайп только один раз. Например, с помощью пайпа можно отобразить дату в виде **April 15, 1988**, а не в виде необработанной строки.
 
-</div>
+!!!note ""
 
-Angular provides built-in pipes for typical data transformations, including transformations for internationalization \(i18n\), which use locale information to format data.
-The following are commonly used built-in pipes for data formatting:
+    Пример приложения, используемый в данной теме, приведен в [живом примере](https://angular.io/generated/live-examples/pipes/stackblitz.html).
 
-| Pipes                                                          | Details                                                                                      |
-| :------------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
-| [`DatePipe`](https://angular.io/api/common/DatePipe)           | Formats a date value according to locale rules.                                              |
-| [`UpperCasePipe`](https://angular.io/api/common/UpperCasePipe) | Transforms text to all upper case.                                                           |
-| [`LowerCasePipe`](https://angular.io/api/common/LowerCasePipe) | Transforms text to all lower case.                                                           |
-| [`CurrencyPipe`](https://angular.io/api/common/CurrencyPipe)   | Transforms a number to a currency string, formatted according to locale rules.               |
-| [`DecimalPipe`](https://angular.io/api/common/DecimalPipe)     | Transforms a number into a string with a decimal point, formatted according to locale rules. |
-| [`PercentPipe`](https://angular.io/api/common/PercentPipe)     | Transforms a number to a percentage string, formatted according to locale rules.             |
+Angular предоставляет встроенные пайпы для типичных преобразований данных, включая преобразования для интернационализации (i18n), которые используют информацию о локали для форматирования данных. Ниже перечислены часто используемые встроенные пайпы для форматирования данных:
 
-<div class="alert is-helpful">
+| Трубы                                                          | Подробнее                                                                                               |
+| :------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------ |
+| [`DatePipe`](https://angular.io/api/common/DatePipe)           | Формирование значения даты в соответствии с правилами локали.                                           |
+| [`UpperCasePipe`](https://angular.io/api/common/UpperCasePipe) | Преобразование текста в верхний регистр.                                                                |
+| [`LowerCasePipe`](https://angular.io/api/common/LowerCasePipe) | Преобразование текста во все строчные регистры.                                                         |
+| [`CurrencyPipe`](https://angular.io/api/common/CurrencyPipe)   | Преобразование числа в строку валюты, отформатированную в соответствии с правилами локали.              |
+| [`DecimalPipe`](https://angular.io/api/common/DecimalPipe)     | Преобразование числа в строку с десятичной точкой, отформатированную в соответствии с правилами локали. |
+| [`PercentPipe`](https://angular.io/api/common/PercentPipe)     | Преобразование числа в строку с процентами, оформленную в соответствии с правилами локали.              |
 
--   For a complete list of built-in pipes, see the [pipes API documentation](https://angular.io/api/common#pipes 'Pipes API reference summary').
--   To learn more about using pipes for internationalization \(i18n\) efforts, see [formatting data based on locale][aioguidei18ncommonformatdatalocale].
+!!!note ""
 
-</div>
+    -   Полный список встроенных пайпов приведен в документации [pipes API](https://angular.io/api/common#pipes 'Pipes API reference summary').
+    -   Подробнее об использовании пайпов для интернационализации (i18n) см. в разделе [Форматирование данных в зависимости от локали][aioguidei18ncommonformatdatalocale].
 
-Create pipes to encapsulate custom transformations and use your custom pipes in template expressions.
+Создание пайпов для инкапсуляции пользовательских преобразований и использование пользовательских пайпов в шаблонных выражениях.
 
-## Prerequisites
+## Предварительные условия
 
-To use pipes you should have a basic understanding of the following:
+Для использования пайпов необходимо иметь базовое представление о следующем:
 
--   [Typescript](glossary.md#typescript 'Definition of Typescript') and HTML5 programming
--   [Templates](glossary.md#template 'Definition of a template') in HTML with CSS styles
--   [Components](glossary.md#component 'Definition of a component')
+-   [Typescript](glossary.md#typescript 'Определение Typescript') и программирования HTML5
+-   [Шаблоны](glossary.md#template 'Определение шаблона') в HTML со стилями CSS
+-   [Components](glossary.md#component 'Определение компонента')
 
-## Using a pipe in a template
+## Использование пайпа в шаблоне
 
-To apply a pipe, use the pipe \(`|`) character within a template expression as shown in the following code example, along with the _name_ of the pipe, which is `date` for the built-in [`DatePipe`](https://angular.io/api/common/DatePipe).
-The tabs in the example show the following:
+Чтобы применить пайп, используйте символ пайпа (`|`) в выражении шаблона, как показано в следующем примере кода, вместе с _именем_ пайпа, которым является `date` для встроенного [`DatePipe`](https://angular.io/api/common/DatePipe).
+Вкладки в примере выглядят следующим образом:
 
-| Files                         | Details                                                                                             |
-| :---------------------------- | :-------------------------------------------------------------------------------------------------- |
-| `app.component.html`          | Uses `date` in a separate template to display a birthday.                                           |
-| `hero-birthday1.component.ts` | Uses the same pipe as part of an in-line template in a component that also sets the birthday value. |
+| Файлы                         | Подробности                                                                                                           |
+| :---------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| `app.component.html`          | Использует `date` в отдельном шаблоне для отображения дня рождения.                                                   |
+| `hero-birthday1.component.ts` | Использует тот же пайп как часть встроенного шаблона в компоненте, который также устанавливает значение дня рождения. |
 
-<code-tabs>
-    <code-pane header="src/app/app.component.html" region="hero-birthday-template" path="pipes/src/app/app.component.html"></code-pane>
-    <code-pane header="src/app/hero-birthday1.component.ts" path="pipes/src/app/hero-birthday1.component.ts"></code-pane>
-</code-tabs>
+=== "src/app/app.component.html"
 
-The component's `birthday` value flows through the pipe operator, `|` to the [`date`](https://angular.io/api/common/DatePipe) function.
+    ```html
+    <p>The hero's birthday is {{ birthday | date }}</p>
+    ```
+
+=== "src/app/hero-birthday1.component.ts"
+
+    ```ts
+    import { Component } from '@angular/core';
+
+    @Component({
+    	selector: 'app-hero-birthday',
+    	template:
+    		"<p>The hero's birthday is {{ birthday | date }}</p>",
+    })
+    export class HeroBirthdayComponent {
+    	birthday = new Date(1988, 3, 15); // April 15, 1988 -- since month parameter is zero-based
+    }
+    ```
+
+Значение `birthday` компонента через оператор пайпа, `|`, попадает в функцию [`date`](https://angular.io/api/common/DatePipe).
 
 <a id="parameterizing-a-pipe"></a>
 
-## Transforming data with parameters and chained pipes
+## Преобразование данных с помощью параметров и цепочек пайпов
 
-Use optional parameters to fine-tune a pipe's output.
-For example, use the [`CurrencyPipe`](https://angular.io/api/common/CurrencyPipe 'API reference') with a country code such as EUR as a parameter.
-The template expression `{{ amount | currency:'EUR' }}` transforms the `amount` to currency in euros.
-Follow the pipe name \(`currency`\) with a colon \(`:`\) character and the parameter value \(`'EUR'`\).
+Используйте необязательные параметры для точной настройки выходных данных пайпа. Например, используйте [`CurrencyPipe`](https://angular.io/api/common/CurrencyPipe 'API reference') с кодом страны, например EUR, в качестве параметра. Шаблонное выражение `{{ amount | currency:'EUR' }}` преобразует `amount` в валюту в евро. После имени пайпа (`currency`) следует символ двоеточия (`:`) и значение параметра (`'EUR'`).
 
-If the pipe accepts multiple parameters, separate the values with colons.
-For example, `{{ amount | currency:'EUR':'Euros '}}` adds the second parameter, the string literal `'Euros '`, to the output string.
-Use any valid template expression as a parameter, such as a string literal or a component property.
+Если пайп принимает несколько параметров, разделяйте их значения двоеточиями. Например, `{{ amount | currency:'EUR':'Euros'}}` добавляет второй параметр, строковый литерал `'Euros'`, в выходную строку. В качестве параметра можно использовать любое допустимое выражение шаблона, например, строковый литерал или свойство компонента.
 
-Some pipes require at least one parameter and allow more optional parameters, such as [`SlicePipe`](https://angular.io/api/common/SlicePipe 'API reference for SlicePipe').
-For example, `{{ slice:1:5 }}` creates a new array or string containing a subset of the elements starting with element `1` and ending with element `5`.
+Некоторые пайпы требуют как минимум один параметр и допускают большее количество необязательных параметров, например [`SlicePipe`](https://angular.io/api/common/SlicePipe 'API reference for SlicePipe'). Например, `{{ slice:1:5 }}` создает новый массив или строку, содержащую подмножество элементов, начиная с элемента `1` и заканчивая элементом `5`.
 
-### Example: Formatting a date
+### Пример: Форматирование даты
 
-The tabs in the following example demonstrates toggling between two different formats \(`'shortDate'` and `'fullDate'`\):
+На вкладках в следующем примере демонстрируется переключение между двумя различными форматами (`'shortDate'` и `'fullDate'`):
 
--   The `app.component.html` template uses a format parameter for the [`DatePipe`](https://angular.io/api/common/DatePipe) \(named `date`\) to show the date as **04/15/88**.
--   The `hero-birthday2.component.ts` component binds the pipe's format parameter to the component's `format` property in the `template` section, and adds a button for a click event bound to the component's `toggleFormat()` method.
--   The `hero-birthday2.component.ts` component's `toggleFormat()` method toggles the component's `format` property between a short form \(`'shortDate'`\) and a longer form \(`'fullDate'`\).
+-   Шаблон `app.component.html` использует параметр формата для [`DatePipe`](https://angular.io/api/common/DatePipe) (с именем `date`), чтобы показать дату как **04/15/88**.
+-   Компонент `hero-birthday2.component.ts` привязывает параметр формата пайпа к свойству `format` компонента в секции `template` и добавляет кнопку для события click, привязанную к методу `toggleFormat()` компонента.
+-   Метод `toggleFormat()` компонента `hero-birthday2.component.ts` переключает свойство `format` компонента между короткой формой (`'shortDate'`) и более длинной (`'fullDate'`).
 
-<code-tabs>
-    <code-pane header="src/app/app.component.html" region="format-birthday" path="pipes/src/app/app.component.html"></code-pane>
-    <code-pane header="src/app/hero-birthday2.component.ts (template)" region="template" path="pipes/src/app/hero-birthday2.component.ts"></code-pane>
-    <code-pane header="src/app/hero-birthday2.component.ts (class)" region="class" path="pipes/src/app/hero-birthday2.component.ts"></code-pane>
-</code-tabs>
+=== "src/app/app.component.html"
 
-Clicking the **Toggle Format** button alternates the date format between **04/15/1988** and **Friday, April 15, 1988**.
+    ```html
+    <p>
+    	The hero's birthday is {{ birthday | date:"MM/dd/yy" }}
+    </p>
+    ```
 
-<div class="alert is-helpful">
+=== "src/app/hero-birthday2.component.ts (template)"
 
-For `date` pipe format options, see [DatePipe](https://angular.io/api/common/DatePipe 'DatePipe API Reference page').
+    ```ts
+    template: `
+    <p>The hero's birthday is {{ birthday | date:format }}</p>
+    <button type="button" (click)="toggleFormat()">Toggle Format</button>
+    `;
+    ```
 
-</div>
+=== "src/app/hero-birthday2.component.ts (class)"
 
-### Example: Applying two formats by chaining pipes
+    ```ts
+    export class HeroBirthday2Component {
+    	birthday = new Date(1988, 3, 15); // April 15, 1988 -- since month parameter is zero-based
+    	toggle = true; // start with true == shortDate
 
-Chain pipes so that the output of one pipe becomes the input to the next.
+    	get format() {
+    		return this.toggle ? 'shortDate' : 'fullDate';
+    	}
+    	toggleFormat() {
+    		this.toggle = !this.toggle;
+    	}
+    }
+    ```
 
-In the following example, chained pipes first apply a format to a date value, then convert the formatted date to uppercase characters.
-The first tab for the `src/app/app.component.html` template chains `DatePipe` and `UpperCasePipe` to display the birthday as **APR 15, 1988**.
-The second tab for the `src/app/app.component.html` template passes the `fullDate` parameter to `date` before chaining to `uppercase`, which produces **FRIDAY, APRIL 15, 1988**.
+При нажатии на кнопку **Toggle Format** формат даты чередуется между **04/15/1988** и **Friday, April 15, 1988**.
 
-<code-tabs>
-    <code-pane header="src/app/app.component.html (1)" region="chained-birthday" path="pipes/src/app/app.component.html"></code-pane>
-    <code-pane header="src/app/app.component.html (2)" region="chained-parameter-birthday" path="pipes/src/app/app.component.html"></code-pane>
-</code-tabs>
+!!!note ""
+
+    Параметры формата пайпа `date` см. в разделе [DatePipe](https://angular.io/api/common/DatePipe 'Справочная страница по API DatePipe').
+
+### Пример: Применение двух форматов с помощью цепочки пайпов
+
+Цепочка пайпов позволяет сделать так, чтобы выход одного пайпа стал входом для следующего.
+
+В следующем примере цепочки пайпов сначала применяют формат к значению даты, а затем преобразуют отформатированную дату в заглавные символы. Первая вкладка шаблона `src/app/app.component.html` связывает `DatePipe` и `UpperCasePipe` для отображения дня рождения как **APR 15, 1988**. На второй вкладке шаблона `src/app/app.component.html` параметр `fullDate` передается в `date` перед цепочкой в `uppercase`, в результате чего получается **FRIDAY, APRIL 15, 1988**.
+
+=== "src/app/app.component.html (1)"
+
+    ```html
+    The chained hero's birthday is {{ birthday | date |
+    uppercase}}
+    ```
+
+=== "src/app/app.component.html (2)"
+
+    ```html
+    The chained hero's birthday is {{ birthday | date:'fullDate'
+    | uppercase}}
+    ```
 
 <a id="Custom-pipes"></a>
 
-## Creating pipes for custom data transformations
+## Создание пайпов для пользовательских преобразований данных
 
-Create custom pipes to encapsulate transformations that are not provided with the built-in pipes.
-Then, use your custom pipe in template expressions, the same way you use built-in pipes &mdash;to transform input values to output values for display.
+Создайте пользовательские пайпы для инкапсуляции преобразований, которые не предусмотрены встроенными пайпами. Затем используйте пользовательские пайпы в шаблонных выражениях так же, как и встроенные пайпы &mdash; для преобразования входных значений в выходные значения для отображения.
 
-### Marking a class as a pipe
+### Пометка класса как пайпа
 
-To mark a class as a pipe and supply configuration metadata, apply the [`@Pipe`](https://angular.io/api/core/Pipe 'API reference for Pipe') [decorator](glossary.md#decorator--decoration 'Definition for decorator') to the class.
-Use [UpperCamelCase](glossary.md#case-types 'Definition of case types') \(the general convention for class names\) for the pipe class name, and [camelCase](glossary.md#case-types 'Definition of case types') for the corresponding `name` string.
-Do not use hyphens in the `name`.
-For details and more examples, see [Pipe names](styleguide.md#pipe-names 'Pipe names in the Angular coding style guide').
+Чтобы пометить класс как пайп и снабдить его конфигурационными метаданными, примените к классу [`@Pipe`](https://angular.io/api/core/Pipe 'API reference for Pipe') [decorator](glossary.md#decorator--decoration 'Definition for decorator'). Используйте [UpperCamelCase](glossary.md#case-types 'Определение типов регистра') (общее соглашение для имен классов) для имени класса пайпа и [camelCase](glossary.md#case-types 'Определение типов регистра') для соответствующей строки `name`. Не используйте дефисы в строке `name`. Подробности и примеры см. в разделе [Имена пайпов](https://angular.io/guide/styleguide#pipe-names 'Имена пайпов в руководстве по стилю кодирования Angular').
 
-Use `name` in template expressions as you would for a built-in pipe.
+Используйте `name` в шаблонных выражениях так же, как и для встроенного пайпа.
 
-<div class="alert is-important">
+!!!note ""
 
--   Include your pipe in the `declarations` field of the `NgModule` metadata in order for it to be available to a template.
-    See the `app.module.ts` file in the example application \(<live-example></live-example>\).
-    For details, see [NgModules](ngmodules.md 'NgModules introduction').
+    -   Включите свой пайп в поле `declarations` метаданных `NgModule` для того, чтобы он был доступен шаблону.
 
--   Register your custom pipes.
-    The [Angular CLI](https://angular.io/cli 'CLI Overview and Command Reference') [`ng generate pipe`](https://angular.io/cli/generate#pipe 'ng generate pipe in the CLI Command Reference') command registers the pipe automatically.
+    	См. файл `app.module.ts` в примере приложения ([живой пример](https://angular.io/generated/live-examples/pipes/stackblitz.html)).
 
-</div>
+    	Подробнее см. раздел [NgModules](ngmodules.md 'Введение в NgModules').
 
-### Using the PipeTransform interface
+    -   Зарегистрируйте пользовательские пайпы.
 
-Implement the [`PipeTransform`](https://angular.io/api/core/PipeTransform 'API reference for PipeTransform') interface in your custom pipe class to perform the transformation.
+    	Команда [Angular CLI](https://angular.io/cli 'CLI Overview and Command Reference') [`ng generate pipe`](https://angular.io/cli/generate#pipe 'ng generate pipe in the CLI Command Reference') регистрирует пайп автоматически.
 
-Angular invokes the `transform` method with the value of a binding as the first argument, and any parameters as the second argument in list form, and returns the transformed value.
+### Использование интерфейса PipeTransform
 
-### Example: Transforming a value exponentially
+Реализуйте интерфейс [`PipeTransform`](https://angular.io/api/core/PipeTransform 'API reference for PipeTransform') в своем пользовательском классе пайпа для выполнения трансформации.
 
-In a game, you might want to implement a transformation that raises a value exponentially to increase a hero's power.
-For example, if the hero's score is 2, boosting the hero's power exponentially by 10 produces a score of 1024.
-Use a custom pipe for this transformation.
+Angular вызывает метод `transform` со значением привязки в качестве первого аргумента и любыми параметрами в качестве второго аргумента в виде списка и возвращает преобразованное значение.
 
-The following code example shows two component definitions:
+### Пример: Экспоненциальное преобразование значения
 
-| Files                          | Details                                                                                                                                                                                                             |
-| :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `exponential-strength.pipe.ts` | Defines a custom pipe named `exponentialStrength` with the `transform` method that performs the transformation. It defines an argument to the `transform` method \(`exponent`\) for a parameter passed to the pipe. |
-| `power-booster.component.ts`   | Demonstrates how to use the pipe, specifying a value \(`2`\) and the exponent parameter \(`10`\).                                                                                                                   |
+В игре может потребоваться реализовать преобразование, которое экспоненциально увеличивает значение для повышения силы героя. Например, если количество очков героя равно 2, то при экспоненциальном увеличении силы героя на 10 количество очков будет равно 1024. Для этого преобразования используйте пользовательский пайп.
 
-<code-tabs>
-    <code-pane header="src/app/exponential-strength.pipe.ts" path="pipes/src/app/exponential-strength.pipe.ts"></code-pane>
-    <code-pane header="src/app/power-booster.component.ts" path="pipes/src/app/power-booster.component.ts"></code-pane>
-</code-tabs>
+В следующем примере кода показаны два определения компонентов:
 
-<!--todo: replace with screen capture -->
+| Файлы                          | Подробности                                                                                                                                                                                                 |
+| :----------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `exponential-strength.pipe.ts` | Определяет пользовательский пайп с именем `exponentialStrength` и методом `transform`, выполняющим преобразование. Определяет аргумент метода `transform` (`exponent`) для параметра, передаваемого в пайп. |
+| `power-booster.component.ts`   | Демонстрирует использование пайпа с указанием значения (`2`) и параметра экспоненты (`10`).                                                                                                                 |
 
-The browser displays the following:
+=== "src/app/exponential-strength.pipe.ts"
 
-<code-example format="output" hideCopy language="none">
+    ```ts
+    import { Pipe, PipeTransform } from '@angular/core';
+    /*
+    * Raise the value exponentially
+    * Takes an exponent argument that defaults to 1.
+    * Usage:
+    *   value | exponentialStrength:exponent
+    * Example:
+    *   {{ 2 | exponentialStrength:10 }}
+    *   formats to: 1024
+    */
+    @Pipe({ name: 'exponentialStrength' })
+    export class ExponentialStrengthPipe
+    	implements PipeTransform {
+    	transform(value: number, exponent = 1): number {
+    		return Math.pow(value, exponent);
+    	}
+    }
+    ```
 
+=== "src/app/power-booster.component.ts"
+
+    ```ts
+    import { Component } from '@angular/core';
+
+    @Component({
+    	selector: 'app-power-booster',
+    	template: `
+    		<h2>Power Booster</h2>
+    		<p>
+    			Super power boost:
+    			{{ 2 | exponentialStrength: 10 }}
+    		</p>
+    	`,
+    })
+    export class PowerBoosterComponent {}
+    ```
+
+В браузере отображается следующее:
+
+```
 Power Booster
 
 Superpower boost: 1024
+```
 
-</code-example>
+!!!note ""
 
-<div class="alert is-helpful">
-
-To examine the behavior the `exponentialStrength` pipe in the <live-example></live-example>, change the value and optional exponent in the template.
-
-</div>
+    Чтобы исследовать поведение пайпа `exponentialStrength` в [живом примере](https://angular.io/generated/live-examples/pipes/stackblitz.html), измените значение и необязательную экспоненту в шаблоне.
 
 <a id="change-detection"></a>
 
-## Detecting changes with data binding in pipes
+## Обнаружение изменений с помощью привязки данных в пайпах
 
-You use [data binding](glossary.md#data-binding 'Definition of data binding') with a pipe to display values and respond to user actions.
-If the data is a primitive input value, such as `String` or `Number`, or an object reference as input, such as `Date` or `Array`, Angular executes the pipe whenever it detects a change for the input value or reference.
+Для отображения значений и реагирования на действия пользователя в пайпе используется [привязка данных](glossary.md#data-binding 'Определение привязки данных'). Если в качестве данных используется примитивное входное значение, например `String` или `Number`, или ссылка на объект, например `Date` или `Array`, Angular выполняет пайп всякий раз, когда обнаруживает изменение входного значения или ссылки.
 
-For example, you could change the previous custom pipe example to use two-way data binding with `ngModel` to input the amount and boost factor, as shown in the following code example.
+Например, можно изменить предыдущий пример пользовательского пайпа, чтобы использовать двустороннее связывание данных с `ngModel` для ввода суммы и повышающего коэффициента, как показано в следующем примере кода.
 
-<code-example header="src/app/power-boost-calculator.component.ts" path="pipes/src/app/power-boost-calculator.component.ts"></code-example>
+```ts
+import { Component } from '@angular/core';
 
-The `exponentialStrength` pipe executes every time the user changes the "normal power" value or the "boost factor".
+@Component({
+    selector: 'app-power-boost-calculator',
+    template: `
+        <h2>Power Boost Calculator</h2>
+        <label for="power-input">Normal power: </label>
+        <input
+            id="power-input"
+            type="text"
+            [(ngModel)]="power"
+        />
+        <label for="boost-input">Boost factor: </label>
+        <input
+            id="boost-input"
+            type="text"
+            [(ngModel)]="factor"
+        />
+        <p>
+            Super Hero Power:
+            {{ power | exponentialStrength: factor }}
+        </p>
+    `,
+    styles: ['input {margin: .5rem 0;}'],
+})
+export class PowerBoostCalculatorComponent {
+    power = 5;
+    factor = 1;
+}
+```
 
-Angular detects each change and immediately runs the pipe.
-This is fine for primitive input values.
-However, if you change something _inside_ a composite object \(such as the month of a date, an element of an array, or an object property\), you need to understand how change detection works, and how to use an `impure` pipe.
+Пайп `exponentialStrength` выполняется каждый раз, когда пользователь изменяет значение "нормальной мощности" или "коэффициента усиления".
 
-### How change detection works
+Angular обнаруживает каждое изменение и немедленно запускает пайп. Это хорошо подходит для примитивных входных значений. Однако если вы изменяете что-то _внутри_ составного объекта (например, месяц даты, элемент массива или свойство объекта), вам необходимо понять, как работает обнаружение изменений и как использовать `нечистый` пайп.
 
-Angular looks for changes to data-bound values in a [change detection](glossary.md#change-detection 'Definition of change detection') process that runs after every DOM event: every keystroke, mouse move, timer tick, and server response.
-The following example, which doesn't use a pipe, demonstrates how Angular uses its default change detection strategy to monitor and update its display of every hero in the `heroes` array.
-The example tabs show the following:
+### Как работает обнаружение изменений
 
-| Files                               | Details                                                            |
-| :---------------------------------- | :----------------------------------------------------------------- |
-| `flying-heroes.component.html (v1)` | The `*ngFor` repeater displays the hero names.                     |
-| `flying-heroes.component.ts (v1)`   | Provides heroes, adds heroes into the array, and resets the array. |
+Angular ищет изменения в значениях, связанных с данными, в процессе [change detection](glossary.md#change-detection 'Определение change detection'), который запускается после каждого события DOM: каждого нажатия клавиши, перемещения мыши, тиканья таймера и ответа сервера. Следующий пример, в котором не используется пайп, демонстрирует, как Angular использует свою стандартную стратегию обнаружения изменений для отслеживания и обновления отображения каждого героя в массиве `heroes`. На вкладках примера показано следующее:
 
-<code-tabs>
-    <code-pane header="src/app/flying-heroes.component.html (v1)" path="pipes/src/app/flying-heroes.component.html" region="template-1"></code-pane>
-    <code-pane header="src/app/flying-heroes.component.ts (v1)" path="pipes/src/app/flying-heroes.component.ts" region="v1"></code-pane>
-</code-tabs>
+| Файлы                               | Подробности                                                          |
+| :---------------------------------- | :------------------------------------------------------------------- |
+| `flying-heroes.component.html (v1)` | Повторитель `*ngFor` отображает имена героев.                        |
+| `flying-heroes.component.ts (v1)`   | Предоставляет героев, добавляет героев в массив и сбрасывает массив. |
 
-Angular updates the display every time the user adds a hero.
-If the user clicks the **Reset** button, Angular replaces `heroes` with a new array of the original heroes and updates the display.
-If you add the ability to remove or change a hero, Angular would detect those changes and update the display as well.
+=== "src/app/flying-heroes.component.html (v1)"
 
-However, executing a pipe to update the display with every change would slow down your application's performance.
-So Angular uses a faster change-detection algorithm for executing a pipe, as described in the next section.
+    ```html
+    <label for="hero-name">New hero name: </label>
+    <input
+    	type="text"
+    	#box
+    	id="hero-name"
+    	(keyup.enter)="addHero(box.value); box.value=''"
+    	placeholder="hero name"
+    />
+    <button type="button" (click)="reset()">
+    	Reset list of heroes
+    </button>
+    <div *ngFor="let hero of heroes">{{hero.name}}</div>
+    ```
+
+=== "src/app/flying-heroes.component.ts (v1)"
+
+    ```ts
+    export class FlyingHeroesComponent {
+    	heroes: any[] = [];
+    	canFly = true;
+    	constructor() {
+    		this.reset();
+    	}
+
+    	addHero(name: string) {
+    		name = name.trim();
+    		if (!name) {
+    			return;
+    		}
+    		const hero = { name, canFly: this.canFly };
+    		this.heroes.push(hero);
+    	}
+
+    	reset() {
+    		this.heroes = HEROES.slice();
+    	}
+    }
+    ```
+
+Angular обновляет отображение каждый раз, когда пользователь добавляет героя. Если пользователь нажимает кнопку **Reset**, Angular заменяет `heroes` новым массивом исходных героев и обновляет отображение. Если добавить возможность удаления или изменения героя, то Angular обнаружит эти изменения и также обновит отображение.
+
+Однако выполнение пайпа для обновления дисплея при каждом изменении приведет к снижению производительности приложения. Поэтому Angular использует более быстрый алгоритм обнаружения изменений для выполнения пайпа, как описано в следующем разделе.
 
 <a id="pure-and-impure-pipes"></a>
 
-### Detecting pure changes to primitives and object references
+### Обнаружение чистых изменений примитивов и ссылок на объекты
 
-By default, pipes are defined as _pure_ so that Angular executes the pipe only when it detects a _pure change_ to the input value.
-A pure change is either a change to a primitive input value \(such as `String`, `Number`, `Boolean`, or `Symbol`\), or a changed object reference \(such as `Date`, `Array`, `Function`, or `Object`\).
+По умолчанию пайпы определяются как _чистые_, поэтому Angular выполняет пайп только тогда, когда обнаруживает _чистое изменение_ входного значения. Чистое изменение - это либо изменение примитивного входного значения (такого как `String`, `Number`, `Boolean` или `Symbol`), либо изменение объектной ссылки (такой как `Date`, `Array`, `Function` или `Object`).
 
 <a id="pure-pipe-pure-fn"></a>
 
-A pure pipe must use a pure function, which is one that processes inputs and returns values without side effects.
-In other words, given the same input, a pure function should always return the same output.
+Чистый пайп должен использовать чистую функцию, то есть функцию, которая обрабатывает входные данные и возвращает значения без побочных эффектов. Другими словами, при одинаковых входных данных чистая функция всегда должна возвращать одинаковые выходные данные.
 
-With a pure pipe, Angular ignores changes within composite objects, such as a newly added element of an existing array, because checking a primitive value or object reference is much faster than performing a deep check for differences within objects.
-Angular can quickly determine if it can skip executing the pipe and updating the view.
+При использовании чистого пайпа Angular игнорирует изменения внутри составных объектов, например, вновь добавленный элемент существующего массива, поскольку проверка примитивного значения или ссылки на объект выполняется гораздо быстрее, чем глубокая проверка различий внутри объектов. Angular может быстро определить, можно ли пропустить выполнение пайпа и обновление представления.
 
-However, a pure pipe with an array as input might not work the way you want.
-To demonstrate this issue, change the previous example to filter the list of heroes to just those heroes who can fly.
-Use the `FlyingHeroesPipe` in the `*ngFor` repeater as shown in the following code.
-The tabs for the example show the following:
+Однако чистый пайп с массивом в качестве входных данных может работать не так, как вы хотите. Чтобы продемонстрировать эту проблему, изменим предыдущий пример так, чтобы отфильтровать список героев только по тем героям, которые умеют летать. Используйте `FlyingHeroesPipe` в ретрансляторе `*ngFor`, как показано в следующем коде. Вкладки для примера выглядят следующим образом:
 
--   The template \(`flying-heroes.component.html (flyers)`\) with the new pipe
--   The `FlyingHeroesPipe` custom pipe implementation \(`flying-heroes.pipe.ts`\)
+-   Шаблон (`flying-heroes.component.html (flyers)`) с новым пайпом
+-   Реализация пользовательского пайпа `FlyingHeroesPipe` (`flying-heroes.pipe.ts`)
 
-<code-tabs>
-    <code-pane header="src/app/flying-heroes.component.html (flyers)" path="pipes/src/app/flying-heroes.component.html" region="template-flying-heroes"></code-pane>
-    <code-pane header="src/app/flying-heroes.pipe.ts" path="pipes/src/app/flying-heroes.pipe.ts" region="pure"></code-pane>
-</code-tabs>
+=== "src/app/flying-heroes.component.html (flyers)"
 
-The application now shows unexpected behavior: When the user adds flying heroes, none of them appear under "Heroes who fly."
-This happens because the code that adds a hero does so by pushing it onto the `heroes` array:
+    ```html
+    <div *ngFor="let hero of (heroes | flyingHeroes)">
+    	{{hero.name}}
+    </div>
+    ```
 
-<code-example header="src/app/flying-heroes.component.ts" path="pipes/src/app/flying-heroes.component.ts" region="push"></code-example>
+=== "src/app/flying-heroes.pipe.ts"
 
-The change detector ignores changes to elements of an array, so the pipe doesn't run.
+    ```ts
+    import { Pipe, PipeTransform } from '@angular/core';
 
-The reason Angular ignores the changed array element is that the _reference_ to the array hasn't changed.
-Because the array is the same, Angular does not update the display.
+    import { Hero } from './heroes';
 
-One way to get the behavior you want is to change the object reference itself.
-Replace the array with a new array containing the newly changed elements, and then input the new array to the pipe.
-In the preceding example, create an array with the new hero appended, and assign that to `heroes`.
-Angular detects the change in the array reference and executes the pipe.
+    @Pipe({ name: 'flyingHeroes' })
+    export class FlyingHeroesPipe implements PipeTransform {
+    	transform(allHeroes: Hero[]) {
+    		return allHeroes.filter((hero) => hero.canFly);
+    	}
+    }
+    ```
 
-To summarize, if you mutate the input array, the pure pipe doesn't execute.
-If you _replace_ the input array, the pipe executes and the display is updated.
+Теперь приложение демонстрирует неожиданное поведение: Когда пользователь добавляет летающих героев, ни один из них не появляется в разделе "Heroes who fly". Это происходит потому, что код, добавляющий героя, заталкивает его в массив `heroes`:
 
-The preceding example demonstrates changing a component's code to accommodate a pipe.
+```ts
+this.heroes.push(hero);
+```
 
-To keep your component independent of HTML templates that use pipes, you can, as an alternative, use an _impure_ pipe to detect changes within composite objects such as arrays, as described in the next section.
+Детектор изменений игнорирует изменения элементов массива, поэтому пайп не выполняется.
+
+Причина, по которой Angular игнорирует измененный элемент массива, заключается в том, что _ссылка_ на массив не изменилась. Поскольку массив остался прежним, Angular не обновляет отображение.
+
+Один из способов добиться желаемого поведения - изменить саму ссылку на объект. Замените массив новым массивом, содержащим новые измененные элементы, а затем введите новый массив в пайп. В предыдущем примере создайте массив с добавлением нового героя и присвойте его `heroes`. Angular обнаружит изменение в ссылке на массив и выполнит пайп.
+
+Подведем итог: если вы мутируете входной массив, то чистый пайп не выполняется. Если же входной массив _заменить_, то пайп будет выполнен, и отображение будет обновлено.
+
+Приведенный пример демонстрирует изменение кода компонента для реализации пайпа.
+
+Чтобы сохранить независимость компонента от HTML-шаблонов, использующих пайпы, в качестве альтернативы можно использовать _нечистый_ пайп для обнаружения изменений в составных объектах, таких как массивы, как описано в следующем разделе.
 
 <a id="impure-flying-heroes"></a>
 
-### Detecting impure changes within composite objects
+### Обнаружение нечистых изменений внутри составных объектов
 
-To execute a custom pipe after a change _within_ a composite object, such as a change to an element of an array, you need to define your pipe as `impure` to detect impure changes.
-Angular executes an impure pipe every time it detects a change with every keystroke or mouse movement.
+Чтобы выполнить пользовательский пайп после изменения _внутри_ составного объекта, например, изменения элемента массива, необходимо определить пайп как `impure` для обнаружения нечистых изменений. Angular выполняет нечистый пайп каждый раз, когда обнаруживает изменение при каждом нажатии клавиши или движении мыши.
 
-<div class="alert is-important">
+!!!warning ""
 
-While an impure pipe can be useful, be careful using one.
-A long-running impure pipe could dramatically slow down your application.
+    Хотя нечистый пайп может быть полезен, использовать его следует с осторожностью. Долго работающий нечистый пайп может значительно замедлить работу приложения.
 
+Сделать пайп нечистым, установив его флаг `pure` в значение `false`:
+
+```ts
+@Pipe({
+  name: 'flyingHeroesImpure',
+  pure: false
+})
+```
+
+В приведенном ниже коде показана полная реализация `FlyingHeroesImpurePipe`, которая расширяет `FlyingHeroesPipe` для наследования его характеристик. Из примера видно, что больше ничего менять не нужно &mdash; единственное отличие - установка флага `pure` как `false` в метаданных пайпа.
+
+=== "src/app/flying-heroes.pipe.ts (FlyingHeroesImpurePipe)"
+
+    ```ts
+    @Pipe({
+    	name: 'flyingHeroesImpure',
+    	pure: false,
+    })
+    export class FlyingHeroesImpurePipe extends FlyingHeroesPipe {}
+    ```
+
+=== "src/app/flying-heroes.pipe.ts (FlyingHeroesPipe)"
+
+    ```ts
+    import { Pipe, PipeTransform } from '@angular/core';
+
+    import { Hero } from './heroes';
+
+    @Pipe({ name: 'flyingHeroes' })
+    export class FlyingHeroesPipe implements PipeTransform {
+    	transform(allHeroes: Hero[]) {
+    		return allHeroes.filter((hero) => hero.canFly);
+    	}
+    }
+    ```
+
+`FlyingHeroesImpurePipe` является хорошим кандидатом на роль нечистого пайпа, поскольку функция `transform` является тривиальной и быстрой:
+
+```ts
+return allHeroes.filter((hero) => hero.canFly);
+```
+
+От `FlyingHeroesImpureComponent` можно получить `FlyingHeroesComponent`. Как показано в следующем коде, изменяется только пайп в шаблоне.
+
+```html
+<div *ngFor="let hero of (heroes | flyingHeroesImpure)">
+    {{hero.name}}
 </div>
+```
 
-Make a pipe impure by setting its `pure` flag to `false`:
+!!!note ""
 
-<code-example header="src/app/flying-heroes.pipe.ts" path="pipes/src/app/flying-heroes.pipe.ts" region="pipe-decorator"></code-example>
-
-The following code shows the complete implementation of `FlyingHeroesImpurePipe`, which extends `FlyingHeroesPipe` to inherit its characteristics.
-The example shows that you don't have to change anything else&mdash;the only difference is setting the `pure` flag as `false` in the pipe metadata.
-
-<code-tabs>
-    <code-pane header="src/app/flying-heroes.pipe.ts (FlyingHeroesImpurePipe)" path="pipes/src/app/flying-heroes.pipe.ts" region="impure"></code-pane>
-    <code-pane header="src/app/flying-heroes.pipe.ts (FlyingHeroesPipe)" path="pipes/src/app/flying-heroes.pipe.ts" region="pure"></code-pane>
-</code-tabs>
-
-`FlyingHeroesImpurePipe` is a good candidate for an impure pipe because the `transform` function is trivial and fast:
-
-<code-example header="src/app/flying-heroes.pipe.ts (filter)" path="pipes/src/app/flying-heroes.pipe.ts" region="filter"></code-example>
-
-You can derive a `FlyingHeroesImpureComponent` from `FlyingHeroesComponent`.
-As shown in the following code, only the pipe in the template changes.
-
-<code-example header="src/app/flying-heroes-impure.component.html (excerpt)" path="pipes/src/app/flying-heroes-impure.component.html" region="template-flying-heroes"></code-example>
-
-<div class="alert is-helpful">
-
-To confirm that the display updates as the user adds heroes, see the <live-example></live-example>.
-
-</div>
+    Чтобы убедиться в том, что при добавлении героев на экране происходит обновление, посмотрите [живой пример](https://angular.io/generated/live-examples/pipes/stackblitz.html).
 
 <a id="async-pipe"></a>
 
-## Unwrapping data from an observable
+## Развертывание данных из наблюдаемого объекта
 
-[Observables](glossary.md#observable 'Definition of observable') let you pass messages between parts of your application.
-Observables are recommended for event handling, asynchronous programming, and handling multiple values.
-Observables can deliver single or multiple values of any type, either synchronously \(as a function delivers a value to its caller\) or asynchronously on a schedule.
+[Observables](glossary.md#observable 'Определение observable') позволяют передавать сообщения между частями приложения. Обсерватории рекомендуются для обработки событий, асинхронного программирования и работы с несколькими значениями. Наблюдаемые могут передавать одиночные или множественные значения любого типа как синхронно (как функция передает значение вызывающему ее пользователю), так и асинхронно по расписанию.
 
-<div class="alert is-helpful">
+!!!note ""
 
-For details and examples of observables, see the [Observables Overview](observables.md#using-observables-to-pass-values 'Using observables to pass values').
+    Подробности и примеры использования observables см. в [Observables Overview](observables.md#using-observables-to-pass-values 'Использование observables для передачи значений').
 
-</div>
+Используйте встроенный [`AsyncPipe`](https://angular.io/api/common/AsyncPipe 'Описание API AsyncPipe') для приема наблюдаемого объекта в качестве входного и автоматической подписки на него. Без этого пайпа коду компонента пришлось бы подписываться на наблюдаемую, чтобы потреблять ее значения, извлекать разрешенные значения, выставлять их для связывания и отписываться от них при уничтожении наблюдаемой, чтобы избежать утечек памяти. `AsyncPipe` - это нечистый пайп, который избавляет ваш компонент от необходимости поддерживать подписку и продолжать передавать значения из наблюдаемой таблицы по мере их поступления.
 
-Use the built-in [`AsyncPipe`](https://angular.io/api/common/AsyncPipe 'API description of AsyncPipe') to accept an observable as input and subscribe to the input automatically.
-Without this pipe, your component code would have to subscribe to the observable to consume its values, extract the resolved values, expose them for binding, and unsubscribe when the observable is destroyed in order to prevent memory leaks.
-`AsyncPipe` is an impure pipe that saves boilerplate code in your component to maintain the subscription and keep delivering values from that observable as they arrive.
+Следующий пример кода привязывает наблюдаемое хранилище строк сообщений (`message$`) к представлению с помощью пайпа `async`.
 
-The following code example binds an observable of message strings
-(`message$`) to a view with the `async` pipe.
+```ts
+import { Component } from '@angular/core';
 
-<code-example header="src/app/hero-async-message.component.ts" path="pipes/src/app/hero-async-message.component.ts"></code-example>
+import { Observable, interval } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+
+@Component({
+    selector: 'app-hero-async-message',
+    template: ` <h2>Async Hero Message and AsyncPipe</h2>
+        <p>Message: {{ message$ | async }}</p>
+        <button type="button" (click)="resend()">
+            Resend
+        </button>`,
+})
+export class HeroAsyncMessageComponent {
+    message$: Observable<string>;
+
+    private messages = [
+        'You are my hero!',
+        'You are the best hero!',
+        'Will you be my hero?',
+    ];
+
+    constructor() {
+        this.message$ = this.getResendObservable();
+    }
+
+    resend() {
+        this.message$ = this.getResendObservable();
+    }
+
+    private getResendObservable() {
+        return interval(500).pipe(
+            map((i) => this.messages[i]),
+            take(this.messages.length)
+        );
+    }
+}
+```
 
 <a id="no-filter-pipe"></a>
 
-## Caching HTTP requests
+## Кэширование HTTP-запросов
 
-To [communicate with backend services using HTTP](understanding-communicating-with-http.md 'Communicating with backend services using HTTP'), the `HttpClient` service uses observables and offers the `HttpClient.get()` method to fetch data from a server.
-The asynchronous method sends an HTTP request, and returns an observable that emits the requested data for the response.
+Для [взаимодействия с внутренними сервисами по протоколу HTTP] (understanding-communicating-with-http.md 'Communicating with backend services using HTTP') сервис `HttpClient` использует наблюдаемые и предлагает метод `HttpClient.get()` для получения данных с сервера. Асинхронный метод посылает HTTP-запрос и возвращает наблюдаемую, которая выдает в ответ запрошенные данные.
 
-As shown in the previous section, use the impure `AsyncPipe` to accept an observable as input and subscribe to the input automatically.
-You can also create an impure pipe to make and cache an HTTP request.
+Как было показано в предыдущем разделе, используйте нечистую трубу `AsyncPipe` для приема наблюдаемого объекта в качестве входного и автоматической подписки на него. Вы также можете создать нечистый пайп для выполнения и кэширования HTTP-запроса.
 
-Impure pipes are called whenever change detection runs for a component, which could be as often as every few milliseconds.
-To avoid performance problems, call the server only when the requested URL changes, as shown in the following example, and use the pipe to cache the server response.
-The tabs show the following:
+Нечистые пайпы вызываются каждый раз, когда для компонента выполняется обнаружение изменений, что может происходить как раз в несколько миллисекунд. Чтобы избежать проблем с производительностью, вызывайте сервер только при изменении запрашиваемого URL, как показано в следующем примере, и используйте пайп для кэширования ответа сервера. На вкладках показано следующее:
 
--   The `fetch` pipe \(`fetch-json.pipe.ts`\).
--   A harness component \(`hero-list.component.ts`\) for demonstrating the request, using a template that defines two bindings to the pipe requesting the heroes from the `heroes.json` file.
-    The second binding chains the `fetch` pipe with the built-in `JsonPipe` to display the same hero data in JSON format.
+-   Пайп `fetch` (`fetch-json.pipe.ts`).
+-   Компонент harness (`hero-list.component.ts`) для демонстрации запроса, использующий шаблон, определяющий две привязки к пайпу, запрашивающему героев из файла `heroes.json`.
 
-<code-tabs>
-    <code-pane header="src/app/fetch-json.pipe.ts" path="pipes/src/app/fetch-json.pipe.ts"></code-pane>
-    <code-pane header="src/app/hero-list.component.ts" path="pipes/src/app/hero-list.component.ts"></code-pane>
-</code-tabs>
+    Вторая привязка связывает пайп `fetch` со встроенным `JsonPipe` для отображения тех же данных о героях в формате JSON.
 
-In the preceding example, a breakpoint on the pipe's request for data shows the following:
+=== "src/app/fetch-json.pipe.ts"
 
--   Each binding gets its own pipe instance.
--   Each pipe instance caches its own URL and data and calls the server only once.
+    ```ts
+    import { HttpClient } from '@angular/common/http';
+    import { Pipe, PipeTransform } from '@angular/core';
 
-The `fetch` and `fetch-json` pipes display the heroes in the browser as follows:
+    @Pipe({
+    	name: 'fetch',
+    	pure: false,
+    })
+    export class FetchJsonPipe implements PipeTransform {
+    	private cachedData: any = null;
+    	private cachedUrl = '';
 
-<code-example format="output" hideCopy language="none">
+    	constructor(private http: HttpClient) {}
 
+    	transform(url: string): any {
+    		if (url !== this.cachedUrl) {
+    			this.cachedData = null;
+    			this.cachedUrl = url;
+    			this.http
+    				.get(url)
+    				.subscribe(
+    					(result) => (this.cachedData = result)
+    				);
+    		}
+
+    		return this.cachedData;
+    	}
+    }
+    ```
+
+=== "src/app/hero-list.component.ts"
+
+    ```ts
+    import { Component } from '@angular/core';
+
+    @Component({
+    	selector: 'app-hero-list',
+    	template: ` <h2>Heroes from JSON File</h2>
+
+    		<div
+    			*ngFor="
+    				let hero of 'assets/heroes.json' | fetch
+    			"
+    		>
+    			{{ hero.name }}
+    		</div>
+
+    		<p>
+    			Heroes as JSON:
+    			{{ 'assets/heroes.json' | fetch | json }}
+    		</p>`,
+    })
+    export class HeroListComponent {}
+    ```
+
+В предыдущем примере точка останова на запросе пайпа на получение данных показывает следующее:
+
+-   Каждое связывание получает свой собственный экземпляр пайпа.
+-   Каждый экземпляр пайпа кэширует свой URL и данные и обращается к серверу только один раз.
+
+Пайпы `fetch` и `fetch-json` отображают героев в браузере следующим образом:
+
+```
 Heroes from JSON File
 
 Windstorm
@@ -371,28 +604,27 @@ Magneto
 Tornado
 
 Heroes as JSON: [ { "name": "Windstorm", "canFly": true }, { "name": "Bombasto", "canFly": false }, { "name": "Magneto", "canFly": false }, { "name": "Tornado", "canFly": true } ]
+```
 
-</code-example>
+!!!note ""
 
-<div class="alert is-helpful">
+    Встроенная функция [JsonPipe](https://angular.io/api/common/JsonPipe 'Описание API для JsonPipe') предоставляет возможность диагностировать загадочную неудачную привязку данных или проверить объект на предмет будущей привязки.
 
-The built-in [JsonPipe](https://angular.io/api/common/JsonPipe 'API description for JsonPipe') provides a way to diagnose a mysteriously failing data binding or to inspect an object for future binding.
+## Пайпы и старшинство
 
-</div>
+Оператор пайп имеет более высокий приоритет, чем тернарный оператор (`?:`), поэтому `a ? b : c | x` будет разобран как `a ? b : (c | x)`. Оператор пайп не может быть использован без круглых скобок в первом и втором операндах `?:`.
 
-## Pipes and precedence
+В силу старшинства, если вы хотите, чтобы пайп применялся к результату тернарного оператора, оберните все выражение круглыми скобками; например, `(a ? b : c) | x`.
 
-The pipe operator has a higher precedence than the ternary operator \(`?:`\), which means `a ? b : c | x` is parsed as `a ? b : (c | x)`.
-The pipe operator cannot be used without parentheses in the first and second operands of `?:`.
-
-Due to precedence, if you want a pipe to apply to the result of a ternary, wrap the entire expression in parentheses; for example, `(a ? b : c) | x`.
-
-<code-example header="src/app/precedence.component.html" path="pipes/src/app/precedence.component.html" region="precedence"></code-example>
+```html
+<!-- use parentheses in the third operand so the pipe applies to the whole expression -->
+{{ (true ? 'true' : 'false') | uppercase }}
+```
 
 <!-- links -->
 
-[aioguidei18ncommonformatdatalocale]: guide/i18n-common-format-data-locale 'Format data based on locale | Angular'
+[aioguidei18ncommonformatdatalocale]: i18n-common-format-data-locale.md
 
-<!-- end links -->
+## Ссылки
 
-@reviewed 2022-02-28
+-   [Transforming Data Using Pipes](https://angular.io/guide/pipes)

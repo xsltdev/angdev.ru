@@ -1,10 +1,12 @@
+---
+description: Когда вы создаете свое приложение Angular, воспользуйтесь преимуществами сложных библиотек первой стороны, а также богатой экосистемой библиотек сторонних разработчиков
+---
+
 # Использование библиотек Angular, опубликованных на npm
 
 :date: 5.01.2022
 
 Когда вы создаете свое приложение Angular, воспользуйтесь преимуществами сложных библиотек первой стороны, а также богатой экосистемой библиотек сторонних разработчиков. [Angular Material][angularmaterialmain] является примером сложной сторонней библиотеки.
-
-Ссылки на самые популярные библиотеки можно найти в разделе [Angular Resources][aioresources].
 
 ## Установка библиотек
 
@@ -151,7 +153,6 @@ interface JQuery {
 [aiocliupdate]: https://angular.io/cli/update
 [aioguidenpmpackages]: npm-packages.md
 [aioguideworkspaceconfig]: workspace-config.md
-[aioresources]: resources.md
 
 <!-- external links -->
 
@@ -162,3 +163,7 @@ interface JQuery {
 [yarnpkgmain]: https://yarnpkg.com
 
 <!-- end links -->
+
+## Ссылки
+
+-   [Usage of Angular libraries published to npm](https://angular.io/guide/using-libraries)

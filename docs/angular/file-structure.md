@@ -75,9 +75,7 @@ Angular также поддерживает рабочие пространст�
 
     Новые проекты Angular по умолчанию используют строгий режим. Если это нежелательно, вы можете отказаться от него при создании проекта.
 
-    Для получения дополнительной информации смотрите [Строгий режим](strict-mode.md).
-
-Inside the `src` folder, the `app` folder contains your project's logic and data. Angular components, templates, and styles go here.
+Внутри папки `src` находится папка `app`, содержащая логику и данные проекта. Компоненты Angular, шаблоны и стили находятся здесь.
 
 | `src/app/` files            | Назначение                                                                                                                                                                                                                                                          |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -126,14 +124,14 @@ ng generate application my-first-app
 
 ```
 my-workspace
-    …                          (workspace-wide config files)
-    projects               (generated applications and libraries)
+    …                  (workspace-wide config files)
+    projects           (generated applications and libraries)
         my-first-app   --(an explicitly generated application)
-            …                --(application-specific config)
-            src             --(source and support files for application)
-        my-lib             --(a generated library)
-            …                --(library-specific config)
-            src             --(source and support files for library)
+            …          --(application-specific config)
+            src        --(source and support files for application)
+        my-lib         --(a generated library)
+            …          --(library-specific config)
+            src        --(source and support files for library)
 ```
 
 ## Файлы проекта библиотеки

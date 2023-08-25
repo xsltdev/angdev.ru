@@ -24,7 +24,7 @@
 [Формы](forms-overview.md)
 : Узнайте о двух подходах к формам в Angular: шаблонно-ориентированном и реактивном.
 
-[HTTP](http.md)
+[HTTP](./understanding-communicating-with-http.md)
 : Узнайте, как подключиться к серверу с помощью клиентской службы HTTP в Angular.
 
 [Тестирование](testing.md)

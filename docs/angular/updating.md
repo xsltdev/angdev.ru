@@ -1,3 +1,7 @@
+---
+description: Как и Web и вся веб-экосистема, Angular постоянно совершенствуется. Angular балансирует между постоянным совершенствованием и стабильностью и простотой обновления
+---
+
 # Поддержание ваших проектов Angular в актуальном состоянии
 
 :date: 28.02.2022
@@ -44,7 +48,7 @@
 
 Для простых обновлений достаточно выполнить команду CLI `ng update`. Без дополнительных аргументов команда `ng update` перечисляет доступные обновления и предоставляет рекомендуемые шаги для обновления вашего приложения до самой актуальной версии.
 
-[Angular Versioning and Releases](releases.md#versioning 'Angular Release Practices, Versioning') описывает уровень изменений, которые вы можете ожидать, основываясь на номере версии релиза. В нем также описаны поддерживаемые пути обновления.
+[Angular Versioning and Releases](https://angular.io/guide/releases#versioning 'Angular Release Practices, Versioning') описывает уровень изменений, которые вы можете ожидать, основываясь на номере версии релиза. В нем также описаны поддерживаемые пути обновления.
 
 ## Резюме ресурсов {: #resources}
 
@@ -70,4 +74,8 @@
 
 -   Практика создания версий, релизов, поддержки и устаревания:
 
-    [Angular versioning and releases](releases.md 'Angular versioning and releases')
+    [Angular versioning and releases](https://angular.io/guide/releases)
+
+## Ссылки
+
+-   [Keeping your Angular projects up-to-date](https://angular.io/guide/updating)

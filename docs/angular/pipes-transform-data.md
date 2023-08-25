@@ -1,3 +1,7 @@
+---
+description: Используйте дополнительные параметры для точной настройки вывода пайпа
+---
+
 # Преобразование данных с помощью параметров и цепочки пайпов
 
 :date: 1.04.2022
@@ -81,3 +85,7 @@
     The chained hero's birthday is {{ birthday | date:'fullDate'
     | uppercase}}
     ```
+
+## Ссылки
+
+-   [Transforming data with parameters and chained pipes](https://angular.io/guide/pipes-transform-data)
