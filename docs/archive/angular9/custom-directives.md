@@ -14,7 +14,7 @@ _zoom.directive.ts (version 1)_
 
 ```ts
 @Directive({
-  selector: '[zoom]',
+    selector: '[zoom]',
 })
 export class ZoomDirective {}
 ```
@@ -29,12 +29,12 @@ _zoom.directive.ts (version 2)_
 
 ```ts
 @Directive({
-  selector: '[zoom]',
+    selector: '[zoom]',
 })
 export class ZoomDirective {
-  constructor(private el: ElementRef) {
-    el.nativeElement.style.fontSize = '20px'
-  }
+    constructor(private el: ElementRef) {
+        el.nativeElement.style.fontSize = '20px';
+    }
 }
 ```
 
@@ -53,22 +53,22 @@ _zoom.directive.ts (version 3)_
 
 ```ts
 @Directive({
-  selector: '[zoom]',
+    selector: '[zoom]',
 })
 export class ZoomDirective {
-  constructor(private el: ElementRef) {}
+    constructor(private el: ElementRef) {}
 
-  @HostListener('mouseenter') onMouseEnter() {
-    this.setFontSize(20)
-  }
+    @HostListener('mouseenter') onMouseEnter() {
+        this.setFontSize(20);
+    }
 
-  @HostListener('mouseleave') onMouseLeave() {
-    this.setFontSize(14)
-  }
+    @HostListener('mouseleave') onMouseLeave() {
+        this.setFontSize(14);
+    }
 
-  setFontSize(size: number | string): void {
-    this.el.nativeElement.style.fontSize = `${size}px`
-  }
+    setFontSize(size: number | string): void {
+        this.el.nativeElement.style.fontSize = `${size}px`;
+    }
 }
 ```
 
@@ -82,24 +82,24 @@ _zoom.directive.ts (version 4)_
 
 ```ts
 @Directive({
-  selector: '[zoom]',
+    selector: '[zoom]',
 })
 export class ZoomDirective {
-  @Input('zoomSize') size
+    @Input('zoomSize') size;
 
-  constructor(private el: ElementRef) {}
+    constructor(private el: ElementRef) {}
 
-  @HostListener('mouseenter') onMouseIn() {
-    this.setFontSize(this.size)
-  }
+    @HostListener('mouseenter') onMouseIn() {
+        this.setFontSize(this.size);
+    }
 
-  @HostListener('mouseleave') onMouseOut() {
-    this.setFontSize(14)
-  }
+    @HostListener('mouseleave') onMouseOut() {
+        this.setFontSize(14);
+    }
 
-  setFontSize(value: number | string): void {
-    this.el.nativeElement.style.fontSize = `${value}px`
-  }
+    setFontSize(value: number | string): void {
+        this.el.nativeElement.style.fontSize = `${value}px`;
+    }
 }
 ```
 
@@ -116,8 +116,8 @@ export class ZoomDirective {
 ```ts
 //
 export class ZoomDirective {
-  @Input('zoom') size
-  //
+    @Input('zoom') size;
+    //
 }
 ```
 
@@ -143,7 +143,7 @@ export class ZoomDirective {
 
 ```html
 <ng-template [ngIf]="true">
-  <p>Some text</p>
+    <p>Some text</p>
 </ng-template>
 ```
 
@@ -153,22 +153,22 @@ _duplicate-content.directive.ts_
 
 ```ts
 @Directive({
-  selector: '[duplicateContent]',
+    selector: '[duplicateContent]',
 })
 export class DuplicateContentDirective {
-  @Input() set duplicateContent(condition: boolean) {
-    if (condition && !this.contentWasDuplicated) {
-      this.vc.insert(this.tpl)
-      this.contentWasDuplicated = true
+    @Input() set duplicateContent(condition: boolean) {
+        if (condition && !this.contentWasDuplicated) {
+            this.vc.insert(this.tpl);
+            this.contentWasDuplicated = true;
+        }
     }
-  }
 
-  private contentWasDuplicated: boolean = false
+    private contentWasDuplicated: boolean = false;
 
-  constructor(
-    private tpl: TemplateRef<any>,
-    private vc: ViewContainerRef
-  ) {}
+    constructor(
+        private tpl: TemplateRef<any>,
+        private vc: ViewContainerRef
+    ) {}
 }
 ```
 

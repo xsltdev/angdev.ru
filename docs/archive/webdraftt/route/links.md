@@ -9,19 +9,19 @@ description: Для удобного перехода между различн�
 Поэтому определим в `AppComponent` набор ссылок для навигации:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <nav>
-        <a routerLink="">Главная</a>
-        <a routerLink="/about">О сайте</a>
-      </nav>
-      <router-outlet></router-outlet>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <nav>
+                <a routerLink="">Главная</a>
+                <a routerLink="/about">О сайте</a>
+            </nav>
+            <router-outlet></router-outlet>
+        </div>
+    `,
 })
 export class AppComponent {}
 ```
@@ -32,10 +32,10 @@ export class AppComponent {}
 
 ```typescript
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: '**', component: NotFoundComponent },
-]
+    { path: '', component: HomeComponent },
+    { path: 'about', component: AboutComponent },
+    { path: '**', component: NotFoundComponent },
+];
 ```
 
 В соответствии с первым маршрутом `HomeComponent` обрабатывает запросы url без сегментов, поэтому для создания ссылки на этот компонент указывается пустая строка: `<a routerLink="">`.
@@ -49,30 +49,32 @@ const appRoutes: Routes = [
 Для стилизации активных ссылок применяется специальная директива `routerLinkActive`, которая указывает на класс css, применяемый к активной ссылке. Так, изменим класс компонента:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  styles: [
-    `
-      .active {
-        color: red;
-      }
+    selector: 'my-app',
+    styles: [
+        `
+            .active {
+                color: red;
+            }
+        `,
+    ],
+    template: `
+        <div>
+            <nav>
+                <a routerLink="" routerLinkActive="active"
+                    >Главная</a
+                >
+                <a
+                    routerLink="/about"
+                    routerLinkActive="active"
+                    >О сайте</a
+                >
+            </nav>
+            <router-outlet></router-outlet>
+        </div>
     `,
-  ],
-  template: `
-    <div>
-      <nav>
-        <a routerLink="" routerLinkActive="active"
-          >Главная</a
-        >
-        <a routerLink="/about" routerLinkActive="active"
-          >О сайте</a
-        >
-      </nav>
-      <router-outlet></router-outlet>
-    </div>
-  `,
 })
 export class AppComponent {}
 ```
@@ -89,15 +91,15 @@ export class AppComponent {}
 
 ```html
 <nav>
-  <a
-    routerLink=""
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact:true}"
-    >Главная</a
-  >
-  <a routerLink="/about" routerLinkActive="active"
-    >О сайте</a
-  >
+    <a
+        routerLink=""
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact:true}"
+        >Главная</a
+    >
+    <a routerLink="/about" routerLinkActive="active"
+        >О сайте</a
+    >
 </nav>
 ```
 
@@ -108,39 +110,41 @@ export class AppComponent {}
 Но элементы навигации необязательно представляют голые ссылки. Нередко они заключаются в списки, в какие-то блоки. И, возможно, мы захотим стилизовать не просто активную ссылку, а весь элемент, в котором данная ссылка расположена. В этом случае можно применить директиву `routerLinkActive` к элементу-контейнеру ссылки:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  styles: [
-    `
-      .nav {
-        clear: both;
-      }
-      a {
-        float: left;
-      }
-      .active a {
-        color: red;
-      }
+    selector: 'my-app',
+    styles: [
+        `
+            .nav {
+                clear: both;
+            }
+            a {
+                float: left;
+            }
+            .active a {
+                color: red;
+            }
+        `,
+    ],
+    template: `
+        <div>
+            <ul class="nav">
+                <li
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{
+                        exact: true
+                    }"
+                >
+                    <a routerLink="">Главная</a>
+                </li>
+                <li routerLinkActive="active">
+                    <a routerLink="/about">О сайте</a>
+                </li>
+            </ul>
+            <router-outlet></router-outlet>
+        </div>
     `,
-  ],
-  template: `
-    <div>
-      <ul class="nav">
-        <li
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <a routerLink="">Главная</a>
-        </li>
-        <li routerLinkActive="active">
-          <a routerLink="/about">О сайте</a>
-        </li>
-      </ul>
-      <router-outlet></router-outlet>
-    </div>
-  `,
 })
 export class AppComponent {}
 ```

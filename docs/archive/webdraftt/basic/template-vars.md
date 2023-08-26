@@ -7,18 +7,18 @@ description: Шаблонные переменные позволяют опре
 **Шаблонные переменные** позволяют определить некоторые переменные внутри шаблона компонента и затем ссылаться к этим переменным из этого же шаблона. Для определения подобных переменных применяется знак решетки (`#`). Например, определим шаблонную переменную `userName` в компоненте:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <p #userName>{{ name }}</p>
-    <p>{{ userName.textContent }}</p>
-    <input type="text" [(ngModel)]="name" />
-  `,
+    selector: 'my-app',
+    template: `
+        <p #userName>{{ name }}</p>
+        <p>{{ userName.textContent }}</p>
+        <input type="text" [(ngModel)]="name" />
+    `,
 })
 export class AppComponent {
-  name: string = 'Tom'
+    name: string = 'Tom';
 }
 ```
 
@@ -37,20 +37,20 @@ export class AppComponent {
 Использование шаблонных переменных открывает нам дополнительный способ взаимодействия между родительским и дочерним компонентом. Например, определим следующий дочерний компонент `ChildComponent`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: ` <p>{{ counter }}</p> `,
+    selector: 'child-comp',
+    template: ` <p>{{ counter }}</p> `,
 })
 export class ChildComponent {
-  counter: number = 0
-  increment() {
-    this.counter++
-  }
-  decrement() {
-    this.counter--
-  }
+    counter: number = 0;
+    increment() {
+        this.counter++;
+    }
+    decrement() {
+        this.counter--;
+    }
 }
 ```
 
@@ -59,15 +59,15 @@ export class ChildComponent {
 В коде главного компонента будем вызывать дочерний компонент:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp #counter></child-comp>
-    <button (click)="counter.increment()">+</button>
-    <button (click)="counter.decrement()">-</button>
-  `,
+    selector: 'my-app',
+    template: `
+        <child-comp #counter></child-comp>
+        <button (click)="counter.increment()">+</button>
+        <button (click)="counter.decrement()">-</button>
+    `,
 })
 export class AppComponent {}
 ```
@@ -83,23 +83,23 @@ export class AppComponent {}
 Однако шаблонные переменные имеют свои ограничения: они не могут применяться вне шаблона, даже в коде класса компонента. Например, мы не можем написать так:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp #counter></child-comp>
-    <button (click)="increment()">+</button>
-    <button (click)="decrement()">-</button>
-  `,
+    selector: 'my-app',
+    template: `
+        <child-comp #counter></child-comp>
+        <button (click)="increment()">+</button>
+        <button (click)="decrement()">-</button>
+    `,
 })
 export class AppComponent {
-  increment() {
-    this.counter++
-  }
-  decrement() {
-    this.counter--
-  }
+    increment() {
+        this.counter++;
+    }
+    decrement() {
+        this.counter--;
+    }
 }
 ```
 
@@ -108,27 +108,27 @@ export class AppComponent {
 Чтобы все таки иметь возможность обращаться к методам и прочей функциональности дочернего компонента, надо использовать декоратор `ViewChild`. Так, изменим главный компонент следующим образом:
 
 ```typescript
-import { Component, ViewChild } from '@angular/core'
-import { ChildComponent } from './child.component'
+import { Component, ViewChild } from '@angular/core';
+import { ChildComponent } from './child.component';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp></child-comp>
-    <button (click)="increment()">+</button>
-    <button (click)="decrement()">-</button>
-  `,
+    selector: 'my-app',
+    template: `
+        <child-comp></child-comp>
+        <button (click)="increment()">+</button>
+        <button (click)="decrement()">-</button>
+    `,
 })
 export class AppComponent {
-  @ViewChild(ChildComponent)
-  private counterComponent: ChildComponent
+    @ViewChild(ChildComponent)
+    private counterComponent: ChildComponent;
 
-  increment() {
-    this.counterComponent.increment()
-  }
-  decrement() {
-    this.counterComponent.decrement()
-  }
+    increment() {
+        this.counterComponent.increment();
+    }
+    decrement() {
+        this.counterComponent.decrement();
+    }
 }
 ```
 
@@ -140,31 +140,32 @@ export class AppComponent {
 
 ```typescript
 import {
-  Component,
-  ViewChild,
-  ElementRef,
-} from '@angular/core'
+    Component,
+    ViewChild,
+    ElementRef,
+} from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <p #nameText>{{ name }}</p>
-    <p>{{ nameText.textContent }}</p>
-    <button (click)="change()">Изменить</button>
-  `,
+    selector: 'my-app',
+    template: `
+        <p #nameText>{{ name }}</p>
+        <p>{{ nameText.textContent }}</p>
+        <button (click)="change()">Изменить</button>
+    `,
 })
 export class AppComponent {
-  @ViewChild('nameText')
-  nameParagraph: ElementRef
+    @ViewChild('nameText')
+    nameParagraph: ElementRef;
 
-  name: string = 'Tom'
+    name: string = 'Tom';
 
-  change() {
-    console.log(
-      this.nameParagraph.nativeElement.textContent
-    )
-    this.nameParagraph.nativeElement.textContent = 'hell'
-  }
+    change() {
+        console.log(
+            this.nameParagraph.nativeElement.textContent
+        );
+        this.nameParagraph.nativeElement.textContent =
+            'hell';
+    }
 }
 ```
 
@@ -177,18 +178,20 @@ export class AppComponent {
 Кроме `ViewChild` для связи с шаблонными переменными мы можем применять другой декоратор — `ContentChild`. В какой ситуации он может понадобится? Допустим, в родительском компоненте определен следующий код:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp>
-      <h3 #headerContent>Добро пожаловать {{ name }}!</h3>
-    </child-comp>
-  `,
+    selector: 'my-app',
+    template: `
+        <child-comp>
+            <h3 #headerContent>
+                Добро пожаловать {{ name }}!
+            </h3>
+        </child-comp>
+    `,
 })
 export class AppComponent {
-  name: string = 'Tom'
+    name: string = 'Tom';
 }
 ```
 
@@ -198,25 +201,26 @@ export class AppComponent {
 
 ```typescript
 import {
-  Component,
-  ContentChild,
-  ElementRef,
-} from '@angular/core'
+    Component,
+    ContentChild,
+    ElementRef,
+} from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: `
-    <ng-content></ng-content>
-    <button (click)="change()">Изменить</button>
-  `,
+    selector: 'child-comp',
+    template: `
+        <ng-content></ng-content>
+        <button (click)="change()">Изменить</button>
+    `,
 })
 export class ChildComponent {
-  @ContentChild('headerContent') header: ElementRef
+    @ContentChild('headerContent') header: ElementRef;
 
-  change() {
-    console.log(this.header)
-    this.header.nativeElement.textContent = 'Hell to world!'
-  }
+    change() {
+        console.log(this.header);
+        this.header.nativeElement.textContent =
+            'Hell to world!';
+    }
 }
 ```
 

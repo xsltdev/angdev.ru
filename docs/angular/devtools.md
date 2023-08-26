@@ -1,12 +1,12 @@
 ---
-description: Angular DevTools - это расширение для браузера, предоставляющее возможности отладки и профилирования приложений Angular
+description: Angular DevTools — это расширение для браузера, предоставляющее возможности отладки и профилирования приложений Angular
 ---
 
 # DevTools Обзор
 
 :date: 28.02.2022
 
-**Angular DevTools** - это расширение для браузера, предоставляющее возможности отладки и профилирования приложений Angular. Angular DevTools поддерживает Angular v12 и более поздние версии при компиляции с отключенной опцией [optimization configuration option](workspace-config.md#optimization-configuration) (`{optimization:false}`).
+**Angular DevTools** — это расширение для браузера, предоставляющее возможности отладки и профилирования приложений Angular. Angular DevTools поддерживает Angular v12 и более поздние версии при компиляции с отключенной опцией [optimization configuration option](workspace-config.md#optimization-configuration) (`{optimization:false}`).
 
 <iframe width="100%" height="400" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" src="https://www.youtube.com/embed/bavWOHZM6zE"></iframe>
 
@@ -154,7 +154,7 @@ Angular DevTools также указывает, что вызвало обнар
 
 Чтобы просмотреть компоненты, в которых Angular выполнил обнаружение изменений, установите флажок **Обнаружение изменений** вверху, над графиком пламени.
 
-В этом представлении все плитки, в которых Angular выполнил обнаружение изменений, окрашены в зеленый цвет, а остальные - в серый:
+В этом представлении все плитки, в которых Angular выполнил обнаружение изменений, окрашены в зеленый цвет, а остальные — в серый:
 
 ![debugging onpush](debugging-onpush.png)
 

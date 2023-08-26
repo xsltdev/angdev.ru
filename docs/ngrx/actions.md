@@ -11,13 +11,13 @@ NgRx Actions создаются с помощью классов, которые
 ```ts
 // Код интерфейса Action
 interface Action {
-  type: string;
+    type: string;
 }
 
 import { Action } from '@ngrx/store';
 
 export class GetUsers implements Action {
-  readonly type = '[Users Page] GetUsers';
+    readonly type = '[Users Page] GetUsers';
 }
 ```
 
@@ -34,9 +34,9 @@ store.dispatch(new GetUsers());
 
 ```ts
 export class DeleteUser implements Action {
-  readonly type = '[Users Page] DeleteUser';
+    readonly type = '[Users Page] DeleteUser';
 
-  constructor(public payload: { id: number }) {}
+    constructor(public payload: { id: number }) {}
 }
 
 store.dispatch(new DeleteUser({ id: 7 }));
@@ -48,30 +48,30 @@ store.dispatch(new DeleteUser({ id: 7 }));
 
 ```ts
 export enum UsersActions {
-  GetUsers = '[Users Page] GetUsers',
-  DeleteUser = '[Users Page] DeleteUser',
-  DeleteAllUsers = '[Users Page] DeleteAllUsers',
+    GetUsers = '[Users Page] GetUsers',
+    DeleteUser = '[Users Page] DeleteUser',
+    DeleteAllUsers = '[Users Page] DeleteAllUsers',
 }
 
 export class GetUsers implements Action {
-  readonly type = UsersActions.GetUsers;
+    readonly type = UsersActions.GetUsers;
 }
 
 export class DeleteUser implements Action {
-  readonly type = UsersActions.DeleteUser;
+    readonly type = UsersActions.DeleteUser;
 
-  constructor(public payload: { id: number }) {}
+    constructor(public payload: { id: number }) {}
 }
 
 export class DeleteAllUsers implements Action {
-  readonly type = UsersActions.DeleteAllUsers;
+    readonly type = UsersActions.DeleteAllUsers;
 }
 
 //Смешанный тип
 export type UsersUnion =
-  | GetUsers
-  | DeleteUser
-  | DeleteAllUsers;
+    | GetUsers
+    | DeleteUser
+    | DeleteAllUsers;
 ```
 
 Смешанный тип необходим для краткости записи типа в редюсере, который обрабатывает взаимосвязанную группу действий.

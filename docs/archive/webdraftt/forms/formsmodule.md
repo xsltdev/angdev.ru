@@ -7,16 +7,16 @@ description: Для взаимодействия с пользователем �
 Для взаимодействия с пользователем в веб-приложениях, как правило применяются формы. В Angular прежде чем использовать формы в компонентах, нам надо импортировать в главном модуле `AppModule` модуль `FormsModule`, который позволяет работать с формами:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { AppComponent } from './app.component'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
 
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule, FormsModule],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -25,21 +25,21 @@ export class AppModule {}
 
 ```json
 {
-  "name": "helloapp",
-  "version": "1.0.0",
-  "description": "First Angular 7 Project",
-  "author": "Eugene Popov <metanit.com>",
-  "scripts": {
-    "dev": "webpack-dev-server --hot --open",
-    "build": "webpack"
-  },
-  "dependencies": {
-    "@angular/forms": "~7.0.0"
-    // остальные пакеты
-  },
-  "devDependencies": {
-    // остальные пакеты
-  }
+    "name": "helloapp",
+    "version": "1.0.0",
+    "description": "First Angular 7 Project",
+    "author": "Eugene Popov <metanit.com>",
+    "scripts": {
+        "dev": "webpack-dev-server --hot --open",
+        "build": "webpack"
+    },
+    "dependencies": {
+        "@angular/forms": "~7.0.0"
+        // остальные пакеты
+    },
+    "devDependencies": {
+        // остальные пакеты
+    }
 }
 ```
 
@@ -68,86 +68,93 @@ export class AppModule {}
 Определим в файле `app.component.ts` следующий компонент:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 export class Phone {
-  constructor(
-    public title: string,
-    public price: number,
-    public company: string
-  ) {}
+    constructor(
+        public title: string,
+        public price: number,
+        public company: string
+    ) {}
 }
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div class="col-xs-8">
-      <div class="form-group">
-        <label>Название модели</label>
-        <input
-          class="form-control"
-          name="title"
-          [(ngModel)]="title"
-        />
-      </div>
-      <div class="form-group">
-        <label>Цена</label>
-        <input
-          type="number"
-          class="form-control"
-          name="price"
-          [(ngModel)]="price"
-        />
-      </div>
-      <div class="form-group">
-        <label>Производитель</label>
-        <select
-          class="form-control"
-          name="company"
-          [(ngModel)]="company"
-        >
-          <option
-            *ngFor="let comp of companies"
-            [value]="comp"
-          >
-            {{ comp }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <button
-          class="btn btn-default"
-          (click)="addPhone(title, price, company)"
-        >
-          Добавить
-        </button>
-      </div>
-    </div>
-    <div>
-      <h3>Добавленные элементы</h3>
-      <ul *ngFor="let p of phones">
-        <li>
-          {{ p.title }} ({{ p.company }}) - {{ p.price }}
-        </li>
-      </ul>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div class="col-xs-8">
+            <div class="form-group">
+                <label>Название модели</label>
+                <input
+                    class="form-control"
+                    name="title"
+                    [(ngModel)]="title"
+                />
+            </div>
+            <div class="form-group">
+                <label>Цена</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    name="price"
+                    [(ngModel)]="price"
+                />
+            </div>
+            <div class="form-group">
+                <label>Производитель</label>
+                <select
+                    class="form-control"
+                    name="company"
+                    [(ngModel)]="company"
+                >
+                    <option
+                        *ngFor="let comp of companies"
+                        [value]="comp"
+                    >
+                        {{ comp }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button
+                    class="btn btn-default"
+                    (click)="
+                        addPhone(title, price, company)
+                    "
+                >
+                    Добавить
+                </button>
+            </div>
+        </div>
+        <div>
+            <h3>Добавленные элементы</h3>
+            <ul *ngFor="let p of phones">
+                <li>
+                    {{ p.title }} ({{ p.company }}) -
+                    {{ p.price }}
+                </li>
+            </ul>
+        </div>
+    `,
 })
 export class AppComponent {
-  phones: Phone[] = []
-  companies: string[] = [
-    'Apple',
-    'Huawei',
-    'Xiaomi',
-    'Samsung',
-    'LG',
-    'Motorola',
-    'Alcatel',
-  ]
+    phones: Phone[] = [];
+    companies: string[] = [
+        'Apple',
+        'Huawei',
+        'Xiaomi',
+        'Samsung',
+        'LG',
+        'Motorola',
+        'Alcatel',
+    ];
 
-  addPhone(title: string, price: number, company: string) {
-    this.phones.push(new Phone(title, price, company))
-  }
+    addPhone(
+        title: string,
+        price: number,
+        company: string
+    ) {
+        this.phones.push(new Phone(title, price, company));
+    }
 }
 ```
 
@@ -162,93 +169,94 @@ export class AppComponent {
 Все три поля привязаны к отдельным значениям, которые существуют сами по себе. Но мы можем пойти дальше и определить для формы ввода отдельную модель, которая будет инкапсулировать эти значения:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 export class Phone {
-  constructor(
-    public title: string,
-    public price: number,
-    public company: string
-  ) {}
+    constructor(
+        public title: string,
+        public price: number,
+        public company: string
+    ) {}
 }
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div class="col-xs-10">
-      <div class="form-group">
-        <label>Название модели</label>
-        <input
-          class="form-control"
-          name="title"
-          [(ngModel)]="phone.title"
-        />
-      </div>
-      <div class="form-group">
-        <label>Цена</label>
-        <input
-          type="number"
-          class="form-control"
-          name="price"
-          [(ngModel)]="phone.price"
-        />
-      </div>
-      <div class="form-group">
-        <label>Производитель</label>
-        <select
-          class="form-control"
-          name="company"
-          [(ngModel)]="phone.company"
-        >
-          <option
-            *ngFor="let comp of companies"
-            [value]="comp"
-          >
-            {{ comp }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <button
-          class="btn btn-default"
-          (click)="addPhone()"
-        >
-          Добавить
-        </button>
-      </div>
-    </div>
-    <div>
-      <h3>Добавленные элементы</h3>
-      <ul *ngFor="let p of phones">
-        <li>
-          {{ p.title }} ({{ p.company }}) - {{ p.price }}
-        </li>
-      </ul>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div class="col-xs-10">
+            <div class="form-group">
+                <label>Название модели</label>
+                <input
+                    class="form-control"
+                    name="title"
+                    [(ngModel)]="phone.title"
+                />
+            </div>
+            <div class="form-group">
+                <label>Цена</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    name="price"
+                    [(ngModel)]="phone.price"
+                />
+            </div>
+            <div class="form-group">
+                <label>Производитель</label>
+                <select
+                    class="form-control"
+                    name="company"
+                    [(ngModel)]="phone.company"
+                >
+                    <option
+                        *ngFor="let comp of companies"
+                        [value]="comp"
+                    >
+                        {{ comp }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button
+                    class="btn btn-default"
+                    (click)="addPhone()"
+                >
+                    Добавить
+                </button>
+            </div>
+        </div>
+        <div>
+            <h3>Добавленные элементы</h3>
+            <ul *ngFor="let p of phones">
+                <li>
+                    {{ p.title }} ({{ p.company }}) -
+                    {{ p.price }}
+                </li>
+            </ul>
+        </div>
+    `,
 })
 export class AppComponent {
-  phone: Phone = new Phone('', 0, 'Huawei')
-  phones: Phone[] = []
-  companies: string[] = [
-    'Apple',
-    'Huawei',
-    'Xiaomi',
-    'Samsung',
-    'LG',
-    'Motorola',
-    'Alcatel',
-  ]
+    phone: Phone = new Phone('', 0, 'Huawei');
+    phones: Phone[] = [];
+    companies: string[] = [
+        'Apple',
+        'Huawei',
+        'Xiaomi',
+        'Samsung',
+        'LG',
+        'Motorola',
+        'Alcatel',
+    ];
 
-  addPhone() {
-    this.phones.push(
-      new Phone(
-        this.phone.title,
-        this.phone.price,
-        this.phone.company
-      )
-    )
-  }
+    addPhone() {
+        this.phones.push(
+            new Phone(
+                this.phone.title,
+                this.phone.price,
+                this.phone.company
+            )
+        );
+    }
 }
 ```
 

@@ -7,21 +7,21 @@ description: Если нам потребуется некоторая пред�
 Если нам потребуется некоторая предобработка при выводе данных, мы можем для этой цели написать свои собственные `pipes`. К примеру, нам надо выводить факториал определенного числа. Для этого добавим в проект новый файл `factorial.pipe.ts`:
 
 ```typescript
-import { Pipe, PipeTransform } from '@angular/core'
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'factorial',
+    name: 'factorial',
 })
 export class FactorialPipe implements PipeTransform {
-  transform(value: number, args?: any): number {
-    if (value <= 0) return 0
+    transform(value: number, args?: any): number {
+        if (value <= 0) return 0;
 
-    let result = 1
-    for (let i = 1; i <= value; i++) {
-      result = result * i
+        let result = 1;
+        for (let i = 1; i <= value; i++) {
+            result = result * i;
+        }
+        return result;
     }
-    return result
-  }
 }
 ```
 
@@ -38,33 +38,34 @@ export class FactorialPipe implements PipeTransform {
 Применим `FactorialPipe` в коде компонента:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      Факториал числа {{ x }} равен {{ x | factorial }}
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            Факториал числа {{ x }} равен
+            {{ x | factorial }}
+        </div>
+    `,
 })
 export class AppComponent {
-  x: number = 5
+    x: number = 5;
 }
 ```
 
 Но чтобы задействовать `FactorialPipe`, его надо добавить в главном модуле приложения `AppModule`:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { AppComponent } from './app.component'
-import { FactorialPipe } from './factorial.pipe'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { FactorialPipe } from './factorial.pipe';
 
 @NgModule({
-  imports: [BrowserModule],
-  declarations: [AppComponent, FactorialPipe],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule],
+    declarations: [AppComponent, FactorialPipe],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -76,23 +77,23 @@ export class AppModule {}
 Добавим еще один `pipe`, который будет принимать параметры. Пусть это будет класс, который из массива строк будет создавать строку, принимая начальный и конечный индексы для выборки данных из массива. Для этого добавим в проект новый файл `join.pipe.ts`, в котором определим следующее содержимое:
 
 ```typescript
-import { Pipe, PipeTransform } from '@angular/core'
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'join',
+    name: 'join',
 })
 export class JoinPipe implements PipeTransform {
-  transform(array: any, start?: any, end?: any): any {
-    let result = array
-    if (start !== undefined) {
-      if (end !== undefined) {
-        result = array.slice(start, end)
-      } else {
-        result = array.slice(start, result.length)
-      }
+    transform(array: any, start?: any, end?: any): any {
+        let result = array;
+        if (start !== undefined) {
+            if (end !== undefined) {
+                result = array.slice(start, end);
+            } else {
+                result = array.slice(start, result.length);
+            }
+        }
+        return result.join(', ');
     }
-    return result.join(', ')
-  }
 }
 ```
 
@@ -103,40 +104,40 @@ export class JoinPipe implements PipeTransform {
 Применим `JoinPipe`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>{{ phones | join }}</div>
-    <div>{{ phones | join: 1 }}</div>
-    <div>{{ phones | join: 1:3 }}</div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>{{ phones | join }}</div>
+        <div>{{ phones | join: 1 }}</div>
+        <div>{{ phones | join: 1:3 }}</div>
+    `,
 })
 export class AppComponent {
-  phones = [
-    'iPhone 7',
-    'LG G 5',
-    'Honor 9',
-    'Idol S4',
-    'Nexus 6P',
-  ]
+    phones = [
+        'iPhone 7',
+        'LG G 5',
+        'Honor 9',
+        'Idol S4',
+        'Nexus 6P',
+    ];
 }
 ```
 
 Опять же подключим `JoinPipe` в модуле приложения:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule } from '@angular/forms'
-import { AppComponent } from './app.component'
-import { FactorialPipe } from './factorial.pipe'
-import { JoinPipe } from './join.pipe'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { FactorialPipe } from './factorial.pipe';
+import { JoinPipe } from './join.pipe';
 @NgModule({
-  imports: [BrowserModule, FormsModule],
-  declarations: [AppComponent, FactorialPipe, JoinPipe],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule, FormsModule],
+    declarations: [AppComponent, FactorialPipe, JoinPipe],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```

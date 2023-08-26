@@ -14,15 +14,15 @@ _info-message.component.ts_
 
 ```ts
 @Component({
-  selector: 'info-message',
-  template: `
-    <h1>Attention!</h1>
+    selector: 'info-message',
+    template: `
+        <h1>Attention!</h1>
 
-    <p>{{ appService.message }}</p>
-  `,
+        <p>{{ appService.message }}</p>
+    `,
 })
 export class InfoMessageComponent {
-  constructor(public appService: AppService) {}
+    constructor(public appService: AppService) {}
 }
 ```
 
@@ -30,29 +30,36 @@ _info-message.component.spec.ts_
 
 ```ts
 describe('InfoMessageComponent', () => {
-  let fixture: ComponentFixture<InfoMessageComponent>
+    let fixture: ComponentFixture<InfoMessageComponent>;
 
-  beforeEach(() => {
-    const appServiceStub = { message: 'Out of service' }
+    beforeEach(() => {
+        const appServiceStub = {
+            message: 'Out of service',
+        };
 
-    TestBed.configureTestingModule({
-      declarations: [InfoMessageComponent],
-      providers: [
-        { provide: AppService, useValue: appServiceStub },
-      ],
-    })
+        TestBed.configureTestingModule({
+            declarations: [InfoMessageComponent],
+            providers: [
+                {
+                    provide: AppService,
+                    useValue: appServiceStub,
+                },
+            ],
+        });
 
-    fixture = TestBed.createComponent(InfoMessageComponent)
-  })
+        fixture = TestBed.createComponent(
+            InfoMessageComponent
+        );
+    });
 
-  it('should get message from AppService stub', () => {
-    fixture.detectChanges()
-    const infoMessageEl: HTMLElement =
-      fixture.debugElement.nativeElement
-    const p = infoMessageEl.querySelector('p')
-    expect(p.textContent).toContain('Out of service')
-  })
-})
+    it('should get message from AppService stub', () => {
+        fixture.detectChanges();
+        const infoMessageEl: HTMLElement =
+            fixture.debugElement.nativeElement;
+        const p = infoMessageEl.querySelector('p');
+        expect(p.textContent).toContain('Out of service');
+    });
+});
 ```
 
 !!! note ""
@@ -68,11 +75,11 @@ _app.service.ts_
 ```ts
 @Injectable({ providedIn: 'root' })
 export class AppService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getData(): Observable<any> {
-    return this.http.get('/api/data')
-  }
+    getData(): Observable<any> {
+        return this.http.get('/api/data');
+    }
 }
 ```
 
@@ -80,27 +87,29 @@ _app.service.spec.ts_
 
 ```ts
 describe('InfoMessageComponent', () => {
-  let fixture: ComponentFixture<InfoMessageComponent>
-  let appService
+    let fixture: ComponentFixture<InfoMessageComponent>;
+    let appService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [InfoMessageComponent],
-      providers: [AppService],
-    })
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [InfoMessageComponent],
+            providers: [AppService],
+        });
 
-    fixture = TestBed.createComponent(InfoMessageComponent)
-    appService = jasmine.createSpyObj('AppService', {
-      getData: 'Out of service',
-    })
-  })
+        fixture = TestBed.createComponent(
+            InfoMessageComponent
+        );
+        appService = jasmine.createSpyObj('AppService', {
+            getData: 'Out of service',
+        });
+    });
 
-  it('should get message from AppService getData()', () => {
-    const comp = fixture.componentInstance
-    comp.message = appService.getData()
-    expect(comp.message).toBe('Out of service')
-  })
-})
+    it('should get message from AppService getData()', () => {
+        const comp = fixture.componentInstance;
+        comp.message = appService.getData();
+        expect(comp.message).toBe('Out of service');
+    });
+});
 ```
 
 Объект `Spy` позволяет эмулировать обращение к асинхронному методу (название). Но сам тест выполняется синхронно, внутри него не выполняется никаких асинхронных действий.
@@ -108,47 +117,49 @@ describe('InfoMessageComponent', () => {
 При использовании в тестах Angular компонентов сервисов следует помнить, что Angular имеет иерархическое построение injector-ов. Так, если сервис был определен на уровне компонента, то при тестировании он должен быть взят не из корневого injector-а, а из injector-а самого компонента.
 
 ```ts
-appService = fixture.debugElement.injector.get(AppService)
+appService = fixture.debugElement.injector.get(AppService);
 ```
 
 Но если сервис определен именно в модуле, т. е. находится в корневом injector-е, то можно использовать более простой в восприятии способ получения сервиса с использованием `TestBed.get()`.
 
 ```ts
-appService = TestBed.get(AppService)
+appService = TestBed.get(AppService);
 ```
 
 Для асинхронности теста используйте функцию `fakeAsync()` библиотеки `@angular/core/testing`.
 
 ```ts
 describe('InfoMessageComponent', () => {
-  let fixture: ComponentFixture<InfoMessageComponent>
-  let appService
+    let fixture: ComponentFixture<InfoMessageComponent>;
+    let appService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [InfoMessageComponent],
-      providers: [AppService],
-    })
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [InfoMessageComponent],
+            providers: [AppService],
+        });
 
-    fixture = TestBed.createComponent(InfoMessageComponent)
-    appService = jasmine.createSpyObj('AppService', {
-      getData: 'Out of service',
-    })
-  })
+        fixture = TestBed.createComponent(
+            InfoMessageComponent
+        );
+        appService = jasmine.createSpyObj('AppService', {
+            getData: 'Out of service',
+        });
+    });
 
-  it('should get message from AppService getData()', fakeAsync(() => {
-    const comp = fixture.componentInstance
+    it('should get message from AppService getData()', fakeAsync(() => {
+        const comp = fixture.componentInstance;
 
-    setTimeout(
-      () => (comp.message = appService.getData()),
-      180
-    )
+        setTimeout(
+            () => (comp.message = appService.getData()),
+            180
+        );
 
-    tick(180)
+        tick(180);
 
-    expect(comp.message).toBe('Out of service')
-  }))
-})
+        expect(comp.message).toBe('Out of service');
+    }));
+});
 ```
 
 Важным здесь является функция `tick()`, без которой использование `fakeAsync()` было бы бессмысленным. В качестве аргумента она принимает количество миллисекунд, на которое выполнение теста приостановиться. Так, в примере дальнейшие операции в тесте зависимы от вызова асинхронного метода (название), который выполняется за 180 миллисекунд.
@@ -171,26 +182,28 @@ _info-message.component.spec.ts_
 
 ```ts
 describe('InfoMessageComponent', () => {
-  let fixture: ComponentFixture<InfoMessageComponent>
+    let fixture: ComponentFixture<InfoMessageComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [InfoMessageComponent],
-      providers: [AppService],
-    })
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [InfoMessageComponent],
+            providers: [AppService],
+        });
 
-    fixture = TestBed.createComponent(InfoMessageComponent)
-  })
+        fixture = TestBed.createComponent(
+            InfoMessageComponent
+        );
+    });
 
-  it('should get message from AppService getData()', async(() => {
-    const comp = fixture.componentInstance
-    fixture.detectChanges() //Вызов ngOnInit()
+    it('should get message from AppService getData()', async(() => {
+        const comp = fixture.componentInstance;
+        fixture.detectChanges(); //Вызов ngOnInit()
 
-    fixture.whenStable().then(() => {
-      expect(comp.message).toBe('Out of service')
-    })
-  }))
-})
+        fixture.whenStable().then(() => {
+            expect(comp.message).toBe('Out of service');
+        });
+    }));
+});
 ```
 
 `async()` запускает тест в специальной среде исполнения. Но главное здесь - метод `whenSable()`, возвращающий объект `Promise`, который выполнится после того, как очередь задач JavaScript станет пустой, т. е. будут исполнены все асинхронные и синхронные действия. Здесь отпадает необходимость в знании точного времени исполнения.
@@ -203,21 +216,21 @@ _parent.component.ts_
 
 ```ts
 @Component({
-  selector: 'parent-component',
-  template: `
-    <child-component
-      (message)="setMessage($event)"
-    ></child-component>
-  `,
+    selector: 'parent-component',
+    template: `
+        <child-component
+            (message)="setMessage($event)"
+        ></child-component>
+    `,
 })
 export class ParentComponent {
-  message: string = ''
+    message: string = '';
 
-  constructor() {}
+    constructor() {}
 
-  setMessage(text): void {
-    this.message = text
-  }
+    setMessage(text): void {
+        this.message = text;
+    }
 }
 ```
 
@@ -225,23 +238,25 @@ _child.component.ts_
 
 ```ts
 @Component({
-  selector: 'child-component',
-  template: `
-    <div class="child">
-      <button (click)="sendMessage()">Send message</button>
-    </div>
-  `,
+    selector: 'child-component',
+    template: `
+        <div class="child">
+            <button (click)="sendMessage()">
+                Send message
+            </button>
+        </div>
+    `,
 })
 export class ChildComponent {
-  @Output() message: EventEmitter<any> = new EventEmitter<
-    any
-  >()
+    @Output() message: EventEmitter<any> = new EventEmitter<
+        any
+    >();
 
-  constructor() {}
+    constructor() {}
 
-  sendMessage(): void {
-    this.message.emit('Child message')
-  }
+    sendMessage(): void {
+        this.message.emit('Child message');
+    }
 }
 ```
 
@@ -249,29 +264,31 @@ _parent.component.spec.ts_
 
 ```ts
 describe('ParentComponent', () => {
-  let fixture: ComponentFixture<ParentComponent>
-  let parentComp: ParentComponent
+    let fixture: ComponentFixture<ParentComponent>;
+    let parentComp: ParentComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ParentComponent, ChildComponent],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ParentComponent)
-        parentComp = fixture.componentInstance
-      })
-  }))
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [ParentComponent, ChildComponent],
+        })
+            .compileComponents()
+            .then(() => {
+                fixture = TestBed.createComponent(
+                    ParentComponent
+                );
+                parentComp = fixture.componentInstance;
+            });
+    }));
 
-  it('should get message from ChildComponent', () => {
-    const childEl: HTMLElement = fixture.debugElement.nativeElement.query(
-      '.child'
-    )
-    childEl.click()
+    it('should get message from ChildComponent', () => {
+        const childEl: HTMLElement = fixture.debugElement.nativeElement.query(
+            '.child'
+        );
+        childEl.click();
 
-    expect(parentComp.message).toBe('Child message')
-  })
-})
+        expect(parentComp.message).toBe('Child message');
+    });
+});
 ```
 
 Основное внимание здесь нужно сосредоточить на блоке `beforeEach()`. При конфигурации модуля `TestingModule` в части `providers` необходимо указать все компоненты, к которым происходит обращение в процессе тестирования. При этом явно создается именно экземпляр класса того компонента, который является родительским ко всем другим.
@@ -290,47 +307,49 @@ _page.class.ts_
 
 ```ts
 class Page {
-  get links() {
-    return this.queryAll<HTMLElement>('a')
-  }
+    get links() {
+        return this.queryAll<HTMLElement>('a');
+    }
 
-  get inputs() {
-    return this.query<HTMLInputElement>('input')
-  }
+    get inputs() {
+        return this.query<HTMLInputElement>('input');
+    }
 
-  fixture: ComponentFixture<TestComponent>
+    fixture: ComponentFixture<TestComponent>;
 
-  constructor(fixture: ComponentFixture<TestComponent>) {
-    this.fixture = fixture.componentInstance
-  }
+    constructor(fixture: ComponentFixture<TestComponent>) {
+        this.fixture = fixture.componentInstance;
+    }
 
-  private query<T>(selector: string): T {
-    return this.fixture.nativeElement.querySelector(
-      selector
-    )
-  }
+    private query<T>(selector: string): T {
+        return this.fixture.nativeElement.querySelector(
+            selector
+        );
+    }
 
-  private queryAll<T>(selector: string): T[] {
-    return this.fixture.nativeElement.querySelectorAll(
-      selector
-    )
-  }
+    private queryAll<T>(selector: string): T[] {
+        return this.fixture.nativeElement.querySelectorAll(
+            selector
+        );
+    }
 }
 ```
 
 При написании сценариев тестирования экземпляр класса `Page` создается в блоке `beforeEach()`.
 
 ```ts
-import { Page } from './page.ts'
+import { Page } from './page.ts';
 
 beforeEach(async(() => {
-  TestBed.configureTestingModule({
-    declarations: [TestComponent],
-  })
-    .compileComponents()
-    .then(() => {
-      fixture = TestBed.createComponent(TestComponent)
-      page = new Page(fixture)
+    TestBed.configureTestingModule({
+        declarations: [TestComponent],
     })
-}))
+        .compileComponents()
+        .then(() => {
+            fixture = TestBed.createComponent(
+                TestComponent
+            );
+            page = new Page(fixture);
+        });
+}));
 ```

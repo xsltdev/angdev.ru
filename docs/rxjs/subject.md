@@ -39,9 +39,9 @@ sbj.next(9);
 
 В RxJS имеется несколько разновидностей `Subject`:
 
-- [`BehaviorSubject`](https://rxjs.dev/api/index/class/BehaviorSubject),
-- [`ReplaySubject`](https://rxjs.dev/api/index/class/ReplaySubject),
-- [`AsyncSubject`](https://rxjs.dev/api/index/class/AsyncSubject).
+-   [`BehaviorSubject`](https://rxjs.dev/api/index/class/BehaviorSubject),
+-   [`ReplaySubject`](https://rxjs.dev/api/index/class/ReplaySubject),
+-   [`AsyncSubject`](https://rxjs.dev/api/index/class/AsyncSubject).
 
 ## BehaviorSubject
 

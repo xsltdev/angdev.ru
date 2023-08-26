@@ -52,9 +52,9 @@ class LibCardComponent {
 @ContentChild(LibHeaderComponent) header: LibHeaderComponent;
 ```
 
--   Одна из этих ссылок находится в позиции _type_ - то есть, она указывает `LibHeaderComponent` как тип: `header: LibHeaderComponent;`.
+-   Одна из этих ссылок находится в позиции _type_ — то есть, она указывает `LibHeaderComponent` как тип: `header: LibHeaderComponent;`.
 
--   Другая ссылка находится в позиции _value_ - то есть LibHeaderComponent является значением декоратора параметров `@ContentChild()`: `@ContentChild(LibHeaderComponent)`.
+-   Другая ссылка находится в позиции _value_ — то есть LibHeaderComponent является значением декоратора параметров `@ContentChild()`: `@ContentChild(LibHeaderComponent)`.
 
 Компилятор по-разному обрабатывает ссылки на маркеры в этих позициях.
 
@@ -185,4 +185,4 @@ class LibCardComponent implement AfterContentInit {
 
 Пример "LibHeaderComponent" следует этому соглашению.
 
-Вы должны поддерживать связь между компонентом и его токеном, но при этом различать их. Рекомендуемый стиль - использовать базовое имя компонента с суффиксом "`Token`" для названия ваших облегченных инъекционных токенов: "`LibHeaderToken`".
+Вы должны поддерживать связь между компонентом и его токеном, но при этом различать их. Рекомендуемый стиль — использовать базовое имя компонента с суффиксом "`Token`" для названия ваших облегченных инъекционных токенов: "`LibHeaderToken`".

@@ -118,7 +118,7 @@ import { Component, Input } from '@angular/core';
 <app-hero-detail [hero]="selectedHero"></app-hero-detail>
 ```
 
-`[hero]="selectedHero"` - это привязка [свойства](property-binding.md) Angular.
+`[hero]="selectedHero"` — это привязка [свойства](property-binding.md) Angular.
 
 Это _односторонняя_ привязка данных от свойства `selectedHero` компонента `HeroesComponent` к свойству `hero` целевого элемента, которое отображается на свойство `hero` компонента `HeroDetailComponent`.
 

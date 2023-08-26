@@ -10,21 +10,21 @@ description: Методы класса HttpClient после выполнени�
 
 ```json
 {
-  "name": "helloapp",
-  "version": "1.0.0",
-  "description": "First Angular 7 Project",
-  "author": "Eugene Popov <metanit.com>",
-  "scripts": {
-    "dev": "webpack-dev-server --hot --open",
-    "build": "webpack"
-  },
-  "dependencies": {
-    "rxjs": "^6.3.3"
-    // остальное содержимое секции
-  },
-  "devDependencies": {
-    // содержимое секции
-  }
+    "name": "helloapp",
+    "version": "1.0.0",
+    "description": "First Angular 7 Project",
+    "author": "Eugene Popov <metanit.com>",
+    "scripts": {
+        "dev": "webpack-dev-server --hot --open",
+        "build": "webpack"
+    },
+    "dependencies": {
+        "rxjs": "^6.3.3"
+        // остальное содержимое секции
+    },
+    "devDependencies": {
+        // содержимое секции
+    }
 }
 ```
 
@@ -38,20 +38,20 @@ description: Методы класса HttpClient после выполнени�
 
 ```json
 {
-  "userList": [
-    {
-      "userName": "Bob",
-      "userAge": 28
-    },
-    {
-      "userName": "Tom",
-      "userAge": 45
-    },
-    {
-      "userName": "Alice",
-      "userAge": 32
-    }
-  ]
+    "userList": [
+        {
+            "userName": "Bob",
+            "userAge": 28
+        },
+        {
+            "userName": "Tom",
+            "userAge": 45
+        },
+        {
+            "userName": "Alice",
+            "userAge": 32
+        }
+    ]
 }
 ```
 
@@ -59,34 +59,37 @@ description: Методы класса HttpClient после выполнени�
 
 ```typescript
 export class User {
-  name: string
-  age: number
+    name: string;
+    age: number;
 }
 ```
 
 Определим следующий код сервиса, который будет получать данные из `users.json`:
 
 ```typescript
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { User } from './user'
-import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { User } from './user';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class HttpService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<User[]> {
-    return this.http.get('users.json').pipe(
-      map((data) => {
-        let usersList = data['userList']
-        return usersList.map(function (user: any) {
-          return { name: user.userName, age: user.userAge }
-        })
-      })
-    )
-  }
+    getUsers(): Observable<User[]> {
+        return this.http.get('users.json').pipe(
+            map((data) => {
+                let usersList = data['userList'];
+                return usersList.map(function (user: any) {
+                    return {
+                        name: user.userName,
+                        age: user.userAge,
+                    };
+                });
+            })
+        );
+    }
 }
 ```
 
@@ -97,8 +100,8 @@ export class HttpService {
 Но чтобы использовать элементы библиотеки RxJS, их надо импортировать:
 
 ```typescript
-import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 ```
 
 В итоге весь метод `getUsers()` возвращает объект `Observable<User[]>`.
@@ -106,31 +109,31 @@ import { map } from 'rxjs/operators'
 Теперь используем сервис в классе компонента:
 
 ```typescript
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from './http.service'
-import { User } from './user'
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from './http.service';
+import { User } from './user';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <ul>
-      <li *ngFor="let user of users">
-        <p>Имя пользователя: {{ user?.name }}</p>
-        <p>Возраст пользователя: {{ user?.age }}</p>
-      </li>
-    </ul>
-  `,
-  providers: [HttpService],
+    selector: 'my-app',
+    template: `
+        <ul>
+            <li *ngFor="let user of users">
+                <p>Имя пользователя: {{ user?.name }}</p>
+                <p>Возраст пользователя: {{ user?.age }}</p>
+            </li>
+        </ul>
+    `,
+    providers: [HttpService],
 })
 export class AppComponent implements OnInit {
-  users: User[] = []
+    users: User[] = [];
 
-  constructor(private httpService: HttpService) {}
+    constructor(private httpService: HttpService) {}
 
-  ngOnInit() {
-    this.httpService
-      .getUsers()
-      .subscribe((data) => (this.users = data))
-  }
+    ngOnInit() {
+        this.httpService
+            .getUsers()
+            .subscribe((data) => (this.users = data));
+    }
 }
 ```

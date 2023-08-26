@@ -16,24 +16,24 @@ _users.actions.ts_
 import { Action } from '@ngrx/store';
 
 export enum UsersActions {
-  LoadUsers = '[Users Page] LoadUsers',
-  DeleteUsers = '[Users Page] DeleteUsers',
+    LoadUsers = '[Users Page] LoadUsers',
+    DeleteUsers = '[Users Page] DeleteUsers',
 }
 
 export interface User {
-  id: number;
-  name: string;
-  email: string;
+    id: number;
+    name: string;
+    email: string;
 }
 
 export class LoadUsers implements Action {
-  readonly type = UsersActions.LoadUsers;
+    readonly type = UsersActions.LoadUsers;
 
-  constructor(public payload: { users: User[] }) {}
+    constructor(public payload: { users: User[] }) {}
 }
 
 export class DeleteUsers implements Action {
-  readonly type = UsersActions.DeleteUsers;
+    readonly type = UsersActions.DeleteUsers;
 }
 
 export type UsersUnion = LoadUsers | DeleteUsers;
@@ -43,38 +43,38 @@ _users.reducer.ts_
 
 ```ts
 import {
-  UsersUnion,
-  UserActions,
+    UsersUnion,
+    UserActions,
 } from '../actions/users.actions';
 
 export interface State {
-  users: User[];
-  count: number;
+    users: User[];
+    count: number;
 }
 
 const initialState: State = {
-  users: [],
-  count: 0,
+    users: [],
+    count: 0,
 };
 
 export function usersReducer(
-  state: State = initialState,
-  action: UsersUnion
+    state: State = initialState,
+    action: UsersUnion
 ) {
-  switch (action.type) {
-    case UsersActions.LoadUsers:
-      return {
-        ...state,
-        users: action.payload.users,
-      };
-    case UsersActions.DeleteUsers:
-      return {
-        ...state,
-        users: [],
-      };
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case UsersActions.LoadUsers:
+            return {
+                ...state,
+                users: action.payload.users,
+            };
+        case UsersActions.DeleteUsers:
+            return {
+                ...state,
+                users: [],
+            };
+        default:
+            return state;
+    }
 }
 ```
 
@@ -86,8 +86,8 @@ export function usersReducer(
 
 Редюсер принимает два аргумента:
 
-- часть текущего состояния, за обработку которого он ответственен;
-- обрабатываемое действие.
+-   часть текущего состояния, за обработку которого он ответственен;
+-   обрабатываемое действие.
 
 Поскольку все NgRx Reducers обрабатывают определенный набор действий и всегда должны возвращать состояние, здесь очень удобно применение оператора `switch`.
 
@@ -95,20 +95,20 @@ export function usersReducer(
 
 ```ts
 export interface State {
-  users: User[];
-  count: number;
+    users: User[];
+    count: number;
 }
 
 const initialState: State = {
-  users: [],
-  count: 0,
+    users: [],
+    count: 0,
 };
 
 export function usersReducer(
-  state: State = initialState,
-  action: UsersUnion
+    state: State = initialState,
+    action: UsersUnion
 ) {
-  /* ... */
+    /* ... */
 }
 ```
 

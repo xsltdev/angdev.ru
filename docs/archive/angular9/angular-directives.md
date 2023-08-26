@@ -6,9 +6,9 @@ description: Angular директивы используются для изме
 
 Angular директивы используются для изменения внешнего вида или поведения DOM-элемента. Выделяют три типа директив:
 
-- С собственным шаблоном, или по-другому компоненты (компоненты являются директивами);
-- Структурные, которые изменяют структуру DOM-дерева;
-- Атрибуты, которые изменяют внешний вид или поведение по умолчанию элемента DOM-дерева.
+-   С собственным шаблоном, или по-другому компоненты (компоненты являются директивами);
+-   Структурные, которые изменяют структуру DOM-дерева;
+-   Атрибуты, которые изменяют внешний вид или поведение по умолчанию элемента DOM-дерева.
 
 [Компоненты](angular-components.md) уже были разобраны ранее, поэтому в этой и следующей главах будут рассмотрены только структурные директивы и директивы атрибуты.
 
@@ -45,9 +45,9 @@ cars: any[] = [
 
 ```html
 <ul>
-  <li *ngFor="let car of cars; let i = index">
-    {{i + 1}}. {{car.name}}, {{car.year}}
-  </li>
+    <li *ngFor="let car of cars; let i = index">
+        {{i + 1}}. {{car.name}}, {{car.year}}
+    </li>
 </ul>
 ```
 
@@ -55,38 +55,38 @@ cars: any[] = [
 
 ```html
 <ul>
-  <li>1. Audi, 2018</li>
-  <li>2. BMW, 2015</li>
-  <li>3. Mercedes, 2016</li>
+    <li>1. Audi, 2018</li>
+    <li>2. BMW, 2015</li>
+    <li>3. Mercedes, 2016</li>
 </ul>
 ```
 
 Angular `*ngFor` поддерживает ряд шаблонных переменных:
 
-- `index` - хранит порядковый номер текущего элемента массива, отсчет начинается с `0`;
-- `first` - `true`, если элемент первый в массиве;
-- `last` - `true`, если элемент последний в массиве;
-- `even` - `true`, если элемент четный;
-- `odd` - `true`, если элемент нечетный.
-- `count` - хранит общее количество элементов массива
+-   `index` - хранит порядковый номер текущего элемента массива, отсчет начинается с `0`;
+-   `first` - `true`, если элемент первый в массиве;
+-   `last` - `true`, если элемент последний в массиве;
+-   `even` - `true`, если элемент четный;
+-   `odd` - `true`, если элемент нечетный.
+-   `count` - хранит общее количество элементов массива
 
 При изменении массива Angular перерисовывает дерево DOM полностью. Но если использовать функцию trackBy, то Angular будет понимать, какой элемент изменился, а затем внесёт изменения в DOM только для этого конкретного элемента.
 
 ```html
 // в шаблоне
-<li *ngFor="let item of items; trackBy: trackByFn">{{ item }}</li>
-// в компоненте
-trackByFn(index, item) {   
-  return item.id; // unique id corresponding to the item
-}
+<li *ngFor="let item of items; trackBy: trackByFn">
+    {{ item }}
+</li>
+// в компоненте trackByFn(index, item) { return item.id; //
+unique id corresponding to the item }
 ```
 
 Если HTML-шаблон элемента массива состоит из двух DOM-элементов, находящихся на одном уровне иерархии, необходимо использовать элемент `<ng-container></ng-container>`, который позволяет группировать элементы. При этом сам он из шаблона будет удален.
 
 ```html
 <ng-container *ngFor="let car of cars">
-  <p [textContent]="car.name"></p>
-  <p [textContent]="car.year"></p>
+    <p [textContent]="car.name"></p>
+    <p [textContent]="car.year"></p>
 </ng-container>
 ```
 
@@ -95,16 +95,16 @@ trackByFn(index, item) {
 **`ngSwitch`** эмулирует работу оператора `switch` применительно к шаблонам.
 
 ```ts
-car: string = 'Audi'
+car: string = 'Audi';
 ```
 
 ```html
 <div [ngSwitch]="car">
-  <p *ngSwitchCase="'Audi'">This is Audi</p>
-  <p *ngSwitchCase="'BMW'">This is BMW</p>
-  <p *ngSwitchCase="'Mercedes'">This is Mercedes</p>
+    <p *ngSwitchCase="'Audi'">This is Audi</p>
+    <p *ngSwitchCase="'BMW'">This is BMW</p>
+    <p *ngSwitchCase="'Mercedes'">This is Mercedes</p>
 
-  <p *ngSwitchDefault>Car is undefined</p>
+    <p *ngSwitchDefault>Car is undefined</p>
 </div>
 ```
 
@@ -118,9 +118,9 @@ Angular директивы [`*ngSwitchCase`](https://angular.io/api/common/NgSwi
 
 ```ts
 elementStyles: any = {
-  color: 'red',
-  opacity: 0.5,
-}
+    color: 'red',
+    opacity: 0.5,
+};
 ```
 
 ```html
@@ -131,7 +131,7 @@ elementStyles: any = {
 
 ```html
 <div [ngStyle]="{color: 5 < 10 ? 'green' : 'red' }">
-  Some text
+    Some text
 </div>
 ```
 
@@ -151,4 +151,4 @@ elementStyles: any = {
 
 ## Ссылки
 
-- [Structural Directives](https://angular.io/guide/structural-directives)
+-   [Structural Directives](https://angular.io/guide/structural-directives)

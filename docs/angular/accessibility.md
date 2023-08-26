@@ -203,13 +203,13 @@ CSS-классы, применяемые к активным элементам 
 
 ## Дополнительная информация
 
--   [Accessibility - Google Web Fundamentals](https://developers.google.com/web/fundamentals/accessibility)
+-   [Accessibility — Google Web Fundamentals](https://developers.google.com/web/fundamentals/accessibility)
 -   [Спецификация ARIA и практика разработки](https://www.w3.org/TR/wai-aria)
--   [Material Design - Accessibility](https://material.io/design/usability/accessibility.html)
+-   [Material Design — Accessibility](https://material.io/design/usability/accessibility.html)
 -   [Smashing Magazine](https://www.smashingmagazine.com/search/?q=accessibility)
 -   [Inclusive Components](https://inclusive-components.design)
 -   [Accessibility Resources and Code Examples](https://dequeuniversity.com/resources)
--   [W3C - Web Accessibility Initiative](https://www.w3.org/WAI/people-use-web)
+-   [W3C — Web Accessibility Initiative](https://www.w3.org/WAI/people-use-web)
 -   [Rob Dodson A11ycasts](https://www.youtube.com/watch?v=HtTyRajRuyY)
 -   [Angular ESLint](https://github.com/angular-eslint/angular-eslint#functionality) предоставляет правила линтинга, которые помогут вам убедиться, что ваш код соответствует стандартам доступности.
 

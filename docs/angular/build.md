@@ -209,39 +209,39 @@ ng build --configuration=staging
 Каждая запись бюджета представляет собой объект JSON со следующими свойствами:
 
 `type`
-: The type of budget. One of:
+: Тип бюджета. Одно из:
 
--   `bundle` - The size of a specific bundle.
--   `initial` - The size of JavaScript needed for bootstrapping the application. Defaults to warning at 500kb and erroring at 1mb.
--   `allScript` - The size of all scripts.
--   `all` - The size of the entire application.
--   `anyComponentStyle` - This size of any one component stylesheet. Defaults to warning at 2kb and erroring at 4kb.
--   `anyScript` - The size of any one script.
--   `any` - The size of any file.
+-   `bundle` — Размер конкретного пакета.
+-   `initial` — Размер JavaScript, необходимый для загрузки приложения. По умолчанию предупреждение при 500 кб и ошибка при 1 мб.
+-   `allScript` — Размер всех скриптов.
+-   `all` — Размер всего приложения.
+-   `anyComponentStyle` — Размер таблицы стилей любого одного компонента. По умолчанию предупреждение при размере 2 кб и ошибка при размере 4 кб.
+-   `anyScript` — Размер любого одного скрипта.
+-   `any` — Размер любого файла.
 
 `name`
-: The name of the bundle (for `type=bundle`).
+: Имя пакета (для `type=bundle`).
 
 `baseline`
-: The baseline size for comparison.
+: Базовая величина для сравнения.
 
 `maximumWarning`
-: The maximum threshold for warning relative to the baseline.
+: Максимальный порог предупреждения относительно базовой величины.
 
 `maximumError`
-: The maximum threshold for error relative to the baseline.
+: Максимальный порог ошибки относительно базовой величины.
 
 `minimumWarning`
-: The minimum threshold for warning relative to the baseline.
+: Минимальный порог предупреждения относительно базовой величины.
 
 `minimumError`
-: The minimum threshold for error relative to the baseline.
+: Минимальный порог ошибки относительно базовой величины.
 
 `warning`
-: The threshold for warning relative to the baseline (min &amp max).
+: Порог предупреждения относительно базовой величины (min &amp max).
 
 `error`
-: The threshold for error relative to the baseline (min &amp max).
+: Порог ошибки относительно базовой величины (min &amp max).
 
 ## Настройка зависимостей CommonJS {#commonjs}
 
@@ -407,15 +407,15 @@ export default [
 В конфигурационном файле CLI, `angular.json`, укажите на файл конфигурации JavaScript-прокси:
 
 ```json
-…
 "architect": {
   "serve": {
     "builder": "@angular-devkit/build-angular:dev-server",
     "options": {
       "browserTarget": "your-application-name:build",
       "proxyConfig": "src/proxy.conf.mjs"
-    },
-…
+    }
+  }
+}
 ```
 
 ### Обход прокси

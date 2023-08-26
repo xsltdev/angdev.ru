@@ -75,7 +75,7 @@ description: Реактивные формы (Angular reactive forms) постр
 При определении поля конструктору `FormControl` первым параметром передается начальное значение поля. Но если помимо значения необходимо задать другие параметры, например, сделать поле неактивным, используйте объект.
 
 ```ts
-new FormControl({ value: null, disabled: true })
+new FormControl({ value: null, disabled: true });
 ```
 
 С полным перечнем возможных параметров можно ознакомиться в документации.
@@ -91,7 +91,7 @@ new FormControl({ value: null, disabled: true })
 А если задается через переменную, то используется запись с квадратными скобками (подобно передаче значения через [`@Input()`](https://angular.io/api/core/Input) свойство).
 
 ```ts
-fieldName: string = 'MOBILE_PHONE' //в контроллере
+fieldName: string = 'MOBILE_PHONE'; //в контроллере
 ```
 
 ```html
@@ -101,17 +101,17 @@ fieldName: string = 'MOBILE_PHONE' //в контроллере
 
 Основные поля объекта реактивной формы Angular:
 
-- `controls` — поля, включая вложенные `FormGroup`;
-- `errors` — содержит ошибки валидации;
-- `status` — строка, определяющая правильность заполнения формы, значение либо `VALID`, либо `INVALID`;
-- `valid` — `true`, если форма валидна;
-- `invalid` — `true`, если форма невалидна;
-- `pristine` — `true`, если не было взаимодействия с полями;
-- `touched` — `true`, если одно из полей становилось активным (получало фокус);
-- `dirty` — `true`, если пользователь заполнил хотя бы одно из полей;
-- `value` — значение формы в виде объекта;
-- `statusChanges` — позволяет отслеживать изменение статуса валидности;
-- `valueChanges` — позволяет отслеживать изменение значения.
+-   `controls` — поля, включая вложенные `FormGroup`;
+-   `errors` — содержит ошибки валидации;
+-   `status` — строка, определяющая правильность заполнения формы, значение либо `VALID`, либо `INVALID`;
+-   `valid` — `true`, если форма валидна;
+-   `invalid` — `true`, если форма невалидна;
+-   `pristine` — `true`, если не было взаимодействия с полями;
+-   `touched` — `true`, если одно из полей становилось активным (получало фокус);
+-   `dirty` — `true`, если пользователь заполнил хотя бы одно из полей;
+-   `value` — значение формы в виде объекта;
+-   `statusChanges` — позволяет отслеживать изменение статуса валидности;
+-   `valueChanges` — позволяет отслеживать изменение значения.
 
 !!! note "Важно"
 
@@ -120,50 +120,50 @@ fieldName: string = 'MOBILE_PHONE' //в контроллере
 Реактивные формы позволяют обращаться к отдельному полю используя метод `get()`, которому передается в виде строки наименование поля.
 
 ```ts
-this.loginForm.get('login') //поле
-this.loginForm.get('address') //вложенная группа
-this.loginForm.get('address.city') //поле вложенной группы
+this.loginForm.get('login'); //поле
+this.loginForm.get('address'); //вложенная группа
+this.loginForm.get('address.city'); //поле вложенной группы
 ```
 
 Отслеживание изменений формы осуществляется через подписку на `valueChanges` `Observable`. Функция обработчик принимает параметром значение формы.
 
 ```ts
 this.loginForm.valueChanges.subscribe((v) => {
-  console.log(v)
-})
+    console.log(v);
+});
 ```
 
 Использовать `valueChanges` можно применительно к отдельному полю.
 
 ```ts
 this.loginForm.get('login').valueChanges.subscribe((v) => {
-  console.log(v)
-})
+    console.log(v);
+});
 ```
 
 Для отслеживания изменения статуса поля или формы в целом "подписывайтесь" на `statusChanges`.
 
 ```ts
 this.loginForm.statusChanges.subscribe((status) => {
-  console.log(status)
-})
+    console.log(status);
+});
 ```
 
 Для сброса значений полей формы или полей одной из ее групп используется метод `reset()`, который принимает объект с начальным значением.
 
 ```ts
 //Всем полям будет присвоено null
-this.loginForm.reset()
+this.loginForm.reset();
 
 //Полю login будет присвоено 'default_login', остальным - null
-this.loginForm.reset({ login: 'default_login' })
+this.loginForm.reset({ login: 'default_login' });
 ```
 
 Для динамического изменения структуры Angular reactive forms предусмотрен ряд методов:
 
-- `addControl(name: string, value: any)` — добавляет новое поле соответствующей группе;
-- `setControl(name: string, value: any)` — заменяет уже существующее поле соответствующей группы;
-- `removeControl(name: string)` — удаляет поле из группы.
+-   `addControl(name: string, value: any)` — добавляет новое поле соответствующей группе;
+-   `setControl(name: string, value: any)` — заменяет уже существующее поле соответствующей группы;
+-   `removeControl(name: string)` — удаляет поле из группы.
 
 ## patchValue() и setValue()
 
@@ -172,11 +172,11 @@ this.loginForm.reset({ login: 'default_login' })
 Методу `setValue()` должен передаваться объект, полностью совпадающий по строению с описанной моделью формы, а `patchValue()` — лишь часть этой структуры.
 
 ```ts
-this.loginForm.patchValue({ login: 'user123' })
+this.loginForm.patchValue({ login: 'user123' });
 this.loginForm.setValue({
-  login: 'user123',
-  password: 'pwd123',
-})
+    login: 'user123',
+    password: 'pwd123',
+});
 ```
 
 Если `setValue()` передать "неполную" модель, будет сгенерирована ошибка.
@@ -185,9 +185,9 @@ this.loginForm.setValue({
 
 ```ts
 this.loginForm.patchValue(
-  { login: 'user123' },
-  { emitEvent: false }
-)
+    { login: 'user123' },
+    { emitEvent: false }
+);
 ```
 
 ## FormArray
@@ -270,22 +270,22 @@ this.loginForm.patchValue(
 
 ```ts
 @Component({
-  selector: 'reactive-form-example',
-  templateUrl: './reactive-form-example.component.html',
+    selector: 'reactive-form-example',
+    templateUrl: './reactive-form-example.component.html',
 })
 export class ReactiveFormExampleComponent {
-  buyTicketForm: FormGroup
+    buyTicketForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    this._createForm()
-  }
+    constructor(private fb: FormBuilder) {
+        this._createForm();
+    }
 
-  private _createForm() {
-    this.buyTicketForm = this.fb.group({
-      passenger: '',
-      passengerAge: '',
-    })
-  }
+    private _createForm() {
+        this.buyTicketForm = this.fb.group({
+            passenger: '',
+            passengerAge: '',
+        });
+    }
 }
 ```
 
@@ -297,15 +297,15 @@ export class ReactiveFormExampleComponent {
 
 ```ts
 this.buyTicketForm = this.fb.group({
-  passenger: '',
-  passengerAge: '',
-  passengerContacts: this.fb.group({
-    telegram: '',
-    whatsapp: '',
-  }),
-})
+    passenger: '',
+    passengerAge: '',
+    passengerContacts: this.fb.group({
+        telegram: '',
+        whatsapp: '',
+    }),
+});
 ```
 
 ## Ссылки
 
-- [Reactive Forms](https://angular.io/guide/reactive-forms)
+-   [Reactive Forms](https://angular.io/guide/reactive-forms)

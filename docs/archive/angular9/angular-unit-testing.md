@@ -53,8 +53,8 @@ describe('related tests group', () => {
 
 ```ts
 describe('AppComponent', () => {
-  //
-})
+    //
+});
 ```
 
 В `describe()` сам тест описывается функцией `it()`. Она также принимает в качестве параметров текстовое описание и функцию, в которой описана вся логика.
@@ -63,19 +63,19 @@ describe('AppComponent', () => {
 
 ```ts
 it('expect example', () => {
-  let a = 5
-  a = a + 7
+    let a = 5;
+    a = a + 7;
 
-  expect(a).toBe(12)
-})
+    expect(a).toBe(12);
+});
 ```
 
 Функция `beforeEach()` используется для задания исходного состояния и вызывается перед каждой функцией `it()`. Например, перед запуском каждого теста необходимо создать экземпляр класса тестируемого компонента, и чтобы не делать это в каждой функции `it()`, можно использовать `beforeEach()`.
 
 ```ts
 beforeEach(async(() => {
-  TestBed.configureTestingModule({
-    declarations: [AppComponent],
-  }).compileComponents()
-}))
+    TestBed.configureTestingModule({
+        declarations: [AppComponent],
+    }).compileComponents();
+}));
 ```

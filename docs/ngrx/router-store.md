@@ -38,18 +38,18 @@ npm i @ngrx/router-store --save
 
 Описание объекта состояния NgRx Router Store:
 
-- `state` - информация в текущем маршруте, содержит два свойства:
-  - `root` - экземпляр корневого маршрута;
-  - `url` - текущий URL-адрес;
-- `navigationId` - порядковый номер смены маршрутизации в рамках текущей сессии работы Angular приложения.
+-   `state` - информация в текущем маршруте, содержит два свойства:
+    -   `root` - экземпляр корневого маршрута;
+    -   `url` - текущий URL-адрес;
+-   `navigationId` - порядковый номер смены маршрутизации в рамках текущей сессии работы Angular приложения.
 
 В NgRx Router Store предусмотрены пять действий, каждое из которых представляет одну из стадий процесса смены маршрута:
 
-- `ROUTER_REQUEST` - начало перехода на другой URL;
-- `ROUTER_NAVIGATION` - сам процесс перехода, вызывается до выполнения всех `Guards` и `Resolvers`;
-- `ROUTER_NAVIGATED` - успешный переход на заданный URL;
-- `ROUTER_CANCEL` - генерируется, если смена URL была заблокирована `Guard` или `Resolver`;
-- `ROUTER_ERROR` - генерируется, если в процессе перехода возникает ошибка
+-   `ROUTER_REQUEST` - начало перехода на другой URL;
+-   `ROUTER_NAVIGATION` - сам процесс перехода, вызывается до выполнения всех `Guards` и `Resolvers`;
+-   `ROUTER_NAVIGATED` - успешный переход на заданный URL;
+-   `ROUTER_CANCEL` - генерируется, если смена URL была заблокирована `Guard` или `Resolver`;
+-   `ROUTER_ERROR` - генерируется, если в процессе перехода возникает ошибка
 
 Действия `ROUTER_CANCEL` и `ROUTER_ERROR` содержат информацию в маршруте с которого осуществляется переход.
 
@@ -59,9 +59,9 @@ npm i @ngrx/router-store --save
 
 Передаваемый объект должен реализовывать интерфейс `StoreRouterConfig` с тремя не обязательными свойствами:
 
-- `stateKey` - имя части глобального состояния, в которой будут храниться все данные маршрутизации (по умолчанию `router`); помимо строки может принимать селектор;
-- `serializer` - позволяет кастомизировать структуру данных состояния, которое передается в каждом действии;
-- `navigationActionTiming` - определяет момент генерации действия `ROUTER_NAVIGATION` и может быть либо `NavigationActionTiming.PreActivation` (по умолчанию), либо `NavigationActionTiming.PostActivation`.
+-   `stateKey` - имя части глобального состояния, в которой будут храниться все данные маршрутизации (по умолчанию `router`); помимо строки может принимать селектор;
+-   `serializer` - позволяет кастомизировать структуру данных состояния, которое передается в каждом действии;
+-   `navigationActionTiming` - определяет момент генерации действия `ROUTER_NAVIGATION` и может быть либо `NavigationActionTiming.PreActivation` (по умолчанию), либо `NavigationActionTiming.PostActivation`.
 
 `NavigationActionTiming.PreActivation` означает, что `ROUTER_NAVIGATION` будет сгенерировано до вызова всех `Guards` и `Resolvers`, а `NavigationActionTiming.PostActivation` - после.
 
@@ -69,36 +69,38 @@ npm i @ngrx/router-store --save
 
 ```ts
 import {
-  Params,
-  RouterStateSnapshot,
-  Data,
+    Params,
+    RouterStateSnapshot,
+    Data,
 } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
 
 export interface AppRouterStateUrl {
-  url: string;
-  params: Params;
-  queryParams: Params;
-  data: Data;
+    url: string;
+    params: Params;
+    queryParams: Params;
+    data: Data;
 }
 
 export class AppSerializer
-  implements RouterStateSerializer<AppRouterStateUrl> {
-  serialize(state: RouterStateSnapshot): AppRouterStateUrl {
-    let currentRoute = state.root;
+    implements RouterStateSerializer<AppRouterStateUrl> {
+    serialize(
+        state: RouterStateSnapshot
+    ): AppRouterStateUrl {
+        let currentRoute = state.root;
 
-    while (currentRoute.firstChild) {
-      currentRoute = currentRoute.firstChild;
+        while (currentRoute.firstChild) {
+            currentRoute = currentRoute.firstChild;
+        }
+
+        const {
+            url,
+            root: { queryParams },
+        } = state;
+        const { params, data } = currentRoute;
+
+        return { url, params, queryParams, data };
     }
-
-    const {
-      url,
-      root: { queryParams },
-    } = state;
-    const { params, data } = currentRoute;
-
-    return { url, params, queryParams, data };
-  }
 }
 ```
 
@@ -106,6 +108,6 @@ export class AppSerializer
 
 ```ts
 StoreRouterConnectingModule.forRoot({
-  serializer: CustomSerializer,
+    serializer: CustomSerializer,
 });
 ```

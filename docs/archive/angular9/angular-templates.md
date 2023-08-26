@@ -10,10 +10,10 @@ Angular - клиентский фреймворк, поэтому основна
 
 Чтобы отобразить значения переменных компонента в шаблоне Angular, используются различные механизмы привязки данных:
 
-- интерполяция;
-- одностороннее связывание;
-- обработка событий;
-- двустороннее связывание.
+-   интерполяция;
+-   одностороннее связывание;
+-   обработка событий;
+-   двустороннее связывание.
 
 ## Интерполяция
 
@@ -31,11 +31,11 @@ Angular - клиентский фреймворк, поэтому основна
 
 ```ts
 export class HelloWorldComponent {
-  name = 'World'
+    name = 'World';
 
-  printGreeting(hero: Hero): string {
-    return 'Hello,' + this.name
-  }
+    printGreeting(hero: Hero): string {
+        return 'Hello,' + this.name;
+    }
 }
 ```
 
@@ -111,4 +111,4 @@ export class HelloWorldComponent {
 
 ## Ссылки
 
-- [Template Syntax](https://angular.io/guide/template-syntax)
+-   [Template Syntax](https://angular.io/guide/template-syntax)

@@ -18,7 +18,7 @@ description: Пользователь всегда взаимодействуе�
 
 ```html
 <button on-click="showContacts()">
-  Show Contacts List
+    Show Contacts List
 </button>
 ```
 
@@ -26,15 +26,15 @@ description: Пользователь всегда взаимодействуе�
 
 ```html
 <button on-click="showContacts($event)">
-  Show Contacts List
+    Show Contacts List
 </button>
 ```
 
 Свойства объекта `$event`:
 
-- `target` - элемент DOM, выступивший инициатором;
-- `target.value` - значение элемента DOM (справедливо для полей формы);
-- `keyCode` - код клавиши (справедливо для keyup).
+-   `target` - элемент DOM, выступивший инициатором;
+-   `target.value` - значение элемента DOM (справедливо для полей формы);
+-   `keyCode` - код клавиши (справедливо для keyup).
 
 !!! note ""
 
@@ -42,22 +42,22 @@ description: Пользователь всегда взаимодействуе�
 
 ```ts
 export class AppComponent {
-  showContacts(ev): void {
-    console.log(ev.target)
-    console.log(ev.target.value) //в данном случае undefined
-    console.log(ev.keyCode) //в данном случае undefined
-  }
+    showContacts(ev): void {
+        console.log(ev.target);
+        console.log(ev.target.value); //в данном случае undefined
+        console.log(ev.keyCode); //в данном случае undefined
+    }
 }
 ```
 
 Наиболее распространенные события:
 
-- `click` - нажатие кнопки мыши;
-- `mouseenter/mouseleave` - наведение/уход курсора мыши на/с элемента;
-- `change` - изменение состояние элемента, применяется к полям формы;
-- `focus` - элемента получает фокус, т.е. становится активным;
-- `blur` - потеря элементом фокуса;
-- `keyup` - возникает, когда отпускается нажатая клавиша.
+-   `click` - нажатие кнопки мыши;
+-   `mouseenter/mouseleave` - наведение/уход курсора мыши на/с элемента;
+-   `change` - изменение состояние элемента, применяется к полям формы;
+-   `focus` - элемента получает фокус, т.е. становится активным;
+-   `blur` - потеря элементом фокуса;
+-   `keyup` - возникает, когда отпускается нажатая клавиша.
 
 Для удобства в Angular предусмотрено так называемое псевдо событие `keyup.{keyCode}`, которое будет инициировано только в том случае, если будет нажата определенная клавиша. Например, для отслеживания нажатия Enter используется `keyup.enter`.
 
@@ -71,17 +71,17 @@ _contacts.component.ts_
 
 ```ts
 @Component({
-  selector: 'contacts',
-  template: `
-    <contacts-item
-      (saveContactPerson)="catchCustomEvent($event)"
-    ></contacts-item>
-  `,
+    selector: 'contacts',
+    template: `
+        <contacts-item
+            (saveContactPerson)="catchCustomEvent($event)"
+        ></contacts-item>
+    `,
 })
 export class ContactsComponent {
-  catchCustomEvent(ev): void {
-    console.log(ev)
-  }
+    catchCustomEvent(ev): void {
+        console.log(ev);
+    }
 }
 ```
 
@@ -89,19 +89,21 @@ _contacts-item.component.ts_
 
 ```ts
 @Component({
-  selector: 'contacts-item',
-  template: `
-    <button (click)="showContactPerson()">Show</button>
-  `,
+    selector: 'contacts-item',
+    template: `
+        <button (click)="showContactPerson()">Show</button>
+    `,
 })
 export class ContactsItemComponent {
-  contactPerson = 'Peter'
+    contactPerson = 'Peter';
 
-  @Output() saveContactPerson = new EventEmitter<String>()
+    @Output() saveContactPerson = new EventEmitter<
+        String
+    >();
 
-  showContactPerson(): void {
-    this.saveContactPerson.emit(this.contactPerson)
-  }
+    showContactPerson(): void {
+        this.saveContactPerson.emit(this.contactPerson);
+    }
 }
 ```
 

@@ -115,7 +115,7 @@ export class Routable1Component implements OnInit {
 }
 ```
 
-[ActivatedRoute](https://angular.io/api/router/ActivatedRoute) - это инжектируемый сервис маршрутизатора, использующий наблюдаемые значения для получения информации о пути маршрута и параметрах. Например, `ActivatedRoute.url` содержит наблюдаемое значение, сообщающее о пути или путях маршрута. Вот пример:
+[ActivatedRoute](https://angular.io/api/router/ActivatedRoute) — это инжектируемый сервис маршрутизатора, использующий наблюдаемые значения для получения информации о пути маршрута и параметрах. Например, `ActivatedRoute.url` содержит наблюдаемое значение, сообщающее о пути или путях маршрута. Вот пример:
 
 ```ts
 import { ActivatedRoute } from '@angular/router';

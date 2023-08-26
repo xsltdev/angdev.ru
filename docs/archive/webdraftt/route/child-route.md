@@ -13,11 +13,11 @@ description: Если выбранный компонент сам должен 
 Добавим в папку `src/app` два простеньких компонента. Вначале добавим файл `item.details.component.ts`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'item-details',
-  template: ` <h3>Информация о товаре</h3> `,
+    selector: 'item-details',
+    template: ` <h3>Информация о товаре</h3> `,
 })
 export class ItemDetailsComponent {}
 ```
@@ -25,11 +25,11 @@ export class ItemDetailsComponent {}
 И также добавим второй файл `item.stat.component.ts`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'item-stat',
-  template: ` <h3>Статистика товара</h3> `,
+    selector: 'item-stat',
+    template: ` <h3>Статистика товара</h3> `,
 })
 export class ItemStatComponent {}
 ```
@@ -48,42 +48,45 @@ export class ItemStatComponent {}
 Но такие маршруты будут миновать компонент `ItemComponent` и никак его не затрагивают. Поэтому нам надо использовать другую организацию маршрутов. Для этого изменим модуль `AppModule` следующим образом:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { Routes, RouterModule } from '@angular/router'
-import { AppComponent } from './app.component'
-import { HomeComponent } from './home.component'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { Routes, RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home.component';
 
-import { ItemComponent } from './item.component'
-import { ItemStatComponent } from './item.stat.component'
-import { ItemDetailsComponent } from './item.details.component'
+import { ItemComponent } from './item.component';
+import { ItemStatComponent } from './item.stat.component';
+import { ItemDetailsComponent } from './item.details.component';
 
 // определение дочерних маршрутов
 const itemRoutes: Routes = [
-  { path: 'details', component: ItemDetailsComponent },
-  { path: 'stat', component: ItemStatComponent },
-]
+    { path: 'details', component: ItemDetailsComponent },
+    { path: 'stat', component: ItemStatComponent },
+];
 
 const appRoutes: Routes = [
-  { path: 'item/:id', component: ItemComponent },
-  {
-    path: 'item/:id',
-    component: ItemComponent,
-    children: itemRoutes,
-  },
-  { path: '', component: HomeComponent },
-]
+    { path: 'item/:id', component: ItemComponent },
+    {
+        path: 'item/:id',
+        component: ItemComponent,
+        children: itemRoutes,
+    },
+    { path: '', component: HomeComponent },
+];
 
 @NgModule({
-  imports: [BrowserModule, RouterModule.forRoot(appRoutes)],
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    ItemComponent,
-    ItemDetailsComponent,
-    ItemStatComponent,
-  ],
-  bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot(appRoutes),
+    ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        ItemComponent,
+        ItemDetailsComponent,
+        ItemStatComponent,
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -97,26 +100,26 @@ export class AppModule {}
 Теперь изменим `ItemComponent`:
 
 ```typescript
-import { Component } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
-import { Subscription } from 'rxjs/Subscription'
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: 'item-info',
-  template: `
-    <h2>Товар {{ id }}</h2>
-    <router-outlet></router-outlet>
-  `,
+    selector: 'item-info',
+    template: `
+        <h2>Товар {{ id }}</h2>
+        <router-outlet></router-outlet>
+    `,
 })
 export class ItemComponent {
-  private id: number
-  private routeSubscription: Subscription
+    private id: number;
+    private routeSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute) {
-    this.routeSubscription = route.params.subscribe(
-      (params) => (this.id = params['id'])
-    )
-  }
+    constructor(private route: ActivatedRoute) {
+        this.routeSubscription = route.params.subscribe(
+            (params) => (this.id = params['id'])
+        );
+    }
 }
 ```
 
@@ -125,23 +128,25 @@ export class ItemComponent {
 И изменим главный компонент `AppComponent`, добавив в него для тестирования ссылки на `ItemDetailsComponent` и `ItemStatComponent`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <nav>
-        <a routerLink="">Главная</a> |
-        <a routerLink="/item/5/details"
-          >Информация о товаре</a
-        >
-        |
-        <a routerLink="/item/5/stat">Статистика товара</a>
-      </nav>
-      <router-outlet></router-outlet>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <nav>
+                <a routerLink="">Главная</a> |
+                <a routerLink="/item/5/details"
+                    >Информация о товаре</a
+                >
+                |
+                <a routerLink="/item/5/stat"
+                    >Статистика товара</a
+                >
+            </nav>
+            <router-outlet></router-outlet>
+        </div>
+    `,
 })
 export class AppComponent {}
 ```

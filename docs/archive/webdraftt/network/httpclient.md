@@ -10,38 +10,38 @@ description: Для взаимодействия с сервером и отпр
 
 ```json
 {
-  "name": "helloapp",
-  "version": "1.0.0",
-  "description": "First Angular 7 Project",
-  "author": "Eugene Popov <metanit.com>",
-  "scripts": {
-    "dev": "webpack-dev-server --hot --open",
-    "build": "webpack"
-  },
-  "dependencies": {
-    "@angular/common": "~7.0.0"
-    // остальные пакеты
-  },
-  "devDependencies": {
-    // остальные пакеты
-  }
+    "name": "helloapp",
+    "version": "1.0.0",
+    "description": "First Angular 7 Project",
+    "author": "Eugene Popov <metanit.com>",
+    "scripts": {
+        "dev": "webpack-dev-server --hot --open",
+        "build": "webpack"
+    },
+    "dependencies": {
+        "@angular/common": "~7.0.0"
+        // остальные пакеты
+    },
+    "devDependencies": {
+        // остальные пакеты
+    }
 }
 ```
 
 И также в файле модуля `AppModule` должен быть импортирован класс `HttpClientModule` из пакета `@angular/common/http`:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule } from '@angular/forms'
-import { AppComponent } from './app.component'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
 
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, HttpClientModule],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule, FormsModule, HttpClientModule],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -56,8 +56,8 @@ export class AppModule {}
 
 ```json
 {
-  "name": "Bob",
-  "age": 28
+    "name": "Bob",
+    "age": 28
 }
 ```
 
@@ -65,37 +65,37 @@ export class AppModule {}
 
 ```typescript
 export class User {
-  name: string
-  age: number
+    name: string;
+    age: number;
 }
 ```
 
 Для оправки запроса определим в компоненте `AppComponent` следуюший код:
 
 ```typescript
-import { Component, OnInit } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { User } from './user'
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { User } from './user';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <p>Имя пользователя: {{ user?.name }}</p>
-      <p>Возраст пользователя: {{ user?.age }}</p>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <p>Имя пользователя: {{ user?.name }}</p>
+            <p>Возраст пользователя: {{ user?.age }}</p>
+        </div>
+    `,
 })
 export class AppComponent implements OnInit {
-  user: User
+    user: User;
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-    this.http
-      .get('user.json')
-      .subscribe((data: User) => (this.user = data))
-  }
+    ngOnInit() {
+        this.http
+            .get('user.json')
+            .subscribe((data: User) => (this.user = data));
+    }
 }
 ```
 
@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
 Далее в методе `ngOnInit()` получаем данные из сервиса. Сам метод `http.get()` возвращает объект `Observable<any>`. `Observable` представляет своего рода поток, и для прослушивания событий из этого потока применяется метод `subscribe`. Этот метод определяет действие над результатом запроса — полученными с сервера данными. В данном случае действие определено в виде стрелочной функции. Причем поскольку между схемой класса `User` и данными из файла `json` есть прямое сопоставление, то получаемые данные мы можем определить как объект `User`, и присвоить их переменной данного класса:
 
 ```typescript
-;(data: User) => (this.user = data)
+(data: User) => (this.user = data);
 ```
 
 В итоге при запуске веб-страницы мы увидим загруженные данные из файла `user.json`.
@@ -118,16 +118,16 @@ export class AppComponent implements OnInit {
 Поэтому для работы с `http` добавим в папку `src/app` новый файл `http.service.ts` со следующим содержимым:
 
 ```typescript
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class HttpService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getData() {
-    return this.http.get('user.json')
-  }
+    getData() {
+        return this.http.get('user.json');
+    }
 }
 ```
 
@@ -142,30 +142,30 @@ export class HttpService {
 Теперь используем этот сервис в компоненте `AppComponent`:
 
 ```typescript
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from './http.service'
-import { User } from './user'
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from './http.service';
+import { User } from './user';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <p>Имя пользователя: {{ user?.name }}</p>
-      <p>Возраст пользователя: {{ user?.age }}</p>
-    </div>
-  `,
-  providers: [HttpService],
+    selector: 'my-app',
+    template: `
+        <div>
+            <p>Имя пользователя: {{ user?.name }}</p>
+            <p>Возраст пользователя: {{ user?.age }}</p>
+        </div>
+    `,
+    providers: [HttpService],
 })
 export class AppComponent implements OnInit {
-  user: User
+    user: User;
 
-  constructor(private httpService: HttpService) {}
+    constructor(private httpService: HttpService) {}
 
-  ngOnInit() {
-    this.httpService
-      .getData()
-      .subscribe((data: User) => (this.user = data))
-  }
+    ngOnInit() {
+        this.httpService
+            .getData()
+            .subscribe((data: User) => (this.user = data));
+    }
 }
 ```
 
@@ -175,20 +175,20 @@ export class AppComponent implements OnInit {
 
 ```json
 {
-  "userList": [
-    {
-      "name": "Bob",
-      "age": 28
-    },
-    {
-      "name": "Tom",
-      "age": 45
-    },
-    {
-      "name": "Alice",
-      "age": 32
-    }
-  ]
+    "userList": [
+        {
+            "name": "Bob",
+            "age": 28
+        },
+        {
+            "name": "Tom",
+            "age": 45
+        },
+        {
+            "name": "Alice",
+            "age": 32
+        }
+    ]
 }
 ```
 
@@ -203,32 +203,34 @@ getData(){
 И изменим код компонента:
 
 ```typescript
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from './http.service'
-import { User } from './user'
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from './http.service';
+import { User } from './user';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <ul>
-      <li *ngFor="let user of users">
-        <p>Имя пользователя: {{ user?.name }}</p>
-        <p>Возраст пользователя: {{ user?.age }}</p>
-      </li>
-    </ul>
-  `,
-  providers: [HttpService],
+    selector: 'my-app',
+    template: `
+        <ul>
+            <li *ngFor="let user of users">
+                <p>Имя пользователя: {{ user?.name }}</p>
+                <p>Возраст пользователя: {{ user?.age }}</p>
+            </li>
+        </ul>
+    `,
+    providers: [HttpService],
 })
 export class AppComponent implements OnInit {
-  users: User[] = []
+    users: User[] = [];
 
-  constructor(private httpService: HttpService) {}
+    constructor(private httpService: HttpService) {}
 
-  ngOnInit() {
-    this.httpService
-      .getData()
-      .subscribe((data) => (this.users = data['userList']))
-  }
+    ngOnInit() {
+        this.httpService
+            .getData()
+            .subscribe(
+                (data) => (this.users = data['userList'])
+            );
+    }
 }
 ```
 

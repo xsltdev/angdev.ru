@@ -13,31 +13,34 @@ Angular **HTTP Interceptor** позволяет перехватывать HTTP-
 ```ts
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor() {}
+    constructor() {}
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const authReq = req.clone({
-      headers: req.headers.set('Session', '123456789'),
-    })
+    intercept(
+        req: HttpRequest<any>,
+        next: HttpHandler
+    ): Observable<HttpEvent<any>> {
+        const authReq = req.clone({
+            headers: req.headers.set(
+                'Session',
+                '123456789'
+            ),
+        });
 
-    return next.handle(authReq).pipe(
-      tap(
-        (event) => {
-          if (event instanceof HttpResponse)
-            console.log('Server response')
-        },
-        (err) => {
-          if (err instanceof HttpErrorResponse) {
-            if (err.status == 401)
-              console.log('Unauthorized')
-          }
-        }
-      )
-    )
-  }
+        return next.handle(authReq).pipe(
+            tap(
+                (event) => {
+                    if (event instanceof HttpResponse)
+                        console.log('Server response');
+                },
+                (err) => {
+                    if (err instanceof HttpErrorResponse) {
+                        if (err.status == 401)
+                            console.log('Unauthorized');
+                    }
+                }
+            )
+        );
+    }
 }
 ```
 
@@ -59,14 +62,14 @@ export class AuthInterceptor implements HttpInterceptor {
 
 ```ts
 providers: [
-  AuthService,
-  AuthGuard,
-  {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true,
-  },
-]
+    AuthService,
+    AuthGuard,
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true,
+    },
+];
 ```
 
 Сперва необходимо импортировать injection-токен [`HTTP_INTERCEPTORS`](https://angular.io/api/common/http/HTTP_INTERCEPTORS), затем в массиве `providers` записать объект, подобный тому, что записан в примере выше.

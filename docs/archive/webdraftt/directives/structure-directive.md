@@ -11,22 +11,22 @@ description: Структурные директивы изменяют стру
 Директива **`ngIf`** позволяет удалить или, наоборот, отобразить элемент при определенном условии. Например, определим следующий компонент:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <p *ngIf="condition">Привет мир</p>
-    <p *ngIf="!condition">Пока мир</p>
-    <button (click)="toggle()">Toggle</button>
-  `,
+    selector: 'my-app',
+    template: `
+        <p *ngIf="condition">Привет мир</p>
+        <p *ngIf="!condition">Пока мир</p>
+        <button (click)="toggle()">Toggle</button>
+    `,
 })
 export class AppComponent {
-  condition: boolean = true
+    condition: boolean = true;
 
-  toggle() {
-    this.condition = !this.condition
-  }
+    toggle() {
+        this.condition = !this.condition;
+    }
 }
 ```
 
@@ -37,24 +37,24 @@ export class AppComponent {
 Начиная с версии Angular 4.0 директива `ngIf` обогатилась новыми возможностями. В частности, мы можем задавать альтернативные выражения с помощью директивы `ng-template`. Так, предыдущий пример будет аналогичен следующему:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <p *ngIf="condition; else unset">Привет мир</p>
-    <ng-template #unset>
-      <p>Пока мир</p>
-    </ng-template>
-    <button (click)="toggle()">Toggle</button>
-  `,
+    selector: 'my-app',
+    template: `
+        <p *ngIf="condition; else unset">Привет мир</p>
+        <ng-template #unset>
+            <p>Пока мир</p>
+        </ng-template>
+        <button (click)="toggle()">Toggle</button>
+    `,
 })
 export class AppComponent {
-  condition: boolean = true
+    condition: boolean = true;
 
-  toggle() {
-    this.condition = !this.condition
-  }
+    toggle() {
+        this.condition = !this.condition;
+    }
 }
 ```
 
@@ -68,7 +68,7 @@ template: `
   <ng-template #thenBlock>Then template</ng-template>  
   <ng-template #elseBlock>Else template</ng-template>
   <button (click)="toggle()">Toggle</button>
-`
+`;
 ```
 
 В данном случае, если `condition` равно `true`, то отображается блок `thenBlock`, иначе отображается блок `elseBlock`.
@@ -78,23 +78,23 @@ template: `
 Директива **`ngFor`** позволяет перебрать в шаблоне элементы массива. Например:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <ul>
-      <li *ngFor="let item of items">{{ item }}</li>
-    </ul>
-  `,
+    selector: 'my-app',
+    template: `
+        <ul>
+            <li *ngFor="let item of items">{{ item }}</li>
+        </ul>
+    `,
 })
 export class AppComponent {
-  items = [
-    'Apple iPhone 7',
-    'Huawei Mate 9',
-    'Samsung Galaxy S7',
-    'Motorola Moto Z',
-  ]
+    items = [
+        'Apple iPhone 7',
+        'Huawei Mate 9',
+        'Samsung Galaxy S7',
+        'Motorola Moto Z',
+    ];
 }
 ```
 
@@ -104,9 +104,9 @@ export class AppComponent {
 
 ```html
 <div>
-  <p *ngFor="let item of items; let i = index">
-    {{i+1}}.{{item}}
-  </p>
+    <p *ngFor="let item of items; let i = index">
+        {{i+1}}.{{item}}
+    </p>
 </div>
 ```
 
@@ -125,10 +125,10 @@ export class AppComponent {
 
 ```html
 <template [ngIf]="condition">
-  <p>Привет мир</p>
+    <p>Привет мир</p>
 </template>
 <template [ngIf]="!condition">
-  <p>Пока мир</p>
+    <p>Пока мир</p>
 </template>
 ```
 
@@ -140,7 +140,7 @@ export class AppComponent {
 
 ```html
 <ul>
-  <li *ngFor="let item of items">{{item}}</li>
+    <li *ngFor="let item of items">{{item}}</li>
 </ul>
 ```
 
@@ -148,9 +148,9 @@ export class AppComponent {
 
 ```html
 <ul>
-  <template ngFor let-item [ngForOf]="items">
-    <li>{{item}}</li>
-  </template>
+    <template ngFor let-item [ngForOf]="items">
+        <li>{{item}}</li>
+    </template>
 </ul>
 ```
 
@@ -159,26 +159,26 @@ export class AppComponent {
 С помощью директивы **`ngSwitch`** можно встроить в шаблон конструкцию switch..case и в зависимости от ее результата выполнения выводить тот или иной блок. Например:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div [ngSwitch]="count">
-      <ng-template *ngSwitchCase="1">{{
-        count * 10
-      }}</ng-template>
-      <ng-template *ngSwitchCase="2">{{
-        count * 100
-      }}</ng-template>
-      <ng-template ngSwitchDefault>{{
-        count * 1000
-      }}</ng-template>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div [ngSwitch]="count">
+            <ng-template *ngSwitchCase="1">{{
+                count * 10
+            }}</ng-template>
+            <ng-template *ngSwitchCase="2">{{
+                count * 100
+            }}</ng-template>
+            <ng-template ngSwitchDefault>{{
+                count * 1000
+            }}</ng-template>
+        </div>
+    `,
 })
 export class AppComponent {
-  count: number = 5
+    count: number = 5;
 }
 ```
 

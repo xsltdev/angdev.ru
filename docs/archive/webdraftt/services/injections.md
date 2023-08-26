@@ -8,9 +8,9 @@ description: использовать один сервис в другом се
 
 ```typescript
 export class LogService {
-  write(logMessage: string) {
-    console.log(logMessage)
-  }
+    write(logMessage: string) {
+        console.log(logMessage);
+    }
 }
 ```
 
@@ -19,27 +19,27 @@ export class LogService {
 Теперь используем этот сервис. Для этого изменим код в файле `data.service.ts`:
 
 ```typescript
-import { Injectable } from '@angular/core'
-import { Phone } from './phone'
-import { LogService } from './log.service'
+import { Injectable } from '@angular/core';
+import { Phone } from './phone';
+import { LogService } from './log.service';
 
 @Injectable()
 export class DataService {
-  private data: Phone[] = [
-    { name: 'Apple iPhone 7', price: 56000 },
-    { name: 'HP Elite x3', price: 56000 },
-    { name: 'Alcatel Idol S4', price: 25000 },
-  ]
-  constructor(private logService: LogService) {}
+    private data: Phone[] = [
+        { name: 'Apple iPhone 7', price: 56000 },
+        { name: 'HP Elite x3', price: 56000 },
+        { name: 'Alcatel Idol S4', price: 25000 },
+    ];
+    constructor(private logService: LogService) {}
 
-  getData(): Phone[] {
-    this.logService.write('операция получения данных')
-    return this.data
-  }
-  addData(name: string, price: number) {
-    this.data.push(new Phone(name, price))
-    this.logService.write('операция добавления данных')
-  }
+    getData(): Phone[] {
+        this.logService.write('операция получения данных');
+        return this.data;
+    }
+    addData(name: string, price: number) {
+        this.data.push(new Phone(name, price));
+        this.logService.write('операция добавления данных');
+    }
 }
 ```
 
@@ -52,74 +52,74 @@ export class DataService {
 И также в случае с `DataService` сервис `LogService` также надо зарегистрировать в списке провайдеров `AppComponent`:
 
 ```typescript
-import { Component, OnInit } from '@angular/core'
-import { DataService } from './data.service'
-import { LogService } from './log.service'
-import { Phone } from './phone'
+import { Component, OnInit } from '@angular/core';
+import { DataService } from './data.service';
+import { LogService } from './log.service';
+import { Phone } from './phone';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div class="panel">
-      <div class="form-inline">
-        <div class="form-group">
-          <div class="col-md-8">
-            <input
-              class="form-control"
-              [(ngModel)]="name"
-              placeholder="Модель"
-            />
-          </div>
+    selector: 'my-app',
+    template: `
+        <div class="panel">
+            <div class="form-inline">
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input
+                            class="form-control"
+                            [(ngModel)]="name"
+                            placeholder="Модель"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input
+                            type="number"
+                            class="form-control"
+                            [(ngModel)]="price"
+                            placeholder="Цена"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                        <button
+                            class="btn btn-default"
+                            (click)="addItem(name, price)"
+                        >
+                            Добавить
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Модель</th>
+                        <th>Цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items">
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.price }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="form-group">
-          <div class="col-md-6">
-            <input
-              type="number"
-              class="form-control"
-              [(ngModel)]="price"
-              placeholder="Цена"
-            />
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-md-offset-2 col-md-8">
-            <button
-              class="btn btn-default"
-              (click)="addItem(name, price)"
-            >
-              Добавить
-            </button>
-          </div>
-        </div>
-      </div>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Модель</th>
-            <th>Цена</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of items">
-            <td>{{ item.name }}</td>
-            <td>{{ item.price }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  `,
-  providers: [DataService, LogService],
+    `,
+    providers: [DataService, LogService],
 })
 export class AppComponent implements OnInit {
-  items: Phone[] = []
-  constructor(private dataService: DataService) {}
+    items: Phone[] = [];
+    constructor(private dataService: DataService) {}
 
-  addItem(name: string, price: number) {
-    this.dataService.addData(name, price)
-  }
-  ngOnInit() {
-    this.items = this.dataService.getData()
-  }
+    addItem(name: string, price: number) {
+        this.dataService.addData(name, price);
+    }
+    ngOnInit() {
+        this.items = this.dataService.getData();
+    }
 }
 ```
 

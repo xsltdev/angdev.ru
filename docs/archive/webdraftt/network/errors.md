@@ -9,37 +9,37 @@ description: Перехват ошибок позволит выяснить п�
 Например, изменим код компонента `AppComponent`:
 
 ```typescript
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from './http.service'
-import { User } from './user'
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from './http.service';
+import { User } from './user';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>{{ error }}</div>
-    <ul>
-      <li *ngFor="let user of users">
-        <p>Имя пользователя: {{ user?.name }}</p>
-        <p>Возраст пользователя: {{ user?.age }}</p>
-      </li>
-    </ul>
-  `,
-  providers: [HttpService],
+    selector: 'my-app',
+    template: `
+        <div>{{ error }}</div>
+        <ul>
+            <li *ngFor="let user of users">
+                <p>Имя пользователя: {{ user?.name }}</p>
+                <p>Возраст пользователя: {{ user?.age }}</p>
+            </li>
+        </ul>
+    `,
+    providers: [HttpService],
 })
 export class AppComponent implements OnInit {
-  users: User[] = []
-  error: any
-  constructor(private httpService: HttpService) {}
+    users: User[] = [];
+    error: any;
+    constructor(private httpService: HttpService) {}
 
-  ngOnInit() {
-    this.httpService.getUsers().subscribe(
-      (data) => (this.users = data),
-      (error) => {
-        this.error = error.message
-        console.log(error)
-      }
-    )
-  }
+    ngOnInit() {
+        this.httpService.getUsers().subscribe(
+            (data) => (this.users = data),
+            (error) => {
+                this.error = error.message;
+                console.log(error);
+            }
+        );
+    }
 }
 ```
 
@@ -50,30 +50,33 @@ export class AppComponent implements OnInit {
 Кроме того, для перехвата ошибок к объекту `Observable`, который является результатом запроса, можно использовать функцию `catchError()`. Так, возьмем код сервиса из прошлой темы и добавим к нему обработку ошибок:
 
 ```typescript
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { User } from './user'
-import { Observable, throwError } from 'rxjs'
-import { map, catchError } from 'rxjs/operators'
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { User } from './user';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class HttpService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<User[]> {
-    return this.http.get('usersP.json').pipe(
-      map((data) => {
-        let usersList = data['usersList']
-        return usersList.map(function (user: any) {
-          return { name: user.userName, age: user.userAge }
-        })
-      }),
-      catchError((err) => {
-        console.log(err)
-        return throwError(err)
-      })
-    )
-  }
+    getUsers(): Observable<User[]> {
+        return this.http.get('usersP.json').pipe(
+            map((data) => {
+                let usersList = data['usersList'];
+                return usersList.map(function (user: any) {
+                    return {
+                        name: user.userName,
+                        age: user.userAge,
+                    };
+                });
+            }),
+            catchError((err) => {
+                console.log(err);
+                return throwError(err);
+            })
+        );
+    }
 }
 ```
 

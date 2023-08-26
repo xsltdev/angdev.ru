@@ -10,28 +10,28 @@ description: Имеющихся в RxJS "встроенных" оператор�
 
 ```ts
 const takeNth = (n: number) => <T>(source: Observable<T>) =>
-  new Observable<T>((observer) => {
-    let current = 1;
+    new Observable<T>((observer) => {
+        let current = 1;
 
-    return source.subscribe(
-      (vl) => {
-        if (current++ === n) {
-          observer.next(vl);
-          observer.complete();
-        }
-      },
-      (err) => observer.error(err),
-      () => observer.complete()
-    );
-  });
+        return source.subscribe(
+            (vl) => {
+                if (current++ === n) {
+                    observer.next(vl);
+                    observer.complete();
+                }
+            },
+            (err) => observer.error(err),
+            () => observer.complete()
+        );
+    });
 
 from(['Jack', 'Jane', 'Jim', 'Jason'])
-  .pipe(takeNth(3))
-  .subscribe(
-    (vl) => console.log(vl),
-    (err) => {},
-    () => console.log('Completed')
-  );
+    .pipe(takeNth(3))
+    .subscribe(
+        (vl) => console.log(vl),
+        (err) => {},
+        () => console.log('Completed')
+    );
 ```
 
 Подробное описание оператора [`from()`](https://rxjs.dev/api/index/function/from).
@@ -40,13 +40,13 @@ from(['Jack', 'Jane', 'Jim', 'Jason'])
 
 ```ts
 const takeNth = (n: number) => <T>(source: Observable<T>) =>
-  source.pipe(filter((value, index) => index === n - 1));
+    source.pipe(filter((value, index) => index === n - 1));
 
 from(['Jack', 'Jane', 'Jim', 'Jason'])
-  .pipe(takeNth(3))
-  .subscribe(
-    (vl) => console.log(vl),
-    (err) => {},
-    () => console.log('Completed')
-  );
+    .pipe(takeNth(3))
+    .subscribe(
+        (vl) => console.log(vl),
+        (err) => {},
+        () => console.log('Completed')
+    );
 ```

@@ -24,77 +24,77 @@ ng e2e
 
 ```ts
 export class Page {
-  url: string = 'http://localhost:4200'
+    url: string = 'http://localhost:4200';
 
-  getTextByElement(selector) {
-    return element(by.css(selector)).getText()
-  }
+    getTextByElement(selector) {
+        return element(by.css(selector)).getText();
+    }
 
-  clickByElement(selector) {
-    element(by.css(selector)).click()
-  }
+    clickByElement(selector) {
+        element(by.css(selector)).click();
+    }
 
-  getElement(selector) {
-    return element(by.css(selector))
-  }
+    getElement(selector) {
+        return element(by.css(selector));
+    }
 }
 ```
 
 Взаимодействие с интерфейсом обеспечивают три основных инструмента библиотеки `Protractor`:
 
-- `browser` — глобальный объект, который предоставляет API команд браузера;
-- `element` — функция, осуществляющая поиск HTML-элементов в пределах текущей страницы по заданному критерию;
-- `by` — объект с набором методов, которые возвращают понятный для функции `element()` критерий поиска;
-- `expectedConditions` — класс, предоставляющий API для проверки выполнения определенных условий.
+-   `browser` — глобальный объект, который предоставляет API команд браузера;
+-   `element` — функция, осуществляющая поиск HTML-элементов в пределах текущей страницы по заданному критерию;
+-   `by` — объект с набором методов, которые возвращают понятный для функции `element()` критерий поиска;
+-   `expectedConditions` — класс, предоставляющий API для проверки выполнения определенных условий.
 
 Методы `browser` используются для навигации по приложению, эмуляции событий и т. д. Основные из них:
 
-- `get()` — переходит на переданный URL-адрес, выполнение следующего за вызовом метода кода выполняется после завершения перехода, вторым аргументом принимает время в миллисекундах, в течение которого будет ожидаться завершение перехода (по умолчанию 10 секунд);
-- `getTitle()` — возвращает значение тега `<title>`
-- `getLocationAbsUrl()` — возвращает текущий URL-адрес;
-- `navigate().forward()` — переходит на следующий URL-адрес в истории;
-- `navigate().back()` — переходит на предыдущий URL-адрес в истории;
-- `wait()` — приостанавливает процесс тестирования, пока не будет выполнена переданный `Promise`, вторым параметром можно передать время ожидания в миллисекундах (по умолчанию 30 секунд);
-- `actions()` — позволяет инициировать пользовательские события в пределах всего браузера (движение курсора или клик мыши, нажатие клавиши и др.). Функции действий:
-  - `mouseDown()` — нажатие и удержание левой кнопки мыши;
-  - `mouseUp()` — отпустить нажатую левую кнопку мыши;
-  - `mouseMove(element | {x: number, y: number})` — перемещение курсора мыши на элемент или по координатам;
-  - `doubleClick()` — двойное нажатие левой кнопки мыши;
-  - `dragAndDrop()` — событие DragAndDrop.
+-   `get()` — переходит на переданный URL-адрес, выполнение следующего за вызовом метода кода выполняется после завершения перехода, вторым аргументом принимает время в миллисекундах, в течение которого будет ожидаться завершение перехода (по умолчанию 10 секунд);
+-   `getTitle()` — возвращает значение тега `<title>`
+-   `getLocationAbsUrl()` — возвращает текущий URL-адрес;
+-   `navigate().forward()` — переходит на следующий URL-адрес в истории;
+-   `navigate().back()` — переходит на предыдущий URL-адрес в истории;
+-   `wait()` — приостанавливает процесс тестирования, пока не будет выполнена переданный `Promise`, вторым параметром можно передать время ожидания в миллисекундах (по умолчанию 30 секунд);
+-   `actions()` — позволяет инициировать пользовательские события в пределах всего браузера (движение курсора или клик мыши, нажатие клавиши и др.). Функции действий:
+    -   `mouseDown()` — нажатие и удержание левой кнопки мыши;
+    -   `mouseUp()` — отпустить нажатую левую кнопку мыши;
+    -   `mouseMove(element | {x: number, y: number})` — перемещение курсора мыши на элемент или по координатам;
+    -   `doubleClick()` — двойное нажатие левой кнопки мыши;
+    -   `dragAndDrop()` — событие DragAndDrop.
 
 Пример использования метода `actions()`:
 
 ```ts
 browser
-  .actions()
-  .mouseMove({ x: 300, y: 250 })
-  .doubleClick()
-  .perform()
+    .actions()
+    .mouseMove({ x: 300, y: 250 })
+    .doubleClick()
+    .perform();
 ```
 
 Здесь курсор мыши сдвигается на 300 пикселей вправо и на 250 пикселей вниз, а затем выполняется двойной клик мыши по месту, соответствующему заданным координатам. Отсчет начинается с левого верхнего угла. Для выполнения действий в конце всегда нужно вызывать метод `perform()`.
 
 Методы объекта `by` весьма разнообразны. Каждый из них возвращает критерий поиска, который используется для нахождения HTML-элементов функцией `element()`:
 
-- `by.css()` — находит элементы по заданному селектору (`#id`, `.class`);
-- `by.id()` — находит элемент по `id`;
-- `by.className()` — находит элементы по имени css-класса;
-- `by.tagName()` — находит элементы по имени HTML-тега;
-- `by.input()` — возвращает все input-элементы;
-- `by.linkText()` — находит все ссылки, текстовое значение которых равно переданной строке;
-- `by.partialLinkText()` — находит все ссылки, в текстовом значение которых содержится переданная строка.
+-   `by.css()` — находит элементы по заданному селектору (`#id`, `.class`);
+-   `by.id()` — находит элемент по `id`;
+-   `by.className()` — находит элементы по имени css-класса;
+-   `by.tagName()` — находит элементы по имени HTML-тега;
+-   `by.input()` — возвращает все input-элементы;
+-   `by.linkText()` — находит все ссылки, текстовое значение которых равно переданной строке;
+-   `by.partialLinkText()` — находит все ссылки, в текстовом значение которых содержится переданная строка.
 
 Функция `element()` по умолчанию возвращает первый найденный элемент, соответствующий заданному критерию поиска. Для нахождения всех элементов используется метод `element.all()`:
 
 ```ts
-element.all(by.css('p'))
+element.all(by.css('p'));
 ```
 
 А получение одного элемента из массива, возвращаемого `element.all()`, обеспечивает метод `get()`.
 
 ```ts
-let pEls = element.all(by.css('p'))
-let firstP = pEls.get(0)
+let pEls = element.all(by.css('p'));
+let firstP = pEls.get(0);
 ```
 
 Для манипуляции отдельным элементом также имеется API.
@@ -102,49 +102,49 @@ let firstP = pEls.get(0)
 Получение текстового значения:
 
 ```ts
-element(by.id('title')).getText()
+element(by.id('title')).getText();
 ```
 
 Клик по элементу:
 
 ```ts
-element(by.buttonText('Submit')).click()
+element(by.buttonText('Submit')).click();
 ```
 
 Эмуляция нажатия клавиши, например, в поле формы:
 
 ```ts
-element(by.input('login')).sendKeys('d')
-element(by.input('login')).sendKeys(protractor.Key.TAB)
+element(by.input('login')).sendKeys('d');
+element(by.input('login')).sendKeys(protractor.Key.TAB);
 ```
 
 Сброс значения:
 
 ```ts
-element(by.input('login')).clear()
+element(by.input('login')).clear();
 ```
 
 Проверка наличия элемента в DOM-дереве:
 
 ```ts
-element(by.tagName('nav')).isPresent()
+element(by.tagName('nav')).isPresent();
 ```
 
 Проверка видимости элемента:
 
 ```ts
-element(by.tagName('sidebar')).isVisible()
+element(by.tagName('sidebar')).isVisible();
 ```
 
 Получение габаритных размеров:
 
 ```ts
 element(by.input('login'))
-  .getSize()
-  .then(function (size) {
-    console.log('Width: ' + size.width)
-    console.log('Height: ' + size.height)
-  })
+    .getSize()
+    .then(function (size) {
+        console.log('Width: ' + size.width);
+        console.log('Height: ' + size.height);
+    });
 ```
 
 Теперь рассмотрим подробнее методы класса `ExpectedConditions`. Абсолютно все методы возвращают объект `Promise`, поэтому следует их использовать совместно с методом `browser.wait()`.
@@ -152,39 +152,39 @@ element(by.input('login'))
 Проверка кликабельности элемента:
 
 ```ts
-let EC = protractor.expectedConditions
-let btn = element(by.id('confirm'))
-browser.wait(EC.elementToBeClickable(btn))
+let EC = protractor.expectedConditions;
+let btn = element(by.id('confirm'));
+browser.wait(EC.elementToBeClickable(btn));
 ```
 
 Проверка содержания строки в текстовом значении элемента:
 
 ```ts
-let EC = protractor.expectedConditions
-let btn = element(by.id('confirm'))
-browser.wait(EC.textToBePresentInElement(btn, 'Confirm'))
+let EC = protractor.expectedConditions;
+let btn = element(by.id('confirm'));
+browser.wait(EC.textToBePresentInElement(btn, 'Confirm'));
 ```
 
 Проверка значения элемента `<title>` страницы:
 
 ```ts
-let EC = protractor.expectedConditions
-browser.wait(EC.titleIs('Home'))
+let EC = protractor.expectedConditions;
+browser.wait(EC.titleIs('Home'));
 ```
 
 Также проверки ожидаемых результатов могут быть скомбинированы оператором `or` или `and`:
 
 ```ts
-let EC = protractor.expectedConditions
-let btn = element(by.id('confirm'))
+let EC = protractor.expectedConditions;
+let btn = element(by.id('confirm'));
 
 let textContain = EC.textToBePresentInElement(
-  btn,
-  'Confirm'
-)
-let titleCheck = EC.titleIs('Home')
+    btn,
+    'Confirm'
+);
+let titleCheck = EC.titleIs('Home');
 
-browser.wait(EC.and(textContain, titleCheck))
+browser.wait(EC.and(textContain, titleCheck));
 ```
 
 С полным API можно ознакомиться на [официальном сайте Protractor](https://www.protractortest.org/).

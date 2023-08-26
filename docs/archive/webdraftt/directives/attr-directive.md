@@ -17,15 +17,16 @@ description: Атрибутивные директивы меняют повед
 Определим в файле `bold.directive.ts` следующий код:
 
 ```typescript
-import { Directive, ElementRef } from '@angular/core'
+import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[bold]',
+    selector: '[bold]',
 })
 export class BoldDirective {
-  constructor(private elementRef: ElementRef) {
-    this.elementRef.nativeElement.style.fontWeight = 'bold'
-  }
+    constructor(private elementRef: ElementRef) {
+        this.elementRef.nativeElement.style.fontWeight =
+            'bold';
+    }
 }
 ```
 
@@ -40,25 +41,25 @@ export class BoldDirective {
 Поскольку параметр определен с ключевым словом `private`, то для него будет создаваться одноименная приватная переменная, через которую мы можем получить объект `ElementRef` и произвести с ним какие-либо манипуляции. В частности, здесь идет обращение к вложенному свойству `nativeElement`, через которое у элемента устанавливается жирный шрифт:
 
 ```typescript
-this.elementRef.nativeElement.style.fontWeight = 'bold'
+this.elementRef.nativeElement.style.fontWeight = 'bold';
 ```
 
 Теперь возьмем код главного компонента и применим директиву:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <p bold>Hello Angular 2</p>
-      <p>
-        Angular 2 представляет модульную архитектуру
-        приложения
-      </p>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <p bold>Hello Angular 2</p>
+            <p>
+                Angular 2 представляет модульную архитектуру
+                приложения
+            </p>
+        </div>
+    `,
 })
 export class AppComponent {}
 ```
@@ -68,15 +69,15 @@ export class AppComponent {}
 Но сама по себе директива не заработает. Нам еще надо ее подключить в модуле приложения — классе `AppModule`:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { AppComponent } from './app.component'
-import { BoldDirective } from './bold.directive'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { BoldDirective } from './bold.directive';
 
 @NgModule({
-  imports: [BrowserModule],
-  declarations: [AppComponent, BoldDirective],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule],
+    declarations: [AppComponent, BoldDirective],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -84,7 +85,7 @@ export class AppModule {}
 Как и компоненты, директивы также надо сначала импортировать из файла, где они объявлены:
 
 ```typescript
-import { BoldDirective } from './bold.directive'
+import { BoldDirective } from './bold.directive';
 ```
 
 Затем она добавляется в секцию `declarations`:
@@ -101,25 +102,25 @@ declarations: [ AppComponent, BoldDirective],
 
 ```typescript
 import {
-  Directive,
-  ElementRef,
-  Renderer2,
-} from '@angular/core'
+    Directive,
+    ElementRef,
+    Renderer2,
+} from '@angular/core';
 
 @Directive({
-  selector: '[bold]',
+    selector: '[bold]',
 })
 export class BoldDirective {
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2
-  ) {
-    this.renderer.setStyle(
-      this.elementRef.nativeElement,
-      'font-weight',
-      'bold'
-    )
-  }
+    constructor(
+        private elementRef: ElementRef,
+        private renderer: Renderer2
+    ) {
+        this.renderer.setStyle(
+            this.elementRef.nativeElement,
+            'font-weight',
+            'bold'
+        );
+    }
 }
 ```
 

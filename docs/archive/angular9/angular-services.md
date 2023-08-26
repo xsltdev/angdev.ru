@@ -9,31 +9,31 @@ Angular **сервис** - это обычный класс, используе�
 ```ts
 @Injectable({ providedIn: 'root' })
 export class StatesService {
-  private _filtersState: any = {
-    accounts: {
-      all: true,
-      opened: false,
-    },
-    deposits: {
-      all: true,
-      opened: false,
-    },
-  }
+    private _filtersState: any = {
+        accounts: {
+            all: true,
+            opened: false,
+        },
+        deposits: {
+            all: true,
+            opened: false,
+        },
+    };
 
-  getFilters(): any {
-    return this._filtersState
-  }
+    getFilters(): any {
+        return this._filtersState;
+    }
 }
 ```
 
 ```ts
 @Injectable({ providedIn: 'root' })
 export class AccountsHttpService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getUsers(): Observable {
-    return this.http.get('/api/users')
-  }
+    getUsers(): Observable {
+        return this.http.get('/api/users');
+    }
 }
 ```
 
@@ -73,12 +73,12 @@ Angular сервисы могут быть определены на уровн�
 
 ```ts
 export class AccountsModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: AccountsModule,
-      providers: [AccountsHttpService],
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: AccountsModule,
+            providers: [AccountsHttpService],
+        };
     }
-  }
 }
 ```
 
@@ -92,16 +92,19 @@ export class AccountsModule {
 
 ```ts
 export class AccountsModule {
-  static forRoot(
-    acc: AccountsHttpService
-  ): ModuleWithProviders {
-    return {
-      ngModule: AccountsModule,
-      providers: [
-        { provide: AccountsHttpService, useValue: acc },
-      ],
+    static forRoot(
+        acc: AccountsHttpService
+    ): ModuleWithProviders {
+        return {
+            ngModule: AccountsModule,
+            providers: [
+                {
+                    provide: AccountsHttpService,
+                    useValue: acc,
+                },
+            ],
+        };
     }
-  }
 }
 ```
 
@@ -109,4 +112,4 @@ export class AccountsModule {
 
 ## Ссылки
 
-- [Services](https://angular.io/tutorial/toh-pt4)
+-   [Services](https://angular.io/tutorial/toh-pt4)

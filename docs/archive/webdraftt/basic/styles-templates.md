@@ -9,29 +9,29 @@ description: Стилизация компонента может произво
 Для установки стилей в директиве `@Component` определено свойство `styles`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <h1>Hello Angular 2</h1>
-    <p>
-      Angular 2 представляет модульную архитектуру
-      приложения
-    </p>
-  `,
-  styles: [
-    `
-      h1,
-      h2 {
-        color: navy;
-      }
-      p {
-        font-size: 13px;
-        font-family: Verdana;
-      }
+    selector: 'my-app',
+    template: `
+        <h1>Hello Angular 2</h1>
+        <p>
+            Angular 2 представляет модульную архитектуру
+            приложения
+        </p>
     `,
-  ],
+    styles: [
+        `
+            h1,
+            h2 {
+                color: navy;
+            }
+            p {
+                font-size: 13px;
+                font-family: Verdana;
+            }
+        `,
+    ],
 })
 export class AppComponent {}
 ```
@@ -44,8 +44,8 @@ export class AppComponent {}
 
 ```html
 <body>
-  <my-app>Loading...</my-app>
-  <h2>Подзаголовок</h2>
+    <my-app>Loading...</my-app>
+    <h2>Подзаголовок</h2>
 </body>
 ```
 
@@ -59,7 +59,7 @@ export class AppComponent {}
 
 ```typescript
 styles: [
-  `
+    `
     h1, h2{color:navy;}
     p{font-size:13px;}
     :host {
@@ -67,7 +67,7 @@ styles: [
         color: #555;
     }
 `,
-]
+];
 ```
 
 ## Подключение внешних файлов
@@ -77,32 +77,32 @@ styles: [
 ```css
 h1,
 h2 {
-  color: navy;
+    color: navy;
 }
 p {
-  font-size: 13px;
+    font-size: 13px;
 }
 :host {
-  font-family: Verdana;
-  color: #555;
+    font-family: Verdana;
+    color: #555;
 }
 ```
 
 Затем изменим код компонента:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <h1>Hello Angular 2</h1>
-    <p>
-      Angular 5 представляет модульную архитектуру
-      приложения
-    </p>
-  `,
-  styleUrls: ['./app.component.css'],
+    selector: 'my-app',
+    template: `
+        <h1>Hello Angular 2</h1>
+        <p>
+            Angular 5 представляет модульную архитектуру
+            приложения
+        </p>
+    `,
+    styleUrls: ['./app.component.css'],
 })
 export class AppComponent {}
 ```
@@ -114,19 +114,19 @@ export class AppComponent {}
 ```html
 <h1>Hello Angular 7</h1>
 <p>
-  Angular 7 представляет модульную архитектуру приложения
+    Angular 7 представляет модульную архитектуру приложения
 </p>
 ```
 
 То есть здесь определен весь тот же код, что ранее был в шаблоне компонента. И теперь изменим сам компонент:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+    selector: 'my-app',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
 })
 export class AppComponent {}
 ```
@@ -137,38 +137,38 @@ export class AppComponent {}
 
 ```json
 {
-  "name": "helloapp",
-  "version": "1.0.0",
-  "description": "First Angular 7 Project",
-  "author": "Eugene Popov <metanit.com>",
-  "scripts": {
-    "dev": "webpack-dev-server --hot --open",
-    "build": "webpack"
-  },
-  "dependencies": {
-    "@angular/common": "~7.0.0",
-    "@angular/compiler": "~7.0.0",
-    "@angular/core": "~7.0.0",
-    "@angular/forms": "~7.0.0",
-    "@angular/platform-browser": "~7.0.0",
-    "@angular/platform-browser-dynamic": "~7.0.0",
-    "@angular/router": "~7.0.0",
-    "core-js": "^2.5.7",
-    "rxjs": "^6.3.3",
-    "zone.js": "^0.8.26"
-  },
-  "devDependencies": {
-    "@types/node": "^10.12.0",
-    "typescript": "^3.0.0",
-    "webpack": "^4.21.0",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.9",
-    "angular2-template-loader": "^0.6.2",
-    "awesome-typescript-loader": "^5.2.1",
-    "uglifyjs-webpack-plugin": "^2.0.0",
-    "raw-loader": "0.5.1",
-    "html-loader": "0.5.1"
-  }
+    "name": "helloapp",
+    "version": "1.0.0",
+    "description": "First Angular 7 Project",
+    "author": "Eugene Popov <metanit.com>",
+    "scripts": {
+        "dev": "webpack-dev-server --hot --open",
+        "build": "webpack"
+    },
+    "dependencies": {
+        "@angular/common": "~7.0.0",
+        "@angular/compiler": "~7.0.0",
+        "@angular/core": "~7.0.0",
+        "@angular/forms": "~7.0.0",
+        "@angular/platform-browser": "~7.0.0",
+        "@angular/platform-browser-dynamic": "~7.0.0",
+        "@angular/router": "~7.0.0",
+        "core-js": "^2.5.7",
+        "rxjs": "^6.3.3",
+        "zone.js": "^0.8.26"
+    },
+    "devDependencies": {
+        "@types/node": "^10.12.0",
+        "typescript": "^3.0.0",
+        "webpack": "^4.21.0",
+        "webpack-cli": "^3.1.2",
+        "webpack-dev-server": "^3.1.9",
+        "angular2-template-loader": "^0.6.2",
+        "awesome-typescript-loader": "^5.2.1",
+        "uglifyjs-webpack-plugin": "^2.0.0",
+        "raw-loader": "0.5.1",
+        "html-loader": "0.5.1"
+    }
 }
 ```
 
@@ -177,60 +177,60 @@ export class AppComponent {}
 И затем загрузчики `raw-loader` и `html-loader` надо применить в конфигурации webpack:
 
 ```javascript
-var path = require('path')
-var webpack = require('webpack')
-var UglifyJSPlugin = require('uglifyjs-webpack-plugin') // плагин минимизации
+var path = require('path');
+var webpack = require('webpack');
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin'); // плагин минимизации
 module.exports = {
-  entry: {
-    polyfills: './src/polyfills.ts',
-    app: './src/main.ts',
-  },
-  output: {
-    path: path.resolve(__dirname, './public'), // путь к каталогу выходных файлов — папка public
-    publicPath: '/public/',
-    filename: '[name].js', // название создаваемого файла
-  },
-  resolve: {
-    extensions: ['.ts', '.js'],
-  },
-  module: {
-    rules: [
-      //загрузчик для ts
-      {
-        test: /\.ts$/, // определяем тип файлов
-        use: [
-          {
-            loader: 'awesome-typescript-loader',
-            options: {
-              configFileName: path.resolve(
-                __dirname,
-                'tsconfig.json'
-              ),
+    entry: {
+        polyfills: './src/polyfills.ts',
+        app: './src/main.ts',
+    },
+    output: {
+        path: path.resolve(__dirname, './public'), // путь к каталогу выходных файлов — папка public
+        publicPath: '/public/',
+        filename: '[name].js', // название создаваемого файла
+    },
+    resolve: {
+        extensions: ['.ts', '.js'],
+    },
+    module: {
+        rules: [
+            //загрузчик для ts
+            {
+                test: /\.ts$/, // определяем тип файлов
+                use: [
+                    {
+                        loader: 'awesome-typescript-loader',
+                        options: {
+                            configFileName: path.resolve(
+                                __dirname,
+                                'tsconfig.json'
+                            ),
+                        },
+                    },
+                    'angular2-template-loader',
+                ],
             },
-          },
-          'angular2-template-loader',
+            {
+                test: /\.html$/,
+                loader: 'html-loader',
+            },
+            {
+                test: /\.css$/,
+                include: path.resolve(__dirname, 'src/app'),
+                loader: 'raw-loader',
+            },
         ],
-      },
-      {
-        test: /\.html$/,
-        loader: 'html-loader',
-      },
-      {
-        test: /\.css$/,
-        include: path.resolve(__dirname, 'src/app'),
-        loader: 'raw-loader',
-      },
+    },
+    plugins: [
+        new webpack.ContextReplacementPlugin(
+            /angular(\\|\/)core/,
+            path.resolve(__dirname, 'src'), // каталог с исходными файлами
+            {} // карта маршрутов
+        ),
+        new UglifyJSPlugin(),
     ],
-  },
-  plugins: [
-    new webpack.ContextReplacementPlugin(
-      /angular(\\|\/)core/,
-      path.resolve(__dirname, 'src'), // каталог с исходными файлами
-      {} // карта маршрутов
-    ),
-    new UglifyJSPlugin(),
-  ],
-}
+};
 ```
 
 ![Структура приложения](styles-templates-3.png)

@@ -15,11 +15,11 @@ description: Guards позволяют ограничить навигацию �
 Добавим в папку `src/app` для примера пару компонентов. Первый компонент поместим в файл `home.component.ts`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'home-app',
-  template: ` <h3>Главная</h3> `,
+    selector: 'home-app',
+    template: ` <h3>Главная</h3> `,
 })
 export class HomeComponent {}
 ```
@@ -27,11 +27,11 @@ export class HomeComponent {}
 И также добавим файл `about.component.ts`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'about-app',
-  template: ` <h3>О сайте</h3> `,
+    selector: 'about-app',
+    template: ` <h3>О сайте</h3> `,
 })
 export class AboutComponent {}
 ```
@@ -40,19 +40,19 @@ export class AboutComponent {}
 
 ```typescript
 import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-} from '@angular/router'
-import { Observable } from 'rxjs'
+    CanActivate,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+} from '@angular/router';
+import { Observable } from 'rxjs';
 
 export class AboutGuard implements CanActivate {
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> | boolean {
-    return confirm('Вы уверены, что хотите перейти?')
-  }
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<boolean> | boolean {
+        return confirm('Вы уверены, что хотите перейти?');
+    }
 }
 ```
 
@@ -75,20 +75,20 @@ canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observa
 Определим в файле `app.component.ts` ссылки для перехода к компонентам:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <h1>Маршрутизация в Angular 2</h1>
-      <nav>
-        <a routerLink="">Главная</a>
-        <a routerLink="/about">О сайте</a>
-      </nav>
-      <router-outlet></router-outlet>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <h1>Маршрутизация в Angular 2</h1>
+            <nav>
+                <a routerLink="">Главная</a>
+                <a routerLink="/about">О сайте</a>
+            </nav>
+            <router-outlet></router-outlet>
+        </div>
+    `,
 })
 export class AppComponent {}
 ```
@@ -96,35 +96,38 @@ export class AppComponent {}
 А в главном модуле приложения установим маршруты:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import { Routes, RouterModule } from '@angular/router'
+import { Routes, RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component'
-import { AboutComponent } from './about.component'
-import { HomeComponent } from './home.component'
-import { AboutGuard } from './about.guard'
+import { AppComponent } from './app.component';
+import { AboutComponent } from './about.component';
+import { HomeComponent } from './home.component';
+import { AboutGuard } from './about.guard';
 
 // определение маршрутов
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
-  {
-    path: 'about',
-    component: AboutComponent,
-    canActivate: [AboutGuard],
-  },
-]
+    { path: '', component: HomeComponent },
+    {
+        path: 'about',
+        component: AboutComponent,
+        canActivate: [AboutGuard],
+    },
+];
 
 @NgModule({
-  imports: [BrowserModule, RouterModule.forRoot(appRoutes)],
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    AboutComponent,
-  ],
-  providers: [AboutGuard],
-  bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot(appRoutes),
+    ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        AboutComponent,
+    ],
+    providers: [AboutGuard],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -150,22 +153,22 @@ providers: [AboutGuard]
 Для примера добавим в папку `src/app` новый файл `exit.about.guard.ts`:
 
 ```typescript
-import { CanDeactivate } from '@angular/router'
-import { Observable } from 'rxjs'
+import { CanDeactivate } from '@angular/router';
+import { Observable } from 'rxjs';
 
 export interface ComponentCanDeactivate {
-  canDeactivate: () => boolean | Observable<boolean>
+    canDeactivate: () => boolean | Observable<boolean>;
 }
 
 export class ExitAboutGuard
-  implements CanDeactivate<ComponentCanDeactivate> {
-  canDeactivate(
-    component: ComponentCanDeactivate
-  ): Observable<boolean> | boolean {
-    return component.canDeactivate
-      ? component.canDeactivate()
-      : true
-  }
+    implements CanDeactivate<ComponentCanDeactivate> {
+    canDeactivate(
+        component: ComponentCanDeactivate
+    ): Observable<boolean> | boolean {
+        return component.canDeactivate
+            ? component.canDeactivate()
+            : true;
+    }
 }
 ```
 
@@ -175,7 +178,7 @@ export class ExitAboutGuard
 
 ```typescript
 export interface ComponentCanDeactivate {
-  canDeactivate: () => boolean | Observable<boolean>
+    canDeactivate: () => boolean | Observable<boolean>;
 }
 ```
 
@@ -184,34 +187,34 @@ export interface ComponentCanDeactivate {
 Допустим, мы хотим управлять навигацией с компонента `AboutComponent`. В этом случае класс `AboutComponent` должен реализовать интерфейс `ComponentCanDeactivate`:
 
 ```typescript
-import { Component } from '@angular/core'
-import { ComponentCanDeactivate } from './exit.about.guard'
-import { Observable } from 'rxjs'
+import { Component } from '@angular/core';
+import { ComponentCanDeactivate } from './exit.about.guard';
+import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'about-app',
-  template: `
-    <h3>О сайте</h3>
-    <button class="btn btn-default" (click)="save()">
-      Сохранить
-    </button>
-    <a routerLink="">На главную</a>
-  `,
+    selector: 'about-app',
+    template: `
+        <h3>О сайте</h3>
+        <button class="btn btn-default" (click)="save()">
+            Сохранить
+        </button>
+        <a routerLink="">На главную</a>
+    `,
 })
 export class AboutComponent
-  implements ComponentCanDeactivate {
-  saved: boolean = false
-  save() {
-    this.saved = true
-  }
-
-  canDeactivate(): boolean | Observable<boolean> {
-    if (!this.saved) {
-      return confirm('Вы хотите покинуть страницу?')
-    } else {
-      return true
+    implements ComponentCanDeactivate {
+    saved: boolean = false;
+    save() {
+        this.saved = true;
     }
-  }
+
+    canDeactivate(): boolean | Observable<boolean> {
+        if (!this.saved) {
+            return confirm('Вы хотите покинуть страницу?');
+        } else {
+            return true;
+        }
+    }
 }
 ```
 
@@ -224,36 +227,39 @@ export class AboutComponent
 Чтобы задействовать `ExitAboutGuard`, изменим модуль `AppModule`:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import { Routes, RouterModule } from '@angular/router'
+import { Routes, RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component'
-import { AboutComponent } from './about.component'
-import { HomeComponent } from './home.component'
-import { AboutGuard } from './about.guard'
-import { ExitAboutGuard } from './exit.about.guard'
+import { AppComponent } from './app.component';
+import { AboutComponent } from './about.component';
+import { HomeComponent } from './home.component';
+import { AboutGuard } from './about.guard';
+import { ExitAboutGuard } from './exit.about.guard';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
-  {
-    path: 'about',
-    component: AboutComponent,
-    canActivate: [AboutGuard],
-    canDeactivate: [ExitAboutGuard],
-  },
-]
+    { path: '', component: HomeComponent },
+    {
+        path: 'about',
+        component: AboutComponent,
+        canActivate: [AboutGuard],
+        canDeactivate: [ExitAboutGuard],
+    },
+];
 
 @NgModule({
-  imports: [BrowserModule, RouterModule.forRoot(appRoutes)],
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    AboutComponent,
-  ],
-  providers: [AboutGuard, ExitAboutGuard],
-  bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot(appRoutes),
+    ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        AboutComponent,
+    ],
+    providers: [AboutGuard, ExitAboutGuard],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```

@@ -16,13 +16,13 @@ description: Создание Angular приложения просто нево
 
 ```ts
 @Component({
-  selector: 'private-error',
-  template: ` <div>{{ message }}</div> `,
+    selector: 'private-error',
+    template: ` <div>{{ message }}</div> `,
 })
 export class PrivateErrorComponent {
-  private message: string = 'Variable should be public'
+    private message: string = 'Variable should be public';
 
-  constructor() {}
+    constructor() {}
 }
 ```
 
@@ -51,7 +51,7 @@ _example1.service.ts_
 ```ts
 @Injectable({ providedIn: 'root' })
 export class Example1Service {
-  constructor(private ex2: Example2Service) {}
+    constructor(private ex2: Example2Service) {}
 }
 ```
 
@@ -60,7 +60,7 @@ _example2.service.ts_
 ```ts
 @Injectable({ providedIn: 'root' })
 export class Example2Service {
-  constructor(private ex1: Example1Service) {}
+    constructor(private ex1: Example1Service) {}
 }
 ```
 
@@ -90,19 +90,21 @@ _my-orders.component.ts_
 
 ```ts
 @Component({
-  selector: 'my-orders',
-  template: ` <orders-item [order]="item"></orders-item> `,
+    selector: 'my-orders',
+    template: `
+        <orders-item [order]="item"></orders-item>
+    `,
 })
 export class MyOrdersComponent {
-  item: any = {
-    id: 1,
-    name: 'Box',
-    count: 3,
-  }
+    item: any = {
+        id: 1,
+        name: 'Box',
+        count: 3,
+    };
 
-  constructor() {
-    setTimeout(() => (this.item.count = 4), 3000)
-  }
+    constructor() {
+        setTimeout(() => (this.item.count = 4), 3000);
+    }
 }
 ```
 
@@ -110,20 +112,20 @@ _order-item.component.ts_
 
 ```ts
 @Component({
-  selector: 'order-item',
-  template: `
-    <div>
-      <p>Name: {{ item?.name }}</p>
-      <p>Count: {{ item?.count }}</p>
-    </div>
-  `,
+    selector: 'order-item',
+    template: `
+        <div>
+            <p>Name: {{ item?.name }}</p>
+            <p>Count: {{ item?.count }}</p>
+        </div>
+    `,
 })
 export class OrderItemComponent implements OnChanges {
-  @Input() item: any = null
+    @Input() item: any = null;
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
-  }
+    ngOnChanges(changes: SimpleChanges) {
+        console.log(changes);
+    }
 }
 ```
 
@@ -131,9 +133,9 @@ export class OrderItemComponent implements OnChanges {
 
 ```ts
 setTimeout(
-  () => (this.item = { ...this.item, ...{ count: 4 } }),
-  3000
-)
+    () => (this.item = { ...this.item, ...{ count: 4 } }),
+    3000
+);
 ```
 
 ## Дублирование подписчиков в RxJS
@@ -189,21 +191,21 @@ ngOnDestroy(){
 
 ```ts
 @Component({
-  selector: 'client-profile',
-  template: `
-    <div>
-      <p>Client: {{ client?.name }}</p>
-      <p>Address: {{ client?.address }}</p>
-    </div>
-  `,
+    selector: 'client-profile',
+    template: `
+        <div>
+            <p>Client: {{ client?.name }}</p>
+            <p>Address: {{ client?.address }}</p>
+        </div>
+    `,
 })
 export class ClientProfileComponent
-  implements AfterViewInit {
-  @Input() client: any = null
+    implements AfterViewInit {
+    @Input() client: any = null;
 
-  ngAfterViewInit() {
-    this.client.name = 'John Smith'
-  }
+    ngAfterViewInit() {
+        this.client.name = 'John Smith';
+    }
 }
 ```
 

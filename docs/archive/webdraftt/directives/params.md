@@ -8,48 +8,48 @@ description: Директива как и компонент может полу
 
 ```typescript
 import {
-  Directive,
-  HostListener,
-  Input,
-  HostBinding,
-  OnInit,
-} from '@angular/core'
+    Directive,
+    HostListener,
+    Input,
+    HostBinding,
+    OnInit,
+} from '@angular/core';
 
 @Directive({
-  selector: '[bold]',
+    selector: '[bold]',
 })
 export class BoldDirective implements OnInit {
-  @Input() selectedSize = '18px'
-  @Input() defaultSize = '16px'
+    @Input() selectedSize = '18px';
+    @Input() defaultSize = '16px';
 
-  private fontSize: string
-  private fontWeight = 'normal'
-  ngOnInit() {
-    this.fontSize = this.defaultSize
-  }
-  constructor() {}
+    private fontSize: string;
+    private fontWeight = 'normal';
+    ngOnInit() {
+        this.fontSize = this.defaultSize;
+    }
+    constructor() {}
 
-  @HostBinding('style.fontSize') get getFontSize() {
-    return this.fontSize
-  }
+    @HostBinding('style.fontSize') get getFontSize() {
+        return this.fontSize;
+    }
 
-  @HostBinding('style.fontWeight') get getFontWeight() {
-    return this.fontWeight
-  }
+    @HostBinding('style.fontWeight') get getFontWeight() {
+        return this.fontWeight;
+    }
 
-  @HostBinding('style.cursor') get getCursor() {
-    return 'pointer'
-  }
+    @HostBinding('style.cursor') get getCursor() {
+        return 'pointer';
+    }
 
-  @HostListener('mouseenter') onMouseEnter() {
-    this.fontWeight = 'bold'
-    this.fontSize = this.selectedSize
-  }
+    @HostListener('mouseenter') onMouseEnter() {
+        this.fontWeight = 'bold';
+        this.fontSize = this.selectedSize;
+    }
 
-  @HostListener('mouseleave') onMouseLeave() {
-    this.fontWeight = 'normal'
-    this.fontSize = this.defaultSize
-  }
+    @HostListener('mouseleave') onMouseLeave() {
+        this.fontWeight = 'normal';
+        this.fontSize = this.defaultSize;
+    }
 }
 ```
 
@@ -67,25 +67,25 @@ export class BoldDirective implements OnInit {
 Теперь задействуем эти параметры, изменив код компонента:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <p
-        bold
-        [selectedSize]="'28px'"
-        [defaultSize]="'14px'"
-      >
-        Hello Angular 2
-      </p>
-      <p>
-        Angular 2 представляет модульную архитектуру
-        приложения
-      </p>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <p
+                bold
+                [selectedSize]="'28px'"
+                [defaultSize]="'14px'"
+            >
+                Hello Angular 2
+            </p>
+            <p>
+                Angular 2 представляет модульную архитектуру
+                приложения
+            </p>
+        </div>
+    `,
 })
 export class AppComponent {}
 ```
@@ -94,7 +94,7 @@ export class AppComponent {}
 
 ```html
 <p bold [selectedSize]="'28px'" [defaultSize]="'14px'">
-  Hello Angular 2
+    Hello Angular 2
 </p>
 ```
 
@@ -114,6 +114,6 @@ export class AppComponent {}
 
 ```html
 <p [bold]="'28px'" [defaultSize]="'14px'">
-  Hello Angular 2
+    Hello Angular 2
 </p>
 ```

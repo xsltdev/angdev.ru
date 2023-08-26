@@ -9,27 +9,27 @@ description: Angular поддерживает программную навиг�
 Так, определим в компоненте кнопку и обработчик кнопки, который будет перенаправлять на определенный ресурс:
 
 ```typescript
-import { Component } from '@angular/core'
-import { Router } from '@angular/router'
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <nav>
-        <a routerLink="">Главная</a>
-        <a routerLink="/about">О сайте</a>
-      </nav>
-      <router-outlet></router-outlet>
-      <button (click)="goHome()">На главную</button>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <nav>
+                <a routerLink="">Главная</a>
+                <a routerLink="/about">О сайте</a>
+            </nav>
+            <router-outlet></router-outlet>
+            <button (click)="goHome()">На главную</button>
+        </div>
+    `,
 })
 export class AppComponent {
-  constructor(private router: Router) {}
-  goHome() {
-    this.router.navigate([''])
-  }
+    constructor(private router: Router) {}
+    goHome() {
+        this.router.navigate(['']);
+    }
 }
 ```
 
@@ -40,63 +40,66 @@ export class AppComponent {
 Изменим компонент `AppComponent`, добавив форму для ввода параметров:
 
 ```typescript
-import { Component } from '@angular/core'
-import { Router } from '@angular/router'
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 export class Item {
-  id: number
-  product: string
-  price: number
+    id: number;
+    product: string;
+    price: number;
 }
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <nav>
-        <a routerLink="">Главная</a>
-        <a routerLink="/about">О сайте</a>
-      </nav>
-      <div class="form-group">
-        <h3>Параметры объекта</h3>
-        <input
-          type="number"
-          [(ngModel)]="item.id"
-          class="form-control"
-          placeholder="Номер модели"
-        /><br />
-        <input
-          type="number"
-          [(ngModel)]="item.price"
-          class="form-control"
-          placeholder="Цена"
-        /><br />
-        <input
-          [(ngModel)]="item.product"
-          class="form-control"
-          placeholder="Товар"
-        /><br />
-        <button (click)="goToItem(item)" class="btn">
-          Перейти
-        </button>
-      </div>
-      <router-outlet></router-outlet>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <nav>
+                <a routerLink="">Главная</a>
+                <a routerLink="/about">О сайте</a>
+            </nav>
+            <div class="form-group">
+                <h3>Параметры объекта</h3>
+                <input
+                    type="number"
+                    [(ngModel)]="item.id"
+                    class="form-control"
+                    placeholder="Номер модели"
+                /><br />
+                <input
+                    type="number"
+                    [(ngModel)]="item.price"
+                    class="form-control"
+                    placeholder="Цена"
+                /><br />
+                <input
+                    [(ngModel)]="item.product"
+                    class="form-control"
+                    placeholder="Товар"
+                /><br />
+                <button
+                    (click)="goToItem(item)"
+                    class="btn"
+                >
+                    Перейти
+                </button>
+            </div>
+            <router-outlet></router-outlet>
+        </div>
+    `,
 })
 export class AppComponent {
-  item: Item = new Item()
+    item: Item = new Item();
 
-  constructor(private router: Router) {}
+    constructor(private router: Router) {}
 
-  goToItem(myItem: Item) {
-    this.router.navigate(['/item', myItem.id], {
-      queryParams: {
-        product: myItem.product,
-        price: myItem.price,
-      },
-    })
-  }
+    goToItem(myItem: Item) {
+        this.router.navigate(['/item', myItem.id], {
+            queryParams: {
+                product: myItem.product,
+                price: myItem.price,
+            },
+        });
+    }
 }
 ```
 

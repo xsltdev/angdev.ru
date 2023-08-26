@@ -8,8 +8,8 @@ description: Манипуляция формами (Angular forms) осущес�
 
 С точки зрения Angular различают формы:
 
-- Стандартные (Template-driven);
-- Реактивные (Reactive).
+-   Стандартные (Template-driven);
+-   Реактивные (Reactive).
 
 Данная глава посвящена рассмотрению стандартных форм, [реактивные](angular-reactive-forms.md) рассмотрены отдельно.
 
@@ -21,16 +21,16 @@ description: Манипуляция формами (Angular forms) осущес�
 
 ```html
 <form>
-  <div>
-    <label>Логин</label>
-    <input type="text" required name="login" />
-  </div>
-  <div>
-    <label>Пароль</label>
-    <input type="password" required name="password" />
-  </div>
+    <div>
+        <label>Логин</label>
+        <input type="text" required name="login" />
+    </div>
+    <div>
+        <label>Пароль</label>
+        <input type="password" required name="password" />
+    </div>
 
-  <button>Войти</button>
+    <button>Войти</button>
 </form>
 ```
 
@@ -38,20 +38,20 @@ description: Манипуляция формами (Angular forms) осущес�
 
 ```ts
 loginForm: any = {
-  login: '',
-  password: '',
-}
+    login: '',
+    password: '',
+};
 ```
 
 Чтобы связать объект `loginForm` с соответствующими полями, используется директива [`[(ngModel)]`](https://angular.io/api/forms/NgModel).
 
 ```html
 <input
-  type="text"
-  [(ngModel)]="loginForm.login"
-  id="login"
-  required
-  name="login"
+    type="text"
+    [(ngModel)]="loginForm.login"
+    id="login"
+    required
+    name="login"
 />
 ```
 
@@ -61,9 +61,9 @@ loginForm: any = {
 
 ```ts
 loginForm: any = {
-  login: 'Логин по умолчанию',
-  password: '',
-}
+    login: 'Логин по умолчанию',
+    password: '',
+};
 ```
 
 Чтобы убедиться, что данные передаются и из Angular формы в обратную сторону, создадим метод `printForm()`, который будет выводить значение в консоль.
@@ -78,24 +78,24 @@ printForm(){
 
 ```html
 <form>
-  <div>
-    <label>Логин</label>
-    <input
-      type="text"
-      [(ngModel)]="loginForm.login"
-      required
-    />
-  </div>
-  <div>
-    <label>Пароль</label>
-    <input
-      type="password"
-      [(ngModel)]="loginForm.password"
-      required
-    />
-  </div>
+    <div>
+        <label>Логин</label>
+        <input
+            type="text"
+            [(ngModel)]="loginForm.login"
+            required
+        />
+    </div>
+    <div>
+        <label>Пароль</label>
+        <input
+            type="password"
+            [(ngModel)]="loginForm.password"
+            required
+        />
+    </div>
 
-  <button (click)="printForm()">Войти</button>
+    <button (click)="printForm()">Войти</button>
 </form>
 ```
 
@@ -105,4 +105,4 @@ printForm(){
 
 ## Ссылки
 
-- [Forms](https://angular.io/start/forms)
+-   [Forms](https://angular.io/start/forms)

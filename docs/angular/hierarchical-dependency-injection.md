@@ -51,7 +51,7 @@ Angular имеет две иерархии инжекторов:
 
     Tree-shaking особенно полезен для библиотеки, поскольку приложение, использующее библиотеку, может не иметь необходимости в ее инжектировании. Подробнее о [tree-shakable providers](architecture-services.md#providing-services) читайте в [Введение в сервисы и инъекцию зависимостей](architecture-services.md).
 
-`ModuleInjector` конфигурируется свойствами `@NgModule.providers` и `NgModule.imports`. `ModuleInjector` - это уплощение всех массивов провайдеров, которые можно получить, рекурсивно следуя за `NgModule.imports`.
+`ModuleInjector` конфигурируется свойствами `@NgModule.providers` и `NgModule.imports`. `ModuleInjector` — это уплощение всех массивов провайдеров, которые можно получить, рекурсивно следуя за `NgModule.imports`.
 
 Дочерние иерархии `ModuleInjector` создаются при ленивой загрузке других `@NgModules`.
 
@@ -466,7 +466,7 @@ Emoji от FlowerService: &#x1F33A;
 </app-root>
 ```
 
-Когда `<app-root>` запрашивает `FlowerService`, задача инжектора - разрешить токен `FlowerService`. Разрешение токена происходит в два этапа:
+Когда `<app-root>` запрашивает `FlowerService`, задача инжектора — разрешить токен `FlowerService`. Разрешение токена происходит в два этапа:
 
 1.  Инжектор определяет начальное местоположение в логическом дереве и конечное местоположение поиска.
 

@@ -14,16 +14,16 @@ _date-pipe-example.component.ts_
 
 ```ts
 @Component({
-  selector: 'date-pipe-example',
-  template: `
-    <p>
-      Transformed date:
-      {{ exampleDate | date: 'dd.MM.yyyy' }}
-    </p>
-  `,
+    selector: 'date-pipe-example',
+    template: `
+        <p>
+            Transformed date:
+            {{ exampleDate | date: 'dd.MM.yyyy' }}
+        </p>
+    `,
 })
 export class DatePipeExampleComponent {
-  exampleDate = new Date(2000, 12, 12)
+    exampleDate = new Date(2000, 12, 12);
 }
 ```
 
@@ -33,10 +33,10 @@ export class DatePipeExampleComponent {
 
 Ниже приведен список некоторых наиболее часто используемых встроенных Angular pipe:
 
-- `date` - преобразование даты;
-- `number` - преобразование числа;
-- `uppercase` (`lowercase`) - приведение строкового значения в верхний (нижний) регистр;
-- `slice` - используется для ограничения вывода информации, в качестве параметров принимает начало и конец интервала отображаемых данных, применяется совместно с директивой `*ngFor`.
+-   `date` - преобразование даты;
+-   `number` - преобразование числа;
+-   `uppercase` (`lowercase`) - приведение строкового значения в верхний (нижний) регистр;
+-   `slice` - используется для ограничения вывода информации, в качестве параметров принимает начало и конец интервала отображаемых данных, применяется совместно с директивой `*ngFor`.
 
 Пример использования `slice`.
 
@@ -44,13 +44,15 @@ _slice-pipe-example.component.ts_
 
 ```ts
 @Component({
-  selector: 'slice-pipe-example',
-  template: `
-    <p *ngFor="let user of list | slice: 0:1">{{ user }}</p>
-  `,
+    selector: 'slice-pipe-example',
+    template: `
+        <p *ngFor="let user of list | slice: 0:1">
+            {{ user }}
+        </p>
+    `,
 })
 export class SlicePipeExampleComponent {
-  list = ['Jack', 'Alice', 'Michael']
+    list = ['Jack', 'Alice', 'Michael'];
 }
 ```
 
@@ -73,14 +75,14 @@ _cut-text.pipe.ts_
 ```ts
 @Pipe({ name: 'cutText' })
 export class CutTextPipe implements PipeTransform {
-  transform(
-    value: string,
-    maxLength: number = 200
-  ): string {
-    if (value.length > maxLength)
-      return `${value.substring(0, maxLength)}...`
-    else return value
-  }
+    transform(
+        value: string,
+        maxLength: number = 200
+    ): string {
+        if (value.length > maxLength)
+            return `${value.substring(0, maxLength)}...`;
+        else return value;
+    }
 }
 ```
 
@@ -117,4 +119,4 @@ Angular pipe - это класс, который предваряется дек
 
 ## Ссылки
 
-- [Pipes](https://angular.io/guide/pipes)
+-   [Pipes](https://angular.io/guide/pipes)

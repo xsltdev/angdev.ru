@@ -9,31 +9,31 @@ description: Директива ngClass позволяет определить 
 Директива **`ngClass`** позволяет определить набор классов, которые будут применяться к элементу. Например, определим следующий компонент:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div [ngClass]="{ verdanaFont: true }">
-      <h1>Hello Angular 2</h1>
-      <p [ngClass]="{ segoePrintFont: true }">
-        Angular 5 представляет модульную архитектуру
-        приложения
-      </p>
-    </div>
-  `,
-  styles: [
-    `
-      .verdanaFont {
-        font-size: 13px;
-        font-family: Verdana;
-      }
-      .segoePrintFont {
-        font-size: 14px;
-        font-family: 'Segoe Print';
-      }
+    selector: 'my-app',
+    template: `
+        <div [ngClass]="{ verdanaFont: true }">
+            <h1>Hello Angular 2</h1>
+            <p [ngClass]="{ segoePrintFont: true }">
+                Angular 5 представляет модульную архитектуру
+                приложения
+            </p>
+        </div>
     `,
-  ],
+    styles: [
+        `
+            .verdanaFont {
+                font-size: 13px;
+                font-family: Verdana;
+            }
+            .segoePrintFont {
+                font-size: 14px;
+                font-family: 'Segoe Print';
+            }
+        `,
+    ],
 })
 export class AppComponent {}
 ```
@@ -50,13 +50,14 @@ export class AppComponent {}
 
 ```html
 <div [class.verdanaFont]="true">
-  <h1>Hello Angular 5</h1>
-  <p
-    [class.verdanaFont]="false"
-    [class.segoePrintFont]="true"
-  >
-    Angular 7 представляет модульную архитектуру приложения
-  </p>
+    <h1>Hello Angular 5</h1>
+    <p
+        [class.verdanaFont]="false"
+        [class.segoePrintFont]="true"
+    >
+        Angular 7 представляет модульную архитектуру
+        приложения
+    </p>
 </div>
 ```
 
@@ -67,41 +68,41 @@ export class AppComponent {}
 Директива **`ngStyle`** позволяет задать набор стилей, которые применяются к элементу. В качестве значения директива принимает js-объект, в котором ключи — названия свойств CSS:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div
-      [ngStyle]="{
-        'font-size': '13px',
-        'font-family': 'Verdana'
-      }"
-    >
-      <h1>Hello Angular 5</h1>
-      <p
-        [ngStyle]="{
-          'font-size': '14px',
-          'font-family': 'Segoe Print'
-        }"
-      >
-        Angular 5 представляет модульную архитектуру
-        приложения
-      </p>
-    </div>
-  `,
-  styles: [
-    `
-      .verdanaFont {
-        font-size: 13px;
-        font-family: Verdana;
-      }
-      .segoePrintFont {
-        font-size: 14px;
-        font-family: 'Segoe Print';
-      }
+    selector: 'my-app',
+    template: `
+        <div
+            [ngStyle]="{
+                'font-size': '13px',
+                'font-family': 'Verdana'
+            }"
+        >
+            <h1>Hello Angular 5</h1>
+            <p
+                [ngStyle]="{
+                    'font-size': '14px',
+                    'font-family': 'Segoe Print'
+                }"
+            >
+                Angular 5 представляет модульную архитектуру
+                приложения
+            </p>
+        </div>
     `,
-  ],
+    styles: [
+        `
+            .verdanaFont {
+                font-size: 13px;
+                font-family: Verdana;
+            }
+            .segoePrintFont {
+                font-size: 14px;
+                font-family: 'Segoe Print';
+            }
+        `,
+    ],
 })
 export class AppComponent {}
 ```
@@ -110,16 +111,17 @@ export class AppComponent {}
 
 ```html
 <div
-  [style.fontSize]="'13px'"
-  [style.fontFamily]="'Verdana'"
+    [style.fontSize]="'13px'"
+    [style.fontFamily]="'Verdana'"
 >
-  <h1>Hello Angular 7</h1>
-  <p
-    [style.fontSize]="'14px'"
-    [style.fontFamily]="'Segoe Print'"
-  >
-    Angular 7 представляет модульную архитектуру приложения
-  </p>
+    <h1>Hello Angular 7</h1>
+    <p
+        [style.fontSize]="'14px'"
+        [style.fontFamily]="'Segoe Print'"
+    >
+        Angular 7 представляет модульную архитектуру
+        приложения
+    </p>
 </div>
 ```
 
@@ -128,34 +130,34 @@ export class AppComponent {}
 Директивы `ngClass` и `ngStyle` позволяют устанавливать привязку к выражениям, благодаря чему мы можем динамически менять стили или классы. Например:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div [ngClass]="{ invisible: visibility }">
-      <h1>Hello Angular 5</h1>
-      <p>
-        Angular 5 представляет модульную архитектуру
-        приложения
-      </p>
-    </div>
-    <button (click)="toggle()">Toggle</button>
-  `,
-  styles: [
-    `
-      .invisible {
-        display: none;
-      }
+    selector: 'my-app',
+    template: `
+        <div [ngClass]="{ invisible: visibility }">
+            <h1>Hello Angular 5</h1>
+            <p>
+                Angular 5 представляет модульную архитектуру
+                приложения
+            </p>
+        </div>
+        <button (click)="toggle()">Toggle</button>
     `,
-  ],
+    styles: [
+        `
+            .invisible {
+                display: none;
+            }
+        `,
+    ],
 })
 export class AppComponent {
-  visibility: boolean = true
-  // переключаем переменную
-  toggle() {
-    this.visibility = !this.visibility
-  }
+    visibility: boolean = true;
+    // переключаем переменную
+    toggle() {
+        this.visibility = !this.visibility;
+    }
 }
 ```
 
@@ -171,6 +173,6 @@ export class AppComponent {
 
 ```html
 <div
-  [style.display]="visibility==true?'block':'none'"
+    [style.display]="visibility==true?'block':'none'"
 ></div>
 ```

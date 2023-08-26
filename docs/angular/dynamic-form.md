@@ -254,7 +254,7 @@ export class DynamicFormQuestionComponent {
 }
 ```
 
-Цель `DynamicFormQuestionComponent` - представить типы вопросов, определенные в вашей модели. На данный момент у вас есть только два типа вопросов, но вы можете придумать гораздо больше.
+Цель `DynamicFormQuestionComponent` — представить типы вопросов, определенные в вашей модели. На данный момент у вас есть только два типа вопросов, но вы можете придумать гораздо больше.
 Оператор `ngSwitch` в шаблоне определяет, какой тип вопроса отображать.
 
 Переключатель использует директивы с селекторами [`formControlName`](https://angular.io/api/forms/FormControlName) и [`formGroup`](https://angular.io/api/forms/FormGroupDirective).

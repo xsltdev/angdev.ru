@@ -26,15 +26,16 @@ description: Dependency Injection - широко распространенны�
 
 ```ts
 @Component({
-  selector: 'deposits',
-  templateUrl: './deposits.component.html',
-  styleUrls: ['./deposits.component.scss'],
+    selector: 'deposits',
+    templateUrl: './deposits.component.html',
+    styleUrls: ['./deposits.component.scss'],
 })
 export class DepositsComponent {
-  constructor(
-    private localDepositsService: DepositsService,
-    @SkipSelf() private rootDepositsService: DepositsService
-  ) {}
+    constructor(
+        private localDepositsService: DepositsService,
+        @SkipSelf()
+        private rootDepositsService: DepositsService
+    ) {}
 }
 ```
 
@@ -79,18 +80,18 @@ export class DepositsService {}
 
 ```ts
 providers: [
-  { provide: DepositsService, useClass: OtherService },
-]
+    { provide: DepositsService, useClass: OtherService },
+];
 ```
 
 Так при обращении к `DepositsService` будет использован `OtherService`.
 
 Возможные свойства объекта конфигурации:
 
-- `useClass` - каждый раз при обращении к зависимости, указанной в `provide`, создается новый экземпляр класса, указанного в `useClass`;
-- `useExisting` - каждый раз при обращении к зависимости, указанной в `provide`, будет использоваться один и тот же экземпляр класса, указанного в `useExisting`;
-- `useValue` - позволяет при обращении к зависимости, указанной в `provide`, использовать предопределенный объект;
-- `useFactory` и `deps` - эти свойства позволяют создавать переопределяющее значение динамически уже в процессе работы приложения.
+-   `useClass` - каждый раз при обращении к зависимости, указанной в `provide`, создается новый экземпляр класса, указанного в `useClass`;
+-   `useExisting` - каждый раз при обращении к зависимости, указанной в `provide`, будет использоваться один и тот же экземпляр класса, указанного в `useExisting`;
+-   `useValue` - позволяет при обращении к зависимости, указанной в `provide`, использовать предопределенный объект;
+-   `useFactory` и `deps` - эти свойства позволяют создавать переопределяющее значение динамически уже в процессе работы приложения.
 
 Например, вы не хотите внедрять сервис `AuthService` в сервис `UserService`, который необходим, чтобы записать в данные пользователя дату и время последней авторизации. В такой ситуации идеально подойдет factory provider.
 
@@ -106,20 +107,20 @@ _user-factory.service.ts_
 
 ```ts
 let userServiceFactory = (auth: AuthService) => {
-  return new UserService(auth.lastAuthDate)
-}
+    return new UserService(auth.lastAuthDate);
+};
 ```
 
 _app.module.ts_
 
 ```ts
 providers: [
-  {
-    provide: UserService,
-    useFactory: userServiceFactory,
-    deps: [AuthService],
-  },
-]
+    {
+        provide: UserService,
+        useFactory: userServiceFactory,
+        deps: [AuthService],
+    },
+];
 ```
 
 В deps перечисляются все зависимости, необходимые для создания factory provider.
@@ -131,27 +132,27 @@ providers: [
 _default-settings-injection-token.ts_
 
 ```ts
-import { InjectionToken } from '@angular/core'
+import { InjectionToken } from '@angular/core';
 
 export const DEFAULT_SETTINGS = new InjectionToken<string>(
-  'settings',
-  {
-    providedIn: 'root',
-  }
-)
+    'settings',
+    {
+        providedIn: 'root',
+    }
+);
 ```
 
 _app.module.ts_
 
 ```ts
-import { DEFAULT_SETTINGS } from './default-settings-injection-token.ts'
+import { DEFAULT_SETTINGS } from './default-settings-injection-token.ts';
 
 providers: [
-  {
-    provide: DEFAULT_SETTINGS,
-    useValue: { logging: true, requireAuth: false },
-  },
-]
+    {
+        provide: DEFAULT_SETTINGS,
+        useValue: { logging: true, requireAuth: false },
+    },
+];
 ```
 
 Для создания injection token используется класс `InjectionToken`, конструктор которого в качестве первого параметра принимает строковое описание, а в качестве второго - объект с дополнительной конфигурацией (по умолчанию `undefined`).
@@ -163,25 +164,23 @@ providers: [
 _someComponent.ts_
 
 ```ts
-import { DEFAULT_SETTINGS } from './default-settings-injection-token.ts'
+import { DEFAULT_SETTINGS } from './default-settings-injection-token.ts';
 
 @Component({
-  selector: 'app-some',
-  template: `
-    <p>{{defaultSettings.logging}}</p>
-    <p>{{defaultSettings.requireAuth}}</p>
-  `
+    selector: 'app-some',
+    template: `
+        <p>{{ defaultSettings.logging }}</p>
+        <p>{{ defaultSettings.requireAuth }}</p>
+    `,
 })
 export class SomeComponent implements OnInit {
+    constructor(
+        @Inject(DEFAULT_SETTINGS) private defaultSettings
+    ) {}
 
-  constructor(
-    @Inject(DEFAULT_SETTINGS) private defaultSettings,
-  ) { }
-
-  ngOnInit() {
-    this.defaultSettings.requireAuth = true;
-  }
-
+    ngOnInit() {
+        this.defaultSettings.requireAuth = true;
+    }
 }
 ```
 
@@ -191,5 +190,5 @@ export class SomeComponent implements OnInit {
 
 ## Ссылки
 
-- [Dependency Injection in Angular](https://angular.io/guide/dependency-injection)
-- [Dependency Injection in Action](https://angular.io/guide/dependency-injection-in-action)
+-   [Dependency Injection in Angular](https://angular.io/guide/dependency-injection)
+-   [Dependency Injection in Action](https://angular.io/guide/dependency-injection-in-action)

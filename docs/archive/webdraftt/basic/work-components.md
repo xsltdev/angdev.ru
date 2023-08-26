@@ -13,22 +13,22 @@ description: Кроме основных компонентов в прилож�
 Определим в файле `child.component.ts` следующий код:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: ` <h2>Добро пожаловать {{ name }}!</h2> `,
-  styles: [
-    `
-      h2,
-      p {
-        color: red;
-      }
-    `,
-  ],
+    selector: 'child-comp',
+    template: ` <h2>Добро пожаловать {{ name }}!</h2> `,
+    styles: [
+        `
+            h2,
+            p {
+                color: red;
+            }
+        `,
+    ],
 })
 export class ChildComponent {
-  name = 'Евгений'
+    name = 'Евгений';
 }
 ```
 
@@ -43,25 +43,25 @@ export class ChildComponent {
 Теперь изменим код компонента `AppComponent` в файле `app.component.ts`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp></child-comp>
-    <p>Привет {{ name }}</p>
-  `,
-  styles: [
-    `
-      h2,
-      p {
-        color: #333;
-      }
+    selector: 'my-app',
+    template: `
+        <child-comp></child-comp>
+        <p>Привет {{ name }}</p>
     `,
-  ],
+    styles: [
+        `
+            h2,
+            p {
+                color: #333;
+            }
+        `,
+    ],
 })
 export class AppComponent {
-  name = 'Петр'
+    name = 'Петр';
 }
 ```
 
@@ -72,15 +72,15 @@ export class AppComponent {
 Чтобы использовать все определенные в проекте компоненты, они должны быть указаны в главном модуле приложения. Определим в файле `app.module.ts` следующий модуль:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule } from '@angular/forms'
-import { AppComponent } from './app.component'
-import { ChildComponent } from './child.component'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { ChildComponent } from './child.component';
 @NgModule({
-  imports: [BrowserModule, FormsModule],
-  declarations: [AppComponent, ChildComponent],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule, FormsModule],
+    declarations: [AppComponent, ChildComponent],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -96,19 +96,19 @@ export class AppModule {}
 Даже если мы уберем из `ChildComponent` определение свойства `name`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: ` <h2>Добро пожаловать {{ name }}!</h2> `,
-  styles: [
-    `
-      h2,
-      p {
-        color: red;
-      }
-    `,
-  ],
+    selector: 'child-comp',
+    template: ` <h2>Добро пожаловать {{ name }}!</h2> `,
+    styles: [
+        `
+            h2,
+            p {
+                color: red;
+            }
+        `,
+    ],
 })
 export class ChildComponent {}
 ```
@@ -124,25 +124,25 @@ export class ChildComponent {}
 Элемент `ng-content` позволяет внедрять родительским компонентам код html в дочерние компоненты. Так, изменим компонент `ChildComponent` следующим образом:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: `
-    <ng-content></ng-content>
-    <p>Привет {{ name }}</p>
-  `,
-  styles: [
-    `
-      h2,
-      p {
-        color: navy;
-      }
+    selector: 'child-comp',
+    template: `
+        <ng-content></ng-content>
+        <p>Привет {{ name }}</p>
     `,
-  ],
+    styles: [
+        `
+            h2,
+            p {
+                color: navy;
+            }
+        `,
+    ],
 })
 export class ChildComponent {
-  name = 'Евгений'
+    name = 'Евгений';
 }
 ```
 
@@ -151,26 +151,28 @@ export class ChildComponent {
 И изменим код главного компонента AppComponent:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp
-      ><h2>Добро пожаловать {{ name }}!</h2></child-comp
-    >
-  `,
-  styles: [
-    `
-      h2,
-      p {
-        color: #333;
-      }
+    selector: 'my-app',
+    template: `
+        <child-comp
+            ><h2>
+                Добро пожаловать {{ name }}!
+            </h2></child-comp
+        >
     `,
-  ],
+    styles: [
+        `
+            h2,
+            p {
+                color: #333;
+            }
+        `,
+    ],
 })
 export class AppComponent {
-  name = 'Tom'
+    name = 'Tom';
 }
 ```
 

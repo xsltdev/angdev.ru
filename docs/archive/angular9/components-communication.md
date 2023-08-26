@@ -6,10 +6,10 @@ description: Взаимодействие компонентов
 
 Для передачи данных из одного Angular компонента в другой существует несколько способов:
 
-- [`@Input()`](https://angular.io/api/core/Input) свойства;
-- [`@Output()`](https://angular.io/api/core/Output) свойства;
-- [`@ViewChild()`](https://angular.io/api/core/ViewChild) свойства;
-- Сервис.
+-   [`@Input()`](https://angular.io/api/core/Input) свойства;
+-   [`@Output()`](https://angular.io/api/core/Output) свойства;
+-   [`@ViewChild()`](https://angular.io/api/core/ViewChild) свойства;
+-   Сервис.
 
 Первые три случая были рассмотрены ранее в предыдущих главах. Тем не менее в этой главе приведены примеры всех способов взаимодействия.
 
@@ -19,28 +19,28 @@ _parent-example.component.ts_
 
 ```ts
 @Component({
-  selector: 'parent-example',
-  template: `
-    <child-example
-      [title]="'Title'"
-      (dataChanged)="dataChangeHandler($event)"
-    ></child-example>
-  `,
+    selector: 'parent-example',
+    template: `
+        <child-example
+            [title]="'Title'"
+            (dataChanged)="dataChangeHandler($event)"
+        ></child-example>
+    `,
 })
 export class ParentExampleComponent
-  implements AfterViewInit {
-  @ViewChild(ChildExampleComponent)
-  viewChild: ChildExampleComponent
+    implements AfterViewInit {
+    @ViewChild(ChildExampleComponent)
+    viewChild: ChildExampleComponent;
 
-  constructor() {}
+    constructor() {}
 
-  ngAfterViewInit() {
-    console.log(this.viewChild)
-  }
+    ngAfterViewInit() {
+        console.log(this.viewChild);
+    }
 
-  dataChangeHandler(data) {
-    console.log(data)
-  }
+    dataChangeHandler(data) {
+        console.log(data);
+    }
 }
 ```
 
@@ -48,33 +48,33 @@ _child-example.component.ts_
 
 ```ts
 @Component({
-  selector: 'child-example',
-  template: `
-    <div>
-      <h1 [textContent]="title"></h1>
-      <a
-        href="#"
-        (click)="sendMessage()"
-        [textContent]="label"
-      ></a>
-    </div>
-  `,
+    selector: 'child-example',
+    template: `
+        <div>
+            <h1 [textContent]="title"></h1>
+            <a
+                href="#"
+                (click)="sendMessage()"
+                [textContent]="label"
+            ></a>
+        </div>
+    `,
 })
 export class ChildExampleComponent {
-  @Input() title: string
-  @Output() dataChanged: EventEmitter<
-    any
-  > = new EventEmitter<any>()
+    @Input() title: string;
+    @Output() dataChanged: EventEmitter<
+        any
+    > = new EventEmitter<any>();
 
-  label: string = 'Send message'
+    label: string = 'Send message';
 
-  constructor() {}
+    constructor() {}
 
-  sendMessage(data) {
-    this.dataChanged.emit({
-      msg: 'Message from ChildExample',
-    })
-  }
+    sendMessage(data) {
+        this.dataChanged.emit({
+            msg: 'Message from ChildExample',
+        });
+    }
 }
 ```
 
@@ -110,7 +110,7 @@ _some-data.service.ts_
 ```ts
 @Injectable({ providedIn: 'root' })
 export class SomeDataService {
-  data: number = 1
+    data: number = 1;
 }
 ```
 
@@ -118,14 +118,14 @@ _first.component.ts_
 
 ```ts
 @Component({
-  selector: 'the-first',
-  template: ` <p>First</p> `,
+    selector: 'the-first',
+    template: ` <p>First</p> `,
 })
 export class FirstComponent {
-  constructor(private someSrv: SomeDataService) {
-    console.log(someSrv.data)
-    someSrv.data = 3
-  }
+    constructor(private someSrv: SomeDataService) {
+        console.log(someSrv.data);
+        someSrv.data = 3;
+    }
 }
 ```
 
@@ -133,13 +133,13 @@ _second.component.ts_
 
 ```ts
 @Component({
-  selector: 'the-second',
-  template: ` <p>Second</p> `,
+    selector: 'the-second',
+    template: ` <p>Second</p> `,
 })
 export class SecondComponent {
-  constructor(private someSrv: SomeDataService) {
-    console.log(someSrv.data)
-  }
+    constructor(private someSrv: SomeDataService) {
+        console.log(someSrv.data);
+    }
 }
 ```
 
@@ -149,4 +149,4 @@ export class SecondComponent {
 
 ## Ссылки
 
-- [Component Interaction](https://angular.io/guide/component-interaction)
+-   [Component Interaction](https://angular.io/guide/component-interaction)

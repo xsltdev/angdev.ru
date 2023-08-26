@@ -10,8 +10,8 @@ description: Angular Universal - это технология, позволяющ
 
 Создание приложения с использованием Angular Universal имеет следующие преимущества:
 
-- более эффективная работа поисковых роботов (SEO), поскольку они работают с уже сгенерированной страницей;
-- более быстрая работа приложения на мобильных и слабых по производительности устройствах.
+-   более эффективная работа поисковых роботов (SEO), поскольку они работают с уже сгенерированной страницей;
+-   более быстрая работа приложения на мобильных и слабых по производительности устройствах.
 
 Angular Universal приложение создается на основе модуля `platform-server`, обычное Angular приложение - на основе `platform-browser`.
 
@@ -25,10 +25,10 @@ Platform-server обрабатывает запрос, содержащий ша
 
 Для начала работы необходимы следующие npm-модули:
 
-- `@angular/platform-server` - содержит необходимые для Angular Universal компоненты;
-- `@nguniversal/module-map-ngfactory-loader` - нужен для асинхронной загрузки;
-- `@nguniversal/express-engine` - ядро Express фреймворка;
-- `ts-loader` - модуль для компиляции кода ts в js.
+-   `@angular/platform-server` - содержит необходимые для Angular Universal компоненты;
+-   `@nguniversal/module-map-ngfactory-loader` - нужен для асинхронной загрузки;
+-   `@nguniversal/express-engine` - ядро Express фреймворка;
+-   `ts-loader` - модуль для компиляции кода ts в js.
 
 Теперь сразу рассмотрим пример, который можно скачать по [ссылке](angular-ssr.zip).
 
@@ -68,4 +68,4 @@ node dist/server
 
 ## Ссылки
 
-- [Server-side Rendering (SSR): An intro to Angular Universal](https://angular.io/guide/universal)
+-   [Server-side Rendering (SSR): An intro to Angular Universal](https://angular.io/guide/universal)

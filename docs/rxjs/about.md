@@ -8,12 +8,12 @@ description: RxJS представляет собой библиотеку, по
 
 Ключевые понятия RxJS:
 
-- `Observable`;
-- `Observer`;
-- `Subject`;
-- `Scheduler`;
-- `Subscription`;
-- `Operator`.
+-   `Observable`;
+-   `Observer`;
+-   `Subject`;
+-   `Scheduler`;
+-   `Subscription`;
+-   `Operator`.
 
 RxJS оперирует объектами `Observable`, которые существуют в нескольких разновидностях (`Subject`, `Scheduler`) и реализуют принцип push-систем передачи данных от "поставщика" к "потребителю".
 
@@ -35,7 +35,7 @@ RxJS оперирует объектами `Observable`, которые суще
 import { fromEvent } from 'rxjs';
 
 fromEvent(document, 'mousemove').subscribe((ev) => {
-  console.log('Mouse event: ', ev);
+    console.log('Mouse event: ', ev);
 });
 ```
 
@@ -43,4 +43,4 @@ fromEvent(document, 'mousemove').subscribe((ev) => {
 
 ## Ссылки
 
-- [Библиотека RxJS](https://rxjs.dev/)
+-   [Библиотека RxJS](https://rxjs.dev/)

@@ -24,11 +24,11 @@ ng build --prod
 
 Оптимизированная сборка включает в себя:
 
-- компиляцию в режиме AOT;
-- активацию режима `prod` (в момент запуска приложения по умолчанию вызывается метод [`enableProdMode()`](https://angular.io/api/core/enableProdMode));
-- объединение всех файлов в несколько больших (bundles);
-- минификацию и замену названий свойств и методов на более короткие;
-- удаление неиспользуемого кода.
+-   компиляцию в режиме AOT;
+-   активацию режима `prod` (в момент запуска приложения по умолчанию вызывается метод [`enableProdMode()`](https://angular.io/api/core/enableProdMode));
+-   объединение всех файлов в несколько больших (bundles);
+-   минификацию и замену названий свойств и методов на более короткие;
+-   удаление неиспользуемого кода.
 
 В режиме `prod` приложение работает гораздо быстрее за счет отключения специфических для режима разработки проверок, например, за счет отключения двойного запуска механизма `ChangeDetection`.
 
@@ -68,8 +68,8 @@ ng build --prod --build-optimizer --deploy-url /test/
 
 ```html
 <link
-  rel="stylesheet"
-  href="/test/styles.ddf543754291862b7f90.css"
+    rel="stylesheet"
+    href="/test/styles.ddf543754291862b7f90.css"
 />
 ```
 
@@ -77,4 +77,4 @@ ng build --prod --build-optimizer --deploy-url /test/
 
 ## Ссылки
 
-- [Deployment](https://angular.io/start/deployment)
+-   [Deployment](https://angular.io/start/deployment)

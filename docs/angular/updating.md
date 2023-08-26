@@ -16,7 +16,7 @@ description: Как и Web и вся веб-экосистема, Angular пос
 
 !!!note ""
 
-    Если вы сейчас используете AngularJS, смотрите [Upgrading from AngularJS](https://angular.io/guide/upgrade). _AngularJS_ - это название для всех версий Angular v1.x.
+    Если вы сейчас используете AngularJS, смотрите [Upgrading from AngularJS](https://angular.io/guide/upgrade). _AngularJS_ — это название для всех версий Angular v1.x.
 
 ## Получение уведомлений о новых релизах {: #announce}
 
@@ -24,7 +24,7 @@ description: Как и Web и вся веб-экосистема, Angular пос
 
 ## Узнайте о новых возможностях {: #learn}
 
-Что нового? Что изменилось? Мы рассказываем о самых важных вещах, которые вам нужно знать, в блоге Angular в [анонсах релизов](https://blog.angular.io/tagged/release%20notes 'Angular blog - release announcements').
+Что нового? Что изменилось? Мы рассказываем о самых важных вещах, которые вам нужно знать, в блоге Angular в [анонсах релизов](https://blog.angular.io/tagged/release%20notes 'Angular blog — release announcements').
 
 Чтобы просмотреть полный список изменений, организованный по версиям, смотрите [Angular change log](https://github.com/angular/angular/blob/main/CHANGELOG.md 'Angular change log').
 
@@ -54,11 +54,11 @@ description: Как и Web и вся веб-экосистема, Angular пос
 
 -   Анонсы релизов:
 
-    [Angular blog - release announcements](https://blog.angular.io/tagged/release%20notes 'Angular blog announcements about recent releases')
+    [Angular blog — release announcements](https://blog.angular.io/tagged/release%20notes 'Angular blog announcements about recent releases')
 
 -   Анонсы релизов (старше):
 
-    [Angular blog - announcements about releases before August 2017](https://blog.angularjs.org/search?q=available&by-date=true 'Angular blog announcements about releases before August 2017')
+    [Angular blog — announcements about releases before August 2017](https://blog.angularjs.org/search?q=available&by-date=true 'Angular blog announcements about releases before August 2017')
 
 -   Подробности релиза:
 

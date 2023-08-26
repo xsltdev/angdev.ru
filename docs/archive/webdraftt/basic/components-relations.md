@@ -7,25 +7,25 @@ description: Взаимодействие компонентов, по умол�
 В прошлой теме было рассмотрено, как вызывать компонент из главного компонента. Однако по умолчанию эти компоненты никак не взаимодействуют, они независимы. Каждый компонент определяет свои выражения привязки. Однако что, если мы хотим свойства дочернего компонента привязать к свойствам из главного компонента? Для этого определим следующий дочерний компонент:
 
 ```typescript
-import { Input, Component } from '@angular/core'
+import { Input, Component } from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: `
-    <p>Имя пользователя: {{ userName }}</p>
-    <p>Возраст пользователя: {{ userAge }}</p>
-  `,
+    selector: 'child-comp',
+    template: `
+        <p>Имя пользователя: {{ userName }}</p>
+        <p>Возраст пользователя: {{ userAge }}</p>
+    `,
 })
 export class ChildComponent {
-  @Input() userName: string
-  @Input() userAge: number
+    @Input() userName: string;
+    @Input() userAge: number;
 }
 ```
 
 Ключевым моментом здесь является определение входных свойств с помощью декоратора `@Input()`. И естественно чтобы использовать декоратор, его надо импортировать:
 
 ```typescript
-import { Input } from '@angular/core'
+import { Input } from '@angular/core';
 ```
 
 Ключевой особенностью таких входных свойств является то, что они могут устанавливаться извне, например, из главного компонента.
@@ -33,21 +33,21 @@ import { Input } from '@angular/core'
 Теперь изменим код главного компонента:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp
-      [userName]="name"
-      [userAge]="age"
-    ></child-comp>
-    <input type="text" [(ngModel)]="name" />
-  `,
+    selector: 'my-app',
+    template: `
+        <child-comp
+            [userName]="name"
+            [userAge]="age"
+        ></child-comp>
+        <input type="text" [(ngModel)]="name" />
+    `,
 })
 export class AppComponent {
-  name: string = 'Tom'
-  age: number = 24
+    name: string = 'Tom';
+    age: number = 24;
 }
 ```
 
@@ -70,49 +70,49 @@ export class AppComponent {
 Например, пусть в главном компоненте устанавливается возраст пользователя:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp
-      [userName]="name"
-      [userAge]="age"
-    ></child-comp>
-    <input type="number" [(ngModel)]="age" />
-  `,
+    selector: 'my-app',
+    template: `
+        <child-comp
+            [userName]="name"
+            [userAge]="age"
+        ></child-comp>
+        <input type="number" [(ngModel)]="age" />
+    `,
 })
 export class AppComponent {
-  name: string = 'Tom'
-  age: number = 24
+    name: string = 'Tom';
+    age: number = 24;
 }
 ```
 
 А в дочернем компоненте будем получать переданный возраст через сеттер:
 
 ```typescript
-import { Input, Component } from '@angular/core'
+import { Input, Component } from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: `
-    <p>Имя пользователя: {{ userName }}</p>
-    <p>Возраст пользователя: {{ userAge }}</p>
-  `,
+    selector: 'child-comp',
+    template: `
+        <p>Имя пользователя: {{ userName }}</p>
+        <p>Возраст пользователя: {{ userAge }}</p>
+    `,
 })
 export class ChildComponent {
-  @Input() userName: string
-  _userAge: number
+    @Input() userName: string;
+    _userAge: number;
 
-  @Input()
-  set userAge(age: number) {
-    if (age < 0) this._userAge = 0
-    else if (age > 100) this._userAge = 100
-    else this._userAge = age
-  }
-  get userAge() {
-    return this._userAge
-  }
+    @Input()
+    set userAge(age: number) {
+        if (age < 0) this._userAge = 0;
+        else if (age > 100) this._userAge = 100;
+        else this._userAge = age;
+    }
+    get userAge() {
+        return this._userAge;
+    }
 }
 ```
 

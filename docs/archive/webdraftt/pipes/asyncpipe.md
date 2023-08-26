@@ -11,38 +11,38 @@ description: AsyncPipe позволяет получить результат а
 Используем `AsyncPipe`:
 
 ```typescript
-import { Component } from '@angular/core'
-import { Observable, interval } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { Component } from '@angular/core';
+import { Observable, interval } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <p>Модель: {{ phone | async }}</p>
-    <button (click)="showPhones()">
-      Посмотреть модели
-    </button>
-  `,
+    selector: 'my-app',
+    template: `
+        <p>Модель: {{ phone | async }}</p>
+        <button (click)="showPhones()">
+            Посмотреть модели
+        </button>
+    `,
 })
 export class AppComponent {
-  phones = [
-    'iPhone 7',
-    'LG G 5',
-    'Honor 9',
-    'Idol S4',
-    'Nexus 6P',
-  ]
+    phones = [
+        'iPhone 7',
+        'LG G 5',
+        'Honor 9',
+        'Idol S4',
+        'Nexus 6P',
+    ];
 
-  phone: Observable<string>
-  constructor() {
-    this.showPhones()
-  }
+    phone: Observable<string>;
+    constructor() {
+        this.showPhones();
+    }
 
-  showPhones() {
-    this.phone = interval(500).pipe(
-      map((i: number) => this.phones[i])
-    )
-  }
+    showPhones() {
+        this.phone = interval(500).pipe(
+            map((i: number) => this.phones[i])
+        );
+    }
 }
 ```
 
@@ -59,16 +59,16 @@ export class AppComponent {
 В файле `http.service.ts` определим сервис, который получает данные с сервера:
 
 ```typescript
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class HttpService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getUsers() {
-    return this.http.get('users.json')
-  }
+    getUsers() {
+        return this.http.get('users.json');
+    }
 }
 ```
 
@@ -76,47 +76,47 @@ export class HttpService {
 
 ```json
 [
-  {
-    "name": "Bob",
-    "age": 28
-  },
-  {
-    "name": "Tom",
-    "age": 45
-  },
-  {
-    "name": "Alice",
-    "age": 32
-  }
+    {
+        "name": "Bob",
+        "age": 28
+    },
+    {
+        "name": "Tom",
+        "age": 45
+    },
+    {
+        "name": "Alice",
+        "age": 32
+    }
 ]
 ```
 
 В файле `app.component.ts` использует сервис:
 
 ```typescript
-import { Component, OnInit } from '@angular/core'
-import { HttpService } from './http.service'
-import { Observable } from 'rxjs'
-import { User } from './user'
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from './http.service';
+import { Observable } from 'rxjs';
+import { User } from './user';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <ul>
-      <li *ngFor="let user of users | async">
-        <p>Имя пользователя: {{ user.name }}</p>
-        <p>Возраст пользователя: {{ user.age }}</p>
-      </li>
-    </ul>
-  `,
-  providers: [HttpService],
+    selector: 'my-app',
+    template: `
+        <ul>
+            <li *ngFor="let user of users | async">
+                <p>Имя пользователя: {{ user.name }}</p>
+                <p>Возраст пользователя: {{ user.age }}</p>
+            </li>
+        </ul>
+    `,
+    providers: [HttpService],
 })
 export class AppComponent implements OnInit {
-  users: Observable<Object>
-  constructor(private httpService: HttpService) {}
-  ngOnInit() {
-    this.users = this.httpService.getUsers()
-  }
+    users: Observable<Object>;
+    constructor(private httpService: HttpService) {}
+    ngOnInit() {
+        this.users = this.httpService.getUsers();
+    }
 }
 ```
 
@@ -133,15 +133,15 @@ export class AppComponent implements OnInit {
 Ну чтобы загрузка данных из сети сработала, надо добавить в `AppModule` модуль `HttpClientModule`:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { AppComponent } from './app.component'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
 
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
-  imports: [BrowserModule, HttpClientModule],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule, HttpClientModule],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```

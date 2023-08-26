@@ -32,7 +32,7 @@
 Чтобы создать компонент с помощью Angular CLI, выполните следующие действия:
 
 1.  В окне терминала перейдите в каталог, содержащий ваше приложение.
-2.  Выполните команду `ng generate component <component-name>`, где `<component-name>` - это имя вашего нового компонента.
+2.  Выполните команду `ng generate component <component-name>`, где `<component-name>` — это имя вашего нового компонента.
 
 По умолчанию эта команда создает следующее:
 
@@ -42,7 +42,7 @@
 -   CSS-файл, `<component-name>.component.css`
 -   Файл спецификации тестирования, `<component-name>.component.spec.ts`.
 
-Где `<component-name>` - имя вашего компонента.
+Где `<component-name>` — имя вашего компонента.
 
 !!!info ""
 

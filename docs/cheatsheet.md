@@ -2,7 +2,7 @@
 title: Шпаргалка
 description: Шпаркалка Angular
 hide:
-  - navigation
+    - navigation
 ---
 
 # Шпаргалка
@@ -10,7 +10,7 @@ hide:
 ## Bootstrapping
 
 ```ts
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 ```
 
 `platformBrowserDynamic().bootstrapModule(AppModule);`
@@ -19,7 +19,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
 ## NgModules
 
 ```ts
-import { NgModule } from '@angular/core'
+import { NgModule } from '@angular/core';
 ```
 
 `@NgModule({ declarations: ..., imports: ..., exports: ..., providers: ..., bootstrap: ...})class MyModule {}`
@@ -90,7 +90,7 @@ import { NgModule } from '@angular/core'
 ## Встроенные директивы
 
 ```ts
-import { CommonModule } from '@angular/common'
+import { CommonModule } from '@angular/common';
 ```
 
 `<section *ngIf="showSection">`
@@ -111,7 +111,7 @@ import { CommonModule } from '@angular/common'
 ## Формы
 
 ```ts
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
 ```
 
 `<input [(ngModel)]="userName">`

@@ -10,11 +10,11 @@ description: Route Guards позволяют ограничить доступ �
 
 Различают следующие виды guard-ов:
 
-- [`CanActivate`](https://angular.io/api/router/CanActivate) - разрешает/запрещает доступ к маршруту;
-- [`CanActivateChild`](https://angular.io/api/router/CanActivateChild) -разрешает/запрещает доступ к дочернему маршруту;
-- [`CanDeactivate`](https://angular.io/api/router/CanDeactivate) - разрешает/запрещает уход с текущего маршрута;
-- [`Resolve`](https://angular.io/api/router/Resolve) - выполняет какое-либо действие перед переходом на маршрут, обычно ожидает данные от сервера;
-- [`CanLoad`](https://angular.io/api/router/CanLoad) - разрешает/запрещает загрузку модуля, загружаемого асинхронно.
+-   [`CanActivate`](https://angular.io/api/router/CanActivate) - разрешает/запрещает доступ к маршруту;
+-   [`CanActivateChild`](https://angular.io/api/router/CanActivateChild) -разрешает/запрещает доступ к дочернему маршруту;
+-   [`CanDeactivate`](https://angular.io/api/router/CanDeactivate) - разрешает/запрещает уход с текущего маршрута;
+-   [`Resolve`](https://angular.io/api/router/Resolve) - выполняет какое-либо действие перед переходом на маршрут, обычно ожидает данные от сервера;
+-   [`CanLoad`](https://angular.io/api/router/CanLoad) - разрешает/запрещает загрузку модуля, загружаемого асинхронно.
 
 Все guard-ы должны возвращать либо `true`, либо `false`. И происходить это может как в синхронном режиме (тип `Boolean`), так и в асинхронном режиме (`Observable<boolean>` или `Promise<boolean>`).
 
@@ -31,24 +31,24 @@ _auth.guard.ts_
 ```ts
 @Injectable()
 export class AuthGuard
-  implements CanActivate, CanActivateChild {
-  constructor(
-    @Inject(AuthService) private auth: AuthService
-  ) {}
+    implements CanActivate, CanActivateChild {
+    constructor(
+        @Inject(AuthService) private auth: AuthService
+    ) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
-    return this.auth.isLoggedIn
-  }
+    canActivate(
+        next: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): boolean {
+        return this.auth.isLoggedIn;
+    }
 
-  canActivateChild(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
-    return this.canActivate(next, state)
-  }
+    canActivateChild(
+        next: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): boolean {
+        return this.canActivate(next, state);
+    }
 }
 ```
 
@@ -56,22 +56,25 @@ _app-routing.module.ts_
 
 ```ts
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  {
-    path: 'pages',
-    component: PagesComponent,
-    canActivate: [AuthGuard],
-    canActivateChild: [AuthGuard],
-    children: [
-      { path: 'about', component: AboutComponent },
-      { path: 'contacts', component: ContactsComponent },
-    ],
-  },
-]
+    { path: 'login', component: LoginComponent },
+    {
+        path: 'pages',
+        component: PagesComponent,
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        children: [
+            { path: 'about', component: AboutComponent },
+            {
+                path: 'contacts',
+                component: ContactsComponent,
+            },
+        ],
+    },
+];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
 export class AppRoutingModule {}
 ```
@@ -79,7 +82,7 @@ export class AppRoutingModule {}
 _app.module.ts_
 
 ```ts
-providers: [AuthGuard]
+providers: [AuthGuard];
 ```
 
 В `AuthGuard` реализуется интерфейс `CanActivate` и `CanActivateChild` (создаваемый класс обязательно должен содержать определение метода `CanActivate` и `CanActivateChild` соответственно).
@@ -95,21 +98,21 @@ _can-deactivate.guard.ts_
 ```ts
 @Injectable()
 export class DataChangesGuard
-  implements CanDeactivate<BuyTicketFormComponent> {
-  constructor() {}
+    implements CanDeactivate<BuyTicketFormComponent> {
+    constructor() {}
 
-  canDeactivate(
-    component: BuyTicketFormComponent,
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot,
-    nextState: RouterStateSnapshot
-  ) {
-    if (component.buyTicketForm.dirty)
-      return window.confirm(
-        'Unsaved data detected. Want to exit?'
-      )
-    else return true
-  }
+    canDeactivate(
+        component: BuyTicketFormComponent,
+        currentRoute: ActivatedRouteSnapshot,
+        currentState: RouterStateSnapshot,
+        nextState: RouterStateSnapshot
+    ) {
+        if (component.buyTicketForm.dirty)
+            return window.confirm(
+                'Unsaved data detected. Want to exit?'
+            );
+        else return true;
+    }
 }
 ```
 
@@ -129,20 +132,20 @@ _app-routing.module.ts_
 
 ```ts
 export interface CanComponentDeactivate {
-  canDeactivate: () =>
-    | Observable<boolean>
-    | Promise<boolean>
-    | boolean
+    canDeactivate: () =>
+        | Observable<boolean>
+        | Promise<boolean>
+        | boolean;
 }
 
 @Injectable({ providedIn: 'root' })
 export class CanDeactivateGuard
-  implements CanDeactivate<CanComponentDeactivate> {
-  canDeactivate(component: CanComponentDeactivate) {
-    return component.canDeactivate
-      ? component.canDeactivate()
-      : true
-  }
+    implements CanDeactivate<CanComponentDeactivate> {
+    canDeactivate(component: CanComponentDeactivate) {
+        return component.canDeactivate
+            ? component.canDeactivate()
+            : true;
+    }
 }
 ```
 
@@ -155,22 +158,24 @@ export class CanDeactivateGuard
 ```ts
 @Injectable()
 export class ContactsResolver implements Resolve<any> {
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {}
+    constructor(
+        private http: HttpClient,
+        private router: Router
+    ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    return this.http.get('/api/contacts').pipe(
-      tap(
-        (res) => of(res),
-        (err) => {
-          this.router.navigate(['/'])
-          return EMPTY
-        }
-      )
-    )
-  }
+    resolve(
+        route: ActivatedRouteSnapshot
+    ): Observable<any> {
+        return this.http.get('/api/contacts').pipe(
+            tap(
+                (res) => of(res),
+                (err) => {
+                    this.router.navigate(['/']);
+                    return EMPTY;
+                }
+            )
+        );
+    }
 }
 ```
 
@@ -178,4 +183,4 @@ export class ContactsResolver implements Resolve<any> {
 
 ## Ссылки
 
-- [Route guards](https://angular.io/guide/router#milestone-5-route-guards)
+-   [Route guards](https://angular.io/guide/router#milestone-5-route-guards)

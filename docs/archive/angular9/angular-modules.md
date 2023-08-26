@@ -10,28 +10,28 @@ Angular приложение имеет модульную архитектур�
 
 Сама библиотека `@angular` также модульная:
 
-- [`BrowserModule`](https://angular.io/api/platform-browser/BrowserModule);
-- [`CommonModule`](https://angular.io/api/common/CommonModule);
-- [`FormsModule`](https://angular.io/api/forms/FormsModule);
-- [`ReactiveFormsModule`](https://angular.io/api/forms/ReactiveFormsModule);
-- [`HttpClientModule`](https://angular.io/api/common/http/HttpClientModule);
-- [`RouterModule`](https://angular.io/api/router/RouterModule) и др.
+-   [`BrowserModule`](https://angular.io/api/platform-browser/BrowserModule);
+-   [`CommonModule`](https://angular.io/api/common/CommonModule);
+-   [`FormsModule`](https://angular.io/api/forms/FormsModule);
+-   [`ReactiveFormsModule`](https://angular.io/api/forms/ReactiveFormsModule);
+-   [`HttpClientModule`](https://angular.io/api/common/http/HttpClientModule);
+-   [`RouterModule`](https://angular.io/api/router/RouterModule) и др.
 
 Ключевая роль при создании Angular модуля у декоратора `@NgModule()`, принимающего конфигурационный объект со свойствами:
 
-- `imports` - массив, где указывается список импортируемых второстепенных модулей;
-- `exports` - массив компонентов, директив и фильтров, которыми пользуются другие модули, если они импортируют текущий;
-- `declarations` - массив компонентов, директив и фильтров;
-- `entryComponents` - массив создаваемых динамически компонентов;
-- `bootstrap` - массив, в котором указывается компонент для загрузки;
-- `providers` - массив сервисов.
+-   `imports` - массив, где указывается список импортируемых второстепенных модулей;
+-   `exports` - массив компонентов, директив и фильтров, которыми пользуются другие модули, если они импортируют текущий;
+-   `declarations` - массив компонентов, директив и фильтров;
+-   `entryComponents` - массив создаваемых динамически компонентов;
+-   `bootstrap` - массив, в котором указывается компонент для загрузки;
+-   `providers` - массив сервисов.
 
 По назначению модули можно классифицировать следующим образом:
 
-- корневой;
-- функциональный;
-- маршрутизации;
-- для поставки сервисов.
+-   корневой;
+-   функциональный;
+-   маршрутизации;
+-   для поставки сервисов.
 
 Корневой модуль - главный в приложении. Именно он загружается первым и импортирует в себя все второстепенные модули, которые могут импортировать в себя другие второстепенные модули.
 
@@ -39,12 +39,12 @@ Angular приложение имеет модульную архитектур�
 
 ```ts
 @NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    //
-  ],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        //
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -55,14 +55,14 @@ export class AppModule {}
 
 ```ts
 @NgModule({
-  //
-  exports: [
-    AccountsComponent,
-    CreditsComponent,
-    DepositsComponent,
-    CreditsFilterDirective,
-  ],
-  //
+    //
+    exports: [
+        AccountsComponent,
+        CreditsComponent,
+        DepositsComponent,
+        CreditsFilterDirective,
+    ],
+    //
 })
 export class AppModule {}
 ```
@@ -79,21 +79,21 @@ _core.module.ts_
 
 ```ts
 @NgModule({
-  imports: [],
-  declarations: [],
-  providers: [],
+    imports: [],
+    declarations: [],
+    providers: [],
 })
 export class CoreModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: CoreModule,
-      providers: [
-        AuthService,
-        LoggerService,
-        SettingsService,
-      ],
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: CoreModule,
+            providers: [
+                AuthService,
+                LoggerService,
+                SettingsService,
+            ],
+        };
     }
-  }
 }
 ```
 
@@ -103,30 +103,30 @@ _shared.module.ts_
 
 ```ts
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ImageCropperModule,
-    ScrollbarModule,
-    SlickModule,
-    SlickModule.forRoot(),
-  ],
-  exports: [
-    CommonModule,
-    ImageCropperModule,
-    ScrollbarModule,
-    SlickModule,
-    AppLangsComponent,
-    AppTabFilterComponent,
-    AppFileUploadComponent,
-    ComponentPreloaderDirective,
-  ],
-  declarations: [
-    AppLangsComponent,
-    AppTabFilterComponent,
-    AppFileUploadComponent,
-    ComponentPreloaderDirective,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ImageCropperModule,
+        ScrollbarModule,
+        SlickModule,
+        SlickModule.forRoot(),
+    ],
+    exports: [
+        CommonModule,
+        ImageCropperModule,
+        ScrollbarModule,
+        SlickModule,
+        AppLangsComponent,
+        AppTabFilterComponent,
+        AppFileUploadComponent,
+        ComponentPreloaderDirective,
+    ],
+    declarations: [
+        AppLangsComponent,
+        AppTabFilterComponent,
+        AppFileUploadComponent,
+        ComponentPreloaderDirective,
+    ],
 })
 export class SharedModule {}
 ```

@@ -9,36 +9,36 @@ description: Параметры строки запроса не влияют н
 Параметры строки запроса не влияют на определение маршрутов, и их количество произвольно. Так, для работы возьмем проект из прошлой темы. В этом проекте определен компонент `ItemComponent`, который получает параметр маршрута. Добавим в него также получения параметров из строки запроса:
 
 ```typescript
-import { Component } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
-import { Subscription } from 'rxjs'
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'item-info',
-  template: `
-    <h3>Модель {{ id }}</h3>
-    <div>Товар: {{ product }}</div>
-    <div>Цена: {{ price }}</div>
-  `,
+    selector: 'item-info',
+    template: `
+        <h3>Модель {{ id }}</h3>
+        <div>Товар: {{ product }}</div>
+        <div>Цена: {{ price }}</div>
+    `,
 })
 export class ItemComponent {
-  private id: number
-  private product: string
-  private price: string
+    private id: number;
+    private product: string;
+    private price: string;
 
-  private routeSubscription: Subscription
-  private querySubscription: Subscription
-  constructor(private route: ActivatedRoute) {
-    this.routeSubscription = route.params.subscribe(
-      (params) => (this.id = params['id'])
-    )
-    this.querySubscription = route.queryParams.subscribe(
-      (queryParam: any) => {
-        this.product = queryParam['product']
-        this.price = queryParam['price']
-      }
-    )
-  }
+    private routeSubscription: Subscription;
+    private querySubscription: Subscription;
+    constructor(private route: ActivatedRoute) {
+        this.routeSubscription = route.params.subscribe(
+            (params) => (this.id = params['id'])
+        );
+        this.querySubscription = route.queryParams.subscribe(
+            (queryParam: any) => {
+                this.product = queryParam['product'];
+                this.price = queryParam['price'];
+            }
+        );
+    }
 }
 ```
 
@@ -51,29 +51,32 @@ export class ItemComponent {
 Теперь изменим код `AppComponent`, определив ссылки с параметрами:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <nav>
-        <a routerLink="">Главная</a>
-        <a routerLink="/about">О сайте</a>
-        <a
-          [routerLink]="['item', '5']"
-          [queryParams]="{ product: 'phone', price: 200 }"
-          >item 5</a
-        >
-        <a
-          [routerLink]="['item', '8']"
-          [queryParams]="{ product: 'tablet' }"
-          >item 8</a
-        >
-      </nav>
-      <router-outlet></router-outlet>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <nav>
+                <a routerLink="">Главная</a>
+                <a routerLink="/about">О сайте</a>
+                <a
+                    [routerLink]="['item', '5']"
+                    [queryParams]="{
+                        product: 'phone',
+                        price: 200
+                    }"
+                    >item 5</a
+                >
+                <a
+                    [routerLink]="['item', '8']"
+                    [queryParams]="{ product: 'tablet' }"
+                    >item 8</a
+                >
+            </nav>
+            <router-outlet></router-outlet>
+        </div>
+    `,
 })
 export class AppComponent {}
 ```

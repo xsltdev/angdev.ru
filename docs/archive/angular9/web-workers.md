@@ -28,13 +28,13 @@ _tsconfig.worker.json_
 
 ```json
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./out-tsc/worker",
-    "lib": ["es2018", "webworker"],
-    "types": []
-  },
-  "include": ["src/**/*.worker.ts"]
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./out-tsc/worker",
+        "lib": ["es2018", "webworker"],
+        "types": []
+    },
+    "include": ["src/**/*.worker.ts"]
 }
 ```
 
@@ -46,9 +46,9 @@ _app.worker.ts_
 /// <reference lib="webworker" />
 
 addEventListener('message', ({ data }) => {
-  const response = `worker response to ${data}`
-  postMessage(response)
-})
+    const response = `worker response to ${data}`;
+    postMessage(response);
+});
 ```
 
 А в коде самого компонента `app.components.ts` появится следующее.
@@ -57,17 +57,17 @@ _app.component.ts_
 
 ```ts
 if (typeof Worker !== 'undefined') {
-  // Create a new
-  const worker = new Worker('./app.worker', {
-    type: 'module',
-  })
-  worker.onmessage = ({ data }) => {
-    console.log(`page got message: ${data}`)
-  }
-  worker.postMessage('hello')
+    // Create a new
+    const worker = new Worker('./app.worker', {
+        type: 'module',
+    });
+    worker.onmessage = ({ data }) => {
+        console.log(`page got message: ${data}`);
+    };
+    worker.postMessage('hello');
 } else {
-  // Web Workers are not supported in this environment.
-  // You should add a fallback so that your program still executes correctly.
+    // Web Workers are not supported in this environment.
+    // You should add a fallback so that your program still executes correctly.
 }
 ```
 
@@ -84,7 +84,7 @@ if (typeof Worker !== 'undefined') {
 _untitled.ts_
 
 ```ts
-worker.postMessage('hello')
+worker.postMessage('hello');
 ```
 
 Получение отправленных данных инициирует событие `message`, callback-функции которого аргументом передается экземпляр объекта `MessageEvent`, в свойстве `data` которого находятся переданные данные.
@@ -93,8 +93,8 @@ _untitled.ts_
 
 ```ts
 worker.onmessage = ({ data }) => {
-  console.log(`page got message: ${data}`)
-}
+    console.log(`page got message: ${data}`);
+};
 ```
 
 Обработка ошибок осуществляется с помощью события `error`.
@@ -103,24 +103,24 @@ _untitled.ts_
 
 ```ts
 worker.onerror = (err) => {
-  console.log(
-    `${err.filename}:${err.lineno} ${err.message}`
-  )
-}
+    console.log(
+        `${err.filename}:${err.lineno} ${err.message}`
+    );
+};
 ```
 
 Объект ошибки имеет следующие свойства:
 
-- `filename` - имя файла, в котором произошла ошибка;
-- `lineno` - номер строки, на которой возникла ошибка;
-- `message` - текст ошибки.
+-   `filename` - имя файла, в котором произошла ошибка;
+-   `lineno` - номер строки, на которой возникла ошибка;
+-   `message` - текст ошибки.
 
 Для завершения работы Angular Web Worker-а вызовите у его экземпляра метод `terminate()`.
 
 _untitled.ts_
 
 ```ts
-worker.terminate()
+worker.terminate();
 ```
 
 ## Выделенные и разделяемые Web Worker-ы
@@ -137,34 +137,34 @@ _app.component.ts_
 
 ```ts
 @Component({
-  selector: 'app-root',
-  template: `
-    <button (click)="getData()">Get data</button>
-  `,
+    selector: 'app-root',
+    template: `
+        <button (click)="getData()">Get data</button>
+    `,
 })
 export class AppComponent {
-  worker: Worker
+    worker: Worker;
 
-  constructor() {
-    if (typeof Worker !== 'undefined') {
-      this.worker = new Worker('./app.worker', {
-        type: 'module',
-      })
+    constructor() {
+        if (typeof Worker !== 'undefined') {
+            this.worker = new Worker('./app.worker', {
+                type: 'module',
+            });
 
-      this.worker.addEventListener(
-        'message',
-        (message: MessageEvent) =>
-          console.log(
-            'Got data from worker: ',
-            message.data
-          )
-      )
-    } else alert('Web Worker is not supported.')
-  }
+            this.worker.addEventListener(
+                'message',
+                (message: MessageEvent) =>
+                    console.log(
+                        'Got data from worker: ',
+                        message.data
+                    )
+            );
+        } else alert('Web Worker is not supported.');
+    }
 
-  getData(): void {
-    this.worker.postMessage('Give me data')
-  }
+    getData(): void {
+        this.worker.postMessage('Give me data');
+    }
 }
 ```
 
@@ -174,9 +174,9 @@ _app.worker.ts_
 /// <reference lib="webworker" />
 
 addEventListener('message', (message: MessageEvent) => {
-  console.log('Got message from main: ', message.data)
-  postMessage('Data for main')
-})
+    console.log('Got message from main: ', message.data);
+    postMessage('Data for main');
+});
 ```
 
 В отличие от выделенных, разделяемые Web Worker-ы доступны множеству скриптов, которые причем могут находиться в разных окнах.
@@ -187,4 +187,4 @@ addEventListener('message', (message: MessageEvent) => {
 
 ## Ссылки
 
-- [Using Web Workers with Angular CLI](https://angular.io/guide/web-worker)
+-   [Using Web Workers with Angular CLI](https://angular.io/guide/web-worker)

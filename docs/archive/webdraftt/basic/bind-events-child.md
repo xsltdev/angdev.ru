@@ -8,24 +8,24 @@ description: Еще одной формой взаимодействия пре�
 
 ```typescript
 import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core'
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+} from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: `
-    <button (click)="change(true)">+</button>
-    <button (click)="change(false)">-</button>
-  `,
+    selector: 'child-comp',
+    template: `
+        <button (click)="change(true)">+</button>
+        <button (click)="change(false)">-</button>
+    `,
 })
 export class ChildComponent {
-  @Output() onChanged = new EventEmitter<boolean>()
-  change(increased: any) {
-    this.onChanged.emit(increased)
-  }
+    @Output() onChanged = new EventEmitter<boolean>();
+    change(increased: any) {
+        this.onChanged.emit(increased);
+    }
 }
 ```
 
@@ -36,22 +36,22 @@ export class ChildComponent {
 Далее определим код главного компонента:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <h2>Количество кликов: {{ clicks }}</h2>
-    <child-comp
-      (onChanged)="onChanged($event)"
-    ></child-comp>
-  `,
+    selector: 'my-app',
+    template: `
+        <h2>Количество кликов: {{ clicks }}</h2>
+        <child-comp
+            (onChanged)="onChanged($event)"
+        ></child-comp>
+    `,
 })
 export class AppComponent {
-  clicks: number = 0
-  onChanged(increased: any) {
-    increased == true ? this.clicks++ : this.clicks--
-  }
+    clicks: number = 0;
+    onChanged(increased: any) {
+        increased == true ? this.clicks++ : this.clicks--;
+    }
 }
 ```
 
@@ -67,28 +67,28 @@ export class AppComponent {
 
 ```typescript
 import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core'
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+} from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: `
-    <input
-      [ngModel]="userName"
-      (ngModelChange)="onNameChange($event)"
-    />
-  `,
+    selector: 'child-comp',
+    template: `
+        <input
+            [ngModel]="userName"
+            (ngModelChange)="onNameChange($event)"
+        />
+    `,
 })
 export class ChildComponent {
-  @Input() userName: string
-  @Output() userNameChange = new EventEmitter<string>()
-  onNameChange(model: string) {
-    this.userName = model
-    this.userNameChange.emit(model)
-  }
+    @Input() userName: string;
+    @Output() userNameChange = new EventEmitter<string>();
+    onNameChange(model: string) {
+        this.userName = model;
+        this.userNameChange.emit(model);
+    }
 }
 ```
 
@@ -103,17 +103,17 @@ export class ChildComponent {
 Теперь определим код главного компонента:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp [(userName)]="name"></child-comp>
-    <div>Выбранное имя: {{ name }}</div>
-  `,
+    selector: 'my-app',
+    template: `
+        <child-comp [(userName)]="name"></child-comp>
+        <div>Выбранное имя: {{ name }}</div>
+    `,
 })
 export class AppComponent {
-  name: string = 'Tom'
+    name: string = 'Tom';
 }
 ```
 

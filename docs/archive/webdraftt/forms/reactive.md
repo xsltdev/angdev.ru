@@ -9,16 +9,16 @@ description: При подходе Reactive Forms для формы создае
 При подходе Reactive Forms для формы создается набор объектов `FormGroup` и `FormControl`. Сама форма и ее подсекции представляют класс `FormGroup`, а отдельные элементы ввода — класс `FormControl`. Например, базовое создание формы:
 
 ```typescript
-myForm: FormGroup = new FormGroup()
+myForm: FormGroup = new FormGroup();
 ```
 
 Добавляем в форму элементы:
 
 ```typescript
 myForm: FormGroup = new FormGroup({
-  userName: new FormControl(),
-  userEmail: new FormControl(),
-})
+    userName: new FormControl(),
+    userEmail: new FormControl(),
+});
 ```
 
 Здесь определено два элемента: `userName` и `userEmail`.
@@ -27,14 +27,14 @@ myForm: FormGroup = new FormGroup({
 
 ```typescript
 myForm: FormGroup = new FormGroup({
-  userName: new FormControl('Tom', Validators.required),
-  userEmail: new FormControl('', [
-    Validators.required,
-    Validators.pattern(
-      '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
-    ),
-  ]),
-})
+    userName: new FormControl('Tom', Validators.required),
+    userEmail: new FormControl('', [
+        Validators.required,
+        Validators.pattern(
+            '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
+        ),
+    ]),
+});
 ```
 
 Здесь к элементу `userEmail` применяется валидатор `Validators.required`, который требует обязательного наличия значения. Если валидаторов несколько, то они заключаются в массив. Все встроенные валидаторы можно посмотреть в [документации](https://angular.io/api/forms/Validators).
@@ -56,104 +56,109 @@ myForm: FormGroup = new FormGroup({
 Теперь рассмотрим, как эти объекты будут взаимодействовать с шаблоном компонента. Для этого определим следующий компонент:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 import {
-  FormGroup,
-  FormControl,
-  Validators,
-} from '@angular/forms'
+    FormGroup,
+    FormControl,
+    Validators,
+} from '@angular/forms';
 
 @Component({
-  selector: 'my-app',
-  styles: [
-    `
-      input.ng-touched.ng-invalid {
-        border: solid red 2px;
-      }
-      input.ng-touched.ng-valid {
-        border: solid green 2px;
-      }
+    selector: 'my-app',
+    styles: [
+        `
+            input.ng-touched.ng-invalid {
+                border: solid red 2px;
+            }
+            input.ng-touched.ng-valid {
+                border: solid green 2px;
+            }
+        `,
+    ],
+    template: `
+        <form
+            [formGroup]="myForm"
+            novalidate
+            (ngSubmit)="submit()"
+        >
+            <div class="form-group">
+                <label>Имя</label>
+                <input
+                    class="form-control"
+                    name="name"
+                    formControlName="userName"
+                />
+
+                <div
+                    class="alert alert-danger"
+                    *ngIf="
+                        myForm.controls['userName']
+                            .invalid &&
+                        myForm.controls['userName'].touched
+                    "
+                >
+                    Не указано имя
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input
+                    class="form-control"
+                    name="email"
+                    formControlName="userEmail"
+                />
+
+                <div
+                    class="alert alert-danger"
+                    *ngIf="
+                        myForm.controls['userEmail']
+                            .invalid &&
+                        myForm.controls['userEmail'].touched
+                    "
+                >
+                    Некорректный email
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Телефон</label>
+                <input
+                    class="form-control"
+                    name="phone"
+                    formControlName="userPhone"
+                />
+            </div>
+            <div class="form-group">
+                <button
+                    class="btn btn-default"
+                    [disabled]="myForm.invalid"
+                >
+                    Отправить
+                </button>
+            </div>
+        </form>
     `,
-  ],
-  template: `
-    <form
-      [formGroup]="myForm"
-      novalidate
-      (ngSubmit)="submit()"
-    >
-      <div class="form-group">
-        <label>Имя</label>
-        <input
-          class="form-control"
-          name="name"
-          formControlName="userName"
-        />
-
-        <div
-          class="alert alert-danger"
-          *ngIf="
-            myForm.controls['userName'].invalid &&
-            myForm.controls['userName'].touched
-          "
-        >
-          Не указано имя
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input
-          class="form-control"
-          name="email"
-          formControlName="userEmail"
-        />
-
-        <div
-          class="alert alert-danger"
-          *ngIf="
-            myForm.controls['userEmail'].invalid &&
-            myForm.controls['userEmail'].touched
-          "
-        >
-          Некорректный email
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Телефон</label>
-        <input
-          class="form-control"
-          name="phone"
-          formControlName="userPhone"
-        />
-      </div>
-      <div class="form-group">
-        <button
-          class="btn btn-default"
-          [disabled]="myForm.invalid"
-        >
-          Отправить
-        </button>
-      </div>
-    </form>
-  `,
 })
 export class AppComponent {
-  myForm: FormGroup
-  constructor() {
-    this.myForm = new FormGroup({
-      userName: new FormControl('Tom', Validators.required),
-      userEmail: new FormControl('', [
-        Validators.required,
-        Validators.pattern(
-          '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
-        ),
-      ]),
-      userPhone: new FormControl(),
-    })
-  }
+    myForm: FormGroup;
+    constructor() {
+        this.myForm = new FormGroup({
+            userName: new FormControl(
+                'Tom',
+                Validators.required
+            ),
+            userEmail: new FormControl('', [
+                Validators.required,
+                Validators.pattern(
+                    '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
+                ),
+            ]),
+            userPhone: new FormControl(),
+        });
+    }
 
-  submit() {
-    console.log(this.myForm)
-  }
+    submit() {
+        console.log(this.myForm);
+    }
 }
 ```
 
@@ -168,20 +173,20 @@ export class AppComponent {
 Но чтобы все это заработало, необходимо импортировать модуль `ReactiveFormsModule`. Для этого изменим модуль приложения `AppModule`:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule } from '@angular/forms'
-import { AppComponent } from './app.component'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
 
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -194,34 +199,34 @@ export class AppModule {}
 
 ```typescript
 export class AppComponent {
-  myForm: FormGroup
-  constructor() {
-    this.myForm = new FormGroup({
-      userName: new FormControl('Tom', [
-        Validators.required,
-        this.userNameValidator,
-      ]),
-      userEmail: new FormControl('', [
-        Validators.required,
-        Validators.pattern(
-          '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
-        ),
-      ]),
-      userPhone: new FormControl(),
-    })
-  }
-  submit() {
-    console.log(this.myForm)
-  }
-  // валидатор
-  userNameValidator(
-    control: FormControl
-  ): { [s: string]: boolean } {
-    if (control.value === 'нет') {
-      return { userName: true }
+    myForm: FormGroup;
+    constructor() {
+        this.myForm = new FormGroup({
+            userName: new FormControl('Tom', [
+                Validators.required,
+                this.userNameValidator,
+            ]),
+            userEmail: new FormControl('', [
+                Validators.required,
+                Validators.pattern(
+                    '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
+                ),
+            ]),
+            userPhone: new FormControl(),
+        });
     }
-    return null
-  }
+    submit() {
+        console.log(this.myForm);
+    }
+    // валидатор
+    userNameValidator(
+        control: FormControl
+    ): { [s: string]: boolean } {
+        if (control.value === 'нет') {
+            return { userName: true };
+        }
+        return null;
+    }
 }
 ```
 
@@ -246,126 +251,130 @@ export class AppComponent {
 Итак, изменим код компонента `AppComponent` следующим образом:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormArray,
-} from '@angular/forms'
+    FormGroup,
+    FormControl,
+    Validators,
+    FormArray,
+} from '@angular/forms';
 
 @Component({
-  selector: 'my-app',
-  styles: [
-    `
-      input.ng-touched.ng-invalid {
-        border: solid red 2px;
-      }
-      input.ng-touched.ng-valid {
-        border: solid green 2px;
-      }
+    selector: 'my-app',
+    styles: [
+        `
+            input.ng-touched.ng-invalid {
+                border: solid red 2px;
+            }
+            input.ng-touched.ng-valid {
+                border: solid green 2px;
+            }
+        `,
+    ],
+    template: `
+        <form
+            [formGroup]="myForm"
+            novalidate
+            (ngSubmit)="submit()"
+        >
+            <div class="form-group">
+                <label>Имя</label>
+                <input
+                    class="form-control"
+                    name="name"
+                    formControlName="userName"
+                />
+
+                <div
+                    class="alert alert-danger"
+                    *ngIf="
+                        myForm.controls['userName']
+                            .invalid &&
+                        myForm.controls['userName'].touched
+                    "
+                >
+                    Не указано имя
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input
+                    class="form-control"
+                    name="email"
+                    formControlName="userEmail"
+                />
+
+                <div
+                    class="alert alert-danger"
+                    *ngIf="
+                        myForm.controls['userEmail']
+                            .invalid &&
+                        myForm.controls['userEmail'].touched
+                    "
+                >
+                    Некорректный email
+                </div>
+            </div>
+            <div formArrayName="phones">
+                <div
+                    class="form-group"
+                    *ngFor="
+                        let phone of myForm.controls[
+                            'phones'
+                        ].controls;
+                        let i = index
+                    "
+                >
+                    <label>Телефон</label>
+                    <input
+                        class="form-control"
+                        formControlName="{{ i }}"
+                    />
+                </div>
+            </div>
+            <div class="form-group">
+                <button
+                    class="btn btn-default"
+                    (click)="addPhone()"
+                >
+                    Добавить телефон
+                </button>
+                <button
+                    class="btn btn-default"
+                    [disabled]="myForm.invalid"
+                >
+                    Отправить
+                </button>
+            </div>
+        </form>
     `,
-  ],
-  template: `
-    <form
-      [formGroup]="myForm"
-      novalidate
-      (ngSubmit)="submit()"
-    >
-      <div class="form-group">
-        <label>Имя</label>
-        <input
-          class="form-control"
-          name="name"
-          formControlName="userName"
-        />
-
-        <div
-          class="alert alert-danger"
-          *ngIf="
-            myForm.controls['userName'].invalid &&
-            myForm.controls['userName'].touched
-          "
-        >
-          Не указано имя
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input
-          class="form-control"
-          name="email"
-          formControlName="userEmail"
-        />
-
-        <div
-          class="alert alert-danger"
-          *ngIf="
-            myForm.controls['userEmail'].invalid &&
-            myForm.controls['userEmail'].touched
-          "
-        >
-          Некорректный email
-        </div>
-      </div>
-      <div formArrayName="phones">
-        <div
-          class="form-group"
-          *ngFor="
-            let phone of myForm.controls['phones'].controls;
-            let i = index
-          "
-        >
-          <label>Телефон</label>
-          <input
-            class="form-control"
-            formControlName="{{ i }}"
-          />
-        </div>
-      </div>
-      <div class="form-group">
-        <button
-          class="btn btn-default"
-          (click)="addPhone()"
-        >
-          Добавить телефон
-        </button>
-        <button
-          class="btn btn-default"
-          [disabled]="myForm.invalid"
-        >
-          Отправить
-        </button>
-      </div>
-    </form>
-  `,
 })
 export class AppComponent {
-  myForm: FormGroup
-  constructor() {
-    this.myForm = new FormGroup({
-      userName: new FormControl('Tom', [
-        Validators.required,
-      ]),
-      userEmail: new FormControl('', [
-        Validators.required,
-        Validators.pattern(
-          '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
-        ),
-      ]),
-      phones: new FormArray([
-        new FormControl('+7', Validators.required),
-      ]),
-    })
-  }
-  addPhone() {
-    ;(<FormArray>this.myForm.controls['phones']).push(
-      new FormControl('+7', Validators.required)
-    )
-  }
-  submit() {
-    console.log(this.myForm)
-  }
+    myForm: FormGroup;
+    constructor() {
+        this.myForm = new FormGroup({
+            userName: new FormControl('Tom', [
+                Validators.required,
+            ]),
+            userEmail: new FormControl('', [
+                Validators.required,
+                Validators.pattern(
+                    '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
+                ),
+            ]),
+            phones: new FormArray([
+                new FormControl('+7', Validators.required),
+            ]),
+        });
+    }
+    addPhone() {
+        (<FormArray>this.myForm.controls['phones']).push(
+            new FormControl('+7', Validators.required)
+        );
+    }
+    submit() {
+        console.log(this.myForm);
+    }
 }
 ```
 
@@ -393,13 +402,16 @@ addPhone(){
 
 ```html
 <div formArrayName="phones">
-  <div
-    class="form-group"
-    *ngFor="let phone of myForm.controls['phones'].controls; let i = index"
-  >
-    <label>Телефон</label>
-    <input class="form-control" formControlName="{{i}}" />
-  </div>
+    <div
+        class="form-group"
+        *ngFor="let phone of myForm.controls['phones'].controls; let i = index"
+    >
+        <label>Телефон</label>
+        <input
+            class="form-control"
+            formControlName="{{i}}"
+        />
+    </div>
 </div>
 ```
 
@@ -414,128 +426,132 @@ addPhone(){
 Класс `FormBuilder` представляет альтернативный подход к созданию форм:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormArray,
-  FormBuilder,
-} from '@angular/forms'
+    FormGroup,
+    FormControl,
+    Validators,
+    FormArray,
+    FormBuilder,
+} from '@angular/forms';
 
 @Component({
-  selector: 'my-app',
-  styles: [
-    `
-      input.ng-touched.ng-invalid {
-        border: solid red 2px;
-      }
-      input.ng-touched.ng-valid {
-        border: solid green 2px;
-      }
+    selector: 'my-app',
+    styles: [
+        `
+            input.ng-touched.ng-invalid {
+                border: solid red 2px;
+            }
+            input.ng-touched.ng-valid {
+                border: solid green 2px;
+            }
+        `,
+    ],
+    template: `
+        <form
+            [formGroup]="myForm"
+            novalidate
+            (ngSubmit)="submit()"
+        >
+            <div class="form-group">
+                <label>Имя</label>
+                <input
+                    class="form-control"
+                    name="name"
+                    formControlName="userName"
+                />
+
+                <div
+                    class="alert alert-danger"
+                    *ngIf="
+                        myForm.controls['userName']
+                            .invalid &&
+                        myForm.controls['userName'].touched
+                    "
+                >
+                    Не указано имя
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input
+                    class="form-control"
+                    name="email"
+                    formControlName="userEmail"
+                />
+
+                <div
+                    class="alert alert-danger"
+                    *ngIf="
+                        myForm.controls['userEmail']
+                            .invalid &&
+                        myForm.controls['userEmail'].touched
+                    "
+                >
+                    Некорректный email
+                </div>
+            </div>
+            <div formArrayName="phones">
+                <div
+                    class="form-group"
+                    *ngFor="
+                        let phone of myForm.controls[
+                            'phones'
+                        ].controls;
+                        let i = index
+                    "
+                >
+                    <label>Телефон</label>
+                    <input
+                        class="form-control"
+                        formControlName="{{ i }}"
+                    />
+                </div>
+            </div>
+            <div class="form-group">
+                <button
+                    class="btn btn-default"
+                    (click)="addPhone()"
+                >
+                    Добавить телефон
+                </button>
+                <button
+                    class="btn btn-default"
+                    [disabled]="myForm.invalid"
+                >
+                    Отправить
+                </button>
+            </div>
+        </form>
     `,
-  ],
-  template: `
-    <form
-      [formGroup]="myForm"
-      novalidate
-      (ngSubmit)="submit()"
-    >
-      <div class="form-group">
-        <label>Имя</label>
-        <input
-          class="form-control"
-          name="name"
-          formControlName="userName"
-        />
-
-        <div
-          class="alert alert-danger"
-          *ngIf="
-            myForm.controls['userName'].invalid &&
-            myForm.controls['userName'].touched
-          "
-        >
-          Не указано имя
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input
-          class="form-control"
-          name="email"
-          formControlName="userEmail"
-        />
-
-        <div
-          class="alert alert-danger"
-          *ngIf="
-            myForm.controls['userEmail'].invalid &&
-            myForm.controls['userEmail'].touched
-          "
-        >
-          Некорректный email
-        </div>
-      </div>
-      <div formArrayName="phones">
-        <div
-          class="form-group"
-          *ngFor="
-            let phone of myForm.controls['phones'].controls;
-            let i = index
-          "
-        >
-          <label>Телефон</label>
-          <input
-            class="form-control"
-            formControlName="{{ i }}"
-          />
-        </div>
-      </div>
-      <div class="form-group">
-        <button
-          class="btn btn-default"
-          (click)="addPhone()"
-        >
-          Добавить телефон
-        </button>
-        <button
-          class="btn btn-default"
-          [disabled]="myForm.invalid"
-        >
-          Отправить
-        </button>
-      </div>
-    </form>
-  `,
 })
 export class AppComponent {
-  myForm: FormGroup
-  constructor(private formBuilder: FormBuilder) {
-    this.myForm = formBuilder.group({
-      userName: ['Tom', [Validators.required]],
-      userEmail: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
-          ),
-        ],
-      ],
-      phones: formBuilder.array([
-        ['+7', Validators.required],
-      ]),
-    })
-  }
-  addPhone() {
-    ;(<FormArray>this.myForm.controls['phones']).push(
-      new FormControl('+7', Validators.required)
-    )
-  }
-  submit() {
-    console.log(this.myForm)
-  }
+    myForm: FormGroup;
+    constructor(private formBuilder: FormBuilder) {
+        this.myForm = formBuilder.group({
+            userName: ['Tom', [Validators.required]],
+            userEmail: [
+                '',
+                [
+                    Validators.required,
+                    Validators.pattern(
+                        '[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}'
+                    ),
+                ],
+            ],
+            phones: formBuilder.array([
+                ['+7', Validators.required],
+            ]),
+        });
+    }
+    addPhone() {
+        (<FormArray>this.myForm.controls['phones']).push(
+            new FormControl('+7', Validators.required)
+        );
+    }
+    submit() {
+        console.log(this.myForm);
+    }
 }
 ```
 

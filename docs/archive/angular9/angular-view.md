@@ -14,21 +14,21 @@ description: Для манипуляций с DOM-элементами в Angula
 
 ```ts
 @Component({
-  selector: 'view-child-demo',
-  template: `
-    <div>
-      <h1 #title>Angular tutorial</h1>
-    </div>
-  `,
+    selector: 'view-child-demo',
+    template: `
+        <div>
+            <h1 #title>Angular tutorial</h1>
+        </div>
+    `,
 })
 export class ViewChildDemoComponent
-  implements AfterViewInit {
-  @ViewChild('title', { read: ElementRef })
-  title: ElementRef
+    implements AfterViewInit {
+    @ViewChild('title', { read: ElementRef })
+    title: ElementRef;
 
-  ngAfterViewInit(): void {
-    console.log(this.title.nativeElement.textContent)
-  }
+    ngAfterViewInit(): void {
+        console.log(this.title.nativeElement.textContent);
+    }
 }
 ```
 
@@ -44,16 +44,16 @@ export class ViewChildDemoComponent
 
 ```ts
 @Component({
-  selector: 'element-ref-demo',
-  template: ` <h1>ElementRef demo</h1> `,
+    selector: 'element-ref-demo',
+    template: ` <h1>ElementRef demo</h1> `,
 })
 export class ElementRefDemoComponent
-  implements AfterViewInit {
-  constructor(private host: ElementRef) {}
+    implements AfterViewInit {
+    constructor(private host: ElementRef) {}
 
-  ngAfterViewInit(): void {
-    console.log(this.host.nativeElement)
-  }
+    ngAfterViewInit(): void {
+        console.log(this.host.nativeElement);
+    }
 }
 ```
 
@@ -69,20 +69,20 @@ export class ElementRefDemoComponent
 
 ```ts
 @Component({
-  selector: 'template-ref-demo',
-  template: `
-    <ng-template #tpl>
-      <h1>TemplateRef demo</h1>
-    </ng-template>
-  `,
+    selector: 'template-ref-demo',
+    template: `
+        <ng-template #tpl>
+            <h1>TemplateRef demo</h1>
+        </ng-template>
+    `,
 })
 export class TemplateRefDemoComponent
-  implements AfterViewInit {
-  @ViewChild('tpl') _tpl: TemplateRef<any>
+    implements AfterViewInit {
+    @ViewChild('tpl') _tpl: TemplateRef<any>;
 
-  ngAfterViewInit(): void {
-    console.log(this._tpl.elementRef)
-  }
+    ngAfterViewInit(): void {
+        console.log(this._tpl.elementRef);
+    }
 }
 ```
 
@@ -94,8 +94,8 @@ export class TemplateRefDemoComponent
 
 В Angular различают два вида представлений:
 
-- Embedded Views - относятся к элементу `<ng-template />`;
-- Host Views - относятся к компоненту и инициализируются в момент [динамического создания компонентов](dynamic-components.md).
+-   Embedded Views - относятся к элементу `<ng-template />`;
+-   Host Views - относятся к компоненту и инициализируются в момент [динамического создания компонентов](dynamic-components.md).
 
 Embedded и Host Views размещаются в контейнере `ViewContainerRef`.
 
@@ -109,42 +109,42 @@ Embedded и Host Views размещаются в контейнере `ViewConta
 
 ```ts
 @Component({
-  selector: 'view-container-ref-demo',
-  template: `
-    <ng-container #views></ng-container>
+    selector: 'view-container-ref-demo',
+    template: `
+        <ng-container #views></ng-container>
 
-    <ng-template #tpl>
-      <div>
-        <h1>Template title</h1>
-        <p>Template description</p>
-      </div>
-    </ng-template>
-  `,
+        <ng-template #tpl>
+            <div>
+                <h1>Template title</h1>
+                <p>Template description</p>
+            </div>
+        </ng-template>
+    `,
 })
 export class ViewContainerRefDemoComponent
-  implements AfterViewInit {
-  @ViewChild('views', { read: ViewContainerRef })
-  views: ViewContainerRef
-  @ViewChild('tpl') tpl: TemplateRef<any>
+    implements AfterViewInit {
+    @ViewChild('views', { read: ViewContainerRef })
+    views: ViewContainerRef;
+    @ViewChild('tpl') tpl: TemplateRef<any>;
 
-  constructor(
-    private componentFactory: ComponentFactoryResolver,
-    private injector: Injector
-  ) {}
+    constructor(
+        private componentFactory: ComponentFactoryResolver,
+        private injector: Injector
+    ) {}
 
-  ngAfterViewInit() {
-    // embedded view
-    const view = this.tpl.createEmbeddedView(null)
-    this.views.insert(view)
+    ngAfterViewInit() {
+        // embedded view
+        const view = this.tpl.createEmbeddedView(null);
+        this.views.insert(view);
 
-    // host view
-    const factory = this.componentFactory.resolveComponentFactory(
-      ContactItemComponent
-    )
-    const componentRef = factory.create(this.injector)
+        // host view
+        const factory = this.componentFactory.resolveComponentFactory(
+            ContactItemComponent
+        );
+        const componentRef = factory.create(this.injector);
 
-    this.views.insert(componentRef.hostView, 0)
-  }
+        this.views.insert(componentRef.hostView, 0);
+    }
 }
 ```
 
@@ -152,12 +152,12 @@ export class ViewContainerRefDemoComponent
 
 Для осуществления манипуляций с представлениями внутри контейнера, у экземпляра класса `ViewContainerRef` предусмотрен ряд методов:
 
-- `insert(viewRef: ViewRef, index?: number)` - вставляет представление `viewRef` на позицию `index` (если `index` не указан, то вставка осуществляется в конец);
-- `clear()` - удаляет все представления из контейнера;
-- `get(index: number)` - возвращает представление типа `ViewRef` по заданному индексу;
-- `indexOf(viewRef: ViewRef)` - возвращает индекс переданного представления;
-- `detach(index?: number)` - удаляет представление по конкретному индексу, если индекс не передан - удаляет последнее представление;
-- `move(viewRef: ViewRef, currentIndex: number)` - меняет индекс представления `viewRef` на `currentIndex`.
+-   `insert(viewRef: ViewRef, index?: number)` - вставляет представление `viewRef` на позицию `index` (если `index` не указан, то вставка осуществляется в конец);
+-   `clear()` - удаляет все представления из контейнера;
+-   `get(index: number)` - возвращает представление типа `ViewRef` по заданному индексу;
+-   `indexOf(viewRef: ViewRef)` - возвращает индекс переданного представления;
+-   `detach(index?: number)` - удаляет представление по конкретному индексу, если индекс не передан - удаляет последнее представление;
+-   `move(viewRef: ViewRef, currentIndex: number)` - меняет индекс представления `viewRef` на `currentIndex`.
 
 ## ComponentRef
 
@@ -169,38 +169,38 @@ export class ViewContainerRefDemoComponent
 
 ```html
 <div>
-  <ng-container *ngTemplateOutlet="tpl"></ng-container>
+    <ng-container *ngTemplateOutlet="tpl"></ng-container>
 
-  <ng-template #tpl>
-    <ul>
-      <li>Item 1</li>
-      <li>Item 2</li>
-      <li>Item 3</li>
-    </ul>
-  </ng-template>
+    <ng-template #tpl>
+        <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+        </ul>
+    </ng-template>
 </div>
 ```
 
 Также в такие представления можно передавать данные.
 
 ```ts
-items: any = ['Item 1', 'Item 2', 'Item 3']
+items: any = ['Item 1', 'Item 2', 'Item 3'];
 ```
 
 ```html
 <div>
-  <ng-container
-    *ngTemplateOutlet="tpl; context: items"
-  ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="tpl; context: items"
+    ></ng-container>
 
-  <ng-template #tpl let-items="items">
-    <ul>
-      <li
-        *ngFor="let item of items"
-        [textContent]="item"
-      ></li>
-    </ul>
-  </ng-template>
+    <ng-template #tpl let-items="items">
+        <ul>
+            <li
+                *ngFor="let item of items"
+                [textContent]="item"
+            ></li>
+        </ul>
+    </ng-template>
 </div>
 ```
 
@@ -208,6 +208,6 @@ items: any = ['Item 1', 'Item 2', 'Item 3']
 
 ```html
 <ng-container
-  *ngComponentOutlet="ContactItem"
+    *ngComponentOutlet="ContactItem"
 ></ng-container>
 ```

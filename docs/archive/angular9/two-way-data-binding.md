@@ -20,16 +20,18 @@ _contacts.component.ts_
 
 ```ts
 @Component({
-  selector: 'contacts',
-  template: `
-    <contacts-item [(name)]="contactPerson"></contacts-item>
-    <p>{{ contactPerson }}</p>
-  `,
+    selector: 'contacts',
+    template: `
+        <contacts-item
+            [(name)]="contactPerson"
+        ></contacts-item>
+        <p>{{ contactPerson }}</p>
+    `,
 })
 export class ContactsComponent {
-  contactPerson: string
+    contactPerson: string;
 
-  constructor() {}
+    constructor() {}
 }
 ```
 
@@ -37,21 +39,21 @@ _contacts-item.component.ts_
 
 ```ts
 @Component({
-  selector: 'contacts-item',
-  template: `
-    <button (click)="showContactPerson()">Show</button>
-  `,
+    selector: 'contacts-item',
+    template: `
+        <button (click)="showContactPerson()">Show</button>
+    `,
 })
 export class ContactsItemComponent {
-  @Input() name: string = 'Unknown'
-  @Output() nameChange = new EventEmitter<String>()
+    @Input() name: string = 'Unknown';
+    @Output() nameChange = new EventEmitter<String>();
 
-  constructor() {}
+    constructor() {}
 
-  showContactPerson(): void {
-    this.name = 'Peter'
-    this.nameChange.emit(this.name)
-  }
+    showContactPerson(): void {
+        this.name = 'Peter';
+        this.nameChange.emit(this.name);
+    }
 }
 ```
 

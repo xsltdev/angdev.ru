@@ -442,7 +442,7 @@ template: '<div>' + raw + '</div>';
 // …
 ```
 
-[`String.raw()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/raw) - это _теговая функция_, встроенная в JavaScript ES2015.
+[`String.raw()`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/raw) — это _теговая функция_, встроенная в JavaScript ES2015.
 
 Компилятор AOT не поддерживает выражения шаблонов с метками; избегайте их в выражениях метаданных.
 

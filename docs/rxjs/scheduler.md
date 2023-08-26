@@ -14,31 +14,34 @@ description: Для управления временем и очереднос�
 
 Учитывая описанное выше, вполне логично, что имеются следующие типы RxJS `Schedulers`:
 
-- `queue` - добавляет операцию в callstack;
-- `asap` - регистрирует операцию в очереди микрозадач;
-- `async` - регистрирует операцию в очереди макрозадач;
-- `animationFrame` - отвечает за действия, выполняемые перед перерисовкой.
+-   `queue` - добавляет операцию в callstack;
+-   `asap` - регистрирует операцию в очереди микрозадач;
+-   `async` - регистрирует операцию в очереди макрозадач;
+-   `animationFrame` - отвечает за действия, выполняемые перед перерисовкой.
 
 Посмотрим на примере.
 
 ```ts
 from(['b', 'c', 'd'])
-  .pipe(startWith('Queue scheduler', queue))
-  .subscribe((vl) => console.log(vl));
+    .pipe(startWith('Queue scheduler', queue))
+    .subscribe((vl) => console.log(vl));
 
 from(['b', 'c', 'd'])
-  .pipe(startWith('Asap scheduler', asap))
-  .subscribe((vl) => console.log(vl));
+    .pipe(startWith('Asap scheduler', asap))
+    .subscribe((vl) => console.log(vl));
 
 from(['b', 'c', 'd'])
-  .pipe(startWith('Async scheduler', async))
-  .subscribe((vl) => console.log(vl));
+    .pipe(startWith('Async scheduler', async))
+    .subscribe((vl) => console.log(vl));
 
 from(['b', 'c', 'd'])
-  .pipe(
-    startWith('Animation frame scheduler', animationFrame)
-  )
-  .subscribe((vl) => console.log(vl));
+    .pipe(
+        startWith(
+            'Animation frame scheduler',
+            animationFrame
+        )
+    )
+    .subscribe((vl) => console.log(vl));
 ```
 
 В качестве второго необязательного параметра большинству операторов можно передать объект RxJS `Scheduler`, который переопределяет поведение оператора по умолчанию.
@@ -53,8 +56,8 @@ from(['b', 'c', 'd'])
 console.log('Before');
 
 of(9)
-  .pipe(observeOn(async))
-  .subscribe((vl) => console.log('Value is: ', vl));
+    .pipe(observeOn(async))
+    .subscribe((vl) => console.log('Value is: ', vl));
 
 console.log('After');
 ```
@@ -69,8 +72,8 @@ console.log('After');
 console.log('Before');
 
 of(9)
-  .pipe(subscribeOn(async))
-  .subscribe((vl) => console.log('Value is: ', vl));
+    .pipe(subscribeOn(async))
+    .subscribe((vl) => console.log('Value is: ', vl));
 
 console.log('After');
 ```

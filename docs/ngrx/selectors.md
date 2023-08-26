@@ -6,10 +6,10 @@ description: В NgRx селекторы представляют собой чи
 
 В NgRx **селекторы** представляют собой чистые функции и используются для получения определенных частей глобального состояния. Отличительные особенности селекторов:
 
-- Мобильность;
-- Мемоизация;
-- Возможность построения композиции селекторов;
-- Легкость тестирования.
+-   Мобильность;
+-   Мемоизация;
+-   Возможность построения композиции селекторов;
+-   Легкость тестирования.
 
 ## createSelector()
 
@@ -19,30 +19,30 @@ description: В NgRx селекторы представляют собой чи
 
 ```ts
 export interface User {
-  id: number;
-  name: string;
-  email: string;
+    id: number;
+    name: string;
+    email: string;
 }
 
 interface Article {
-  id: number;
-  user_id: number;
-  title: string;
+    id: number;
+    user_id: number;
+    title: string;
 }
 
 interface UsersState {
-  list: { [id: number]: User };
-  count: number;
+    list: { [id: number]: User };
+    count: number;
 }
 
 interface ArticlesState {
-  list: { [id: number]: Article };
-  count: number;
+    list: { [id: number]: Article };
+    count: number;
 }
 
 export interface State {
-  users: UsersState;
-  articles: ArticlesState;
+    users: UsersState;
+    articles: ArticlesState;
 }
 ```
 
@@ -52,8 +52,8 @@ export interface State {
 const selectUsers = (state: State) => state.users;
 
 export const selectUsersList = createSelector(
-  selectUsers,
-  (state: UsersState) => state.list
+    selectUsers,
+    (state: UsersState) => state.list
 );
 ```
 
@@ -63,21 +63,22 @@ export const selectUsersList = createSelector(
 const selectUsers = (state: State) => state.users;
 
 export const selectUsersCount = createSelector(
-  selectUsers,
-  (state: UsersState) => state.count
+    selectUsers,
+    (state: UsersState) => state.count
 );
 
 const selectArticles = (state: State) => state.articles;
 
 export const selectArticlesCount = createSelector(
-  selectArticles,
-  (state: ArticlesState) => state.count
+    selectArticles,
+    (state: ArticlesState) => state.count
 );
 
 export const selectCountSum = createSelector(
-  selectUsersCount,
-  selectArticlesCount,
-  (usersCount, articlesCount) => usersCount + articlesCount
+    selectUsersCount,
+    selectArticlesCount,
+    (usersCount, articlesCount) =>
+        usersCount + articlesCount
 );
 ```
 
@@ -87,11 +88,11 @@ export const selectCountSum = createSelector(
 
 ```ts
 export class AppComponent {
-  constructor(private store: Store) {
-    this.store
-      .pipe(select(selectCountSum))
-      .subscribe((vl) => console.log(vl));
-  }
+    constructor(private store: Store) {
+        this.store
+            .pipe(select(selectCountSum))
+            .subscribe((vl) => console.log(vl));
+    }
 }
 ```
 
@@ -99,11 +100,11 @@ export class AppComponent {
 
 ```ts
 this.store
-  .pipe(
-    select(selectCountSum),
-    map((sum) => sum * 2)
-  )
-  .subscribe((vl) => console.log(vl));
+    .pipe(
+        select(selectCountSum),
+        map((sum) => sum * 2)
+    )
+    .subscribe((vl) => console.log(vl));
 ```
 
 Для получения состояния на основе данных, отсутствующих в хранилище, вторым параметром функции NgRx `select()` передайте эти данные и они будут доступны в последней функции в качестве последнего параметра.
@@ -112,17 +113,17 @@ this.store
 const selectArticles = (state: State) => state.articles;
 
 export const selectArticlesList = createSelector(
-  selectArticles,
-  (state: ArticlesState) => state.list
+    selectArticles,
+    (state: ArticlesState) => state.list
 );
 
 export const selectArticlesByUser = createSelector(
-  selectArticlesList,
-  (articles, props) => {
-    return articles.filter(
-      (item) => item.user_id === props.user_id
-    );
-  }
+    selectArticlesList,
+    (articles, props) => {
+        return articles.filter(
+            (item) => item.user_id === props.user_id
+        );
+    }
 );
 ```
 
@@ -130,8 +131,8 @@ export const selectArticlesByUser = createSelector(
 
 ```ts
 this.store
-  .pipe(select(selectArticlesByUser, { user_id: 3 }))
-  .subscribe((vl) => console.log(vl));
+    .pipe(select(selectArticlesByUser, { user_id: 3 }))
+    .subscribe((vl) => console.log(vl));
 ```
 
 ## createFeatureSelector()
@@ -140,7 +141,7 @@ this.store
 
 ```ts
 const selectArticles = createFeatureSelector<State>(
-  'articles'
+    'articles'
 );
 ```
 
@@ -153,8 +154,8 @@ const selectArticles = createFeatureSelector<State>(
 ```ts
 //получаем и запоминаем все статьи по запрашиваемому user_id
 this.store
-  .pipe(select(selectArticlesByUser, { user_id: 3 }))
-  .subscribe((vl) => console.log(vl));
+    .pipe(select(selectArticlesByUser, { user_id: 3 }))
+    .subscribe((vl) => console.log(vl));
 
 //сбрасываем сохраненное значение
 selectArticlesByUser.release();

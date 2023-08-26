@@ -40,7 +40,7 @@ import { AppComponent } from './app.component';
 export class AppModule {}
 ```
 
-Импорты в верхней части массива - это операторы импорта JavaScript, а массив `imports` внутри `@NgModule` специфичен для Angular. Подробнее о различиях см. в [JavaScript Modules vs. NgModules](ngmodule-vs-jsmodule.md).
+Импорты в верхней части массива — это операторы импорта JavaScript, а массив `imports` внутри `@NgModule` специфичен для Angular. Подробнее о различиях см. в [JavaScript Modules vs. NgModules](ngmodule-vs-jsmodule.md).
 
 ## `BrowserModule` и `CommonModule`
 

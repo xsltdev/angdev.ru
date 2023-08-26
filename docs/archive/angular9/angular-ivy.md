@@ -10,10 +10,10 @@ description: Angular Ivy представляет собой абсолютно 
 
 Преимущества Angular Ivy:
 
-- Более быстрая [сборка](angular-deployment.md) за счет того, что зависимые [компоненты](angular-components.md) и [директивы](angular-directives.md) теперь не включаются в зависящий компонент, вместо этого в зависящем компоненте указываются ссылки на зависимости, Таким образом, при изменении одной из зависимостей нужно перекомпилировать только ее, а не весь использующий ее код;
-- Меньший размер файлов сборки из-за преобразования всех декораторов в статические методы класса и большей подверженности файлов процессу под названием Tree Shaking;
-- Усовершенствованная отладка;
-- Использование динамической загрузки.
+-   Более быстрая [сборка](angular-deployment.md) за счет того, что зависимые [компоненты](angular-components.md) и [директивы](angular-directives.md) теперь не включаются в зависящий компонент, вместо этого в зависящем компоненте указываются ссылки на зависимости, Таким образом, при изменении одной из зависимостей нужно перекомпилировать только ее, а не весь использующий ее код;
+-   Меньший размер файлов сборки из-за преобразования всех декораторов в статические методы класса и большей подверженности файлов процессу под названием Tree Shaking;
+-   Усовершенствованная отладка;
+-   Использование динамической загрузки.
 
 !!! note "Важно"
 
@@ -25,9 +25,9 @@ _tsconfig.app.json_
 
 ```json
 {
-  "angularCompilerOptions": {
-    "enableIvy": true
-  }
+    "angularCompilerOptions": {
+        "enableIvy": true
+    }
 }
 ```
 
@@ -42,14 +42,14 @@ _tsconfig.app.json_
 _app.component.ts_
 
 ```ts
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
+    selector: 'app-root',
+    templateUrl: './app.component.html',
 })
 export class AppComponent {
-  title = 'Angular ivy'
+    title = 'Angular ivy';
 }
 ```
 
@@ -59,9 +59,9 @@ _app.component.html_
 <h1>{{title}}</h1>
 
 <select (change)="selectValueChanged($event)">
-  <option value="1">Faster compilation</option>
-  <option value="2">Small bundle size</option>
-  <option value="3">Informative debugging</option>
+    <option value="1">Faster compilation</option>
+    <option value="2">Small bundle size</option>
+    <option value="3">Informative debugging</option>
 </select>
 ```
 
@@ -81,35 +81,36 @@ Angular Ivy поддерживает динамический импорт ES6. 
 
 ```ts
 const routes: Routes = [
-  {
-    path: ':lang',
-    children: [
-      {
-        path: 'auth',
-        loadChildren: './auth/auth.module#AuthModule',
-      },
-    ],
-  },
-]
+    {
+        path: ':lang',
+        children: [
+            {
+                path: 'auth',
+                loadChildren:
+                    './auth/auth.module#AuthModule',
+            },
+        ],
+    },
+];
 ```
 
 Загрузка в Angular Ivy выглядит так.
 
 ```ts
 const routes: Routes = [
-  {
-    path: ':lang',
-    children: [
-      {
-        path: 'auth',
-        loadChildren: () =>
-          import('./auth/auth.module').then(
-            ({ AuthModule }) => AuthModule
-          ),
-      },
-    ],
-  },
-]
+    {
+        path: ':lang',
+        children: [
+            {
+                path: 'auth',
+                loadChildren: () =>
+                    import('./auth/auth.module').then(
+                        ({ AuthModule }) => AuthModule
+                    ),
+            },
+        ],
+    },
+];
 ```
 
 Динамический импорт также дает возможность загружать отдельные компоненты без их объявления в модуле.
@@ -118,10 +119,10 @@ _app.module.ts_
 
 ```ts
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule],
-  providers: [],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [BrowserModule],
+    providers: [],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -130,54 +131,54 @@ _app.component.ts_
 
 ```ts
 import {
-  Component,
-  ɵrenderComponent,
-  Injector,
-} from '@angular/core'
+    Component,
+    ɵrenderComponent,
+    Injector,
+} from '@angular/core';
 
-import { ChildComponent } from './child.component'
+import { ChildComponent } from './child.component';
 
 @Component({
-  selector: 'app-root',
-  template: `
-    <h1>Root component</h1>
+    selector: 'app-root',
+    template: `
+        <h1>Root component</h1>
 
-    <button (click)="loadChild()">
-      Load ChildComponent
-    </button>
-  `,
+        <button (click)="loadChild()">
+            Load ChildComponent
+        </button>
+    `,
 })
 export class AppComponent {
-  constructor(private injector: Injector) {}
+    constructor(private injector: Injector) {}
 
-  loadChild() {
-    import('./child.component').then(
-      ({ ChildComponent }) => {
-        ɵrenderComponent(ChildComponent, {
-          host: 'app-root',
-          injector: this.injector,
-        })
-      }
-    )
-  }
+    loadChild() {
+        import('./child.component').then(
+            ({ ChildComponent }) => {
+                ɵrenderComponent(ChildComponent, {
+                    host: 'app-root',
+                    injector: this.injector,
+                });
+            }
+        );
+    }
 }
 ```
 
 _child.component.ts_
 
 ```ts
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-child',
-  template: `
-    <h1>Dynamically loaded "ChildComponent"</h1>
-  `,
+    selector: 'app-child',
+    template: `
+        <h1>Dynamically loaded "ChildComponent"</h1>
+    `,
 })
 export class ChildComponent {}
 ```
 
 Для отображения загружаемого компонента используется функция `ɵrenderComponent()`, которая первым параметром принимает тип компонента, а вторым - объект конфигурации со следующими свойствами:
 
-- `host` - селектор компонента, в который будет загружен подгруженный компонент;
-- `injector` - экземпляр текущего объекта [injector](dependency-injection.md), который указывается, только если подгружаемый компонент имеет зависимости.
+-   `host` - селектор компонента, в который будет загружен подгруженный компонент;
+-   `injector` - экземпляр текущего объекта [injector](dependency-injection.md), который указывается, только если подгружаемый компонент имеет зависимости.

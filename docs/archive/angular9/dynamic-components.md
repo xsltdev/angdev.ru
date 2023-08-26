@@ -14,11 +14,11 @@ _books-list.component.html_
 
 ```html
 <div>
-  <div class="book-item" #book>
-    <p>No books</p>
-  </div>
+    <div class="book-item" #book>
+        <p>No books</p>
+    </div>
 
-  <button (click)="addBook()">Add book</button>
+    <button (click)="addBook()">Add book</button>
 </div>
 ```
 
@@ -26,32 +26,32 @@ _books-list.component.ts_
 
 ```ts
 @Component({
-  selector: 'books-list',
-  templateUrl: './books-list.component.html',
+    selector: 'books-list',
+    templateUrl: './books-list.component.html',
 })
 export class AppComponent {
-  @ViewChild('book') book
+    @ViewChild('book') book;
 
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver
-  ) {}
+    constructor(
+        private componentFactoryResolver: ComponentFactoryResolver
+    ) {}
 
-  addBook() {
-    this.book.viewContainerRef.clear()
+    addBook() {
+        this.book.viewContainerRef.clear();
 
-    let bookItemComponent = this.componentFactoryResolver.resolveComponentFactory(
-      BookItemComponent
-    )
-    let bookItemComponentRef = this.book.viewContainerRef.createComponent(
-      bookItemComponent
-    )
-    ;(<BookItemComponent>(
-      bookItemComponentRef.instance
-    )).value = {
-      title: 'Great Expectations',
-      author: 'Charles Dickens',
+        let bookItemComponent = this.componentFactoryResolver.resolveComponentFactory(
+            BookItemComponent
+        );
+        let bookItemComponentRef = this.book.viewContainerRef.createComponent(
+            bookItemComponent
+        );
+        (<BookItemComponent>(
+            bookItemComponentRef.instance
+        )).value = {
+            title: 'Great Expectations',
+            author: 'Charles Dickens',
+        };
     }
-  }
 }
 ```
 
@@ -59,8 +59,8 @@ _book-item.component.html_
 
 ```html
 <div class="book-item">
-  <div>Title: {{value?.title}}</div>
-  <div>Author: {{value?.author}}</div>
+    <div>Title: {{value?.title}}</div>
+    <div>Author: {{value?.author}}</div>
 </div>
 ```
 
@@ -68,12 +68,12 @@ _book-item.component.ts_
 
 ```ts
 @Component({
-  selector: 'book-item',
-  templateUrl: './book-item.component.html',
+    selector: 'book-item',
+    templateUrl: './book-item.component.html',
 })
 export class BookItemComponent {
-  value: any = null
-  constructor() {}
+    value: any = null;
+    constructor() {}
 }
 ```
 
@@ -91,12 +91,12 @@ export class BookItemComponent {
 
 ```html
 <div>
-  <button (click)="addBook()">Add book</button>
+    <button (click)="addBook()">Add book</button>
 
-  <ng-template #book></ng-template>
+    <ng-template #book></ng-template>
 </div>
 ```
 
 ## Ссылки
 
-- [Dynamic Component Loader](https://angular.io/guide/dynamic-component-loader)
+-   [Dynamic Component Loader](https://angular.io/guide/dynamic-component-loader)

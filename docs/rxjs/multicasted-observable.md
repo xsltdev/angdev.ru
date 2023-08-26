@@ -13,7 +13,7 @@ description: При необходимости можно создать Multica
 ```ts
 const subject = new Subject();
 const multicasted = from([2, 4, 6]).pipe(
-  multicast(subject)
+    multicast(subject)
 );
 
 multicasted.subscribe((vl) => console.log(`1st: ${vl}`));
@@ -41,23 +41,23 @@ RxJS `multicast(`) принимает `Subject`, который регистри
 ```ts
 const subject = new Subject();
 const refCounted = interval(3).pipe(
-  multicast(subject),
-  refCount()
+    multicast(subject),
+    refCount()
 );
 
 let sub1, sub2;
 
 //выполнение Observable начинается
 sub1 = refCounted.subscribe((vl) =>
-  console.log(`1st: ${vl}`)
+    console.log(`1st: ${vl}`)
 );
 
 setTimeout(
-  () =>
-    (sub2 = refCounted.subscribe((vl) =>
-      console.log(`2nd: ${vl}`)
-    )),
-  500
+    () =>
+        (sub2 = refCounted.subscribe((vl) =>
+            console.log(`2nd: ${vl}`)
+        )),
+    500
 );
 
 setTimeout(() => sub1.unsubscribe(), 1500);

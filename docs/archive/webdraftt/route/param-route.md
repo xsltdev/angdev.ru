@@ -11,18 +11,18 @@ description: Маршруты могут определять параметры
 В папку `src/app` добавим новый файл `item.component.ts` с новым компонентом:
 
 ```typescript
-import { Component } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'item-info',
-  template: ` <h3>Модель {{ id }}</h3> `,
+    selector: 'item-info',
+    template: ` <h3>Модель {{ id }}</h3> `,
 })
 export class ItemComponent {
-  id: number
-  constructor(private activateRoute: ActivatedRoute) {
-    this.id = activateRoute.snapshot.params['id']
-  }
+    id: number;
+    constructor(private activateRoute: ActivatedRoute) {
+        this.id = activateRoute.snapshot.params['id'];
+    }
 }
 ```
 
@@ -35,41 +35,41 @@ export class ItemComponent {
 Но пока нет никакого маршрута, который бы использовал данный компонент. Поэтому изменим класс модуля приложения:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { FormsModule } from '@angular/forms'
-import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 
-import { Routes, RouterModule } from '@angular/router'
+import { Routes, RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component'
-import { AboutComponent } from './about.component'
-import { HomeComponent } from './home.component'
-import { NotFoundComponent } from './not-found.component'
+import { AppComponent } from './app.component';
+import { AboutComponent } from './about.component';
+import { HomeComponent } from './home.component';
+import { NotFoundComponent } from './not-found.component';
 
-import { ItemComponent } from './item.component'
+import { ItemComponent } from './item.component';
 
 // определение маршрутов
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'item/:id', component: ItemComponent },
-  { path: '**', component: NotFoundComponent },
-]
+    { path: '', component: HomeComponent },
+    { path: 'about', component: AboutComponent },
+    { path: 'item/:id', component: ItemComponent },
+    { path: '**', component: NotFoundComponent },
+];
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule,
-    RouterModule.forRoot(appRoutes),
-  ],
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    AboutComponent,
-    NotFoundComponent,
-    ItemComponent,
-  ],
-  bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        RouterModule.forRoot(appRoutes),
+    ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        AboutComponent,
+        NotFoundComponent,
+        ItemComponent,
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -81,22 +81,22 @@ export class AppModule {}
 Теперь изменим главный компонент `AppComponent`:
 
 ```typescript
-import { Component } from '@angular/core'
-import { Router } from '@angular/router'
-import { NgModel } from '@angular/forms'
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgModel } from '@angular/forms';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <nav>
-        <a routerLink="">Главная</a>
-        <a routerLink="/about">О сайте</a>
-        <a [routerLink]="['item', '5']">item 5</a>
-      </nav>
-      <router-outlet></router-outlet>
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <div>
+            <nav>
+                <a routerLink="">Главная</a>
+                <a routerLink="/about">О сайте</a>
+                <a [routerLink]="['item', '5']">item 5</a>
+            </nav>
+            <router-outlet></router-outlet>
+        </div>
+    `,
 })
 export class AppComponent {}
 ```
@@ -123,22 +123,22 @@ export class AppComponent {}
 Чтобы решить эту проблему, нам надо динамически изменять значение `id` в компоненте `ItemComponent`, поэтому изменим его код:
 
 ```typescript
-import { Component } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
-import { Subscription } from 'rxjs'
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'item-info',
-  template: ` <h3>Модель {{ id }}</h3> `,
+    selector: 'item-info',
+    template: ` <h3>Модель {{ id }}</h3> `,
 })
 export class ItemComponent {
-  private id: number
-  private subscription: Subscription
-  constructor(private activateRoute: ActivatedRoute) {
-    this.subscription = activateRoute.params.subscribe(
-      (params) => (this.id = params['id'])
-    )
-  }
+    private id: number;
+    private subscription: Subscription;
+    constructor(private activateRoute: ActivatedRoute) {
+        this.subscription = activateRoute.params.subscribe(
+            (params) => (this.id = params['id'])
+        );
+    }
 }
 ```
 

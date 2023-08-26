@@ -8,9 +8,9 @@ NgRx Effects реализуют побочные эффекты, работаю�
 
 Цели и функции NgRx Effects:
 
-- снять нагрузку с компонента по управлению состоянием и выполнению побочных эффектов и свести его работу к получению состояний и генерации действий;
-- отслеживание и фильтрация потока действий для выполнения побочного эффекта при возникновении определенного действия;
-- выполнение синхронных и асинхронных побочных эффектов.
+-   снять нагрузку с компонента по управлению состоянием и выполнению побочных эффектов и свести его работу к получению состояний и генерации действий;
+-   отслеживание и фильтрация потока действий для выполнения побочного эффекта при возникновении определенного действия;
+-   выполнение синхронных и асинхронных побочных эффектов.
 
 NgRx Effects устанавливаются отдельно.
 
@@ -25,11 +25,11 @@ _articles.service.ts_
 ```ts
 @Injectable({ providedIn: 'root' })
 export class ArticlesService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getArticles() {
-    return this.http.get('/api/articles');
-  }
+    getArticles() {
+        return this.http.get('/api/articles');
+    }
 }
 ```
 
@@ -37,31 +37,31 @@ _articles.component.ts_
 
 ```ts
 @Component({
-  selector: 'app-articles',
-  template: `
-    <ul>
-      <li
-        *ngFor="let item of articles"
-        [textContent]="item.title"
-      ></li>
-    </ul>
-  `,
+    selector: 'app-articles',
+    template: `
+        <ul>
+            <li
+                *ngFor="let item of articles"
+                [textContent]="item.title"
+            ></li>
+        </ul>
+    `,
 })
 export class ArticlesComponent {
-  articles: Article[] = [];
+    articles: Article[] = [];
 
-  constructor(private articlesService: ArticlesService) {
-    this.getArticles();
-  }
+    constructor(private articlesService: ArticlesService) {
+        this.getArticles();
+    }
 
-  getArticles() {
-    this.articles = [];
+    getArticles() {
+        this.articles = [];
 
-    this.articlesService.getArticles().subscribe(
-      (items) => (this.articles = items),
-      (err) => console.log(err)
-    );
-  }
+        this.articlesService.getArticles().subscribe(
+            (items) => (this.articles = items),
+            (err) => console.log(err)
+        );
+    }
 }
 ```
 
@@ -71,24 +71,24 @@ _articles.component.ts_
 
 ```ts
 @Component({
-  selector: 'app-articles',
-  template: `
-    <ul>
-      <li
-        *ngFor="let item of articles"
-        [textContent]="item.title"
-      ></li>
-    </ul>
-  `,
+    selector: 'app-articles',
+    template: `
+        <ul>
+            <li
+                *ngFor="let item of articles"
+                [textContent]="item.title"
+            ></li>
+        </ul>
+    `,
 })
 export class ArticlesComponent {
-  articles$: Observable = this.store.pipe(
-    select(selectArticlesList)
-  );
+    articles$: Observable = this.store.pipe(
+        select(selectArticlesList)
+    );
 
-  constructor(private store: Store) {
-    this.store.dispatch(new LoadArticles());
-  }
+    constructor(private store: Store) {
+        this.store.dispatch(new LoadArticles());
+    }
 }
 ```
 
@@ -96,73 +96,73 @@ _articles.actions.ts_
 
 ```ts
 export enum ArticlesActions {
-  LoadArticles = '[Articles Page] Load Articles',
-  ArticlesLoadedSuccess = '[Articles Page] Articles Loaded Success',
-  ArticlesLoadedError = '[Articles Page] Articles Loaded Error',
+    LoadArticles = '[Articles Page] Load Articles',
+    ArticlesLoadedSuccess = '[Articles Page] Articles Loaded Success',
+    ArticlesLoadedError = '[Articles Page] Articles Loaded Error',
 }
 
 export interface Article {
-  id: number;
-  author: string;
-  title: string;
+    id: number;
+    author: string;
+    title: string;
 }
 
 export class LoadArticles implements Action {
-  readonly type = ArticlesActions.LoadArticles;
+    readonly type = ArticlesActions.LoadArticles;
 }
 
 export class ArticlesLoadedSuccess implements Action {
-  readonly type = ArticlesActions.ArticlesLoadedSuccess;
+    readonly type = ArticlesActions.ArticlesLoadedSuccess;
 
-  constructor(public payload: { articles: Article[] }) {}
+    constructor(public payload: { articles: Article[] }) {}
 }
 
 export class ArticlesLoadedError implements Action {
-  readonly type = ArticlesActions.ArticlesLoadedError;
+    readonly type = ArticlesActions.ArticlesLoadedError;
 }
 
 export type ArticlesUnion =
-  | LoadArticles
-  | ArticlesLoadedSuccess
-  | ArticlesLoadedError;
+    | LoadArticles
+    | ArticlesLoadedSuccess
+    | ArticlesLoadedError;
 ```
 
 _articles.reducer.ts_
 
 ```ts
 export interface ArticlesState {
-  list: Article[];
+    list: Article[];
 }
 
 const initialState: ArticlesState = {
-  list: [],
+    list: [],
 };
 
 export function articlesReducer(
-  state: State = initialState,
-  action: ArticlesUnion
+    state: State = initialState,
+    action: ArticlesUnion
 ) {
-  switch (action.type) {
-    case ArticlesActions.ArticlesLoadedSuccess:
-      return {
-        ...state,
-        list: action.payload.articles,
-      };
-    case ArticlesActions.ArticlesLoadedError:
-      return {
-        ...state,
-        list: [],
-      };
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case ArticlesActions.ArticlesLoadedSuccess:
+            return {
+                ...state,
+                list: action.payload.articles,
+            };
+        case ArticlesActions.ArticlesLoadedError:
+            return {
+                ...state,
+                list: [],
+            };
+        default:
+            return state;
+    }
 }
 
 const selectArticles = (state: State) => state.articles;
 
 export const selectArticlesList = createSelector(
-  selectArticles,
-  (state: ArticlesState) => state.list
+    selectArticles,
+    (state: ArticlesState) => state.list
 );
 ```
 
@@ -171,26 +171,28 @@ _articles.effects.ts_
 ```ts
 @Injectable()
 export class ArticlesEffects {
-  @Effect()
-  loadArticles$ = this.actions$.pipe(
-    ofType(ArticlesActions.LoadArticles),
-    mergeMap(() =>
-      this.articlesService.getArticles().pipe(
-        map(
-          (articles) =>
-            new ArticlesLoadedSuccess({
-              articles: articles,
-            })
-        ),
-        catchError(() => of(new ArticlesLoadedError()))
-      )
-    )
-  );
+    @Effect()
+    loadArticles$ = this.actions$.pipe(
+        ofType(ArticlesActions.LoadArticles),
+        mergeMap(() =>
+            this.articlesService.getArticles().pipe(
+                map(
+                    (articles) =>
+                        new ArticlesLoadedSuccess({
+                            articles: articles,
+                        })
+                ),
+                catchError(() =>
+                    of(new ArticlesLoadedError())
+                )
+            )
+        )
+    );
 
-  constructor(
-    private actions$: Actions,
-    private articlesService: ArticlesService
-  ) {}
+    constructor(
+        private actions$: Actions,
+        private articlesService: ArticlesService
+    ) {}
 }
 ```
 
@@ -198,7 +200,7 @@ _app.module.ts_
 
 ```ts
 @NgModule({
-  imports: [EffectsModule.forRoot([ArtilcesEffects])],
+    imports: [EffectsModule.forRoot([ArtilcesEffects])],
 })
 export class AppModule {}
 ```
@@ -245,56 +247,60 @@ initEffects$ = this.actions$.pipe(
 
 NgRx предоставляет возможность управлять жизненным циклом эффекта с помощью реализации интерфейсов:
 
-- `OnInitEffects` - возвращает действие сразу после того, как эффект был зарегистрирован в приложении;
-- `OnRunEffects` - позволяет управлять началом и окончанием работы эффекта (по умолчанию начинается и заканчивается вместе с работой приложения);
-- `OnIdentifyEffects` - позволяет регистрировать NgRx Effects несколько раз (по умолчанию эффект регистрируется в Angular приложении один раз, независимо от того, сколько раз загружается сам класс эффекта).
+-   `OnInitEffects` - возвращает действие сразу после того, как эффект был зарегистрирован в приложении;
+-   `OnRunEffects` - позволяет управлять началом и окончанием работы эффекта (по умолчанию начинается и заканчивается вместе с работой приложения);
+-   `OnIdentifyEffects` - позволяет регистрировать NgRx Effects несколько раз (по умолчанию эффект регистрируется в Angular приложении один раз, независимо от того, сколько раз загружается сам класс эффекта).
 
 ```ts
 @Injectable()
 export class ArticlesEffects
-  implements OnInitEffects, OnRunEffects {
-  @Effect()
-  loadArticles$ = this.actions$.pipe(
-    ofType(ArticlesActions.LoadArticles),
-    startWith(new LoadArticles()),
-    mergeMap(() =>
-      this.articlesService.getArticles().pipe(
-        map(
-          (articles) =>
-            new ArticlesLoadedSuccess({
-              articles: articles,
-            })
-        ),
-        catchError(() => of(new ArticlesLoadedError()))
-      )
-    )
-  );
-
-  constructor(
-    private actions$: Actions,
-    private articlesService: ArticlesService
-  ) {}
-
-  ngrxOnInitEffects(): Action {
-    return new ArticlesEffectsInit();
-  }
-
-  ngrxOnRunEffects(
-    resolvedEffects$: Observable<EffectNotification>
-  ) {
-    return this.actions$.pipe(
-      ofType(ArticlesActions.ArticlesEffectsInit),
-      exhaustMap(() =>
-        resolvedEffects$.pipe(
-          takeUntil(
-            this.actions$.pipe(
-              ofType(ArticlesActions.ArticlesLoadedSuccess)
+    implements OnInitEffects, OnRunEffects {
+    @Effect()
+    loadArticles$ = this.actions$.pipe(
+        ofType(ArticlesActions.LoadArticles),
+        startWith(new LoadArticles()),
+        mergeMap(() =>
+            this.articlesService.getArticles().pipe(
+                map(
+                    (articles) =>
+                        new ArticlesLoadedSuccess({
+                            articles: articles,
+                        })
+                ),
+                catchError(() =>
+                    of(new ArticlesLoadedError())
+                )
             )
-          )
         )
-      )
     );
-  }
+
+    constructor(
+        private actions$: Actions,
+        private articlesService: ArticlesService
+    ) {}
+
+    ngrxOnInitEffects(): Action {
+        return new ArticlesEffectsInit();
+    }
+
+    ngrxOnRunEffects(
+        resolvedEffects$: Observable<EffectNotification>
+    ) {
+        return this.actions$.pipe(
+            ofType(ArticlesActions.ArticlesEffectsInit),
+            exhaustMap(() =>
+                resolvedEffects$.pipe(
+                    takeUntil(
+                        this.actions$.pipe(
+                            ofType(
+                                ArticlesActions.ArticlesLoadedSuccess
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }
 }
 ```
 

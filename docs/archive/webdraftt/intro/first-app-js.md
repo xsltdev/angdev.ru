@@ -12,15 +12,15 @@ description: Использование языка программирован�
 
 ```javascript
 function Item(purchase, price, done) {
-  this.purchase = purchase
-  this.price = price
-  this.done = done
+    this.purchase = purchase;
+    this.price = price;
+    this.done = done;
 }
 
 var AppComponent = ng.core
-  .Component({
-    selector: 'my-app',
-    template: `<div class="page-header">
+    .Component({
+        selector: 'my-app',
+        template: `<div class="page-header">
         <h1> Список покупок </h1>
     </div>
     <div class="panel">
@@ -58,27 +58,27 @@ var AppComponent = ng.core
             </tbody>
         </table>
     </div>`,
-  })
-  .Class({
-    constructor: function () {
-      this.items = [
-        new Item('Хлеб', 15.9),
-        new Item('Масло', 60),
-        new Item('Картофель', 22.6, true),
-        new Item('Сыр', 310),
-      ]
-    },
-  })
+    })
+    .Class({
+        constructor: function () {
+            this.items = [
+                new Item('Хлеб', 15.9),
+                new Item('Масло', 60),
+                new Item('Картофель', 22.6, true),
+                new Item('Сыр', 310),
+            ];
+        },
+    });
 
 AppComponent.prototype.addItem = function (text, price) {
-  if (
-    text == undefined ||
-    text.trim() == '' ||
-    price == undefined
-  )
-    return
-  this.items.push(new Item(text, price))
-}
+    if (
+        text == undefined ||
+        text.trim() == '' ||
+        price == undefined
+    )
+        return;
+    this.items.push(new Item(text, price));
+};
 ```
 
 Здесь определен главный компонент приложения — `AppComponent`. Для его создания применяется функция `ng.core.Component()` из библиотеки `@angular/core`.
@@ -89,17 +89,17 @@ AppComponent.prototype.addItem = function (text, price) {
 
 ```javascript
 var AppModule = ng.core
-  .NgModule({
-    imports: [
-      ng.platformBrowser.BrowserModule,
-      ng.forms.FormsModule,
-    ],
-    declarations: [AppComponent],
-    bootstrap: [AppComponent],
-  })
-  .Class({
-    constructor: function () {},
-  })
+    .NgModule({
+        imports: [
+            ng.platformBrowser.BrowserModule,
+            ng.forms.FormsModule,
+        ],
+        declarations: [AppComponent],
+        bootstrap: [AppComponent],
+    })
+    .Class({
+        constructor: function () {},
+    });
 ```
 
 Модуль создается с помощью функции `ng.core.NgModule()`, которая определена в библиотеке `@angular/core`.
@@ -110,8 +110,8 @@ var AppModule = ng.core
 
 ```javascript
 ng.platformBrowserDynamic
-  .platformBrowserDynamic()
-  .bootstrapModule(AppModule)
+    .platformBrowserDynamic()
+    .bootstrapModule(AppModule);
 ```
 
 Этот файл будет загружать основной модуль приложения.
@@ -121,34 +121,34 @@ ng.platformBrowserDynamic
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Приложение покупок</title>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
-    />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
-    />
-    <script src="https://unpkg.com/core-js/client/shim.min.js"></script>
-    <script src="https://unpkg.com/zone.js/dist/zone.min.js"></script>
-    <script src="https://unpkg.com/rxjs/bundles/Rx.min.js"></script>
+    <head>
+        <meta charset="utf-8" />
+        <title>Приложение покупок</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+        />
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+        />
+        <script src="https://unpkg.com/core-js/client/shim.min.js"></script>
+        <script src="https://unpkg.com/zone.js/dist/zone.min.js"></script>
+        <script src="https://unpkg.com/rxjs/bundles/Rx.min.js"></script>
 
-    <script src="https://unpkg.com/@angular/core@2.0.0/bundles/core.umd.js"></script>
-    <script src="https://unpkg.com/@angular/common@2.0.0/bundles/common.umd.js"></script>
-    <script src="https://unpkg.com/@angular/compiler@2.0.0/bundles/compiler.umd.js"></script>
-    <script src="https://unpkg.com/@angular/forms@2.0.0/bundles/forms.umd.js"></script>
-    <script src="https://unpkg.com/@angular/platform-browser@2.0.0/bundles/platform-browser.umd.js"></script>
-    <script src="https://unpkg.com/@angular/platform-browser-dynamic@2.0.0/bundles/platform-browser-dynamic.umd.js"></script>
-  </head>
-  <body>
-    <my-app>Загрузка...</my-app>
-    <script src="app/app.component.js"></script>
-    <script src="app/app.module.js"></script>
-    <script src="app/main.js"></script>
-  </body>
+        <script src="https://unpkg.com/@angular/core@2.0.0/bundles/core.umd.js"></script>
+        <script src="https://unpkg.com/@angular/common@2.0.0/bundles/common.umd.js"></script>
+        <script src="https://unpkg.com/@angular/compiler@2.0.0/bundles/compiler.umd.js"></script>
+        <script src="https://unpkg.com/@angular/forms@2.0.0/bundles/forms.umd.js"></script>
+        <script src="https://unpkg.com/@angular/platform-browser@2.0.0/bundles/platform-browser.umd.js"></script>
+        <script src="https://unpkg.com/@angular/platform-browser-dynamic@2.0.0/bundles/platform-browser-dynamic.umd.js"></script>
+    </head>
+    <body>
+        <my-app>Загрузка...</my-app>
+        <script src="app/app.component.js"></script>
+        <script src="app/app.module.js"></script>
+        <script src="app/main.js"></script>
+    </body>
 </html>
 ```
 
@@ -158,8 +158,8 @@ ng.platformBrowserDynamic
 
 ```html
 <link
-  rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
 />
 <script src="https://unpkg.com/core-js/client/shim.min.js"></script>
 <script src="https://unpkg.com/zone.js/dist/zone.min.js"></script>

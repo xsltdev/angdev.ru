@@ -8,41 +8,45 @@ description: После создания компонента фреймворк
 
 ![Жизненный цикл компонента](lifecicle-1.png)
 
-- **`ngOnChanges`**: вызывается до метода `ngOnInit()` при начальной установке свойств, которые связаны механизмом привязки, а также при любой их переустановке или изменении их значений. Данный метод в качестве параметра принимает объект класса `SimpleChanges`, который содержит предыдущие и текущие значения свойства.
-- **`ngOnInit`**: вызывается один раз после установки свойств компонента, которые участвуют в привязке. Выполняет инициализацию компонента
-- **`ngDoCheck`**: вызывается при каждой проверке изменений свойств компонента сразу после методов `ngOnChanges` и `ngOnInit`
-- **`ngAfterContentInit`**: вызывается один раз после метода `ngDoCheck()` после вставки содержимого в представление компонента кода html
-- **`ngAfterContentChecked`**: вызывается фреймворком Angular при проверке изменений содержимого, которое добавляется в представление компонента. Вызывается после метода `ngAfterContentInit()` и после каждого последующего вызова метода `ngDoCheck()`.
-- **`ngAfterViewInit`**: вызывается фреймворком Angular после инициализации представления компонента, а также представлений дочерних компонентов. Вызывается только один раз сразу после первого вызова метода `ngAfterContentChecked()`
-- **`ngAfterViewChecked`**: вызывается фреймворком Angular после проверки на изменения в представлении компонента, а также проверки представлений дочерних компонентов. Вызывается после первого вызова метода `ngAfterViewInit()` и после каждого последующего вызова `ngAfterContentChecked()`
-- **`ngOnDestroy`**: вызывается перед тем, как фреймворк Angular удалит компонент.
+-   **`ngOnChanges`**: вызывается до метода `ngOnInit()` при начальной установке свойств, которые связаны механизмом привязки, а также при любой их переустановке или изменении их значений. Данный метод в качестве параметра принимает объект класса `SimpleChanges`, который содержит предыдущие и текущие значения свойства.
+-   **`ngOnInit`**: вызывается один раз после установки свойств компонента, которые участвуют в привязке. Выполняет инициализацию компонента
+-   **`ngDoCheck`**: вызывается при каждой проверке изменений свойств компонента сразу после методов `ngOnChanges` и `ngOnInit`
+-   **`ngAfterContentInit`**: вызывается один раз после метода `ngDoCheck()` после вставки содержимого в представление компонента кода html
+-   **`ngAfterContentChecked`**: вызывается фреймворком Angular при проверке изменений содержимого, которое добавляется в представление компонента. Вызывается после метода `ngAfterContentInit()` и после каждого последующего вызова метода `ngDoCheck()`.
+-   **`ngAfterViewInit`**: вызывается фреймворком Angular после инициализации представления компонента, а также представлений дочерних компонентов. Вызывается только один раз сразу после первого вызова метода `ngAfterContentChecked()`
+-   **`ngAfterViewChecked`**: вызывается фреймворком Angular после проверки на изменения в представлении компонента, а также проверки представлений дочерних компонентов. Вызывается после первого вызова метода `ngAfterViewInit()` и после каждого последующего вызова `ngAfterContentChecked()`
+-   **`ngOnDestroy`**: вызывается перед тем, как фреймворк Angular удалит компонент.
 
 Каждый такой метод определен в отдельном интерфейсе, который называется по имени метода без префикса `ng`. Например, метод `ngOnInit` определен в интерфейсе `OnInit`. Поэтому, если мы хотим отслеживать какие-то этапы жизненного цикла компонента, то класс компонента должен применять соответствующие интерфейсы:
 
 ```typescript
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import {
+    Component,
+    OnInit,
+    OnDestroy,
+} from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: ` <p>Hello Angular 2</p> `,
+    selector: 'my-app',
+    template: ` <p>Hello Angular 2</p> `,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  name: string = 'Tom'
+    name: string = 'Tom';
 
-  constructor() {
-    this.log(`constructor`)
-  }
-  ngOnInit() {
-    this.log(`onInit`)
-  }
+    constructor() {
+        this.log(`constructor`);
+    }
+    ngOnInit() {
+        this.log(`onInit`);
+    }
 
-  ngOnDestroy() {
-    this.log(`onDestroy`)
-  }
+    ngOnDestroy() {
+        this.log(`onDestroy`);
+    }
 
-  private log(msg: string) {
-    console.log(msg)
-  }
+    private log(msg: string) {
+        console.log(msg);
+    }
 }
 ```
 
@@ -62,40 +66,40 @@ export class AppComponent implements OnInit, OnDestroy {
 
 ```typescript
 import {
-  Component,
-  Input,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core'
+    Component,
+    Input,
+    OnInit,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 
 @Component({
-  selector: 'child-comp',
-  template: ` <p>Привет {{ name }}</p> `,
+    selector: 'child-comp',
+    template: ` <p>Привет {{ name }}</p> `,
 })
 export class ChildComponent implements OnInit, OnChanges {
-  @Input() name: string
+    @Input() name: string;
 
-  constructor() {
-    this.log(`constructor`)
-  }
-  ngOnInit() {
-    this.log(`onInit`)
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    for (let propName in changes) {
-      let chng = changes[propName]
-      let cur = JSON.stringify(chng.currentValue)
-      let prev = JSON.stringify(chng.previousValue)
-      this.log(
-        `${propName}: currentValue = ${cur}, previousValue = ${prev}`
-      )
+    constructor() {
+        this.log(`constructor`);
     }
-  }
-  private log(msg: string) {
-    console.log(msg)
-  }
+    ngOnInit() {
+        this.log(`onInit`);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        for (let propName in changes) {
+            let chng = changes[propName];
+            let cur = JSON.stringify(chng.currentValue);
+            let prev = JSON.stringify(chng.previousValue);
+            this.log(
+                `${propName}: currentValue = ${cur}, previousValue = ${prev}`
+            );
+        }
+    }
+    private log(msg: string) {
+        console.log(msg);
+    }
 }
 ```
 
@@ -103,36 +107,36 @@ export class ChildComponent implements OnInit, OnChanges {
 
 ```typescript
 import {
-  Component,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core'
+    Component,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp [name]="name"></child-comp>
-    <input type="text" [(ngModel)]="name" />
-    <input type="number" [(ngModel)]="age" />
-  `,
+    selector: 'my-app',
+    template: `
+        <child-comp [name]="name"></child-comp>
+        <input type="text" [(ngModel)]="name" />
+        <input type="number" [(ngModel)]="age" />
+    `,
 })
 export class AppComponent implements OnChanges {
-  name: string = 'Tom'
-  age: number = 25
-  ngOnChanges(changes: SimpleChanges) {
-    for (let propName in changes) {
-      let chng = changes[propName]
-      let cur = JSON.stringify(chng.currentValue)
-      let prev = JSON.stringify(chng.previousValue)
-      this.log(
-        `${propName}: currentValue = ${cur}, previousValue = ${prev}`
-      )
+    name: string = 'Tom';
+    age: number = 25;
+    ngOnChanges(changes: SimpleChanges) {
+        for (let propName in changes) {
+            let chng = changes[propName];
+            let cur = JSON.stringify(chng.currentValue);
+            let prev = JSON.stringify(chng.previousValue);
+            this.log(
+                `${propName}: currentValue = ${cur}, previousValue = ${prev}`
+            );
+        }
     }
-  }
 
-  private log(msg: string) {
-    console.log(msg)
-  }
+    private log(msg: string) {
+        console.log(msg);
+    }
 }
 ```
 
@@ -150,76 +154,76 @@ export class AppComponent implements OnChanges {
 
 ```typescript
 import {
-  Component,
-  Input,
-  OnInit,
-  DoCheck,
-  OnChanges,
-  AfterContentInit,
-  AfterContentChecked,
-  AfterViewChecked,
-  AfterViewInit,
-} from '@angular/core'
-
-@Component({
-  selector: 'child-comp',
-  template: ` <p>Привет {{ name }}</p> `,
-})
-export class ChildComponent
-  implements
+    Component,
+    Input,
     OnInit,
     DoCheck,
     OnChanges,
     AfterContentInit,
     AfterContentChecked,
     AfterViewChecked,
-    AfterViewInit {
-  @Input() name: string
-  count: number = 1
+    AfterViewInit,
+} from '@angular/core';
 
-  ngOnInit() {
-    this.log(`ngOnInit`)
-  }
-  ngOnChanges() {
-    this.log(`OnChanges`)
-  }
-  ngDoCheck() {
-    this.log(`ngDoCheck`)
-  }
-  ngAfterViewInit() {
-    this.log(`ngAfterViewInit`)
-  }
-  ngAfterViewChecked() {
-    this.log(`ngAfterViewChecked`)
-  }
-  ngAfterContentInit() {
-    this.log(`ngAfterContentInit`)
-  }
-  ngAfterContentChecked() {
-    this.log(`ngAfterContentChecked`)
-  }
+@Component({
+    selector: 'child-comp',
+    template: ` <p>Привет {{ name }}</p> `,
+})
+export class ChildComponent
+    implements
+        OnInit,
+        DoCheck,
+        OnChanges,
+        AfterContentInit,
+        AfterContentChecked,
+        AfterViewChecked,
+        AfterViewInit {
+    @Input() name: string;
+    count: number = 1;
 
-  private log(msg: string) {
-    console.log(this.count + '. ' + msg)
-    this.count++
-  }
+    ngOnInit() {
+        this.log(`ngOnInit`);
+    }
+    ngOnChanges() {
+        this.log(`OnChanges`);
+    }
+    ngDoCheck() {
+        this.log(`ngDoCheck`);
+    }
+    ngAfterViewInit() {
+        this.log(`ngAfterViewInit`);
+    }
+    ngAfterViewChecked() {
+        this.log(`ngAfterViewChecked`);
+    }
+    ngAfterContentInit() {
+        this.log(`ngAfterContentInit`);
+    }
+    ngAfterContentChecked() {
+        this.log(`ngAfterContentChecked`);
+    }
+
+    private log(msg: string) {
+        console.log(this.count + '. ' + msg);
+        this.count++;
+    }
 }
 ```
 
 И используем этот компонент в главном компоненте:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <child-comp [name]="name"></child-comp>
-    <input type="text" [(ngModel)]="name" />
-  `,
+    selector: 'my-app',
+    template: `
+        <child-comp [name]="name"></child-comp>
+        <input type="text" [(ngModel)]="name" />
+    `,
 })
 export class AppComponent {
-  name: string = 'Tom'
+    name: string = 'Tom';
 }
 ```
 

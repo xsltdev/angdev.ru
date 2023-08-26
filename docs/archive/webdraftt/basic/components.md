@@ -9,18 +9,18 @@ description: Одним из ключевых элементов приложе�
 Так, при создании первого приложения в прошлой главе был определен следующий компонент:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <label>Введите имя:</label>
-    <input [(ngModel)]="name" placeholder="name" />
-    <h1>Добро пожаловать {{ name }}!</h1>
-  `,
+    selector: 'my-app',
+    template: `
+        <label>Введите имя:</label>
+        <input [(ngModel)]="name" placeholder="name" />
+        <h1>Добро пожаловать {{ name }}!</h1>
+    `,
 })
 export class AppComponent {
-  name: ''
+    name: '';
 }
 ```
 
@@ -28,7 +28,7 @@ export class AppComponent {
 
 ```typescript
 export class AppComponent {
-  name: ''
+    name: '';
 }
 ```
 
@@ -51,15 +51,15 @@ export class AppComponent {
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Hello Angular 5</title>
-  </head>
-  <body>
-    <my-app>Загрузка...</my-app>
-    <script src="public/polyfills.js"></script>
-    <script src="public/app.js"></script>
-  </body>
+    <head>
+        <meta charset="utf-8" />
+        <title>Hello Angular 5</title>
+    </head>
+    <body>
+        <my-app>Загрузка...</my-app>
+        <script src="public/polyfills.js"></script>
+        <script src="public/app.js"></script>
+    </body>
 </html>
 ```
 

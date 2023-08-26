@@ -11,73 +11,73 @@ description: В приложении будет несколько различ�
 Определим в этом файле следующий код:
 
 ```typescript
-import { Component, OnInit } from '@angular/core'
-import { DataService } from './data.service'
-import { LogService } from './log.service'
-import { Phone } from './phone'
+import { Component, OnInit } from '@angular/core';
+import { DataService } from './data.service';
+import { LogService } from './log.service';
+import { Phone } from './phone';
 
 @Component({
-  selector: 'data-comp',
-  template: `
-    <div class="panel">
-      <div class="form-inline">
-        <div class="form-group">
-          <input
-            class="form-control"
-            [(ngModel)]="name"
-            placeholder="Модель"
-          />
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="price"
-            placeholder="Цена"
-          />
-          <button
-            class="btn btn-default"
-            (click)="addItem(name, price)"
-          >
-            Добавить
-          </button>
+    selector: 'data-comp',
+    template: `
+        <div class="panel">
+            <div class="form-inline">
+                <div class="form-group">
+                    <input
+                        class="form-control"
+                        [(ngModel)]="name"
+                        placeholder="Модель"
+                    />
+                    <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="price"
+                        placeholder="Цена"
+                    />
+                    <button
+                        class="btn btn-default"
+                        (click)="addItem(name, price)"
+                    >
+                        Добавить
+                    </button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <tr *ngFor="let item of items">
+                    <td>{{ item.name }}</td>
+                </tr>
+            </table>
         </div>
-      </div>
-      <table class="table table-striped">
-        <tr *ngFor="let item of items">
-          <td>{{ item.name }}</td>
-        </tr>
-      </table>
-    </div>
-  `,
+    `,
 })
 export class DataComponent implements OnInit {
-  items: Phone[] = []
-  constructor(private dataService: DataService) {}
+    items: Phone[] = [];
+    constructor(private dataService: DataService) {}
 
-  addItem(name: string, price: number) {
-    this.dataService.addData(name, price)
-  }
-  ngOnInit() {
-    this.items = this.dataService.getData()
-  }
+    addItem(name: string, price: number) {
+        this.dataService.addData(name, price);
+    }
+    ngOnInit() {
+        this.items = this.dataService.getData();
+    }
 }
 ```
 
 `DataComponent` загружает и добавляет данные. Для работы с сервисами декоратор `Component` определяет секцию `providers`:
 
 ```typescript
-providers: [DataService, LogService]
+providers: [DataService, LogService];
 ```
 
 Используем этот компонент `DataComponent` в главном компоненте приложения `AppComponent`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <data-comp></data-comp> <data-comp></data-comp>
-  `,
+    selector: 'my-app',
+    template: `
+        <data-comp></data-comp> <data-comp></data-comp>
+    `,
 })
 export class AppComponent {}
 ```
@@ -87,16 +87,16 @@ export class AppComponent {}
 И соответственно изменим главный модуль приложения `AppModule`:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule } from '@angular/forms'
-import { AppComponent } from './app.component'
-import { DataComponent } from './data.component'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { DataComponent } from './data.component';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule],
-  declarations: [AppComponent, DataComponent],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule, FormsModule],
+    declarations: [AppComponent, DataComponent],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -110,18 +110,18 @@ export class AppModule {}
 Такое поведение не всегда может быть предпочтительным. Возможно, потребуется, чтобы компоненты использовали один и тот же объект сервиса, вместо создания разных сервисов для каждого компонента. Для этого мы можем зарегистрировать все сервисы не в компоненте, а в главном модуле приложения `AppModule`:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule } from '@angular/forms'
-import { AppComponent } from './app.component'
-import { DataComponent } from './data.component'
-import { DataService } from './data.service'
-import { LogService } from './log.service'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { DataComponent } from './data.component';
+import { DataService } from './data.service';
+import { LogService } from './log.service';
 @NgModule({
-  imports: [BrowserModule, FormsModule],
-  declarations: [AppComponent, DataComponent],
-  providers: [DataService, LogService], // регистрация сервисов
-  bootstrap: [AppComponent],
+    imports: [BrowserModule, FormsModule],
+    declarations: [AppComponent, DataComponent],
+    providers: [DataService, LogService], // регистрация сервисов
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -129,54 +129,54 @@ export class AppModule {}
 В этом случае мы уже можем убрать регистрацию сервисов из компонента `DataComponent`:
 
 ```typescript
-import { Component, OnInit } from '@angular/core'
-import { DataService } from './data.service'
-import { LogService } from './log.service'
-import { Phone } from './phone'
+import { Component, OnInit } from '@angular/core';
+import { DataService } from './data.service';
+import { LogService } from './log.service';
+import { Phone } from './phone';
 
 @Component({
-  selector: 'data-comp',
-  template: `
-    <div class="panel">
-      <div class="form-inline">
-        <div class="form-group">
-          <input
-            class="form-control"
-            [(ngModel)]="name"
-            placeholder="Модель"
-          />
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="price"
-            placeholder="Цена"
-          />
-          <button
-            class="btn btn-default"
-            (click)="addItem(name, price)"
-          >
-            Добавить
-          </button>
+    selector: 'data-comp',
+    template: `
+        <div class="panel">
+            <div class="form-inline">
+                <div class="form-group">
+                    <input
+                        class="form-control"
+                        [(ngModel)]="name"
+                        placeholder="Модель"
+                    />
+                    <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="price"
+                        placeholder="Цена"
+                    />
+                    <button
+                        class="btn btn-default"
+                        (click)="addItem(name, price)"
+                    >
+                        Добавить
+                    </button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <tr *ngFor="let item of items">
+                    <td>{{ item.name }}</td>
+                </tr>
+            </table>
         </div>
-      </div>
-      <table class="table table-striped">
-        <tr *ngFor="let item of items">
-          <td>{{ item.name }}</td>
-        </tr>
-      </table>
-    </div>
-  `,
+    `,
 })
 export class DataComponent implements OnInit {
-  items: Phone[] = []
-  constructor(private dataService: DataService) {}
+    items: Phone[] = [];
+    constructor(private dataService: DataService) {}
 
-  addItem(name: string, price: number) {
-    this.dataService.addData(name, price)
-  }
-  ngOnInit() {
-    this.items = this.dataService.getData()
-  }
+    addItem(name: string, price: number) {
+        this.dataService.addData(name, price);
+    }
+    ngOnInit() {
+        this.items = this.dataService.getData();
+    }
 }
 ```
 

@@ -12,28 +12,28 @@ description: Структурная директива должна примен
 
 ```typescript
 import {
-  Directive,
-  Input,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core'
+    Directive,
+    Input,
+    TemplateRef,
+    ViewContainerRef,
+} from '@angular/core';
 
 @Directive({ selector: '[while]' })
 export class WhileDirective {
-  constructor(
-    private templateRef: TemplateRef<any>,
-    private viewContainer: ViewContainerRef
-  ) {}
+    constructor(
+        private templateRef: TemplateRef<any>,
+        private viewContainer: ViewContainerRef
+    ) {}
 
-  @Input() set while(condition: boolean) {
-    if (condition) {
-      this.viewContainer.createEmbeddedView(
-        this.templateRef
-      )
-    } else {
-      this.viewContainer.clear()
+    @Input() set while(condition: boolean) {
+        if (condition) {
+            this.viewContainer.createEmbeddedView(
+                this.templateRef
+            );
+        } else {
+            this.viewContainer.clear();
+        }
     }
-  }
 }
 ```
 
@@ -69,37 +69,37 @@ constructor(
 Далее применим директиву в главном компоненте `AppComponent`:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <p *while="condition">Первый параграф</p>
-    <p *while="!condition">Второй параграф</p>
-    <button (click)="toggle()">Toggle</button>
-  `,
+    selector: 'my-app',
+    template: `
+        <p *while="condition">Первый параграф</p>
+        <p *while="!condition">Второй параграф</p>
+        <button (click)="toggle()">Toggle</button>
+    `,
 })
 export class AppComponent {
-  condition: boolean = true
-  toggle() {
-    this.condition = !this.condition
-  }
+    condition: boolean = true;
+    toggle() {
+        this.condition = !this.condition;
+    }
 }
 ```
 
 И далее задействуем директиву в главном модуле `AppModule`:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import { AppComponent } from './app.component'
-import { WhileDirective } from './while.directive'
+import { AppComponent } from './app.component';
+import { WhileDirective } from './while.directive';
 
 @NgModule({
-  imports: [BrowserModule],
-  declarations: [AppComponent, WhileDirective],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule],
+    declarations: [AppComponent, WhileDirective],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```

@@ -8,17 +8,17 @@ description: Применение директивы ngModel не только �
 
 Применение директивы `ngModel` не только устанавливает привязку данных, но и позволяет отслеживать состояние элемента ввода. Для установки состояния Angular применяет к элементам ввода специальные классы CSS:
 
-- Если элемент ввода еще не получал фокус, то устанавливается класс `ng-untouched`. Если же поле ввода уже получало фокус, то к нему применяется класс `ng-touched`. При этом получение фокуса не обязательно должно сопровождаться изменением значения в этом поле.
-- Если первоначальное значение в поле ввода было изменено, то устанавливается класс `ng-dirty`. Если же значение не изменялось с момента загрузки страницы, то к элементу ввода применяется класс `ng-pristine`
-- Если значение в поле ввода корректно, то применяется класс `ng-valid`. Если же значение некорректно, то применяется класс `ng-invalid`
+-   Если элемент ввода еще не получал фокус, то устанавливается класс `ng-untouched`. Если же поле ввода уже получало фокус, то к нему применяется класс `ng-touched`. При этом получение фокуса не обязательно должно сопровождаться изменением значения в этом поле.
+-   Если первоначальное значение в поле ввода было изменено, то устанавливается класс `ng-dirty`. Если же значение не изменялось с момента загрузки страницы, то к элементу ввода применяется класс `ng-pristine`
+-   Если значение в поле ввода корректно, то применяется класс `ng-valid`. Если же значение некорректно, то применяется класс `ng-invalid`
 
 Например, при запуске веб-страницы для элемента ввода:
 
 ```html
 <input
-  class="form-control"
-  name="title"
-  [(ngModel)]="title"
+    class="form-control"
+    name="title"
+    [(ngModel)]="title"
 />
 ```
 
@@ -26,9 +26,9 @@ description: Применение директивы ngModel не только �
 
 ```html
 <input
-  class="form-control ng-untouched ng-pristine ng-valid"
-  name="title"
-  ng-reflect-name="title"
+    class="form-control ng-untouched ng-pristine ng-valid"
+    name="title"
+    ng-reflect-name="title"
 />
 ```
 
@@ -36,87 +36,94 @@ description: Применение директивы ngModel не только �
 
 Перед тем как отправить форму, нам надо удостовериться, что данная форма содержит корректные значения. Для проверки используется механизм валидации. В Angular 2 мы можем использовать валидацию HTML5, которая применяется в виде атрибутов:
 
-- `required`: требует обязательного ввода значения
-- `pattern`: задает регулярное выражение, которому должны соответствовать вводимые данные
+-   `required`: требует обязательного ввода значения
+-   `pattern`: задает регулярное выражение, которому должны соответствовать вводимые данные
 
 Для использования валидации определим следующий компонент:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 export class User {
-  name: string
-  email: string
-  phone: string
+    name: string;
+    email: string;
+    phone: string;
 }
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div>
-      <div class="form-group">
-        <label>Имя</label>
-        <input
-          class="form-control"
-          name="name"
-          [(ngModel)]="user.name"
-          #name="ngModel"
-          required
-        />
-        <div
-          [hidden]="name.valid || name.untouched"
-          class="alert alert-danger"
-        >
-          Не указано имя
+    selector: 'my-app',
+    template: `
+        <div>
+            <div class="form-group">
+                <label>Имя</label>
+                <input
+                    class="form-control"
+                    name="name"
+                    [(ngModel)]="user.name"
+                    #name="ngModel"
+                    required
+                />
+                <div
+                    [hidden]="name.valid || name.untouched"
+                    class="alert alert-danger"
+                >
+                    Не указано имя
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input
+                    class="form-control"
+                    name="email"
+                    [(ngModel)]="user.email"
+                    #email="ngModel"
+                    required
+                    pattern="[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}"
+                />
+                <div
+                    [hidden]="
+                        email.valid || email.untouched
+                    "
+                    class="alert alert-danger"
+                >
+                    Некорректный email
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Телефон</label>
+                <input
+                    class="form-control"
+                    name="phone"
+                    [(ngModel)]="user.phone"
+                    #phone="ngModel"
+                    required
+                    pattern="[0-9]{10}"
+                />
+                <div
+                    [hidden]="
+                        phone.valid || phone.untouched
+                    "
+                    class="alert alert-danger"
+                >
+                    Некорректный телефон
+                </div>
+            </div>
+            <div class="form-group">
+                <button
+                    class="btn btn-default"
+                    (click)="addUser()"
+                >
+                    Добавить
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input
-          class="form-control"
-          name="email"
-          [(ngModel)]="user.email"
-          #email="ngModel"
-          required
-          pattern="[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}"
-        />
-        <div
-          [hidden]="email.valid || email.untouched"
-          class="alert alert-danger"
-        >
-          Некорректный email
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Телефон</label>
-        <input
-          class="form-control"
-          name="phone"
-          [(ngModel)]="user.phone"
-          #phone="ngModel"
-          required
-          pattern="[0-9]{10}"
-        />
-        <div
-          [hidden]="phone.valid || phone.untouched"
-          class="alert alert-danger"
-        >
-          Некорректный телефон
-        </div>
-      </div>
-      <div class="form-group">
-        <button class="btn btn-default" (click)="addUser()">
-          Добавить
-        </button>
-      </div>
-    </div>
-  `,
+    `,
 })
 export class AppComponent {
-  user: User = new User()
-  addUser() {
-    console.log(this.user)
-  }
+    user: User = new User();
+    addUser() {
+        console.log(this.user);
+    }
 }
 ```
 
@@ -124,10 +131,10 @@ export class AppComponent {
 
 ```html
 <div
-  [hidden]="email.valid || email.untouched"
-  class="alert alert-danger"
+    [hidden]="email.valid || email.untouched"
+    class="alert alert-danger"
 >
-  Некорректный email
+    Некорректный email
 </div>
 ```
 
@@ -143,11 +150,11 @@ export class AppComponent {
 
 ```html
 <button
-  [disabled]="name.invalid || email.invalid || phone.invalid"
-  class="btn btn-default"
-  (click)="addUser()"
+    [disabled]="name.invalid || email.invalid || phone.invalid"
+    class="btn btn-default"
+    (click)="addUser()"
 >
-  Добавить
+    Добавить
 </button>
 ```
 
@@ -158,80 +165,82 @@ export class AppComponent {
 Выше применялись стили `bootstrap` для стилизации отображения ошибок. Однако используя классы `ng-valid` и `ng-invalid`, мы можем задать дополнительные возможности по стилизации. В частности, изменим компонент следующим образом:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 export class User {
-  name: string
-  email: string
-  phone: string
+    name: string;
+    email: string;
+    phone: string;
 }
 
 @Component({
-  selector: 'my-app',
-  styles: [
-    `
-      input.ng-touched.ng-invalid {
-        border: solid red 2px;
-      }
-      input.ng-touched.ng-valid {
-        border: solid green 2px;
-      }
+    selector: 'my-app',
+    styles: [
+        `
+            input.ng-touched.ng-invalid {
+                border: solid red 2px;
+            }
+            input.ng-touched.ng-valid {
+                border: solid green 2px;
+            }
+        `,
+    ],
+    template: `
+        <div>
+            <div class="form-group">
+                <label>Имя</label>
+                <input
+                    class="form-control"
+                    name="name"
+                    [(ngModel)]="user.name"
+                    #name="ngModel"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input
+                    class="form-control"
+                    type="email"
+                    name="email"
+                    [(ngModel)]="user.email"
+                    #email="ngModel"
+                    required
+                    pattern="[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}"
+                />
+            </div>
+            <div class="form-group">
+                <label>Телефон</label>
+                <input
+                    class="form-control"
+                    name="phone"
+                    [(ngModel)]="user.phone"
+                    #phone="ngModel"
+                    required
+                    pattern="[0-9]{10}"
+                />
+            </div>
+            <div class="form-group">
+                <button
+                    [disabled]="
+                        name.invalid ||
+                        email.invalid ||
+                        phone.invalid
+                    "
+                    class="btn btn-default"
+                    (click)="addUser()"
+                >
+                    Добавить
+                </button>
+            </div>
+        </div>
     `,
-  ],
-  template: `
-    <div>
-      <div class="form-group">
-        <label>Имя</label>
-        <input
-          class="form-control"
-          name="name"
-          [(ngModel)]="user.name"
-          #name="ngModel"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input
-          class="form-control"
-          type="email"
-          name="email"
-          [(ngModel)]="user.email"
-          #email="ngModel"
-          required
-          pattern="[a-zA-Z_]+@[a-zA-Z_]+?.[a-zA-Z]{2,3}"
-        />
-      </div>
-      <div class="form-group">
-        <label>Телефон</label>
-        <input
-          class="form-control"
-          name="phone"
-          [(ngModel)]="user.phone"
-          #phone="ngModel"
-          required
-          pattern="[0-9]{10}"
-        />
-      </div>
-      <div class="form-group">
-        <button
-          [disabled]="
-            name.invalid || email.invalid || phone.invalid
-          "
-          class="btn btn-default"
-          (click)="addUser()"
-        >
-          Добавить
-        </button>
-      </div>
-    </div>
-  `,
 })
 export class AppComponent {
-  user: User = new User()
-  addUser() {
-    console.log(this.user)
-  }
+    user: User = new User();
+    addUser() {
+        console.log(this.user);
+    }
 }
 ```
 
@@ -243,15 +252,15 @@ export class AppComponent {
 
 ```html
 <div class="form-group">
-  <label>Email</label>
-  <input
-    class="form-control"
-    type="email"
-    name="email"
-    [(ngModel)]="user.email"
-    #email="ngModel"
-    required
-    email
-  />
+    <label>Email</label>
+    <input
+        class="form-control"
+        type="email"
+        name="email"
+        [(ngModel)]="user.email"
+        #email="ngModel"
+        required
+        email
+    />
 </div>
 ```

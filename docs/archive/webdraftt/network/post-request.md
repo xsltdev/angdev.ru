@@ -14,8 +14,8 @@ description: Кроме GET-запросов Angular позволяет отпр
 
 ```typescript
 export class User {
-  name: string
-  age: number
+    name: string;
+    age: number;
 }
 ```
 
@@ -83,24 +83,24 @@ namespace TestAngularApp.Controllers
 Далее в файле `http.service.ts` определим сервис для отправки данных:
 
 ```typescript
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { User } from './user'
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { User } from './user';
 
 @Injectable()
 export class HttpService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  //http://localhost:60489/Home/PostUser  ASP.NET MVC 5
-  //http://localhost:8080/angular/setUser.php     PHP
-  // http://localhost:60820/api/values        ASP NET Wep API 2
-  postData(user: User) {
-    const body = { name: user.name, age: user.age }
-    return this.http.post(
-      'http://localhost:60820/api/values',
-      body
-    )
-  }
+    //http://localhost:60489/Home/PostUser  ASP.NET MVC 5
+    //http://localhost:8080/angular/setUser.php     PHP
+    // http://localhost:60820/api/values        ASP NET Wep API 2
+    postData(user: User) {
+        const body = { name: user.name, age: user.age };
+        return this.http.post(
+            'http://localhost:60820/api/values',
+            body
+        );
+    }
 }
 ```
 
@@ -111,61 +111,61 @@ export class HttpService {
 Применим сервис в коде компонента:
 
 ```typescript
-import { Component } from '@angular/core'
-import { HttpService } from './http.service'
-import { User } from './user'
+import { Component } from '@angular/core';
+import { HttpService } from './http.service';
+import { User } from './user';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <div class="form-group">
-      <label>Имя</label>
-      <input
-        class="form-control"
-        name="username"
-        [(ngModel)]="user.name"
-      />
-    </div>
-    <div class="form-group">
-      <label>Возраст</label>
-      <input
-        class="form-control"
-        type="number"
-        name="age"
-        [(ngModel)]="user.age"
-      />
-    </div>
-    <div class="form-group">
-      <button
-        class="btn btn-default"
-        (click)="submit(user)"
-      >
-        Отправить
-      </button>
-    </div>
-    <div *ngIf="done">
-      <div>Получено от сервера:</div>
-      <div>Имя: {{ receivedUser.name }}</div>
-      <div>Возраст: {{ receivedUser.age }}</div>
-    </div>
-  `,
-  providers: [HttpService],
+    selector: 'my-app',
+    template: `
+        <div class="form-group">
+            <label>Имя</label>
+            <input
+                class="form-control"
+                name="username"
+                [(ngModel)]="user.name"
+            />
+        </div>
+        <div class="form-group">
+            <label>Возраст</label>
+            <input
+                class="form-control"
+                type="number"
+                name="age"
+                [(ngModel)]="user.age"
+            />
+        </div>
+        <div class="form-group">
+            <button
+                class="btn btn-default"
+                (click)="submit(user)"
+            >
+                Отправить
+            </button>
+        </div>
+        <div *ngIf="done">
+            <div>Получено от сервера:</div>
+            <div>Имя: {{ receivedUser.name }}</div>
+            <div>Возраст: {{ receivedUser.age }}</div>
+        </div>
+    `,
+    providers: [HttpService],
 })
 export class AppComponent {
-  user: User = new User() // данные вводимого пользователя
+    user: User = new User(); // данные вводимого пользователя
 
-  receivedUser: User // полученный пользователь
-  done: boolean = false
-  constructor(private httpService: HttpService) {}
-  submit(user: User) {
-    this.httpService.postData(user).subscribe(
-      (data: User) => {
-        this.receivedUser = data
-        this.done = true
-      },
-      (error) => console.log(error)
-    )
-  }
+    receivedUser: User; // полученный пользователь
+    done: boolean = false;
+    constructor(private httpService: HttpService) {}
+    submit(user: User) {
+        this.httpService.postData(user).subscribe(
+            (data: User) => {
+                this.receivedUser = data;
+                this.done = true;
+            },
+            (error) => console.log(error)
+        );
+    }
 }
 ```
 
@@ -178,56 +178,56 @@ export class AppComponent {
 Выше предложенный способ подходит, если, скажем, нам надо отправлять не все данные из объекта `User` или если возникает необходимость вручную сконструировать отправляемый объект. Но также для отправки можно передать весь объект:
 
 ```typescript
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { User } from './user'
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { User } from './user';
 
 @Injectable()
 export class HttpService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  //http://localhost:60489/Home/PostUser  ASP.NET MVC
-  //http://localhost:8080/angular/setUser.php     PHP
-  // http://localhost:60820/api/values
-  postData(user: User) {
-    return this.http.post(
-      'http://localhost:60820/api/values',
-      user
-    )
-  }
+    //http://localhost:60489/Home/PostUser  ASP.NET MVC
+    //http://localhost:8080/angular/setUser.php     PHP
+    // http://localhost:60820/api/values
+    postData(user: User) {
+        return this.http.post(
+            'http://localhost:60820/api/values',
+            user
+        );
+    }
 }
 ```
 
 Также при отправке мы можем устанавливать различные заголовки с помощью объекта `HttpHeaders`:
 
 ```typescript
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
 import {
-  HttpClient,
-  HttpHeaders,
-} from '@angular/common/http'
-import { User } from './user'
+    HttpClient,
+    HttpHeaders,
+} from '@angular/common/http';
+import { User } from './user';
 
 @Injectable()
 export class HttpService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  //http://localhost:60489/Home/PostUser  ASP.NET MVC
-  //http://localhost:8080/angular/setUser.php     PHP
-  // http://localhost:60820/api/post
-  postData(user: User) {
-    const myHeaders = new HttpHeaders().set(
-      'Authorization',
-      'my-auth-token'
-    )
+    //http://localhost:60489/Home/PostUser  ASP.NET MVC
+    //http://localhost:8080/angular/setUser.php     PHP
+    // http://localhost:60820/api/post
+    postData(user: User) {
+        const myHeaders = new HttpHeaders().set(
+            'Authorization',
+            'my-auth-token'
+        );
 
-    return this.http.post(
-      'http://localhost:60820/api/values',
-      user,
-      {
-        headers: myHeaders,
-      }
-    )
-  }
+        return this.http.post(
+            'http://localhost:60820/api/values',
+            user,
+            {
+                headers: myHeaders,
+            }
+        );
+    }
 }
 ```

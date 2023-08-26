@@ -13,21 +13,21 @@ Pipes бывают двух типов: `pure` (не допускающие из
 Теперь посмотрим на примере. В прошлой теме был создан класс `FactorialPipe`:
 
 ```typescript
-import { Pipe, PipeTransform } from '@angular/core'
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'factorial',
+    name: 'factorial',
 })
 export class FactorialPipe implements PipeTransform {
-  transform(value: number, args?: any): number {
-    if (value <= 0) return 0
+    transform(value: number, args?: any): number {
+        if (value <= 0) return 0;
 
-    let result = 1
-    for (let i = 1; i <= value; i++) {
-      result = result * i
+        let result = 1;
+        for (let i = 1; i <= value; i++) {
+            result = result * i;
+        }
+        return result;
     }
-    return result
-  }
 }
 ```
 
@@ -36,17 +36,17 @@ export class FactorialPipe implements PipeTransform {
 В компоненте мы могли бы динамически изменять значение, для которого подсчитывается факториал:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <input [(ngModel)]="fact" name="fact" />
-    <div>
-      Факториал числа {{ fact }} равен
-      {{ fact | factorial }}
-    </div>
-  `,
+    selector: 'my-app',
+    template: `
+        <input [(ngModel)]="fact" name="fact" />
+        <div>
+            Факториал числа {{ fact }} равен
+            {{ fact | factorial }}
+        </div>
+    `,
 })
 export class AppComponent {}
 ```
@@ -58,15 +58,15 @@ export class AppComponent {}
 Но в прошлой теме был также создан другой `pipe`:
 
 ```typescript
-import { Pipe, PipeTransform } from '@angular/core'
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'join',
+    name: 'join',
 })
 export class JoinPipe implements PipeTransform {
-  transform(array: any, start?: any, end?: any): any {
-    return array.join(', ')
-  }
+    transform(array: any, start?: any, end?: any): any {
+        return array.join(', ');
+    }
 }
 ```
 
@@ -75,16 +75,16 @@ export class JoinPipe implements PipeTransform {
 Теперь сделаем его `impure pipe`. Для этого добавим в декоратор `Pipe` параметр `pure: false`:
 
 ```typescript
-import { Pipe, PipeTransform } from '@angular/core'
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'join',
-  pure: false,
+    name: 'join',
+    pure: false,
 })
 export class JoinPipe implements PipeTransform {
-  transform(array: any, start?: any, end?: any): any {
-    return array.join(', ')
-  }
+    transform(array: any, start?: any, end?: any): any {
+        return array.join(', ');
+    }
 }
 ```
 
@@ -93,26 +93,29 @@ export class JoinPipe implements PipeTransform {
 Теперь мы можем добавлять в компоненте новые элементы в этот массив:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <input #phone name="phone" class="form-control" />
-    <button class="btn" (click)="phones.push(phone.value)">
-      Add
-    </button>
-    <p>{{ phones | join }}</p>
-  `,
+    selector: 'my-app',
+    template: `
+        <input #phone name="phone" class="form-control" />
+        <button
+            class="btn"
+            (click)="phones.push(phone.value)"
+        >
+            Add
+        </button>
+        <p>{{ phones | join }}</p>
+    `,
 })
 export class AppComponent {
-  phones = [
-    'iPhone 7',
-    'LG G 5',
-    'Honor 9',
-    'Idol S4',
-    'Nexus 6P',
-  ]
+    phones = [
+        'iPhone 7',
+        'LG G 5',
+        'Honor 9',
+        'Idol S4',
+        'Nexus 6P',
+    ];
 }
 ```
 

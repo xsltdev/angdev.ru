@@ -12,8 +12,8 @@ description: Angular компоненты - описание и примеры �
 
 ```html
 <contacts-item
-  [name]="contactPerson"
-  (saveContactPerson)="contactPerson = $event"
+    [name]="contactPerson"
+    (saveContactPerson)="contactPerson = $event"
 ></contacts-item>
 ```
 
@@ -55,13 +55,13 @@ _contacts-list.component.ts_
 
 ```ts
 @Component({
-  selector: 'contacts-list',
-  template: `
-    <contacts-item [name]="'Peter'"></contacts-item>
-  `,
+    selector: 'contacts-list',
+    template: `
+        <contacts-item [name]="'Peter'"></contacts-item>
+    `,
 })
 export class ContactsListComponent {
-  contactPerson: string
+    contactPerson: string;
 }
 ```
 
@@ -69,19 +69,19 @@ _contacts-item.component.ts_
 
 ```ts
 @Component({
-  selector: 'contacts-item',
-  template: ` <p>{{ name }}</p> `,
+    selector: 'contacts-item',
+    template: ` <p>{{ name }}</p> `,
 })
 export class ContactsItemComponent {
-  _name: string = null
+    _name: string = null;
 
-  @Input() set name(value: string) {
-    this._name = value + '*'
-  }
+    @Input() set name(value: string) {
+        this._name = value + '*';
+    }
 
-  get name(): string {
-    return this._name || 'Unknown'
-  }
+    get name(): string {
+        return this._name || 'Unknown';
+    }
 }
 ```
 
@@ -99,7 +99,7 @@ export class ContactsItemComponent {
 
 ## Ссылки
 
-- [Components](https://angular.io/guide/displaying-data)
-- [@Component](https://angular.io/api/core/Component)
-- [@Input](https://angular.io/api/core/Input)
-- [@Output](https://angular.io/api/core/Output)
+-   [Components](https://angular.io/guide/displaying-data)
+-   [@Component](https://angular.io/api/core/Component)
+-   [@Input](https://angular.io/api/core/Input)
+-   [@Output](https://angular.io/api/core/Output)

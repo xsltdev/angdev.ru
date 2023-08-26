@@ -79,7 +79,7 @@ export interface Item {
 }
 ```
 
-В `app.component.ts`, `currentItems` - это массив объектов в той же форме, что и объект `Item` в `items.ts`, с `id` и `name`.
+В `app.component.ts`, `currentItems` — это массив объектов в той же форме, что и объект `Item` в `items.ts`, с `id` и `name`.
 
 ```ts
 currentItems = [

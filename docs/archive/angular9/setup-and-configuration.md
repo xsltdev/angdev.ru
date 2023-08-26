@@ -22,29 +22,29 @@ ng new my-app
 
 Структура `my-app`:
 
-- `e2e` - директория с интеграционными тестами;
-- `node_modules` - установленные npm-модули;
-- `src` - исходные файлы;
-- `angular.json` - описание конфигурации;
-- `package.json` - метаинформация и список необходимых npm-модулей;
-- `README.md` - описание ПО;
-- `tsconfig.json` - общая конфигурация typescript;
-- `tslint.json` - настройка tslint.
+-   `e2e` - директория с интеграционными тестами;
+-   `node_modules` - установленные npm-модули;
+-   `src` - исходные файлы;
+-   `angular.json` - описание конфигурации;
+-   `package.json` - метаинформация и список необходимых npm-модулей;
+-   `README.md` - описание ПО;
+-   `tsconfig.json` - общая конфигурация typescript;
+-   `tslint.json` - настройка tslint.
 
 Структура `src`:
 
-- `app` - модули, компоненты, сервисы, директивы и т. д.;
-- `assets` - статический контент (изображения, аудио);
-- `environments` - конфигурации для каждой среды запуска;
-- `favicon.ico` - иконка, отображаемая в верхней части вкладки браузера;
-- `index.html`;
-- `karma.conf.js` - конфигурация protractor (для e2e-тестов);
-- `main.ts` - необходим для запуска в режиме разработки, использует JIT-компиляцию;
-- `polyfills.ts` - список модулей, подключаемых для поддержки кроссбраузерности;
-- `styles.css` - описание действующих глобально стилей;
-- `test.ts` - отвечает за поиск и загрузку тестов при их запуске;
-- `tsconfig.app.json` - настройка typescript;
-- `tsconfig.spec.json` - настройка typescript при запуске unit-тестов.
+-   `app` - модули, компоненты, сервисы, директивы и т. д.;
+-   `assets` - статический контент (изображения, аудио);
+-   `environments` - конфигурации для каждой среды запуска;
+-   `favicon.ico` - иконка, отображаемая в верхней части вкладки браузера;
+-   `index.html`;
+-   `karma.conf.js` - конфигурация protractor (для e2e-тестов);
+-   `main.ts` - необходим для запуска в режиме разработки, использует JIT-компиляцию;
+-   `polyfills.ts` - список модулей, подключаемых для поддержки кроссбраузерности;
+-   `styles.css` - описание действующих глобально стилей;
+-   `test.ts` - отвечает за поиск и загрузку тестов при их запуске;
+-   `tsconfig.app.json` - настройка typescript;
+-   `tsconfig.spec.json` - настройка typescript при запуске unit-тестов.
 
 ## angular.json
 
@@ -52,29 +52,29 @@ ng new my-app
 
 Основные свойства:
 
-- `version` - версия Angular Workspace;
-- `newProjectRoot` - указывает, где будут располагаться внутренние приложения и библиотеки, по умолчанию projects;
-- `projects` - описание конфигураций для каждого из элементов Angular Workspace. По умолчанию вместе с основным генерируется проект с интеграционными тестами. Опции:
-  - `root` - определяет директорию с файлами, включая конфигурационные, всего проекта;
-  - `sourceRoot` - определяет директорию с исходными файлами;
-  - `projectType` - тип проекта, может быть только `application` или `library`;
-  - `prefix` - префикс, который будет использоваться при именовании компонентов и директив;
-  - `schematics` - позволяет задавать отличную от по умолчанию конфигурацию сущностей Angular, например, можно для всех создаваемых компонентов переопределить работу механизма Change Detection;
-  - `architect` - используется для настройки запуска или сборки.
-- `defaultProject` - имя проекта, который будет использоваться при использовании команд Angular CLI (по умолчанию основной).
+-   `version` - версия Angular Workspace;
+-   `newProjectRoot` - указывает, где будут располагаться внутренние приложения и библиотеки, по умолчанию projects;
+-   `projects` - описание конфигураций для каждого из элементов Angular Workspace. По умолчанию вместе с основным генерируется проект с интеграционными тестами. Опции:
+    -   `root` - определяет директорию с файлами, включая конфигурационные, всего проекта;
+    -   `sourceRoot` - определяет директорию с исходными файлами;
+    -   `projectType` - тип проекта, может быть только `application` или `library`;
+    -   `prefix` - префикс, который будет использоваться при именовании компонентов и директив;
+    -   `schematics` - позволяет задавать отличную от по умолчанию конфигурацию сущностей Angular, например, можно для всех создаваемых компонентов переопределить работу механизма Change Detection;
+    -   `architect` - используется для настройки запуска или сборки.
+-   `defaultProject` - имя проекта, который будет использоваться при использовании команд Angular CLI (по умолчанию основной).
 
 Рассмотрим подробно в `angular.json` параметр `build` свойства `architect`. Здесь нас интересуют `options` и `configurations`.
 
 В `options` указываются следующие опции:
 
-- `outputPath` - путь, где будет находиться "собранный" проект (подробно о сборке здесь);
-- `index` - путь к `index.html`;
-- `main` - путь к `main.ts`;
-- `polyfills` - путь к `polyfills.ts`;
-- `tsConfig` - путь к `tsconfig.app.json`;
-- `assets` - массив с указанием путей к статическому контенту, могут быть папки или отдельные файлы;
-- `styles` - массив с указанием путей к стилям, причем стили распространяются на все приложение;
-- `scripts` - массив с указанием путей к javascript-файлам, обычно здесь подключаются сторонние библиотеки, не являющиеся модулями Angular, например, jQuery.
+-   `outputPath` - путь, где будет находиться "собранный" проект (подробно о сборке здесь);
+-   `index` - путь к `index.html`;
+-   `main` - путь к `main.ts`;
+-   `polyfills` - путь к `polyfills.ts`;
+-   `tsConfig` - путь к `tsconfig.app.json`;
+-   `assets` - массив с указанием путей к статическому контенту, могут быть папки или отдельные файлы;
+-   `styles` - массив с указанием путей к стилям, причем стили распространяются на все приложение;
+-   `scripts` - массив с указанием путей к javascript-файлам, обычно здесь подключаются сторонние библиотеки, не являющиеся модулями Angular, например, jQuery.
 
 Всегда подключайте сторонние скрипты и стили не в `index.html`, а в `angular.json`.
 
@@ -98,8 +98,8 @@ ng build -c production
 
 ```json
 {
-  "replace": "src/environments/environment.ts",
-  "with": "src/environments/environment.prod.ts"
+    "replace": "src/environments/environment.ts",
+    "with": "src/environments/environment.prod.ts"
 }
 ```
 
@@ -116,16 +116,16 @@ ng build -c production
 _app.module.ts_
 
 ```ts
-import { BrowserModule } from '@angular/platform-browser'
-import { NgModule } from '@angular/core'
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component'
+import { AppComponent } from './app.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule],
-  providers: [],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [BrowserModule],
+    providers: [],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -134,9 +134,9 @@ export class AppModule {}
 
 Декоратор [`@NgModule()`](https://angular.io/api/core/NgModule) создает корневой модуль, которому передается объект конфигурации со свойствами:
 
-- `imports` - используемые второстепенные модули Angular;
-- `declarations` - все компоненты приложения;
-- `bootstrap` - основной компонент, отвечающий за загрузку.
+-   `imports` - используемые второстепенные модули Angular;
+-   `declarations` - все компоненты приложения;
+-   `bootstrap` - основной компонент, отвечающий за загрузку.
 
 Название может быть любым, но общепринято использовать `AppModule`.
 
@@ -146,20 +146,20 @@ _app.component.ts_
 
 ```ts
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'app'
+    title = 'app';
 }
 ```
 
 За объявление компонента отвечает декоратор [`@Component()`](https://angular.io/api/core/Component) из `@angular/core`. Принимаемый объект:
 
-- `selector` - название компонента;
-- `template` (`templateUrl`) - HTML-разметка в виде строки (путь к HTML-файлу);
-- `styles` - массив путей к CSS-файлам, содержащим стили для создаваемого компонента.
+-   `selector` - название компонента;
+-   `template` (`templateUrl`) - HTML-разметка в виде строки (путь к HTML-файлу);
+-   `styles` - массив путей к CSS-файлам, содержащим стили для создаваемого компонента.
 
 Это не все свойства декоратора `@Component()`, полное описание [здесь](angular-components.md).
 
@@ -181,4 +181,4 @@ ng serve -o --port 5000
 
 ## Ссылки
 
-- [Setting up the Local Environment and Workspace](https://angular.io/guide/setup-local)
+-   [Setting up the Local Environment and Workspace](https://angular.io/guide/setup-local)

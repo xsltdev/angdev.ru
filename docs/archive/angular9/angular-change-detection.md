@@ -1,10 +1,10 @@
 ---
-description: Отслеживание изменений - это механизм в Angular, который отвечает за изменение выражений в шаблонах при их изменении в моделях
+description: Отслеживание изменений — это механизм в Angular, который отвечает за изменение выражений в шаблонах при их изменении в моделях
 ---
 
 # Механизм ChangeDetection
 
-**Отслеживание изменений** - это механизм в Angular, который отвечает за изменение выражений в шаблонах при их изменении в моделях.
+**Отслеживание изменений** — это механизм в Angular, который отвечает за изменение выражений в шаблонах при их изменении в моделях.
 
 Механизм запускается каждый раз, когда, например, инициируется одно из браузерных событий, выполняются HTTP-запросы или вызывается функция `setTimeout()` или `setInterval()`.
 
@@ -18,8 +18,8 @@ description: Отслеживание изменений - это механиз
 
 В Angular есть два варианта работы алгоритма отслеживания изменений:
 
-- `OnPush`;
-- `Default` (используется по умолчанию).
+-   `OnPush`;
+-   `Default` (используется по умолчанию).
 
 Алгоритм задается в свойстве `changeDetection` объекта конфигурации декоратора [`@Component()`](https://angular.io/api/core/Component) и указывается для каждого компонента отдельно. Если параметр не указан, используется алгоритм `Default` (механизм отслеживания изменений запускается при любом действии пользователя или изменения состояния приложения).
 
@@ -29,18 +29,18 @@ description: Отслеживание изменений - это механиз
 
 ```ts
 @Component({
-  selector: 'book-item',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <h1>{{ book }}</h1> `,
+    selector: 'book-item',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: ` <h1>{{ book }}</h1> `,
 })
 export class BookItemComponent implements OnChanges {
-  @Input() book: string = null
+    @Input() book: string = null;
 
-  constructor() {}
+    constructor() {}
 
-  ngOnChanges() {
-    console.log(this.book)
-  }
+    ngOnChanges() {
+        console.log(this.book);
+    }
 }
 ```
 
@@ -54,33 +54,35 @@ export class BookItemComponent implements OnChanges {
 
 Основные методы сервиса:
 
-- `detach()` - полностью отключает механизм `ChangeDetection`;
-- `detectChanges()` - принудительно запускает механизм отслеживания изменений;
-- `reattach()` - используется после вызова `detach()` для активации механизма `ChangeDetection`.
+-   `detach()` — полностью отключает механизм `ChangeDetection`;
+-   `detectChanges()` — принудительно запускает механизм отслеживания изменений;
+-   `reattach()` — используется после вызова `detach()` для активации механизма `ChangeDetection`.
 
 Действие всех трех методов распространяется только на тот компонент, в пределах которого вызываются эти методы.
 
 ```ts
 @Component({
-  selector: 'manual-detection',
-  template: `
-    <h1>{{ book }}</h1>
+    selector: 'manual-detection',
+    template: `
+        <h1>{{ book }}</h1>
 
-    <button (click)="applyChanges()">Apply</button>
-  `,
+        <button (click)="applyChanges()">Apply</button>
+    `,
 })
 export class ManualDetectionComponent {
-  book: string = 'Great Expectations'
+    book: string = 'Great Expectations';
 
-  constructor(private changeDetection: ChangeDetectorRef) {
-    this.changeDetection.detach()
+    constructor(
+        private changeDetection: ChangeDetectorRef
+    ) {
+        this.changeDetection.detach();
 
-    this.book = 'Old Man & Sea'
-  }
+        this.book = 'Old Man & Sea';
+    }
 
-  applyChanges() {
-    this.changeDetection.detectChanges()
-  }
+    applyChanges() {
+        this.changeDetection.detectChanges();
+    }
 }
 ```
 
@@ -88,5 +90,5 @@ export class ManualDetectionComponent {
 
 ## Ссылки
 
-- [ChangeDetectionStrategy](https://angular.io/api/core/ChangeDetectionStrategy)
-- [ChangeDetectorRef](https://angular.io/api/core/ChangeDetectorRef)
+-   [ChangeDetectionStrategy](https://angular.io/api/core/ChangeDetectionStrategy)
+-   [ChangeDetectorRef](https://angular.io/api/core/ChangeDetectorRef)

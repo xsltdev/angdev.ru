@@ -67,7 +67,7 @@ type TestModuleMetadata = {
 };
 ```
 
-Каждый метод переопределения принимает `MetadataOverride<T>`, где `T` - это тип метаданных, соответствующий методу, то есть параметр `@NgModule`, `@Component`, `@Directive` или `@Pipe`.
+Каждый метод переопределения принимает `MetadataOverride<T>`, где `T` — это тип метаданных, соответствующий методу, то есть параметр `@NgModule`, `@Component`, `@Directive` или `@Pipe`.
 
 ```js
 type MetadataOverride<T> = {
@@ -123,7 +123,7 @@ API `TestBed` состоит из статических методов клас
 
 Что если услуга необязательна?
 
-Метод `TestBed.inject()` принимает необязательный второй параметр - объект, который нужно вернуть, если Angular не может найти провайдера (`null` в данном примере):
+Метод `TestBed.inject()` принимает необязательный второй параметр — объект, который нужно вернуть, если Angular не может найти провайдера (`null` в данном примере):
 
 ```ts
 expect(TestBed.inject(NotProvided, null)).toBeNull();
@@ -291,7 +291,7 @@ expect(TestBed.inject(NotProvided, null)).toBeNull();
 
 Методы `DebugElement.query(predicate)` и `DebugElement.queryAll(predicate)` принимают предикат, который фильтрует поддерево исходного элемента на предмет соответствия `DebugElement`.
 
-Предикат - это любой метод, который принимает `DebugElement` и возвращает _истинное_ значение. Следующий пример находит все `DebugElements` со ссылкой на локальную переменную шаблона с именем "content":
+Предикат — это любой метод, который принимает `DebugElement` и возвращает _истинное_ значение. Следующий пример находит все `DebugElements` со ссылкой на локальную переменную шаблона с именем "content":
 
 ```ts
 // Filter for DebugElements with a #content reference

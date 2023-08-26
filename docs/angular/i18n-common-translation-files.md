@@ -175,7 +175,7 @@ ng extract-i18n --out-file source.xlf
     </trans-unit>
     ```
 
-    `id="introductionHeader"` - это [пользовательский ID][aioguidei18noptionalmanagemarkedtext], но без префикса `@@`, необходимого в исходном HTML.
+    `id="introductionHeader"` — это [пользовательский ID][aioguidei18noptionalmanagemarkedtext], но без префикса `@@`, необходимого в исходном HTML.
 
 2.  Продублируйте элемент `<source>... </source>` элемент в узле text, переименуйте его в `target`, а затем замените содержимое французским текстом.
 

@@ -25,9 +25,9 @@ ng generate component <component-name> --project=<library-name>
 _public_api.ts_
 
 ```ts
-export * from './lib/ngx-custom-lib.service'
-export * from './lib/ngx-custom-lib.component'
-export * from './lib/ngx-custom-lib.module'
+export * from './lib/ngx-custom-lib.service';
+export * from './lib/ngx-custom-lib.component';
+export * from './lib/ngx-custom-lib.module';
 ```
 
 Сборка библиотек аналогична сборке обычного Angular приложения.
@@ -40,8 +40,8 @@ ng build ngx-custom-lib
 
 ```ts
 NgModule({
-  imports: [NgxCustomLibModule],
-})
+    imports: [NgxCustomLibModule],
+});
 ```
 
 !!! note ""

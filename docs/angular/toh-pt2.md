@@ -88,7 +88,7 @@ export class HeroesComponent {
 <li *ngFor="let hero of heroes"></li>
 ```
 
-Директива [`*ngFor`](built-in-directives.md#ngFor) - это директива Angular _repeater_. Она повторяет ведущий элемент для каждого элемента списка.
+Директива [`*ngFor`](built-in-directives.md#ngFor) — это директива Angular _repeater_. Она повторяет ведущий элемент для каждого элемента списка.
 
 Синтаксис в данном примере выглядит следующим образом:
 

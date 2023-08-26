@@ -31,7 +31,7 @@ export class HeroChildComponent {
 
 Второй `@Input` псевдонизирует имя свойства дочернего компонента `masterName` как `'master'`.
 
-Родительский компонент `HeroParentComponent` вставляет дочерний компонент `HeroChildComponent` внутрь повторителя `*ngFor`, связывая его строковое свойство `master` с псевдонимом `master` дочернего компонента, а экземпляр `hero` каждой итерации - со свойством `hero` дочернего компонента.
+Родительский компонент `HeroParentComponent` вставляет дочерний компонент `HeroChildComponent` внутрь повторителя `*ngFor`, связывая его строковое свойство `master` с псевдонимом `master` дочернего компонента, а экземпляр `hero` каждой итерации — со свойством `hero` дочернего компонента.
 
 ```ts title="component-interaction/src/app/hero-parent.component.ts"
 import { Component } from '@angular/core';

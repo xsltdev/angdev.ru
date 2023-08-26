@@ -6,14 +6,14 @@ description: Каждый компонент имеет свой жизненн�
 
 Каждый компонент имеет свой **жизненный цикл** (Component Lifecycle), в процессе которого вызываются ряд описывающих текущий этап методов (Angular Hooks):
 
-- [`OnChanges`](https://angular.io/api/core/OnChanges) - устанавливаются или изменяются значения входных свойств класса компонента;
-- [`OnInit`](https://angular.io/api/core/OnInit) - устанавливаются "обычные" свойства; вызывается единожды вслед за первым вызовом `OnChanges()`;
-- [`DoCheck`](https://angular.io/api/core/DoCheck) - происходит изменения свойства или вызывается какое-либо событие;
-- [`AfterContentInit`](https://angular.io/api/core/AfterContentInit) - в шаблон включается контент, заключенный между тегами компонента;
-- [`AfterContentChecked`](https://angular.io/api/core/AfterContentChecked) - аналогичен `DoCheck()`, только используется для контента, заключенного между тегами компонента;
-- [`AfterViewInit`](https://angular.io/api/core/AfterViewInit) - инициализируются компоненты, которые входят в шаблон текущего компонента;
-- [`AfterViewChecked`](https://angular.io/api/core/AfterViewChecked) - аналогичен `DoCheck()`, только используется для дочерних компонентов;
-- [`OnDestroy`](https://angular.io/api/core/OnDestroy) - компонент "умирает", т. е. удаляется из DOM-дерева
+-   [`OnChanges`](https://angular.io/api/core/OnChanges) - устанавливаются или изменяются значения входных свойств класса компонента;
+-   [`OnInit`](https://angular.io/api/core/OnInit) - устанавливаются "обычные" свойства; вызывается единожды вслед за первым вызовом `OnChanges()`;
+-   [`DoCheck`](https://angular.io/api/core/DoCheck) - происходит изменения свойства или вызывается какое-либо событие;
+-   [`AfterContentInit`](https://angular.io/api/core/AfterContentInit) - в шаблон включается контент, заключенный между тегами компонента;
+-   [`AfterContentChecked`](https://angular.io/api/core/AfterContentChecked) - аналогичен `DoCheck()`, только используется для контента, заключенного между тегами компонента;
+-   [`AfterViewInit`](https://angular.io/api/core/AfterViewInit) - инициализируются компоненты, которые входят в шаблон текущего компонента;
+-   [`AfterViewChecked`](https://angular.io/api/core/AfterViewChecked) - аналогичен `DoCheck()`, только используется для дочерних компонентов;
+-   [`OnDestroy`](https://angular.io/api/core/OnDestroy) - компонент "умирает", т. е. удаляется из DOM-дерева
 
 В списке выше все методы перечислены в порядке их вызова.
 
@@ -21,11 +21,11 @@ Angular hooks реализованы в виде интерфейсов, реа�
 
 ```ts
 export class ContactsItemComponent implements OnInit {
-  //
-  ngOnInit() {
-    console.log('OnInit')
-  }
-  //
+    //
+    ngOnInit() {
+        console.log('OnInit');
+    }
+    //
 }
 ```
 
@@ -35,12 +35,12 @@ _hooks-example.component.ts_
 
 ```ts
 @Component({
-  selector: 'hooks-example',
-  template: `
-    <contacts-list [title]="'Managers'">
-      <contacts-item [name]="'Peter'"></contacts-item>
-    </contacts-list>
-  `,
+    selector: 'hooks-example',
+    template: `
+        <contacts-list [title]="'Managers'">
+            <contacts-item [name]="'Peter'"></contacts-item>
+        </contacts-list>
+    `,
 })
 export class HooksExampleComponent {}
 ```
@@ -49,59 +49,59 @@ _contacts-list.component.ts_
 
 ```ts
 @Component({
-  selector: 'contacts-list',
-  template: `
-    <h2>Contacts List of {{ company }}</h2>
-    <ng-content></ng-content>
-    <contacts-item [name]="'Jack'"></contacts-item>
-    <contacts-item [name]="'Daniel'"></contacts-item>
-  `,
+    selector: 'contacts-list',
+    template: `
+        <h2>Contacts List of {{ company }}</h2>
+        <ng-content></ng-content>
+        <contacts-item [name]="'Jack'"></contacts-item>
+        <contacts-item [name]="'Daniel'"></contacts-item>
+    `,
 })
 export class ContactsListComponent
-  implements
-    OnChanges,
-    OnInit,
-    DoCheck,
-    AfterContentInit,
-    AfterContentChecked,
-    AfterViewInit,
-    AfterViewChecked {
-  @Input() title: string
+    implements
+        OnChanges,
+        OnInit,
+        DoCheck,
+        AfterContentInit,
+        AfterContentChecked,
+        AfterViewInit,
+        AfterViewChecked {
+    @Input() title: string;
 
-  company: string = 'Google Inc.'
+    company: string = 'Google Inc.';
 
-  @ViewChild(ContactsItemComponent)
-  vwCh: ContactsItemComponent
-  @ContentChild(ContactsItemComponent)
-  cntCh: ContactsItemComponent
+    @ViewChild(ContactsItemComponent)
+    vwCh: ContactsItemComponent;
+    @ContentChild(ContactsItemComponent)
+    cntCh: ContactsItemComponent;
 
-  ngOnChanges(obj: SimpleChanges) {
-    console.log('OnChanges', obj)
-  }
+    ngOnChanges(obj: SimpleChanges) {
+        console.log('OnChanges', obj);
+    }
 
-  ngOnInit() {
-    console.log('OnInit', this.company)
-  }
+    ngOnInit() {
+        console.log('OnInit', this.company);
+    }
 
-  ngDoCheck() {
-    console.log('DoCheck')
-  }
+    ngDoCheck() {
+        console.log('DoCheck');
+    }
 
-  ngAfterContentInit() {
-    console.log('AfterContentInit', this.cntCh)
-  }
+    ngAfterContentInit() {
+        console.log('AfterContentInit', this.cntCh);
+    }
 
-  ngAfterContentChecked() {
-    console.log('AfterContentChecked')
-  }
+    ngAfterContentChecked() {
+        console.log('AfterContentChecked');
+    }
 
-  ngAfterViewInit() {
-    console.log('AfterViewInit', this.vwCh)
-  }
+    ngAfterViewInit() {
+        console.log('AfterViewInit', this.vwCh);
+    }
 
-  ngAfterViewChecked() {
-    console.log('AfterViewChecked')
-  }
+    ngAfterViewChecked() {
+        console.log('AfterViewChecked');
+    }
 }
 ```
 
@@ -109,11 +109,11 @@ _contacts-item.component.ts_
 
 ```ts
 @Component({
-  selector: 'contacts-item',
-  template: ` <p>{{ name }}</p> `,
+    selector: 'contacts-item',
+    template: ` <p>{{ name }}</p> `,
 })
 export class ContactsItemComponent {
-  @Input() name: string = null
+    @Input() name: string = null;
 }
 ```
 

@@ -22,32 +22,32 @@ Angular предоставляет такую функциональность, 
 
 ```json
 {
-  "name": "helloapp",
-  "version": "1.0.0",
-  "description": "First Angular 9 Project",
-  "author": "Eugene Popov <metanit.com>",
-  "scripts": {
-    "dev": "webpack-dev-server --hot --open",
-    "build": "webpack"
-  },
-  "dependencies": {
-    "@angular/common": "~9.0.0",
-    "@angular/compiler": "~9.0.0",
-    "@angular/core": "~9.0.0",
-    "@angular/forms": "~9.0.0",
-    "@angular/platform-browser": "~9.0.0",
-    "@angular/platform-browser-dynamic": "~9.0.0",
-    "@angular/router": "~9.0.0",
-    "rxjs": "^6.5.4",
-    "zone.js": "^0.10.2"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.1",
-    "@angular/cli": "~9.0.1",
-    "@angular/compiler-cli": "~9.0.0",
-    "@types/node": "^12.11.1",
-    "typescript": "~3.7.5"
-  }
+    "name": "helloapp",
+    "version": "1.0.0",
+    "description": "First Angular 9 Project",
+    "author": "Eugene Popov <metanit.com>",
+    "scripts": {
+        "dev": "webpack-dev-server --hot --open",
+        "build": "webpack"
+    },
+    "dependencies": {
+        "@angular/common": "~9.0.0",
+        "@angular/compiler": "~9.0.0",
+        "@angular/core": "~9.0.0",
+        "@angular/forms": "~9.0.0",
+        "@angular/platform-browser": "~9.0.0",
+        "@angular/platform-browser-dynamic": "~9.0.0",
+        "@angular/router": "~9.0.0",
+        "rxjs": "^6.5.4",
+        "zone.js": "^0.10.2"
+    },
+    "devDependencies": {
+        "@angular-devkit/build-angular": "~0.900.1",
+        "@angular/cli": "~9.0.1",
+        "@angular/compiler-cli": "~9.0.0",
+        "@types/node": "^12.11.1",
+        "typescript": "~3.7.5"
+    }
 }
 ```
 
@@ -74,18 +74,18 @@ C:\angular2\helloapp>npm install
 Компоненты представляют основные строительные блоки приложения Angular. Каждое приложение Angular имеет как минимум один компонент. Поэтому создадим в папке `src/app` новый файл, который назовем `app.component.ts` и в котором определим следующий код компонента:
 
 ```typescript
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
-  template: `
-    <label>Введите имя:</label>
-    <input [(ngModel)]="name" placeholder="name" />
-    <h1>Добро пожаловать {{ name }}!</h1>
-  `,
+    selector: 'my-app',
+    template: `
+        <label>Введите имя:</label>
+        <input [(ngModel)]="name" placeholder="name" />
+        <h1>Добро пожаловать {{ name }}!</h1>
+    `,
 })
 export class AppComponent {
-  name = ''
+    name = '';
 }
 ```
 
@@ -100,14 +100,14 @@ export class AppComponent {
 Приложение Angular состоит из модулей. Модульная структура позволяет легко подгружать и задействовать только те модули, которые непосредственно необходимы. И каждое приложение имеет как минимум один корневой модуль. Поэтому создадим в папке `src/app` новый файл, который назовем `app.module.ts` со следующим содержимым:
 
 ```typescript
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule } from '@angular/forms'
-import { AppComponent } from './app.component'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
 @NgModule({
-  imports: [BrowserModule, FormsModule],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent],
+    imports: [BrowserModule, FormsModule],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -121,10 +121,10 @@ export class AppModule {}
 Теперь нам надо указать Angular, как запускать наше приложение. Для этого создадим в папке `src` (на уровень выше, чем расположены файлы `app.component.ts` и `app.module.ts`) файл `main.ts` со следующим содержимым:
 
 ```typescript
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
-import { AppModule } from './app/app.module'
-const platform = platformBrowserDynamic()
-platform.bootstrapModule(AppModule)
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app/app.module';
+const platform = platformBrowserDynamic();
+platform.bootstrapModule(AppModule);
 ```
 
 Этот код инициализирует платформу, которая запускает приложение, и затем использует эту платформу для загрузки модуля `AppModule`.
@@ -132,7 +132,7 @@ platform.bootstrapModule(AppModule)
 Также в папке `src` определим еще один файл, который назовем `polyfills.ts` со следующим кодом:
 
 ```typescript
-import 'zone.js/dist/zone' // zone используется angular
+import 'zone.js/dist/zone'; // zone используется angular
 ```
 
 Данный файл определяет полифилы — инструменты, которые необходимы для поддержки приложения на Angular старыми браузерами.
@@ -144,13 +144,13 @@ import 'zone.js/dist/zone' // zone используется angular
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Hello Angular 9</title>
-  </head>
-  <body>
-    <my-app>Загрузка...</my-app>
-  </body>
+    <head>
+        <meta charset="utf-8" />
+        <title>Hello Angular 9</title>
+    </head>
+    <body>
+        <my-app>Загрузка...</my-app>
+    </body>
 </html>
 ```
 
@@ -234,21 +234,21 @@ import 'zone.js/dist/zone' // zone используется angular
 
 Проект определяет следующие опции:
 
-- `projectType`: тип проекта. Значение "`application`" указывает, что проект будет представлять приложение, которое можно будет запускать в браузере
-- `root`: указывает на папку файлов проекта относительно рабочей среды. Пустое значение соответствует корневой папке проекта, так как в данном случае рабочая среда и каталог проекта совпадают
-- `sourceRoot`: определяет корневую папку файлов с исходным кодом. В нашем случае это папка `src`, где собственно определены все файлы приложения
-- `architect`: задает настройки для построения проекта. В файле `package.json` определены команды `build` и `serve`, и для каждой из этих команд в секции `architect` заданы свои настройки.
+-   `projectType`: тип проекта. Значение "`application`" указывает, что проект будет представлять приложение, которое можно будет запускать в браузере
+-   `root`: указывает на папку файлов проекта относительно рабочей среды. Пустое значение соответствует корневой папке проекта, так как в данном случае рабочая среда и каталог проекта совпадают
+-   `sourceRoot`: определяет корневую папку файлов с исходным кодом. В нашем случае это папка `src`, где собственно определены все файлы приложения
+-   `architect`: задает настройки для построения проекта. В файле `package.json` определены команды `build` и `serve`, и для каждой из этих команд в секции `architect` заданы свои настройки.
 
 Для каждой команды задается параметр `builder`, который определяет инструмент для построения проекта. Так, для команды "`build`" задано значение "`@angular-devkit/build-angular:browser`" — данный билдер для построения использует сборщик пакетов webpack. А для команды "`serve`" задано значение "`@angular-devkit/build-angular:dev-server`" — данный билдер запускает веб-сервер и развертывает на нем скомпилированное приложение.
 
 Параметр `options` задает параметры построения файлов. Для команды "`build`" здесь определены следующие опции:
 
-- `outputPath`: путь, по которому будет публиковаться скомпилированное приложение
-- `index`: путь к главной странице приложения
-- `main`: путь к главному файлу приложения, где собственно запускается приложение Angular
-- `polyfills`: путь к файлу полифилов
-- `tsConfig`: путь к файлу конфигурации TypeScript
-- `aot`: указывает, будет ли использоваться компиляция AOT (Ahead-Of-Head) (предварительная компиляция перед выполнением). В данном случае значение `true` означает, что она используется
+-   `outputPath`: путь, по которому будет публиковаться скомпилированное приложение
+-   `index`: путь к главной странице приложения
+-   `main`: путь к главному файлу приложения, где собственно запускается приложение Angular
+-   `polyfills`: путь к файлу полифилов
+-   `tsConfig`: путь к файлу конфигурации TypeScript
+-   `aot`: указывает, будет ли использоваться компиляция AOT (Ahead-Of-Head) (предварительная компиляция перед выполнением). В данном случае значение `true` означает, что она используется
 
 Для команды "`serve`" указана только одна опцияя — `browserTarget`, которая содержит ссылку на конфигурацию для команды `build` — "`helloapp:build`". То есть по сути эта команда использует ту же конфигурацию, что и команда `build`.
 

@@ -12,9 +12,9 @@ NgRx **Store** (или просто хранилище) хранит в себе
 
 Хранилище в NgRx представлено сервисом `Store` и выполняет следующие функции:
 
-- хранение глобального состояния приложения;
-- обновляет состояние в ответ на действие, принимаемое через метод `dispatch()`;
-- предоставление доступа к состоянию.
+-   хранение глобального состояния приложения;
+-   обновляет состояние в ответ на действие, принимаемое через метод `dispatch()`;
+-   предоставление доступа к состоянию.
 
 Формирование глобального состояния в NgRx `Store` происходит путем объединения более мелких состояний, которые возвращают зарегистрированные в приложении [редюсеры](reducers.md). Делается это с использованием `ActionReducerMap<State>`.
 
@@ -22,13 +22,13 @@ _users.reducer.ts_
 
 ```ts
 export interface State {
-  /* ... */
+    /* ... */
 }
 export function usersReducer(
-  state: State = initialState,
-  action: UsersUnion
+    state: State = initialState,
+    action: UsersUnion
 ) {
-  /* ... */
+    /* ... */
 }
 ```
 
@@ -36,13 +36,13 @@ _articles.reducer.ts_
 
 ```ts
 export interface State {
-  /*...*/
+    /*...*/
 }
 export function articlesReducer(
-  state: State = initialState,
-  action: ArticlesUnion
+    state: State = initialState,
+    action: ArticlesUnion
 ) {
-  /*...*/
+    /*...*/
 }
 ```
 
@@ -53,13 +53,13 @@ import * as Users from './reducers/users.reducer';
 import * as Articles from './reducers/articles.reducer';
 
 export interface State {
-  users: Users.State;
-  articles: Articles.State;
+    users: Users.State;
+    articles: Articles.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
-  users: Users.usersReducer,
-  articles: Articles.articlesReducer,
+    users: Users.usersReducer,
+    articles: Articles.articlesReducer,
 };
 ```
 
@@ -69,7 +69,7 @@ _app.module.ts_
 import { reducers } from './store/reducers/index';
 
 @NgModule({
-  imports: [StoreModule.forRoot(reducers)],
+    imports: [StoreModule.forRoot(reducers)],
 })
 export class AppModule {}
 ```
@@ -84,10 +84,10 @@ _users.module.ts_
 import { usersReducer } from './reducers/users.reducer';
 
 @NgModule({
-  imports: [
-    StoreModule.forFeature('users', usersReducer),
-    UsersModule,
-  ],
+    imports: [
+        StoreModule.forFeature('users', usersReducer),
+        UsersModule,
+    ],
 })
 export class UsersModule {}
 ```
@@ -96,8 +96,8 @@ _app.module.ts_
 
 ```ts
 @NgModule({
-  imports: [StoreModule.forRoot({}), UsersModule],
-  // ...
+    imports: [StoreModule.forRoot({}), UsersModule],
+    // ...
 })
 export class AppModule {}
 ```
@@ -114,26 +114,26 @@ _articles.actions.ts_
 import { Action } from '@ngrx/store';
 
 export enum ArticlesActions {
-  LoadArticle = '[Articles Page] LoadArticle',
-  PublishArticle = '[Articles Page] PublishArticle',
+    LoadArticle = '[Articles Page] LoadArticle',
+    PublishArticle = '[Articles Page] PublishArticle',
 }
 
 export interface Article {
-  id: number;
-  title: string;
-  published: boolean;
+    id: number;
+    title: string;
+    published: boolean;
 }
 
 export class LoadArticle implements Action {
-  readonly type = ArticlesActions.LoadArticle;
+    readonly type = ArticlesActions.LoadArticle;
 
-  constructor(public payload: { article: Article }) {}
+    constructor(public payload: { article: Article }) {}
 }
 
 export class PublishArticle implements Action {
-  readonly type = ArticlesActions.PublishArticle;
+    readonly type = ArticlesActions.PublishArticle;
 
-  constructor(public payload: { id: number }) {}
+    constructor(public payload: { id: number }) {}
 }
 
 export type ArticlesUnion = LoadArticle | PublishArticle;
@@ -174,26 +174,26 @@ _app.component.ts_
 
 ```ts
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(private store: Store) {
-    this.store.subscribe((state) => console.log(state));
+    constructor(private store: Store) {
+        this.store.subscribe((state) => console.log(state));
 
-    this.store.dispatch(
-      new LoadArticle({
-        article: {
-          id: 1,
-          title: 'Learn NgRx',
-          publish: false,
-        },
-      })
-    );
+        this.store.dispatch(
+            new LoadArticle({
+                article: {
+                    id: 1,
+                    title: 'Learn NgRx',
+                    publish: false,
+                },
+            })
+        );
 
-    this.store.dispatch(new PublishArticle({ id: 1 }));
-  }
+        this.store.dispatch(new PublishArticle({ id: 1 }));
+    }
 }
 ```
 

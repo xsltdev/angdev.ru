@@ -10,42 +10,42 @@ description: Кроме простой установки значений ат�
 
 ```typescript
 import {
-  Directive,
-  ElementRef,
-  Renderer2,
-  HostListener,
-} from '@angular/core'
+    Directive,
+    ElementRef,
+    Renderer2,
+    HostListener,
+} from '@angular/core';
 
 @Directive({
-  selector: '[bold]',
+    selector: '[bold]',
 })
 export class BoldDirective {
-  constructor(
-    private element: ElementRef,
-    private renderer: Renderer2
-  ) {
-    this.renderer.setStyle(
-      this.element.nativeElement,
-      'cursor',
-      'pointer'
-    )
-  }
+    constructor(
+        private element: ElementRef,
+        private renderer: Renderer2
+    ) {
+        this.renderer.setStyle(
+            this.element.nativeElement,
+            'cursor',
+            'pointer'
+        );
+    }
 
-  @HostListener('mouseenter') onMouseEnter() {
-    this.setFontWeight('bold')
-  }
+    @HostListener('mouseenter') onMouseEnter() {
+        this.setFontWeight('bold');
+    }
 
-  @HostListener('mouseleave') onMouseLeave() {
-    this.setFontWeight('normal')
-  }
+    @HostListener('mouseleave') onMouseLeave() {
+        this.setFontWeight('normal');
+    }
 
-  private setFontWeight(val: string) {
-    this.renderer.setStyle(
-      this.element.nativeElement,
-      'font-weight',
-      val
-    )
-  }
+    private setFontWeight(val: string) {
+        this.renderer.setStyle(
+            this.element.nativeElement,
+            'font-weight',
+            val
+        );
+    }
 }
 ```
 
@@ -59,32 +59,32 @@ export class BoldDirective {
 
 ```typescript
 import {
-  Directive,
-  HostListener,
-  HostBinding,
-} from '@angular/core'
+    Directive,
+    HostListener,
+    HostBinding,
+} from '@angular/core';
 
 @Directive({
-  selector: '[bold]',
+    selector: '[bold]',
 })
 export class BoldDirective {
-  private fontWeight = 'normal'
+    private fontWeight = 'normal';
 
-  @HostBinding('style.fontWeight') get getFontWeight() {
-    return this.fontWeight
-  }
+    @HostBinding('style.fontWeight') get getFontWeight() {
+        return this.fontWeight;
+    }
 
-  @HostBinding('style.cursor') get getCursor() {
-    return 'pointer'
-  }
+    @HostBinding('style.cursor') get getCursor() {
+        return 'pointer';
+    }
 
-  @HostListener('mouseenter') onMouseEnter() {
-    this.fontWeight = 'bold'
-  }
+    @HostListener('mouseenter') onMouseEnter() {
+        this.fontWeight = 'bold';
+    }
 
-  @HostListener('mouseleave') onMouseLeave() {
-    this.fontWeight = 'normal'
-  }
+    @HostListener('mouseleave') onMouseLeave() {
+        this.fontWeight = 'normal';
+    }
 }
 ```
 
@@ -96,43 +96,43 @@ export class BoldDirective {
 
 ```typescript
 import {
-  Directive,
-  ElementRef,
-  Renderer2,
-} from '@angular/core'
+    Directive,
+    ElementRef,
+    Renderer2,
+} from '@angular/core';
 
 @Directive({
-  selector: '[bold]',
-  host: {
-    '(mouseenter)': 'onMouseEnter()',
-    '(mouseleave)': 'onMouseLeave()',
-  },
+    selector: '[bold]',
+    host: {
+        '(mouseenter)': 'onMouseEnter()',
+        '(mouseleave)': 'onMouseLeave()',
+    },
 })
 export class BoldDirective {
-  constructor(
-    private element: ElementRef,
-    private renderer: Renderer2
-  ) {
-    this.renderer.setStyle(
-      this.element.nativeElement,
-      'cursor',
-      'pointer'
-    )
-  }
+    constructor(
+        private element: ElementRef,
+        private renderer: Renderer2
+    ) {
+        this.renderer.setStyle(
+            this.element.nativeElement,
+            'cursor',
+            'pointer'
+        );
+    }
 
-  onMouseEnter() {
-    this.setFontWeight('bold')
-  }
-  onMouseLeave() {
-    this.setFontWeight('normal')
-  }
-  private setFontWeight(val: string) {
-    this.renderer.setStyle(
-      this.element.nativeElement,
-      'font-weight',
-      val
-    )
-  }
+    onMouseEnter() {
+        this.setFontWeight('bold');
+    }
+    onMouseLeave() {
+        this.setFontWeight('normal');
+    }
+    private setFontWeight(val: string) {
+        this.renderer.setStyle(
+            this.element.nativeElement,
+            'font-weight',
+            val
+        );
+    }
 }
 ```
 

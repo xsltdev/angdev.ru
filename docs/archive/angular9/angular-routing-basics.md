@@ -28,43 +28,46 @@ URL организуются в специальные модули и опре�
 
 ```ts
 const routes: Routes = [
-  { path: 'login', component: LoginRouteComponent },
-  {
-    path: 'home',
-    component: HomeRouteComponent,
-    children: [
-      { path: 'profile', component: ProfileRouteComponent },
-    ],
-  },
-  {
-    path: 'contacts',
-    redirectTo: '/home',
-    pathMatch: 'full',
-    children: [
-      {
-        path: 'director',
-        component: DirectorContactsRouteComponent,
-      },
-    ],
-  },
-  { path: '**', component: LoginRouteComponent },
-]
+    { path: 'login', component: LoginRouteComponent },
+    {
+        path: 'home',
+        component: HomeRouteComponent,
+        children: [
+            {
+                path: 'profile',
+                component: ProfileRouteComponent,
+            },
+        ],
+    },
+    {
+        path: 'contacts',
+        redirectTo: '/home',
+        pathMatch: 'full',
+        children: [
+            {
+                path: 'director',
+                component: DirectorContactsRouteComponent,
+            },
+        ],
+    },
+    { path: '**', component: LoginRouteComponent },
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
 })
 export class AppRoutingModule {}
 ```
 
 При определении маршрута можно указать ряд свойств:
 
-- `path` — наименование маршрута;
-- `component` — компонент для отображения при переходе на URL, совпадающий с `path`;
-- `children` — одно из дополнительных свойств, объединяющее в себе группу маршрутов относительно текущего;
-- `data` — дополнительные данные, например, значение хлебных крошек;
-- `redirectTo` — перенаправляет на указанный URL при попадании на маршрут, указанный в `path`;
-- `pathMatch` — используется совместно с `redirectTo`.
+-   `path` — наименование маршрута;
+-   `component` — компонент для отображения при переходе на URL, совпадающий с `path`;
+-   `children` — одно из дополнительных свойств, объединяющее в себе группу маршрутов относительно текущего;
+-   `data` — дополнительные данные, например, значение хлебных крошек;
+-   `redirectTo` — перенаправляет на указанный URL при попадании на маршрут, указанный в `path`;
+-   `pathMatch` — используется совместно с `redirectTo`.
 
 Обратите внимание, что компоненты-маршруты должны быть импортированы в модуль Angular маршрутизации.
 
@@ -114,13 +117,13 @@ export class AppRoutingModule {}
 
 ```html
 <div class="wrapper">
-  <app-nav></app-nav>
+    <app-nav></app-nav>
 
-  <main>
-    <router-outlet></router-outlet>
-  </main>
+    <main>
+        <router-outlet></router-outlet>
+    </main>
 
-  <app-footer></app-footer>
+    <app-footer></app-footer>
 </div>
 ```
 
@@ -132,8 +135,8 @@ _home-route.component.html_
 
 ```html
 <div class="profile">
-  <h1>Home Page</h1>
-  <router-outlet></router-outlet>
+    <h1>Home Page</h1>
+    <router-outlet></router-outlet>
 </div>
 ```
 
@@ -143,25 +146,25 @@ _app-nav.component.html_
 
 ```html
 <ul>
-  <li>
-    <a routerLink="/home" routerLinkActive="active-link"
-      >Home</a
-    >
-  </li>
-  <li>
-    <a
-      routerLink="/home/profile"
-      routerLinkActive="active-link"
-      >Profile</a
-    >
-  </li>
-  <li>
-    <a
-      routerLink="/contacts/director"
-      routerLinkActive="active-link"
-      >Director contacts</a
-    >
-  </li>
+    <li>
+        <a routerLink="/home" routerLinkActive="active-link"
+            >Home</a
+        >
+    </li>
+    <li>
+        <a
+            routerLink="/home/profile"
+            routerLinkActive="active-link"
+            >Profile</a
+        >
+    </li>
+    <li>
+        <a
+            routerLink="/contacts/director"
+            routerLinkActive="active-link"
+            >Director contacts</a
+        >
+    </li>
 </ul>
 ```
 
@@ -175,9 +178,9 @@ _app-nav.component.html_
 
 ```html
 <li>
-  <a routerLink="profile" routerLinkActive="active-link"
-    >Profile</a
-  >
+    <a routerLink="profile" routerLinkActive="active-link"
+        >Profile</a
+    >
 </li>
 ```
 
@@ -189,9 +192,9 @@ _app-nav.component.html_
 
 ```ts
 this.router.navigate(['profile', 3], {
-  queryParams: { id: 3 },
-  fragment: 'address',
-})
+    queryParams: { id: 3 },
+    fragment: 'address',
+});
 ```
 
 ## Маршруты с параметрами
@@ -218,24 +221,24 @@ _profile.component.ts_
 
 ```ts
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent {
-  constructor(private route: ActivatedRoute) {
-    console.log(this.route)
-  }
+    constructor(private route: ActivatedRoute) {
+        console.log(this.route);
+    }
 }
 ```
 
 В консоль будет выведена полная информация о текущем URL. Необходимые свойства:
 
-- `url` — наименование маршрута;
-- `params` — параметры Angular маршрутизации и их значения, указываемые при определении маршрута, например, `id` в `/profile/:id`;
-- `queryParams` — параметры строки запроса, например, `id` в `/profile?id=3`;
-- `fragment` — значение `hash`, например, `address` в `/profile#address`;
-- `data` — объект одноименного свойства, указываемого при определении маршрута.
+-   `url` — наименование маршрута;
+-   `params` — параметры Angular маршрутизации и их значения, указываемые при определении маршрута, например, `id` в `/profile/:id`;
+-   `queryParams` — параметры строки запроса, например, `id` в `/profile?id=3`;
+-   `fragment` — значение `hash`, например, `address` в `/profile#address`;
+-   `data` — объект одноименного свойства, указываемого при определении маршрута.
 
 В шаблоне параметры маршрутизации передаются следующим образом: в качестве значения директивы указывается массив, первое значение которого URL, второе — значение параметра данного URL.
 
@@ -247,13 +250,13 @@ export class ProfileComponent {
 
 ```html
 <a [routerLink]="['profile']" [queryParams]="{id: 3}"
-  >Profile</a
+    >Profile</a
 >
 ```
 
 ```html
 <a [routerLink]="['profile']" [fragment]="address"
-  >Profile</a
+    >Profile</a
 >
 ```
 
@@ -277,21 +280,23 @@ export class ProfileComponent {
 
 ```html
 <div class="wrapper">
-  <app-nav></app-nav>
+    <app-nav></app-nav>
 
-  <main>
-    <div class="row">
-      <div class="col-9">
-        <router-outlet></router-outlet>
-      </div>
+    <main>
+        <div class="row">
+            <div class="col-9">
+                <router-outlet></router-outlet>
+            </div>
 
-      <div class="col-3">
-        <router-outlet name="discount"></router-outlet>
-      </div>
-    </div>
-  </main>
+            <div class="col-3">
+                <router-outlet
+                    name="discount"
+                ></router-outlet>
+            </div>
+        </div>
+    </main>
 
-  <app-footer></app-footer>
+    <app-footer></app-footer>
 </div>
 ```
 
@@ -299,22 +304,22 @@ export class ProfileComponent {
 
 ```html
 <a [routerLink]="[{outlets: {discount: null}}]"
-  >Hide discount</a
+    >Hide discount</a
 >
 
 <a [routerLink]="[{outlets: {discount: 'discount-info'}}]"
-  >Show discount</a
+    >Show discount</a
 >
 ```
 
 Или из контроллера:
 
 ```ts
-this.router.navigate([{ outlets: { discount: null } }])
+this.router.navigate([{ outlets: { discount: null } }]);
 
 this.router.navigate([
-  { outlets: { discount: 'discount-info' } },
-])
+    { outlets: { discount: 'discount-info' } },
+]);
 ```
 
 При отображении/скрытии обратите внимание на значение адресной строки браузера. В конце URL должна появляться/исчезать приписка.
@@ -325,4 +330,4 @@ this.router.navigate([
 
 ## Ссылки
 
-- [Router. The Basics](https://angular.io/guide/router#the-basics)
+-   [Router. The Basics](https://angular.io/guide/router#the-basics)

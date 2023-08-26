@@ -16,12 +16,12 @@ of('Hello').subscribe((vl) => console.log(vl));
 
 ```ts
 const obs = new Observable((sub) => {
-  sub.next(1);
+    sub.next(1);
 
-  setTimeout(() => {
-    sub.next(3);
-    sub.complete();
-  }, 500);
+    setTimeout(() => {
+        sub.next(3);
+        sub.complete();
+    }, 500);
 });
 
 obs.subscribe((vl) => console.log(vl));
@@ -29,25 +29,25 @@ obs.subscribe((vl) => console.log(vl));
 
 Каждый `Observable` может отправлять своим "потребителям" уведомления вызовом одного из трех методов:
 
-- `next()` - отправка данных, количество вызовов не ограничено;
-- `error()` - генерация ошибки, параметром указываются данные любого формата (строка, объект, исключение) о причине ее возникновения;
-- `complete()` - завершение исполнения `Observable`, не принимает никаких параметров и не передает никакого значения.
+-   `next()` - отправка данных, количество вызовов не ограничено;
+-   `error()` - генерация ошибки, параметром указываются данные любого формата (строка, объект, исключение) о причине ее возникновения;
+-   `complete()` - завершение исполнения `Observable`, не принимает никаких параметров и не передает никакого значения.
 
 Но исполнение RxJS `Observable` начнется только после вызова у него метода `subscribe()`, который принимает функцию с передаваемыми данными в качестве аргумента. Вторым и третьим необязательными параметрами методу `subscribe()` можно передать функции, которые будут вызваны в случае ошибки или (и) завершения `Observable`.
 
 ```ts
 const obs = new Observable((sub) => {
-  sub.next(1);
+    sub.next(1);
 
-  setTimeout(() => {
-    sub.error(3);
-  }, 500);
+    setTimeout(() => {
+        sub.error(3);
+    }, 500);
 });
 
 obs.subscribe(
-  (vl) => console.log(vl),
-  (err) => console.log('Error: ', err),
-  () => console.log('Completed')
+    (vl) => console.log(vl),
+    (err) => console.log('Error: ', err),
+    () => console.log('Completed')
 );
 ```
 

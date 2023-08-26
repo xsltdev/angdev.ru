@@ -16,14 +16,14 @@ _logs.meta-reducer.ts_
 
 ```ts
 export function log(
-  reducer: ActionReducer<any>
+    reducer: ActionReducer<any>
 ): ActionReducer<any> {
-  return (state, action) => {
-    console.log('state', state);
-    console.log('action', action);
+    return (state, action) => {
+        console.log('state', state);
+        console.log('action', action);
 
-    return reducer(state, action);
-  };
+        return reducer(state, action);
+    };
 }
 ```
 
@@ -34,11 +34,11 @@ import { reducers } from './store/reducers/index';
 import { log } from './store/meta-reducers/log.meta-reducer';
 
 @NgModule({
-  imports: [
-    StoreModule.forRoot(reducers),
-    { metaReducers: [log] },
-  ],
-  // ...
+    imports: [
+        StoreModule.forRoot(reducers),
+        { metaReducers: [log] },
+    ],
+    // ...
 })
 export class AppModule {}
 ```
