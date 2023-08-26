@@ -34,13 +34,13 @@ export class ViewChildDemoComponent
 
 В примере ссылка на представление сохраняется в переменную `title` и становится доступной только в момент вызова `AfterViewInit`.
 
-Если запрашиваемое представление является стандартным HTML-тегом, то запрос вернет ссылку типа `ElementRef`, если же это Angular элемент `<ng-template />` - ссылку типа `TemplateRef`.
+Если запрашиваемое представление является стандартным HTML-тегом, то запрос вернет ссылку типа `ElementRef`, если же это Angular элемент `<ng-template />` — ссылку типа `TemplateRef`.
 
 Рассмотрим каждую из абстракций более подробно.
 
 ## ElementRef
 
-Основная и самая часто используемая абстракция - `ElementRef`. Она хранит в себе "оригинальный" HTML-элемент в свойстве `nativeElement` так, если бы он был получен с помощью нативного JavaScript.
+Основная и самая часто используемая абстракция — `ElementRef`. Она хранит в себе "оригинальный" HTML-элемент в свойстве `nativeElement` так, если бы он был получен с помощью нативного JavaScript.
 
 ```ts
 @Component({
@@ -94,8 +94,8 @@ export class TemplateRefDemoComponent
 
 В Angular различают два вида представлений:
 
--   Embedded Views - относятся к элементу `<ng-template />`;
--   Host Views - относятся к компоненту и инициализируются в момент [динамического создания компонентов](dynamic-components.md).
+-   Embedded Views — относятся к элементу `<ng-template />`;
+-   Host Views — относятся к компоненту и инициализируются в момент [динамического создания компонентов](dynamic-components.md).
 
 Embedded и Host Views размещаются в контейнере `ViewContainerRef`.
 
@@ -152,12 +152,12 @@ export class ViewContainerRefDemoComponent
 
 Для осуществления манипуляций с представлениями внутри контейнера, у экземпляра класса `ViewContainerRef` предусмотрен ряд методов:
 
--   `insert(viewRef: ViewRef, index?: number)` - вставляет представление `viewRef` на позицию `index` (если `index` не указан, то вставка осуществляется в конец);
--   `clear()` - удаляет все представления из контейнера;
--   `get(index: number)` - возвращает представление типа `ViewRef` по заданному индексу;
--   `indexOf(viewRef: ViewRef)` - возвращает индекс переданного представления;
--   `detach(index?: number)` - удаляет представление по конкретному индексу, если индекс не передан - удаляет последнее представление;
--   `move(viewRef: ViewRef, currentIndex: number)` - меняет индекс представления `viewRef` на `currentIndex`.
+-   `insert(viewRef: ViewRef, index?: number)` — вставляет представление `viewRef` на позицию `index` (если `index` не указан, то вставка осуществляется в конец);
+-   `clear()` — удаляет все представления из контейнера;
+-   `get(index: number)` — возвращает представление типа `ViewRef` по заданному индексу;
+-   `indexOf(viewRef: ViewRef)` — возвращает индекс переданного представления;
+-   `detach(index?: number)` — удаляет представление по конкретному индексу, если индекс не передан — удаляет последнее представление;
+-   `move(viewRef: ViewRef, currentIndex: number)` — меняет индекс представления `viewRef` на `currentIndex`.
 
 ## ComponentRef
 
