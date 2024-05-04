@@ -142,7 +142,7 @@ export type ArticlesUnion = LoadArticle | PublishArticle;
 _articles.reducer.ts_
 
 ```ts
-export interface State{
+export interface State {
 	articles: {[id: number]: Article},
 	count: number;
 }
@@ -152,17 +152,17 @@ const initialState: State = {
 	count: 0
 };
 
-export function articlesReducer(state: State = initialState, action: ArticlesUnion){
+export function articlesReducer(state: State = initialState, action: ArticlesUnion) {
 	switch(action.type){
 	case ArticlesActions.LoadArticle:
 		return {
-		...state,
-		articles: {...state.articles, [action.payload.article.id]: action.payload.article}
+		    ...state,
+		    articles: {...state.articles, [action.payload.article.id]: action.payload.article}
 		};
 	case ArticlesActions.PublishArticle:
 		return {
-		...state,
-		articles: {...{published: true, ...state.article[action.payload.id]}, ...state.articles
+		    ...state,
+		    articles: {...{published: true, ...state.article[action.payload.id]}, ...state.articles}
 		};
 	default:
 		return state;
@@ -199,4 +199,4 @@ export class AppComponent {
 
 Значение NgRx `Store` передается обработчику непосредственно в момент вызова метода `subscribe()` и далее при любом изменении состояния.
 
-Для доступа к определенным частям состояния или вычисления новых данных на основе уже имеющихся в хранилище, используйте селекторы.
+Для доступа к определенным частям состояния или вычисления новых данных на основе уже имеющихся в хранилище, используйте [селекторы](selectors.md).
