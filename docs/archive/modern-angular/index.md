@@ -1,5 +1,7 @@
 # Современный Angular
 
+Источник: [Modern Angular, Manfred Steyer](https://www.angulararchitects.io/en/ebooks/modern-angular/)
+
 1.  [Введение](chap00.md)
 2.  [Автономные компоненты: ментальная модель и совместимость](chap01.md#leanpub-auto-standalone-components-mental-model--compatibility)
     1.  [Почему мы вообще запустили NgModules?](chap01.md#leanpub-auto-why-did-we-even-get-ngmodules-in-the-first-place)
