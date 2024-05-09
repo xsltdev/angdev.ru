@@ -4,6 +4,7 @@ nav:
     - actions.md
     - reducers.md
     - store.md
+    - feature-creators.md
     - selectors.md
     - effects.md
     - router-store.md
