@@ -28,6 +28,8 @@ hide:
 
     Гайды по Angular
 
+    [:octicons-arrow-right-24: Современный Angular](./archive/modern-angular/index.md)
+
     [:octicons-arrow-right-24: Гайд от webdraftt](archive/webdraftt/intro/start.md)
 
     [:octicons-arrow-right-24: Шпаргалка](cheatsheet.md)
