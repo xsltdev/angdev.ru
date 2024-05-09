@@ -116,3 +116,7 @@
     3.  [Больше, чем SSR: неразрушающая гидратация](chap14.md#leanpub-auto-more-than-ssr-non-destructive-hydration)
     4.  [Больше деталей о гидратации в Angular](chap14.md#leanpub-auto-more-details-on-hydration-in-angular)
     5.  [Заключение](chap14.md#leanpub-auto-conclusion-13)
+
+!!!danger "Перевод"
+
+    Перевод этой книги сделан благодаря [подписчикам на Бусти](https://boosty.to/bndby).
