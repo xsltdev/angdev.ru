@@ -1,6 +1,10 @@
+---
+description: Новая поддержка esbuild обеспечивает более быструю сборку. Появившийся ApplicationBuilder упрощает использование SSR
+---
+
 # esbuild и новый конструктор приложений
 
-Новая поддержка esbuild обеспечивает более быструю сборку. Появившийся `ApplicationBuilder` упрощает использование SSR.
+<big>Новая поддержка esbuild обеспечивает более быструю сборку. Появившийся `ApplicationBuilder` упрощает использование SSR.</big>
 
 ## Производительность сборки с esbuild {#leanpub-auto-build-performance-with-esbuild}
 
