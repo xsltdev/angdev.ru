@@ -146,7 +146,7 @@ template: `
   <app-hero-bio [heroId]="3"> <app-hero-contact></app-hero-contact> </app-hero-bio>`,
 ```
 
-Теперь между тегами `<hero-contact>` появился новый элемент `<hero-bio>`. Angular _проецирует_, или _трансклюзирует_, соответствующий `HeroContactComponent` в представление `HeroBioComponent`, помещая его в слот `<ng-content>` шаблона `HeroBioComponent`.
+Теперь между тегами `<hero-bio>` появился новый элемент `<hero-contact>`. Angular _проецирует_, или _трансклюзирует_, соответствующий `HeroContactComponent` в представление `HeroBioComponent`, помещая его в слот `<ng-content>` шаблона `HeroBioComponent`.
 
 ```ts
 template: `
