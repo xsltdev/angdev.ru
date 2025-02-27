@@ -590,7 +590,7 @@ export class AppComponent {
 
     Вы можете оставить весь код, связанный с `FlowerService`, на месте, так как он позволит провести сравнение с `AnimalService`.
 
-Add a `viewProviders` array and inject the `AnimalService` in the `<app-child>` class, too, but give `emoji` a different value. Here, it has a value of dog &#x1F436;.
+В компоненте `ChildComponent` добавьте массив `viewProviders` и инжектируйте в него `AnimalService`. Однако в качестве заначения свойство `emoji` должно возвращать другое значение, в данном случае им будет dog &#x1F436;.
 
 ```ts
 @Component({
