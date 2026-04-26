@@ -99,7 +99,7 @@ it('should display a different test title', () => {
 });
 ```
 
-### Автоматическое обнаружение изменений {: #auto-detect-changes}
+### Автоматическое обнаружение изменений {: #automatic-change-detection}
 
 Тесты `BannerComponent` часто вызывают `detectChanges`. Некоторые тестировщики предпочитают, чтобы тестовая среда Angular выполняла обнаружение изменений автоматически.
 
@@ -293,7 +293,7 @@ userServiceStub = {
 };
 ```
 
-### Получение инжектированных сервисов {: #get-injected-service}
+### Получение инжектированных сервисов {: #get-injected-services}
 
 Тестам нужен доступ к заглушке `UserService`, инжектированной в `WelcomeComponent`.
 
@@ -1039,6 +1039,8 @@ it('should show quote after getQuote (marbles)', () => {
 
 Мраморное тестирование использует планировщик тестов для имитации течения времени в синхронном тесте.
 
+#### Холодная наблюдаемая {#cold-observable}
+
 Красота мраморного тестирования заключается в визуальном определении наблюдаемых потоков. Этот тест определяет [_холодную_ наблюдаемую](#cold-observable), которая ждет три [кадра](#marble-frame) (`---`), выдает значение (`x`) и завершается (`|`).
 
 Во втором аргументе вы сопоставляете маркер значения (`x`) с испускаемым значением (`testQuote`).
@@ -1186,7 +1188,7 @@ constructor(private router: Router, private heroService: HeroService) {}
 
 Ближайшей целью является тестирование `DashboardHeroComponent`, а не `DashboardComponent`, поэтому попробуйте второй и третий варианты.
 
-### Тест `DashboardHeroComponent` stand-alone {: #dashboard-standalone}
+### Тест `DashboardHeroComponent` stand-alone {: #dashboard-hero-component}
 
 Вот основная часть настройки файла спецификации.
 
@@ -1553,7 +1555,7 @@ describe('when navigate to non-existent hero id', () => {
 });
 ```
 
-## Тесты вложенных компонентов
+## Тесты вложенных компонентов {: #nested-component-tests}
 
 Шаблоны компонентов часто имеют вложенные компоненты, шаблоны которых могут содержать еще больше компонентов.
 
@@ -2229,7 +2231,9 @@ beforeEach(async () => {
     {set: {providers: [{provide: HeroDetailService, useClass: HeroDetailServiceSpy}]}})
 ```
 
-Он принимает два аргумента: тип компонента для переопределения (`HeroDetailComponent`) и объект метаданных переопределения. Объект метаданных [override metadata object](testing-utility-apis.md#metadata-override-object) является общим, определяемым следующим образом:
+Он принимает два аргумента: тип компонента для переопределения (`HeroDetailComponent`) и объект метаданных переопределения. Объект метаданных [override metadata object](#metadata-override-object) является общим, определяемым следующим образом:
+
+#### Объект переопределения метаданных `MetadataOverride` {#metadata-override-object}
 
 ```ts
 type MetadataOverride<T> = {

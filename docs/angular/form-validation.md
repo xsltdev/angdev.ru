@@ -167,7 +167,7 @@ get power() { return this.heroForm.get('power'); }
 
 Встроенные валидаторы не всегда соответствуют конкретному случаю использования вашего приложения, поэтому иногда необходимо создать пользовательский валидатор.
 
-Рассмотрим функцию `forbiddenNameValidator` из предыдущих примеров [reactive-form](#reactive-component-class). Вот как выглядит определение этой функции.
+Рассмотрим функцию `forbiddenNameValidator` из предыдущих примеров [reactive-form](#reactive-form-validation). Вот как выглядит определение этой функции.
 
 ```ts
 /** A hero's name can't match the given regular expression */
@@ -295,6 +295,8 @@ Angular автоматически отображает многие свойс�
 -   `.ng-untouched`
 -   `.ng-touched`
 -   `.ng-submitted` (заключающий элемент формы только)
+
+### Состояния «грязный» (dirty) и «тронутый» (touched) {: #dirty-or-touched}
 
 В следующем примере форма героя использует классы `.ng-valid` и `.ng-invalid` для установки цвета границы каждого элемента формы.
 

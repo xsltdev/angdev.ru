@@ -10,8 +10,6 @@ Angular имеет свой собственный словарь. Больши�
 
 В этом глоссарии перечислены наиболее известные термины и несколько менее знакомых терминов с необычными или неожиданными определениями.
 
-<a id="aot"></a>
-
 ## Компиляция с опережением времени (AOT) {#ahead-of-time-aot-compilation}
 
 **Компилятор Angular ahead-of-time (AOT)** преобразует код Angular HTML и TypeScript в эффективный код JavaScript на этапе сборки. Фаза сборки происходит до того, как браузер загрузит и запустит отрендеренный код. Это лучший режим компиляции для производственных сред, с уменьшенным временем загрузки и увеличенной производительностью по сравнению с [just-in-time (JIT) compilation][aioguideglossaryjustintimejitcompilation].
@@ -91,10 +89,6 @@ Angular [компонент][aioguideglossarycomponent], упакованный 
 
 Команда [`ng run`][aioclirun] Angular CLI вызывает билдер с определенной [целевой конфигурацией][aioguideglossarytarget]. Файл [workspace configuration][aioguideworkspaceconfig], `angular.json`, содержит конфигурации по умолчанию для встроенных конструкторов.
 
-<a id = "camelcase"></a>
-
-<a id="case-conventions"></a> <a id="dash-case"></a>
-
 ## Типы регистров {#case-types}
 
 Angular использует соглашения о капитализации для различения имен различных типов, как описано в разделе [naming guidelines][aioguidestyleguide0201] руководства по стилю. Ниже приводится краткое описание типов регистров:
@@ -107,7 +101,7 @@ Angular использует соглашения о капитализации 
 | `underscore_case` `snake_case`                                    | Обычно не используется в Angular. В змеином регистре используются слова, соединенные подчеркиванием.                                                                                                       | `convert_link_mode` |
 | `UPPER_UNDERSCORE_CASE` `UPPER_SNAKE_CASE` `SCREAMING_SNAKE_CASE` | Традиционно для констант. Этот регистр допустим, но предпочтительнее использовать camelCase. Верхний змеиный регистр использует слова, написанные всеми прописными буквами, соединенными с подчеркиванием. | `FIX_ME`            |
 
-## Обнаружение изменений {#case-types}
+## Обнаружение изменений {#change-detection}
 
 Механизм, с помощью которого фреймворк Angular синхронизирует состояние пользовательского интерфейса приложения с состоянием данных. **Детектор изменений** проверяет текущее состояние модели данных при каждом запуске и сохраняет его как предыдущее состояние для сравнения на следующей итерации.
 
@@ -123,8 +117,6 @@ Angular использует соглашения о капитализации 
 
 Если вы установили стратегию обнаружения изменений `OnPush`, детектор изменений запускается только при [явном вызове][aioapicorechangedetectorref], или когда он запускается изменением ссылки `Input` или обработчиком события. Это обычно повышает производительность.
 Чтобы узнать больше, смотрите [Оптимизация обнаружения изменений в Angular][webdevfasterangularchangedetection].
-
-<a id="decorator"></a>
 
 ## Декоратор класса {#class-decorator}
 
@@ -145,8 +137,6 @@ Angular использует соглашения о капитализации 
 ## Коллекция {#collection}
 
 В Angular набор связанных [схем][aioguideglossaryschematic], собранных в [npm-пакет][aioguideglossarynpmpackage].
-
-<a id="cli"></a>
 
 ## Интерфейс командной строки (CLI) {#command-line-interface-cli}
 
@@ -285,7 +275,7 @@ Angular предоставляет ряд встроенных директив,
 
 Angular расширяет TypeScript специфическими языками для ряда областей, имеющих отношение к приложениям Angular и определенных в NgModules, таких как [анимации][aioguideanimations], [формы][aioguideforms] и [маршрутизация и навигация][aioguiderouter].
 
-## Динамическая загрузка компонентов {#domain-specific-language-dsl}
+## Динамическая загрузка компонентов {#dynamic-component-loading}
 
 Техника добавления компонента в DOM во время выполнения. Требуется исключить компонент из компиляции, а затем подключить его к фреймворку Angular для обнаружения изменений и обработки событий, когда вы добавляете его в DOM.
 
@@ -386,8 +376,6 @@ Ivy — это историческое кодовое название теку
 ## JavaScript
 
 Чтобы узнать больше, смотрите [ECMAScript][aioguideglossaryecmascript]. Чтобы узнать больше, смотрите также [TypeScript][aioguideglossarytypescript].
-
-<a id="jit"></a>
 
 ## Компиляция точно в срок (JIT) {#just-in-time-jit-compilation}
 
@@ -802,7 +790,7 @@ TypeScript является предпочтительным языком для
 
 Файл определяет корневые файлы и параметры компилятора, необходимые для компиляции проекта TypeScript. Чтобы узнать больше, смотрите [Конфигурация TypeScript][aioguidetypescriptconfiguration].
 
-## Однонаправленный поток данных {#typescript-configuration-file}
+## Однонаправленный поток данных {#unidirectional-data-flow}
 
 Модель потока данных, в которой дерево компонентов всегда проверяется на изменения в одном направлении от родителя к ребенку, что предотвращает циклы в графе обнаружения изменений.
 
@@ -835,15 +823,11 @@ TypeScript является предпочтительным языком для
 
 Иерархии представлений могут загружаться и выгружаться динамически по мере навигации пользователя по приложению, обычно под управлением [маршрутизатора][aioguideglossaryrouter].
 
-<a id="ve"></a>
-
-## View Engine
+## View Engine {#ve}
 
 Предыдущий конвейер компиляции и рендеринга, использовавшийся в Angular. С тех пор он был заменен [Ivy][aioguideglossaryivy] и больше не используется.
 
 View Engine был устаревшим в версии 9 и удален в версии 13.
-
-<a id="view-tree"></a>
 
 ## Иерархия представлений {#view-hierarchy}
 
@@ -924,8 +908,8 @@ View Engine был устаревшим в версии 9 и удален в в�
 [aioguidefilestructure]: file-structure.md 'Workspace and project file structure | Angular'
 [aioguideformsoverview]: forms-overview.md 'Introduction to forms in Angular | Angular'
 [aioguideformvalidation]: form-validation.md 'Validating form input | Angular'
-[aioguideformvalidationaddingcustomvalidatorstoreactiveforms]: form-validation.md#adding-custom-validators-to-reactive-forms 'Adding custom validators to reactive forms - Validating form input | Angular'
-[aioguideformvalidationaddingcustomvalidatorstotemplatedrivenforms]: form-validation.md#adding-custom-validators-to-template-driven-forms 'Adding custom validators to template-driven forms - Validating form input | Angular'
+[aioguideformvalidationaddingcustomvalidatorstoreactiveforms]: form-validation.md#adding-to-reactive-forms 'Adding custom validators to reactive forms - Validating form input | Angular'
+[aioguideformvalidationaddingcustomvalidatorstotemplatedrivenforms]: form-validation.md#adding-to-template-driven-forms 'Adding custom validators to template-driven forms - Validating form input | Angular'
 [aioguideglossaryaheadoftimeaotcompilation]: glossary.md#ahead-of-time-aot-compilation 'ahead-of-time (AOT) compilation - Glossary | Angular'
 [aioguideglossaryangularelement]: glossary.md#angular-element 'Angular element - Glossary | Angular'
 [aioguideglossaryarchitect]: glossary.md#architect 'Architect - Glossary | Angular'
@@ -1015,7 +999,7 @@ View Engine был устаревшим в версии 9 и удален в в�
 [aioguidetypescriptconfiguration]: typescript-configuration.md 'TypeScript configuration | Angular'
 [aioguideuniversal]: universal.md 'Server-side rendering (SSR) with Angular Universal | Angular'
 [aioguideworkspaceconfig]: workspace-config.md 'Angular workspace configuration | Angular'
-[aioguideworkspaceconfigprojecttoolconfigurationoptions]: workspace-config.md#project-tool-configuration-options 'Project tool configuration options - Angular workspace configuration | Angular'
+[aioguideworkspaceconfigprojecttoolconfigurationoptions]: workspace-config.md#architect 'Project tool configuration options - Angular workspace configuration | Angular'
 
 <!-- external links -->
 

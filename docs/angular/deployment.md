@@ -303,7 +303,7 @@ Failed to load module script: The server responded with a non-JavaScript MIME ty
 
 Вы можете значительно сократить время запуска, загружая только те модули приложения, которые абсолютно точно должны присутствовать при запуске приложения.
 
-Настройте Angular Router на отложенную загрузку всех остальных модулей (и связанного с ними кода), либо [дожидаясь запуска приложения](router-tutorial-toh.md#preloading 'Preloading'), либо [_lazy loading_](router.md#lazy-loading 'Lazy loading') по требованию.
+Настройте Angular Router на отложенную загрузку всех остальных модулей (и связанного с ними кода), либо [дожидаясь запуска приложения](router-tutorial-toh.md#preloading-background-loading-of-feature-areas 'Preloading'), либо [_lazy loading_](router.md#lazy-loading 'Lazy loading') по требованию.
 
 !!!note "Не импортируйте с нетерпением что-то из лениво загруженного модуля"
 

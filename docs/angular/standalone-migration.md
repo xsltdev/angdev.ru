@@ -147,7 +147,7 @@ export class ImporterModule {}
 // Does not exist!
 ```
 
-### Переход к автономному API бутстрапинга
+### Переход к автономному API бутстрапинга {: #switch-to-standalone-bootstrapping-api}
 
 Этот шаг преобразует любое использование `bootstrapModule` в новый, основанный на standalone `bootstrapApplication`. Он также переключает корневой компонент на `standalone: true` и удаляет корневой модуль `NgModule`. Если корневой модуль имеет какие-либо `providers` или `imports`, миграция пытается скопировать как можно больше этой конфигурации в новый вызов `bootstrap`.
 

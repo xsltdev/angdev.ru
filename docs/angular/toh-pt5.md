@@ -487,7 +487,7 @@ export class HeroesComponent implements OnInit {
 }
 ```
 
-## Маршрутизируемый `HeroDetailComponent`
+## Маршрутизируемый `HeroDetailComponent` {: #hero-detail-ctor}
 
 Родительский `HeroesComponent` использовался для установки свойства `HeroDetailComponent.hero` и `HeroDetailComponent` отображал героя.
 
@@ -604,7 +604,7 @@ goBack(): void {
 
 Детали выглядят лучше, если добавить частные CSS стили в `hero-detail.component.css`, как указано в одной из вкладок ["final code review"](#final-code-review) ниже.
 
-## Окончательный обзор кода
+## Окончательный обзор кода {: #final-code-review}
 
 Здесь представлены файлы кода, обсуждаемые на этой странице.
 

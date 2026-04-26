@@ -1,4 +1,4 @@
-# Использование маршрутов Angular в одностраничном приложении
+# Использование маршрутов Angular в одностраничном приложении {: #using-angular-routes-in-a-single-page-application}
 
 :date: 28.02.2022
 
@@ -146,7 +146,7 @@
 
 Метод `forRoot()` гарантирует, что ваше приложение создаст только один `RouterModule`.
 
-Для получения дополнительной информации смотрите [Singleton Services](singleton-services.md#forroot-and-the-router).
+Для получения дополнительной информации смотрите [Singleton Services](singleton-services.md#forRoot-router).
 
 ## Обновите ваш компонент с помощью `router-outlet`.
 

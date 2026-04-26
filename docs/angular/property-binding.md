@@ -66,7 +66,7 @@
 itemImageUrl = '../assets/phone.svg';
 ```
 
-### `colspan` и `colSpan`
+### `colspan` и `colSpan` {: #colspan}
 
 Часто возникает путаница между атрибутом `colspan` и свойством `colSpan`. Обратите внимание, что эти два имени отличаются всего одной буквой.
 

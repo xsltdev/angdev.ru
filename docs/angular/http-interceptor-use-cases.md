@@ -226,6 +226,8 @@ export class CachingInterceptor implements HttpInterceptor {
 
     Эта функция передает запрос в `next.handle()`, который в конечном итоге вызывает сервер и возвращает ответ сервера.
 
+### Функция `sendRequest()` {#send-request}
+
 ```ts
 /**
  * Get server response observable by sending request to `next()`.

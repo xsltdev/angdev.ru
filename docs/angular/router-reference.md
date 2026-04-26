@@ -16,7 +16,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 !!!note ""
 
-    Подробнее о стилях URL браузера смотрите [`LocationStrategy` и стили URL браузера](router.md#browser-url-styles).
+    Подробнее о стилях URL браузера смотрите [`LocationStrategy` и стили URL браузера](router.md#location-strategy).
 
 ## Конфигурация {: #basics-config}
 

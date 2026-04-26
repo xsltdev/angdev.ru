@@ -24,6 +24,10 @@
 -   Особенности [тестируемости](http-test-requests.md)
 -   Перехват [запросов и ответов](http-intercept-requests-and-responses.md)
 
+### Защита от подделки межсайтовых запросов (XSRF) {: #security-xsrf-protection}
+
+`HttpClient` поддерживает типовую схему с токеном в cookie и заголовке запроса. Подробности — в [общении с сервером по HTTP](http-server-communication.md) и в разделе [XSRF](security.md#xsrf) руководства по безопасности.
+
 ## Что дальше
 
 -   [Настройка взаимодействия с сервером](http-server-communication.md)

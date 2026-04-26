@@ -334,6 +334,6 @@ ng generate component hero-app
 
 В процессе сборки CLI запускается соответствующий препроцессор CSS.
 
-При генерации файла компонента с помощью `ng generate component`, CLI по умолчанию создает пустой файл стилей CSS (`.css`). Настройте CLI по умолчанию на предпочтительный препроцессор CSS, как описано в руководстве [Workspace configuration guide](workspace-config.md#generation-schematics).
+При генерации файла компонента с помощью `ng generate component`, CLI по умолчанию создает пустой файл стилей CSS (`.css`). Настройте CLI по умолчанию на предпочтительный препроцессор CSS, как описано в руководстве [Workspace configuration guide](workspace-config.md#schematics).
 
 :date: 28.02.2022

@@ -119,7 +119,7 @@ TypeScript включает в себя набор файлов декларац
 
 ### `target` {#target}
 
-По умолчанию в качестве целевого используется `ES2022`. Для управления синтаксисом ECMA используйте конфигурационный файл [Browserslist](https://github.com/browserslist/browserslist). Более подробную информацию можно найти в руководстве [configuring browser compatibility](build.md#configuring-browser-compatibility).
+По умолчанию в качестве целевого используется `ES2022`. Для управления синтаксисом ECMA используйте конфигурационный файл [Browserslist](https://github.com/browserslist/browserslist). Более подробную информацию можно найти в руководстве [configuring browser compatibility](build.md#browser-compat).
 
 ## Ссылки
 
