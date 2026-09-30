@@ -1,0 +1,9 @@
+title: Основы
+nav:
+    - overview.md
+    - components.md
+    - signals.md
+    - templates.md
+    - signal-forms.md
+    - dependency-injection.md
+    - next-steps.md

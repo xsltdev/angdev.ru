@@ -1,0 +1,7 @@
+title: Сигналы
+nav:
+    - overview.md
+    - linked-signal.md
+    - resource.md
+    - debounced.md
+    - effect.md
