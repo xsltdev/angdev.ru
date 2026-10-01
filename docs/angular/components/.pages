@@ -1,0 +1,10 @@
+title: Компоненты
+nav:
+    - anatomy-of-components.md
+    - selectors.md
+    - styling.md
+    - inputs.md
+    - outputs.md
+    - content-projection.md
+    - host-elements.md
+    - lifecycle.md

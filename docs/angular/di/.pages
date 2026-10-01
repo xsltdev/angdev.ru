@@ -1,0 +1,6 @@
+title: Инъекция зависимостей
+nav:
+    - overview.md
+    - creating-and-using-services.md
+    - defining-dependency-providers.md
+    - hierarchical-dependency-injection.md

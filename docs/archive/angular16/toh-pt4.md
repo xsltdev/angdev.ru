@@ -185,7 +185,7 @@ this.heroes = this.heroService.getHeroes();
 
 ### Observable `HeroService`
 
-`Observable` является одним из ключевых классов в [библиотеке RxJS](../rxjs/about.md).
+`Observable` является одним из ключевых классов в [библиотеке RxJS](../../rxjs/about.md).
 
 В [учебнике по HTTP](toh-pt6.md) вы можете увидеть, как методы Angular `HttpClient` возвращают объекты RxJS `Observable`. Этот учебник имитирует получение данных с сервера с помощью функции RxJS `of()`.
 

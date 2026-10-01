@@ -1,55 +1,53 @@
 ---
-description: Angular — это фреймворк для проектирования приложений и платформа разработки для создания эффективных и сложных одностраничных приложений
+description: Angular — фреймворк и платформа для быстрых и надёжных веб-приложений. Справочник по актуальной документации
 hide:
     - toc
 ---
 
 # Введение в документацию по Angular
 
-<big>**Angular** — это фреймворк для проектирования приложений и платформа разработки для создания эффективных и сложных одностраничных приложений.</big>
+<big>**Angular** — это веб-фреймворк, на котором собирают быстрые и надёжные приложения.</big>
 
-Эти документы по Angular помогут вам изучить и использовать фреймворк и платформу разработки Angular, начиная с первого приложения и заканчивая оптимизацией сложных одностраничных приложений для предприятий. Учебники и руководства включают загружаемые примеры, которые помогут вам начать работу над проектами.
+Этот справочник — перевод [официальной документации](https://angular.dev/) текущей ветки Angular. Здесь разобраны основы, сигналы, компоненты, шаблоны, инъекция зависимостей, маршрутизация, формы и HTTP.
 
 <div class="grid cards" style="margin-top: 1.6em" markdown>
-
--   :simple-angular:{ .lg .middle } **Создайте свое первое Angular приложение.**
-
-    ***
-
-    Пройдите полное руководство, чтобы создать свое первое приложение.
-
-    [:octicons-arrow-right-24: Руководство по созданию приложения](first-app.md)
 
 -   :simple-angular:{ .lg .middle } **Что такое Angular**
 
     ***
 
-    Получите общее представление о платформе Angular.
+    Из чего состоит платформа и зачем она нужна.
 
     [:octicons-arrow-right-24: Обзор платформы](what-is-angular.md)
 
--   :simple-angular:{ .lg .middle } **Учись и исследуй**
+-   :simple-angular:{ .lg .middle } **Установка**
 
     ***
 
-    Узнайте о фундаментальных концепциях проектирования и архитектуре приложений Angular.
+    Локальный проект через Angular CLI или песочница в браузере.
 
-    [:octicons-arrow-right-24: Введение в концепции Angular](architecture.md)
+    [:octicons-arrow-right-24: Установка](installation.md)
 
--   :simple-angular:{ .lg .middle } **Настройка вашей среды.**
+-   :simple-angular:{ .lg .middle } **Основы**
 
     ***
 
-    Настройте вашу локальную среду для разработки с помощью Angular CLI.
+    Компоненты, сигналы, шаблоны и инъекция зависимостей в одном контуре.
 
-    [:octicons-arrow-right-24: Локальная настройка](setup-local.md)
+    [:octicons-arrow-right-24: Основы Angular](essentials/overview.md)
+
+-   :simple-angular:{ .lg .middle } **Сигналы**
+
+    ***
+
+    Мелкая реактивность: `signal`, `computed`, `linkedSignal` и `effect`.
+
+    [:octicons-arrow-right-24: Обзор сигналов](signals/overview.md)
 
 </div>
 
 ## Предположения
 
-Эта документация предполагает, что вы уже знакомы с [HTML](https://hcdev.ru/html/), [CSS](https://hcdev.ru/css/), [JavaScript](https://learn.javascript.ru/) и некоторыми инструментами из [последних стандартов](https://developer.mozilla.org/docs/Web/JavaScript/Language_Resources), такими как [классы](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Classes) и [модули](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/import).
+Документация рассчитана на знакомство с [HTML](https://hcdev.ru/html/), [CSS](https://hcdev.ru/css/), [JavaScript](https://learn.javascript.ru/) и [TypeScript](https://scriptdev.ru/).
 
-Примеры кода написаны с использованием [TypeScript](https://scriptdev.ru/).
-
-Большинство кода Angular может быть написано с помощью последних версий JavaScript, используя [типы](https://www.typescriptlang.org/docs/handbook/classes.html) для инъекции зависимостей и [декораторы](https://www.typescriptlang.org/docs/handbook/decorators.html) для метаданных.
+Примеры написаны на TypeScript. Компоненты по умолчанию автономные: их импортируют напрямую, без NgModule.
